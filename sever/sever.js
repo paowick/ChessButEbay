@@ -8,7 +8,7 @@ app.listen(8080,() =>{
     console.log("on port 8080")
 })
 
-app.use(express.static(path.join(__dirname,'web')))
+app.use(express.static(path.basename("./web/index.html")))
 
 app.post("/posts",express.json(),(req,res,next) => {
     
