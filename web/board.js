@@ -84,5 +84,5 @@ var board = [
 
 
 function test(){
-    console.log(board[5-1][5-1])
+    console.log(board[1-1][1-1])
 }
