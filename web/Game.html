@@ -11,6 +11,10 @@
 </head>
 <body>
 
+    <div id="king">
+        <td>&#9812</td>
+    </div>
+
     <div align="center">
         <button onclick="test()">test</button>
     </div>
@@ -33,7 +37,7 @@
             </tr>
             <tr>
                 <th id="box">8</th>
-                <th id="a8" class="boxwhite" onclick="console.log(id)"></th>
+                <th id="a8" class="boxwhite" ></th>
                 <th id="b8" class="boxblack" onclick="console.log(id)"></th>
                 <th id="c8" class="boxwhite" onclick="console.log(id)"></th>
                 <th id="d8" class="boxblack" onclick="console.log(id)"></th>
@@ -121,8 +125,9 @@
     </div>
 
 
-    <script type="text/javascript" src="board.js"></script>
+    <script type="module" src="board.js"></script>
+    <script type="module" src="piece.js"></script>
 
 </body>
 
-</html>
+</html
