@@ -1,16 +1,26 @@
-const express = require("express")
-const path = require('path')
-let app = express()
+import express from 'express'
+const app =express()
+import { createServer } from 'http'
+import { disconnect } from 'process'
+import { Server } from "socket.io"
 
 
-
-app.listen(8080,() =>{
-    console.log("on port 8080")
+const sever = createServer()
+const io = new Server(sever,{
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST"]
+      },
 })
 
-app.use(express.static(path.basename("./web/index.html")))
 
-app.post("/posts",express.json(),(req,res,next) => {
-    
+sever.listen(8080,()=>{
+    console.log('8080')
 })
 
+io.on("connection", (socket) => {
+    console.log('conn')
+    socket.on("disconnect",()=>{
+        console.log('dis')
+    })
+  });
