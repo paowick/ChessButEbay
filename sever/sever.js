@@ -19,7 +19,7 @@ sever.listen(8080,()=>{
 })
 
 io.on("connection", (socket) => {
-    console.log('conn')
+    console.log(`conn ${socket.id}`)
     socket.on("disconnect",()=>{
         console.log('dis')
     })
