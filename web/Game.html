@@ -25,7 +25,8 @@
     </script>
     <script src="/node_modules/socket.io/client-dist/socket.io.js"></script>
 <script>
-  var socket = io("http://localhost:8080") 
+    var root = document.location.hostname
+  var socket = io("http://"+root+":8080") 
 </script>
     
 
