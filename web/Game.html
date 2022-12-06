@@ -18,6 +18,11 @@
     <div align="center">
         <button onclick="test()">test</button>
     </div>
+    <script>
+        function test(){
+            socket.emit("hi","test")
+        }
+    </script>
     <script src="/node_modules/socket.io/client-dist/socket.io.js"></script>
 <script>
   var socket = io("http://localhost:8080") 

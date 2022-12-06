@@ -101,11 +101,3 @@ board[0][0][1] = king
 console.log(board[0][0][0])
 console.log(board[0][0][1])
 board[0][0][0].innerHTML = `<div class="boxpiece">&#9812;</div>`;
-
-
-
-
-
-function test(){
-    console.log(board[1-1][1-1])
-}

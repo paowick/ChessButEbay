@@ -1,0 +1,19 @@
+version: '3.5'
+
+services:
+  sever:
+    build: sever
+    networks:
+      - net_work
+    ports:
+      - "8080:8080"
+  web:
+    build: web
+    networks:
+      - net_work
+    ports:
+      - "80:80"
+
+networks:
+  net_work:
+    driver: bridge
