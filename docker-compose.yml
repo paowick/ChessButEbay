@@ -2,12 +2,14 @@ version: '3.5'
 
 services:
   sever:
+    restart: always
     build: sever
     networks:
       - net_work
     ports:
       - "8080:8080"
   web:
+    restart: always
     build: web
     networks:
       - net_work
