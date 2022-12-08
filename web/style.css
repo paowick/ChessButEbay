@@ -12,6 +12,11 @@
 }
 
 .boxpiece{
+    flex-wrap: wrap;
     font-size: 50px;
 
+}
+
+*{
+    caret-color: transparent;
 }

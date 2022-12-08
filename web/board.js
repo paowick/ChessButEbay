@@ -1,4 +1,6 @@
-import {pieces} from './piece.js';
+import { pieces, king } from './piece.js';
+
+
 
 const a8 = document.querySelector("#a8")
 const b8 = document.querySelector("#b8")
@@ -71,6 +73,7 @@ const e1 = document.querySelector("#e1")
 const f1 = document.querySelector("#f1")
 const g1 = document.querySelector("#g1")
 const h1 = document.querySelector("#h1")
+
 // White_King	  = "&#9812"
 // White_Queen   = "&#9813"
 // White_Rook	  = "&#9814"
@@ -85,19 +88,58 @@ const h1 = document.querySelector("#h1")
 // Black_Pawn	  = "&#9823"
 
 var board = [
-    [[a8,null],[b8,null],[c8,null],[d8,null],[e8,null],[f8,null],[g8,null],[h8,null]],
-    [[a7,null],[b7,null],[c7,null],[d7,null],[e7,null],[f7,null],[g7,null],[h7,null]],
-    [[a6,null],[b6,null],[c6,null],[d6,null],[e6,null],[f6,null],[g6,null],[h6,null]],
-    [[a5,null],[b5,null],[c5,null],[d5,null],[e5,null],[f5,null],[g5,null],[h5,null]],
-    [[a4,null],[b4,null],[c4,null],[d4,null],[e4,null],[f4,null],[g4,null],[h4,null]],
-    [[a3,null],[b3,null],[c3,null],[d3,null],[e3,null],[f3,null],[g3,null],[h3,null]],
-    [[a2,null],[b2,null],[c2,null],[d2,null],[e2,null],[f2,null],[g2,null],[h2,null]],
-    [[a1,null],[b1,null],[c1,null],[d1,null],[e1,null],[f1,null],[g1,null],[h1,null]],
-] 
+    [[a8, null], [b8, null], [c8, null], [d8, null], [e8, null], [f8, null], [g8, null], [h8, null]],
+    [[a7, null], [b7, null], [c7, null], [d7, null], [e7, null], [f7, null], [g7, null], [h7, null]],
+    [[a6, null], [b6, null], [c6, null], [d6, null], [e6, null], [f6, null], [g6, null], [h6, null]],
+    [[a5, null], [b5, null], [c5, null], [d5, null], [e5, null], [f5, null], [g5, null], [h5, null]],
+    [[a4, null], [b4, null], [c4, null], [d4, null], [e4, null], [f4, null], [g4, null], [h4, null]],
+    [[a3, null], [b3, null], [c3, null], [d3, null], [e3, null], [f3, null], [g3, null], [h3, null]],
+    [[a2, null], [b2, null], [c2, null], [d2, null], [e2, null], [f2, null], [g2, null], [h2, null]],
+    [[a1, null], [b1, null], [c1, null], [d1, null], [e1, null], [f1, null], [g1, null], [h1, null]],
+]
 
-var king = new pieces("king",king,"00")
-
-board[0][0][1] = king
+var kingWhite = new king("king", a8, "00")
+board[0][0][1] = kingWhite
 console.log(board[0][0][0])
 console.log(board[0][0][1])
-board[0][0][0].innerHTML = `<div class="boxpiece">&#9812;</div>`;
+board[0][0][0].innerHTML = `<div class="boxpiece kingWhite">&#9812;</div>`;
+
+
+var source = null
+var destination = null
+var nextTurn = false
+document.querySelectorAll('th')
+    .forEach(div => {
+        div.addEventListener('click', function () {
+            if (source == null) { return 0 }
+            destination = this.id
+            console.log(`dest = ${destination}`)
+            move(source,destination)
+        })
+    })
+
+document.querySelectorAll('th')
+    .forEach(div => {
+        div.addEventListener('click', function () {
+            if (source != null) { return 0 }
+            if(nextTurn == true){ nextTurn = false; return 0}
+            source = this.id
+            console.log(`sour = ${source}`)
+        })
+    })
+
+
+
+function move(sour, dest) {
+    if(destination != source){
+        console.log(`${sour} => ${dest}`)
+        socket.emit("move", `${sour} => ${dest}`)
+        nextTurn = true
+        destination = null
+        source = null
+    }else{
+        nextTurn = true
+        destination = null
+        source = null
+    }
+}

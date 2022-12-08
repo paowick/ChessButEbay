@@ -22,6 +22,9 @@ io.on("connection", (socket) => {
     socket.on("hi",(arg) =>{
         console.log(arg)
     })
+    socket.on("move",(arg) =>{
+        console.log(arg)
+    })
     socket.on("disconnect",()=>{
         console.log('dis')
     })
