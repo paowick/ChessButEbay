@@ -23,7 +23,7 @@ io.on("connection", (socket) => {
         console.log(arg)
     })
     socket.on("move",(arg) =>{
-        console.log(arg)
+        console.log(`move ${arg.source} to ${arg.destination}`)
     })
     socket.on("disconnect",()=>{
         console.log('dis')

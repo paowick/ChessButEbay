@@ -116,7 +116,10 @@ document.querySelectorAll('th')
                 destination = this.id;
                 if (destination != source) {
                     console.log(`${source} => ${destination}`)
-                    socket.emit("move", `${source} => ${destination}`)
+                    socket.emit("move", {
+                        source: source,
+                        destination: destination
+                    })
                     destination = null
                     source = null
                 } else {
