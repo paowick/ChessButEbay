@@ -107,40 +107,22 @@ board[0][0][0].innerHTML = `<div class="boxpiece kingWhite">&#9812;</div>`;
 
 var source = null
 var destination = null
-var nextTurn = false
 document.querySelectorAll('th')
     .forEach(div => {
         div.addEventListener('click', function () {
-            if (source == null) { return 0 }
-            destination = this.id
-            console.log(`dest = ${destination}`)
-            move(source,destination)
+            if (source == null && destination == null) {
+                source = this.id;
+            } else if (source != null && destination == null) {
+                destination = this.id;
+                if (destination != source) {
+                    console.log(`${source} => ${destination}`)
+                    socket.emit("move", `${source} => ${destination}`)
+                    destination = null
+                    source = null
+                } else {
+                    destination = null
+                    source = null
+                }
+            }
         })
     })
-
-document.querySelectorAll('th')
-    .forEach(div => {
-        div.addEventListener('click', function () {
-            if (source != null) { return 0 }
-            if(nextTurn == true){ nextTurn = false; return 0}
-            source = this.id
-            console.log(`sour = ${source}`)
-        })
-    })
-
-
-
-function move(sour, dest) {
-    if(destination != source){
-        console.log(`${sour} => ${dest}`)
-        socket.emit("move", `${sour} => ${dest}`)
-        nextTurn = true
-        destination = null
-        source = null
-    }else{
-        nextTurn = true
-        destination = null
-        source = null
-    }
-}
-
