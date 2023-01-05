@@ -41,7 +41,6 @@ document.querySelectorAll('th')
             }
         })
     })
-    
 function move(){
     if (destination != source) {
         console.log(`${source} => ${destination}`)
@@ -51,7 +50,7 @@ function move(){
         })
 
         kingWhite.unset()
-        kingWhite.pos = "01"
+        kingWhite.pos = "01" 
         kingWhite.setPiece()
 
         destination = null
