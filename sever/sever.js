@@ -1,5 +1,3 @@
-import express from 'express'
-const app =express()
 import { createServer } from 'http'
 import { Server } from "socket.io"
 
