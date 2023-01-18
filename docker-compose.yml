@@ -5,12 +5,17 @@ services:
     container_name: sever
     restart: always
     build: sever
+    volumes:
+      - ./sever:/usr/src/app
     networks:
       - net_work
   web:
     container_name: web
     restart: always
     build: web
+    volumes:
+      - ./web:/usr/src/app
+
     networks:
       - net_work
   nginx:
