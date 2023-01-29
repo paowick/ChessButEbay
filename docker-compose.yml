@@ -26,7 +26,6 @@ services:
       - '80:80' 
       - '443:443' 
       - '81:81'
-      - '3306:3306' 
     environment:
       DB_MYSQL_HOST: "db"
       DB_MYSQL_PORT: 3306
@@ -52,6 +51,21 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - ./data/mysql:/var/lib/mysql
+    networks:
+      - net_work
+  
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: pma
+    restart: always
+    ports:
+      - 8888:80
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    depends_on:
+      - db
+
     networks:
       - net_work
 
