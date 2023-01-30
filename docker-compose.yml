@@ -26,17 +26,9 @@ services:
       - '80:80' 
       - '443:443' 
       - '81:81'
-    environment:
-      DB_MYSQL_HOST: "db"
-      DB_MYSQL_PORT: 3306
-      DB_MYSQL_USER: ${MYSQL_USER}
-      DB_MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      DB_MYSQL_NAME: ${MYSQL_DATABASE_NPM}
     volumes:
-      - ./data:/data
+      - ./nginx_data:/data
       - ./letsencrypt:/etc/letsencrypt
-    depends_on:
-      - db
     networks:
       - net_work
 
