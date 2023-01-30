@@ -51,8 +51,10 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - ./data/mysql:/var/lib/mysql
+      - ./config/mysql/proxy_host.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - net_work
+    command: ["mariadb --user=root --password=admin npm < /docker-entrypoint-initdb.d/init.sql"]
   
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
