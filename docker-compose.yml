@@ -9,15 +9,16 @@ services:
       - ./sever:/usr/src/app
     networks:
       - net_work
+      
   web:
     container_name: web
     restart: always
     build: web
     volumes:
       - ./web:/usr/src/app
-
     networks:
       - net_work
+
   nginx:
     container_name: nginx
     image: 'jc21/nginx-proxy-manager:latest'
@@ -34,13 +35,10 @@ services:
 
   db:
     container_name: db
-    image: 'jc21/mariadb-aria:latest'
+    image: mariadb
     restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE_NPM}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MARIADB_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     volumes:
       - ./data/mysql:/var/lib/mysql
     networks:
@@ -54,10 +52,9 @@ services:
       - 8888:80
     environment:
       PMA_HOST: db
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MARIADB_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     depends_on:
       - db
-
     networks:
       - net_work
 
