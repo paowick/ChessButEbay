@@ -6,6 +6,7 @@ import path from "path"
 const __dirname = path.resolve();
 
 app.use(express.static('public'));
+app.use(express.json())
 
 app.get('/', (req, res) => {
     res.sendFile(`${__dirname}/public/index.html`)
@@ -13,6 +14,15 @@ app.get('/', (req, res) => {
 
 app.get('/login', (req, res) => {
     res.sendFile(`${__dirname}/public/login.html`)
+})
+
+app.post('/session', (req,res) => {
+    console.log(req.body);
+    res.json(
+        {
+            test:'test'
+        }
+    )
 })
 
 app.get('/Game.html', (req, res) => {
