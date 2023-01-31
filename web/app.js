@@ -17,10 +17,14 @@ app.get('/login', (req, res) => {
 })
 
 app.post('/session', (req,res) => {
-    console.log(req.body);
+    if(req.body.data == ''){
+        res.redirect('/login')
+        return
+    }
+    // do it after we have login sevice yet
     res.json(
         {
-            test:'test'
+            test:'login'
         }
     )
 })

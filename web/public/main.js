@@ -1,17 +1,19 @@
-async function cookieCheck(){
+async function cookieCheck() {
     let root = document.location.hostname
     const allCookies = document.cookie;
-    console.log(allCookies);
     const data = {
-        test:'test'
+        data: allCookies
     }
-    await fetch(`http://${root}/addUser`,{
-        method:'POST',
-        headers:{
+    const sesssion = await fetch(`http://${root}/session`, {
+        method: 'POST',
+        headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
-    }).then((res))
+    })
+    if(sesssion.redirected){ return location.href = `${sesssion.url}`}
+    const resdata = await sesssion.json()
+    console.log(resdata);
 }
 
 cookieCheck()
