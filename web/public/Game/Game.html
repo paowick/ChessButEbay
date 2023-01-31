@@ -5,16 +5,11 @@
 
 <head>
     <title>
-        about me
+        Game
     </title>
     <link type="text/css" rel="stylesheet" href="./style.css">
 </head>
 <body>
-
-    <div id="king">
-        <td>&#9812</td>
-    </div>
-
     <div align="center">
         <button onclick="test()">test</button>
     </div>
@@ -22,18 +17,16 @@
         function test(){
             socket.emit("hi","test")
         }
+        </script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var root = document.location.hostname
+        var socket = io(`http://${root}/`) 
     </script>
-    <script src="./socket.io/client-dist/socket.io.js"></script>
-<script>
-    var root = document.location.hostname
-    var socket = io(`http://${root}/`) 
-</script>
-    
-
+    <script type="module" src="./board.js"></script>
+    <script type="module" src="./piece.js"></script>
     <div>
-
         <table align="center">
-            
             <tr>
                 <th></th>
                 <th>a</th>
@@ -133,9 +126,6 @@
             </tr>
         </table>
     </div>
-
-    <script type="module" src="./gameScript/board.js"></script>
-    <script type="module" src="./gameScript/piece.js"></script>
 
 </body>
 

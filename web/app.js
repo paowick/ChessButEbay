@@ -6,6 +6,7 @@ import path from "path"
 const __dirname = path.resolve();
 
 app.use(express.static('public'));
+app.use(express.static('public/Game'));
 app.use(express.json())
 
 app.get('/', (req, res) => {
@@ -13,11 +14,11 @@ app.get('/', (req, res) => {
 })
 
 app.get('/login', (req, res) => {
-    res.sendFile(`${__dirname}/public/login.html`)
+    res.sendFile(`${__dirname}/public/Login/login.html`)
 })
 
 app.post('/session', (req,res) => {
-    if(req.body.data == ''){
+    if(req.body.data != ''){
         res.redirect('/login')
         return
     }
@@ -30,7 +31,7 @@ app.post('/session', (req,res) => {
 })
 
 app.get('/Game.html', (req, res) => {
-    res.sendFile(`${__dirname}/public/Game.html`)
+    res.sendFile(`${__dirname}/public/Game/Game.html`)
 })
 
 app.listen(port, () => {
