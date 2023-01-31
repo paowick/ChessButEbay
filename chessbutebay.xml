@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-01-31T20:59:53.642Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36" etag="QAZMlheCHXPQWAA1e61Y" version="20.8.14" type="github">
+<mxfile host="app.diagrams.net" modified="2023-01-31T21:02:35.088Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36" etag="529s65-l0n7X_-i1Buu_" version="20.8.14" type="github">
   <diagram name="Page-1" id="ak_vlbZRK5uJ0aBzfs-e">
     <mxGraphModel dx="1434" dy="789" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
@@ -44,12 +44,13 @@
         <mxCell id="piok1V9Qb72b4S2JWAfH-13" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" parent="1" source="piok1V9Qb72b4S2JWAfH-9" target="piok1V9Qb72b4S2JWAfH-10" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="piok1V9Qb72b4S2JWAfH-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=16;startSize=8;endSize=8;" parent="1" source="piok1V9Qb72b4S2JWAfH-9" target="piok1V9Qb72b4S2JWAfH-2" edge="1">
+        <mxCell id="piok1V9Qb72b4S2JWAfH-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;fontSize=16;startSize=8;endSize=8;" parent="1" source="piok1V9Qb72b4S2JWAfH-9" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="200" y="590" />
-              <mxPoint x="200" y="180" />
+              <mxPoint x="200" y="452" />
             </Array>
+            <mxPoint x="418" y="452" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="piok1V9Qb72b4S2JWAfH-9" value="กดปุ่ม&quot;reset&quot;" style="rhombus;whiteSpace=wrap;html=1;fontSize=16;" parent="1" vertex="1">
