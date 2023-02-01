@@ -4,18 +4,18 @@ services:
   sever:
     container_name: sever
     restart: always
-    build: sever
+    build: src/sever
     volumes:
-      - ./sever:/usr/src/app
+      - ./src/sever:/usr/src/app
     networks:
       - net_work
       
   web:
     container_name: web
     restart: always
-    build: web
+    build: src/web
     volumes:
-      - ./web:/usr/src/app
+      - ./src/web:/usr/src/app
     networks:
       - net_work
 
