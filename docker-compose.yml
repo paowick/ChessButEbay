@@ -1,12 +1,12 @@
 version: '3.5'
 
 services:
-  sever:
-    container_name: sever
+  socket:
+    container_name: socket
     restart: always
-    build: src/sever
+    build: src/socket
     volumes:
-      - ./src/sever:/usr/src/app
+      - ./src/socket:/usr/src/app
     networks:
       - net_work
       
