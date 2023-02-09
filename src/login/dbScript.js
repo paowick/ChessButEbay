@@ -1,15 +1,16 @@
+import * as dotenv from 'dotenv' 
+dotenv.config()
 import mariadb from 'mariadb';
 const pool = mariadb.createPool({
-    host: "db", 
-    port: 3306,
-    user: "root", 
-    password: "admin",
-    database: "chessbutebay"
+    host: process.env.DB_HOST, 
+    port: process.env.DB_PORT,
+    user: process.env.DB_USER, 
+    password: process.env.DB_ROOT_PASSWORD,
+    database: process.env.DB_NAME
     
 })
 
 export async function connect(){
-    console.log('hi');
     let conn;
     try{
         conn = await pool.getConnection();
@@ -17,6 +18,6 @@ export async function connect(){
         return rows
     }
     finally{
-        if (conn) conn.release();
+        if (conn) conn.end();
     }
 }

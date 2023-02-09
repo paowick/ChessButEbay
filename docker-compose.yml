@@ -23,6 +23,12 @@ services:
     container_name: login
     restart: always
     build: src/login
+    environment:
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_USER=root
+      - DB_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - DB_NAME=${MYSQL_DATABASE_NAME}
     volumes:
       - ./src/login:/usr/src/app
     networks:

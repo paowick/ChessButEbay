@@ -6,6 +6,7 @@ const port = 8080;
 app.use(express.json())
 
 app.post('/login/logInVerify',async (req,res)=>{
+    console.log('hi');
     const dbres = await db.connect()
     res.json(
         {
