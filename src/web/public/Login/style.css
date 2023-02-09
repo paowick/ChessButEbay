@@ -1,3 +1,28 @@
-login{
-    background-color: aqua;
+.login{
+    background-color: white;
+}
+input{
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 10px 13px;
+    margin: 5px auto;
+    font-size: 17px;
+}
+input:focus{
+    outline-color: burlywood;
+}
+button{
+    font-size: 17px;
+    background-color: bisque;
+    border-radius: 10px;
+    border: 0px solid;
+    width: 114px;
+    height: 30px;
+    margin: 5px 5px;
+}
+button:hover{
+    background-color: burlywood;
+}
+a{
+    margin: 5PX 5PX;
 }

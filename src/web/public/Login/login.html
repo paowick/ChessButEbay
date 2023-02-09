@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,19 +8,22 @@
     <title>Login</title>
     <link type="text/css" rel="stylesheet" href="./style.css">
 </head>
+
 <body>
-    <div>
-        <div class="test">
-            <form action="https://google.com" method="post">
-                <label for="email"><b>Email</b></label><br>
-                <input type="email" name="email" id="email" placeholder="Enter Email" required><br>
-                <label for="password"><b>Password</b></label><br>
-                <input type="password" name="password" id="password" placeholder="Enter Password" required><br>
-                <button type="submit">Login</button><br>
-                <a href="http://">ForgotPassword</a>
-            </form>
-        </div>
+<center>
+
+    <div class="login">
+        <form method="post">
+            <input type="email" name="email" id="email" placeholder="Email address" required><br>
+            <input type="password" name="password" id="password" placeholder="Password" required><br>
+            <button type="submit" formaction="/login/logInVerify">LogIn</button>
+            <button type="submit" formaction="/login/signUp">SignUp</button><br>
+            <a href="/test">ForgotPassword</a>
+        </form>
     </div>
+    
+</center>
 
 </body>
+
 </html>
