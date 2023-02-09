@@ -19,6 +19,16 @@ services:
     networks:
       - net_work
 
+  login:
+    container_name: login
+    restart: always
+    build: src/login
+    volumes:
+      - ./src/login:/usr/src/app
+    networks:
+      - net_work
+
+
   nginx:
     container_name: nginx
     image: 'jc21/nginx-proxy-manager:latest'

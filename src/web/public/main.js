@@ -4,7 +4,7 @@ async function cookieCheck() {
     const data = {
         data: allCookies
     }
-    const sesssion = await fetch(`http://${root}/session`, {
+    const sesssion = await fetch(`/session`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

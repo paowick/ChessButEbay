@@ -6,23 +6,22 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link type="text/css" rel="stylesheet" href="./style.css">
+    <link type="text/css" rel="stylesheet" href="../Login/style.css">
+    <script src="../Login/main.js"></script>
 </head>
 
 <body>
-<center>
+    <center>
 
-    <div class="login">
-        <form method="post">
-            <input type="email" name="email" id="email" placeholder="Email address" required><br>
-            <input type="password" name="password" id="password" placeholder="Password" required><br>
-            <button type="submit" formaction="/login/logInVerify">LogIn</button>
-            <button type="submit" formaction="/login/signUp">SignUp</button><br>
+        <div class="login">
+            <input type="email" id="email" placeholder="Email address" required><br>
+            <input type="password" id="password" placeholder="Password" required><br>
+            <button type="submit" onclick="login()">LogIn</button>
+            <button type="submit" onclick="signUp()">SignUp</button><br>
             <a href="/test">ForgotPassword</a>
-        </form>
-    </div>
-    
-</center>
+        </div>
+
+    </center>
 
 </body>
 

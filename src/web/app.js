@@ -13,13 +13,13 @@ app.get('/', (req, res) => {
     res.sendFile(`${__dirname}/public/index.html`)
 })
 
-app.get('/login', (req, res) => {
+app.get('/userVerify', (req, res) => {
     res.sendFile(`${__dirname}/public/Login/login.html`)
 })
 
 app.post('/session', (req,res) => {
     if(req.body.data != ''){
-        res.redirect('/login')
+        res.redirect('/userVerify')
         return
     }
     // do it after we have login sevice yet
