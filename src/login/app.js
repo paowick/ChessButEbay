@@ -7,12 +7,14 @@ app.use(express.json())
 
 app.post('/login/logInVerify',async (req,res)=>{
     const dbres = await db.userCheck(req.body.email,req.body.password)
-    res.json(
-        {
-            'hi':'hi',
-            'dbrespone':dbres
-        }
-    )
+    if(!dbres.Response){
+        return res.json({
+            body:'no'
+        })
+    }
+    res.json({
+        body:'yes'
+    })
 })
 
 app.post('/login/signUp',(req,res)=>{
