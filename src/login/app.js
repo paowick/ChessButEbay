@@ -9,11 +9,15 @@ app.post('/login/logInVerify',async (req,res)=>{
     const dbres = await db.userCheck(req.body.email,req.body.password)
     if(!dbres.Response){
         return res.json({
-            body:'no'
+            body:false
         })
     }
     res.json({
-        body:'yes'
+        Response:true,
+        body:{
+            Email:dbres.data[0].Email,
+            Password:dbres.data[0].Password
+        }
     })
 })
 
