@@ -27,9 +27,15 @@ export async function userCheck(email,password){
     try{
         conn = await pool.getConnection();
         const rows = await conn.query("SELECT * FROM `User` WHERE Email = ? AND Password = ?",[email,password]);
-        return rows
-    }catch(e){
-        return(e)
+        if(!rows[0]){
+            return{
+                Response:false
+            }
+        }
+        return {
+            Response:true,
+            data:rows
+        }
     }finally{
         if (conn) conn.end();
     }

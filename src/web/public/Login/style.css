@@ -1,4 +1,3 @@
-
 .login{
     padding: 10px 20px;
     background-color: white;
@@ -15,6 +14,16 @@
     flex-direction: row;
   }
 }
+.card{
+    outline: 1px;
+    border: 1px solid black;
+    border-radius: 10px;
+    background-color: gainsboro;
+    box-shadow: 2px 2px gray;
+}
+.pad-tb{
+    padding: 20px 20px;
+}
 input{
     border: 1px solid black;
     border-radius: 5px;
@@ -23,11 +32,11 @@ input{
     font-size: 17px;
 }
 input:focus{
-    outline-color: burlywood;
+    outline-color: #8FBDD3;
 }
 button{
     font-size: 17px;
-    background-color: bisque;
+    background-color: #8FBDD3;
     border-radius: 10px;
     border: 0px solid;
     width: 114px;

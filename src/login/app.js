@@ -10,7 +10,7 @@ app.post('/login/logInVerify',async (req,res)=>{
     res.json(
         {
             'hi':'hi',
-            'db':dbres
+            'dbrespone':dbres
         }
     )
 })
