@@ -1,0 +1,56 @@
+body{
+    background-color: #6096B4;
+}
+.login{
+    padding: 10px 20px;
+}
+.flex-container{
+    min-width: fit-content;
+    width: fit-content;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+@media (min-width: 650px) {
+  .flex-container  {
+    flex-direction: row;
+  }
+}
+.card{
+    outline: 1px;
+    border: 1px solid black;
+    border-radius: 10px;
+    background-color: #93BFCF;
+    box-shadow: 2px 2px gray;
+}
+.pad-tb{
+    padding: 20px 20px;
+}
+input{
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 10px 13px;
+    margin: 5px auto;
+    font-size: 17px;
+}
+input:focus{
+    outline-color: #8FBDD3;
+}
+button{
+    font-size: 17px;
+    color: white;
+    background-color: #93BFCF;
+    border-radius: 10px;
+    border: 1px solid #EEE9DA;
+    width: 114px;
+    height: 30px;
+    margin: 5px 5px;
+}
+button:hover{
+    color: black;
+    border: 1px solid #BDCDD6;
+    background-color: #BDCDD6;
+}
+a{
+    margin: 5PX 5PX;
+}

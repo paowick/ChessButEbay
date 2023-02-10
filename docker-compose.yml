@@ -1,12 +1,12 @@
 version: '3.5'
 
 services:
-  sever:
-    container_name: sever
+  socket:
+    container_name: socket
     restart: always
-    build: src/sever
+    build: src/socket
     volumes:
-      - ./src/sever:/usr/src/app
+      - ./src/socket:/usr/src/app
     networks:
       - net_work
       
@@ -18,6 +18,22 @@ services:
       - ./src/web:/usr/src/app
     networks:
       - net_work
+
+  login:
+    container_name: login
+    restart: always
+    build: src/login
+    environment:
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_USER=root
+      - DB_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - DB_NAME=${MYSQL_DATABASE_NAME}
+    volumes:
+      - ./src/login:/usr/src/app
+    networks:
+      - net_work
+
 
   nginx:
     container_name: nginx

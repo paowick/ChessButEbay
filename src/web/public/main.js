@@ -1,10 +1,9 @@
 async function cookieCheck() {
-    let root = document.location.hostname
     const allCookies = document.cookie;
     const data = {
         data: allCookies
     }
-    const sesssion = await fetch(`http://${root}/session`, {
+    const sesssion = await fetch(`/session`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -15,5 +14,4 @@ async function cookieCheck() {
     const resdata = await sesssion.json()
     console.log(resdata);
 }
-
 cookieCheck()
