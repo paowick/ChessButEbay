@@ -18,7 +18,7 @@ app.get('/userVerify', (req, res) => {
 })
 
 app.post('/session', (req,res) => {
-    if(req.body.data != ''){
+    if(req.body.data == ''){
         res.redirect('/userVerify')
         return
     }
@@ -30,7 +30,7 @@ app.post('/session', (req,res) => {
     )
 })
 
-app.get('/Game.html', (req, res) => {
+app.get('/Game', (req, res) => {
     res.sendFile(`${__dirname}/public/Game/Game.html`)
 })
 

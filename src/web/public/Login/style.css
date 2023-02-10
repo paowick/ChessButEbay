@@ -1,6 +1,8 @@
+body{
+    background-color: #6096B4;
+}
 .login{
     padding: 10px 20px;
-    background-color: white;
 }
 .flex-container{
     min-width: fit-content;
@@ -18,7 +20,7 @@
     outline: 1px;
     border: 1px solid black;
     border-radius: 10px;
-    background-color: gainsboro;
+    background-color: #93BFCF;
     box-shadow: 2px 2px gray;
 }
 .pad-tb{
@@ -36,15 +38,18 @@ input:focus{
 }
 button{
     font-size: 17px;
-    background-color: #8FBDD3;
+    color: white;
+    background-color: #93BFCF;
     border-radius: 10px;
-    border: 0px solid;
+    border: 1px solid #EEE9DA;
     width: 114px;
     height: 30px;
     margin: 5px 5px;
 }
 button:hover{
-    background-color: burlywood;
+    color: black;
+    border: 1px solid #BDCDD6;
+    background-color: #BDCDD6;
 }
 a{
     margin: 5PX 5PX;
