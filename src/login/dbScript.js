@@ -14,10 +14,23 @@ export async function connect(){
     let conn;
     try{
         conn = await pool.getConnection();
-        const rows = await conn.query("SELECT * FROM `log`");
+        const rows = await conn.query("SELECT * FROM `User`");
         return rows
     }
     finally{
+        if (conn) conn.end();
+    }
+}
+
+export async function userCheck(email,password){
+    let conn;
+    try{
+        conn = await pool.getConnection();
+        const rows = await conn.query("SELECT * FROM `User` WHERE Email = ? AND Password = ?",[email,password]);
+        return rows
+    }catch(e){
+        return(e)
+    }finally{
         if (conn) conn.end();
     }
 }

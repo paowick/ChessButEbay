@@ -17,5 +17,6 @@ async function login() {
 }
 
 function signUp() {
-    
+    console.log("signUp");
 }
+
