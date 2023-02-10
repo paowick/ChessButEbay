@@ -1,5 +1,4 @@
 async function cookieCheck() {
-    let root = document.location.hostname
     const allCookies = document.cookie;
     const data = {
         data: allCookies
@@ -15,5 +14,4 @@ async function cookieCheck() {
     const resdata = await sesssion.json()
     console.log(resdata);
 }
-
 cookieCheck()
