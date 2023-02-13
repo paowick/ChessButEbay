@@ -34,21 +34,23 @@ services:
     networks:
       - backend
 
-
   nginx:
     container_name: nginx
-    image: 'jc21/nginx-proxy-manager:latest'
-    restart: unless-stopped
-    ports:
-      - '80:80' 
-      - '443:443' 
-      - '81:81'
+    image: nginx
+    depends_on:
+      - web
+      - auth
+      - socket
     volumes:
-      - ./nginx_data:/data
-      - ./letsencrypt:/etc/letsencrypt
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - "80:80"
+      - "443:443"
+    restart: always
     networks:
       - fontend
       - backend
+
 
   db:
     container_name: db
