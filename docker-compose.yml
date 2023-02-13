@@ -8,7 +8,7 @@ services:
     volumes:
       - ./src/socket:/usr/src/app
     networks:
-      - net_work
+      - backend
       
   web:
     container_name: web
@@ -17,7 +17,7 @@ services:
     volumes:
       - ./src/web:/usr/src/app
     networks:
-      - net_work
+      - backend
 
   auth:
     container_name: auth
@@ -32,7 +32,7 @@ services:
     volumes:
       - ./src/authen:/usr/src/app
     networks:
-      - net_work
+      - backend
 
 
   nginx:
@@ -47,7 +47,8 @@ services:
       - ./nginx_data:/data
       - ./letsencrypt:/etc/letsencrypt
     networks:
-      - net_work
+      - fontend
+      - backend
 
   db:
     container_name: db
@@ -59,7 +60,7 @@ services:
       - ./data/mysql:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
-      - net_work
+      - backend
   
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -73,8 +74,10 @@ services:
     depends_on:
       - db
     networks:
-      - net_work
+      - backend
 
 networks:
-  net_work:
+  fontend:
+    driver: bridge
+  backend:
     driver: bridge
