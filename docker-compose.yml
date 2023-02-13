@@ -19,10 +19,10 @@ services:
     networks:
       - net_work
 
-  login:
-    container_name: login
+  auth:
+    container_name: auth
     restart: always
-    build: src/login
+    build: src/authen
     environment:
       - DB_HOST=db
       - DB_PORT=3306
@@ -30,7 +30,7 @@ services:
       - DB_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - DB_NAME=${MYSQL_DATABASE_NAME}
     volumes:
-      - ./src/login:/usr/src/app
+      - ./src/authen:/usr/src/app
     networks:
       - net_work
 
