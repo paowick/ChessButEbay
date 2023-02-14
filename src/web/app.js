@@ -1,13 +1,13 @@
 import express from 'express';
+import cookieParser from 'cookie-parser';
 const app = express();
 const port = 8080;
-
 import path from "path"
 const __dirname = path.resolve();
 
 app.use(express.static('public'));
 app.use(express.json())
-
+app.use(cookieParser())
 app.get('/', (req, res) => {
     res.sendFile(`${__dirname}/public/main/index.html`)
 })
@@ -21,8 +21,8 @@ app.get('/Game', (req, res) => {
 })
 
 app.post('/session', (req,res) => {
-    const reqCookie = req.headers.cookie
-    if(req.headers.cookie == ''){
+    console.log(req.cookies.email);
+    if(req.cookies.email == '' || req.cookies.email == null){
         res.redirect('/auth')
         return
     }
