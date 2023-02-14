@@ -6,20 +6,23 @@ import path from "path"
 const __dirname = path.resolve();
 
 app.use(express.static('public'));
-app.use(express.static('public/Game'));
 app.use(express.json())
 
 app.get('/', (req, res) => {
-    res.sendFile(`${__dirname}/public/index.html`)
+    res.sendFile(`${__dirname}/public/main/index.html`)
 })
 
-app.get('/userVerify', (req, res) => {
-    res.sendFile(`${__dirname}/public/Login/login.html`)
+app.get('/auth', (req, res) => {
+    res.sendFile(`${__dirname}/public/userAuth/login.html`)
+})
+
+app.get('/Game', (req, res) => {
+    res.sendFile(`${__dirname}/public/Game/Game.html`)
 })
 
 app.post('/session', (req,res) => {
     if(req.body.data == ''){
-        res.redirect('/userVerify')
+        res.redirect('/auth')
         return
     }
     // do it after we have login sevice yet
@@ -30,9 +33,6 @@ app.post('/session', (req,res) => {
     )
 })
 
-app.get('/Game', (req, res) => {
-    res.sendFile(`${__dirname}/public/Game/Game.html`)
-})
 
 app.listen(port, () => {
     console.log(`listen on port ${port}`);
