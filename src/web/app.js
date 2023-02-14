@@ -8,9 +8,6 @@ const __dirname = path.resolve();
 app.use(express.static('public'));
 app.use(express.json())
 app.use(cookieParser())
-app.get('/', (req, res) => {
-    res.sendFile(`${__dirname}/public/main/index.html`)
-})
 
 app.get('/auth', (req, res) => {
     res.sendFile(`${__dirname}/public/userAuth/login.html`)
@@ -20,7 +17,7 @@ app.get('/Game', (req, res) => {
     res.sendFile(`${__dirname}/public/Game/Game.html`)
 })
 
-app.post('/session', async (req, res) => {
+app.get('/', async (req, res) => {
     if (req.cookies.email == null || req.cookies.id == null) {
         res.redirect('/auth')
         return
@@ -42,11 +39,7 @@ app.post('/session', async (req, res) => {
         res.redirect('/auth')
         return
     }
-    res.status(200).end()
-
-
-
-
+    res.sendFile(`${__dirname}/public/main/index.html`)
 })
 
 
