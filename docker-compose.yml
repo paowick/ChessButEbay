@@ -33,7 +33,24 @@ services:
       - ./src/authen:/usr/src/app
     networks:
       - backend
+     
 
+  api:
+    container_name: api
+    restart: always
+    build: src/apiCRUD
+    environment:
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_USER=root
+      - DB_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - DB_NAME=${MYSQL_DATABASE_NAME}
+    volumes:
+      - ./src/apiCRUD:/usr/src/app
+    networks:
+      - backend
+
+   
   nginx:
     container_name: nginx
     image: nginx

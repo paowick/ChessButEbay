@@ -20,18 +20,32 @@ app.get('/Game', (req, res) => {
     res.sendFile(`${__dirname}/public/Game/Game.html`)
 })
 
-app.post('/session', (req,res) => {
-    console.log(req.cookies.email);
-    if(req.cookies.email == '' || req.cookies.email == null){
+app.post('/session', async (req, res) => {
+    if (req.cookies.email == null) {
         res.redirect('/auth')
         return
     }
-    // do it after we have login sevice yet
-    res.json(
-        {
-            test:'login'
-        }
-    )
+    const data = {
+        email: req.cookies.email
+    }
+    const result = await fetch('http://api:8080/api/userCheckBackEnd', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+    const JsonResult = await result.json()
+    console.log(JsonResult);
+    if (!JsonResult.Response) {
+        res.redirect('/auth')
+        return
+    }
+    res.status(200).end()
+
+
+
+
 })
 
 

@@ -11,7 +11,5 @@ async function cookieCheck() {
         body: JSON.stringify(data),
     })
     if(sesssion.redirected){ return location.href = `${sesssion.url}`}
-    const resdata = await sesssion.json()
-    console.log(resdata);
 }
 cookieCheck()
