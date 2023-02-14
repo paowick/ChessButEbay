@@ -7,6 +7,7 @@ async function cookieCheck() {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
+            'Cookie':allCookies
         },
         body: JSON.stringify(data),
     })

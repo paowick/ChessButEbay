@@ -21,7 +21,8 @@ app.get('/Game', (req, res) => {
 })
 
 app.post('/session', (req,res) => {
-    if(req.body.data == ''){
+    const reqCookie = req.headers.cookie
+    if(req.headers.cookie == ''){
         res.redirect('/auth')
         return
     }
