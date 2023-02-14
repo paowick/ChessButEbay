@@ -21,12 +21,13 @@ app.get('/Game', (req, res) => {
 })
 
 app.post('/session', async (req, res) => {
-    if (req.cookies.email == null) {
+    if (req.cookies.email == null || req.cookies.id == null) {
         res.redirect('/auth')
         return
     }
     const data = {
-        email: req.cookies.email
+        email: req.cookies.email,
+        id: req.cookies.id
     }
     const result = await fetch('http://api:8080/api/userCheckBackEnd', {
         method: 'POST',

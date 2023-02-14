@@ -22,12 +22,11 @@ export async function connect(){
     }
 }
 
-export async function userCheckBackEnd(email){
+export async function userCheckBackEnd(email,id){
     let conn;
     try{
         conn = await pool.getConnection();
-        const rows = await conn.query("SELECT * FROM `User` WHERE Email = ?",[email]);
-        console.log(rows[0]);
+        const rows = await conn.query("SELECT * FROM `User` WHERE Email = ? AND Id = ?",[email,id]);
         if(rows[0] == null){
             return{
                 Response:false
@@ -35,6 +34,24 @@ export async function userCheckBackEnd(email){
         }
         return {
             Response:true,
+        }
+    }finally{
+        if (conn) conn.end();
+    }
+}
+export async function userCheckBackEndPass(email,password){
+    let conn;
+    try{
+        conn = await pool.getConnection();
+        const rows = await conn.query("SELECT * FROM `User` WHERE Email = ? AND Password = ?",[email,password]);
+        if(!rows[0]){
+            return{
+                Response:false
+            }
+        }
+        return {
+            Response:true,
+            data:rows[0]
         }
     }finally{
         if (conn) conn.end();

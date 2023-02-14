@@ -1,13 +1,23 @@
 import express from 'express';
-import * as db from './dbScript.js';
 const app = express();
 const port = 8080;
 
 app.use(express.json())
 
 app.post('/login/logInVerify',async (req,res)=>{
-    const dbres = await db.userCheck(req.body.email,req.body.password)
-    if(!dbres.Response){
+    const data = {
+        email:req.body.email,
+        password:req.body.password
+    }
+    const result = await fetch('http://api:8080/api/userCheckBackEnd', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+    const resResult = await result.json()
+    if(!resResult.Response){
         return res.json({
             Response:false
         })
@@ -15,8 +25,8 @@ app.post('/login/logInVerify',async (req,res)=>{
     res.json({
         Response:true,
         body:{
-            Email:dbres.data[0].Email,
-            Password:dbres.data[0].Password
+            Email:resResult.body.Email,
+            Id:resResult.body.Id
         }
     })
 })

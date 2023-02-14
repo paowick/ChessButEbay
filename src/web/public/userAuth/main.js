@@ -35,4 +35,5 @@ function loginPass(newCookie) {
 
 function cookieSet(newCookie) {
     document.cookie = `email=${newCookie.Email};`
+    document.cookie = `id=${newCookie.Id}`
 }
