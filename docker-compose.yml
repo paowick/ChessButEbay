@@ -1,6 +1,8 @@
 version: '3.5'
 
 services:
+
+
   socket:
     container_name: socket
     restart: always
@@ -10,6 +12,7 @@ services:
     networks:
       - backend
       
+
   web:
     container_name: web
     restart: always
@@ -19,16 +22,11 @@ services:
     networks:
       - backend
 
+
   auth:
     container_name: auth
     restart: always
     build: src/authen
-    environment:
-      - DB_HOST=db
-      - DB_PORT=3306
-      - DB_USER=root
-      - DB_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - DB_NAME=${MYSQL_DATABASE_NAME}
     volumes:
       - ./src/authen:/usr/src/app
     networks:
@@ -50,14 +48,10 @@ services:
     networks:
       - backend
 
-   
+
   nginx:
     container_name: nginx
     image: nginx
-    depends_on:
-      - web
-      - auth
-      - socket
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
     ports:
@@ -81,6 +75,7 @@ services:
     networks:
       - backend
   
+
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: pma
@@ -94,6 +89,8 @@ services:
       - db
     networks:
       - backend
+
+
 
 networks:
   fontend:
