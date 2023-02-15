@@ -2,6 +2,18 @@ version: '3.5'
 
 services:
 
+  nginx:
+    container_name: nginx
+    image: nginx
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - "80:80"
+      - "443:443"
+    restart: always
+    networks:
+      - fontend
+      - backend
 
   socket:
     container_name: socket
@@ -47,20 +59,9 @@ services:
       - ./src/apiCRUD:/usr/src/app
     networks:
       - backend
+      - dbNetwork
 
 
-  nginx:
-    container_name: nginx
-    image: nginx
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf
-    ports:
-      - "80:80"
-      - "443:443"
-    restart: always
-    networks:
-      - fontend
-      - backend
 
 
   db:
@@ -73,7 +74,7 @@ services:
       - ./data/mysql:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
-      - backend
+      - dbNetwork
   
 
   phpmyadmin:
@@ -88,7 +89,7 @@ services:
     depends_on:
       - db
     networks:
-      - backend
+      - dbNetwork
 
     
   dozzle:
@@ -99,11 +100,15 @@ services:
     ports:
       - 9999:8080
     networks:
+      - fontend
       - backend
+      - dbNetwork
 
 
 networks:
   fontend:
     driver: bridge
   backend:
+    driver: bridge
+  dbNetwork:
     driver: bridge
