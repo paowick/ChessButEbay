@@ -4,7 +4,7 @@ const port = 8080;
 
 app.use(express.json())
 
-app.post('/login/logInVerify',async (req,res)=>{
+app.post('/auth/logInVerify',async (req,res)=>{
     const data = {
         email:req.body.email,
         password:req.body.password
@@ -31,7 +31,7 @@ app.post('/login/logInVerify',async (req,res)=>{
     })
 })
 
-app.post('/login/signUp',(req,res)=>{
+app.post('/auth/signUp',(req,res)=>{
 
 })
 

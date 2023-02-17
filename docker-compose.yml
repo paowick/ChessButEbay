@@ -43,6 +43,14 @@ services:
       - ./src/authen:/usr/src/app
     networks:
       - backend
+
+
+  authredis:
+    container_name: authredis
+    restart: always
+    image: redis
+    networks:
+      - backend
      
 
   api:
@@ -60,8 +68,6 @@ services:
     networks:
       - backend
       - dbNetwork
-
-
 
 
   db:

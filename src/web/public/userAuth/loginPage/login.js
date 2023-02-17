@@ -10,7 +10,7 @@ async function userCheck(loginInput, passInput) {
         email: loginInput,
         password: passInput
     }
-    const resLogin = await fetch(`/login/logInVerify`, {
+    const resLogin = await fetch(`/auth/logInVerify`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -23,7 +23,7 @@ async function userCheck(loginInput, passInput) {
 }
 
 function signUp() {
-    console.log("signUp");
+    location.href = '/signup'
 }
 
 function errEmailInvalid() {
