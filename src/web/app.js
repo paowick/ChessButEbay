@@ -1,5 +1,6 @@
 import express from 'express';
 import cookieParser from 'cookie-parser';
+import * as Script from './script.js'
 const app = express();
 const port = 8080;
 import path from "path"
@@ -18,33 +19,7 @@ app.get('/Game', (req, res) => {
 })
 
 app.get('/', async (req, res) => {
-    try{
-        if (req.cookies.email == null || req.cookies.id == null) {
-            res.redirect('/auth')
-            return
-        }
-        const data = {
-            email: req.cookies.email,
-            id: req.cookies.id
-        }
-        const result = await fetch('http://api:8080/api/userCheckBackEnd', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        })
-        const JsonResult = await result.json()
-        console.log(JsonResult);
-        if (!JsonResult.Response) {
-            res.redirect('/auth')
-            return
-        }
-        res.sendFile(`${__dirname}/public/main/index.html`)
-
-    }catch(e){
-        console.log(e);
-    }
+    await Script.isUser(req)? res.sendFile(`${__dirname}/public/main/index.html`):res.redirect('/auth')
 })
 
 
