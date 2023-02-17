@@ -18,7 +18,7 @@ async function userCheck(loginInput, passInput) {
         body: JSON.stringify(data),
     })
     const resdata = await resLogin.json()
-    !resdata.Response ? errEmailPassword() : loginPass(resdata.body)
+    !resdata.Response ? errEmailPassword() : loginPass(resdata.tokencookie)
 
 }
 
@@ -45,8 +45,8 @@ function loginPass(newCookie) {
 }
 
 function cookieSet(newCookie) {
-    document.cookie = `email=${newCookie.Email};`
-    document.cookie = `id=${newCookie.Id}`
+    document.cookie = `tokencookie=${newCookie};`
+
 }
 
 function ValidateEmail(input) {
