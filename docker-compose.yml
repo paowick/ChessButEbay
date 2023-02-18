@@ -55,7 +55,8 @@ services:
   redisinsight:
     container_name: redisinsight
     image: redislabs/redisinsight:latest
-    
+    volumes:
+      - ./redisinsight:/db
     ports:
       - '8001:8001'
     networks:
