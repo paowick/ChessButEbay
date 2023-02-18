@@ -49,8 +49,15 @@ services:
     container_name: authredis
     restart: always
     image: redis
-    environment:
-      - REDIS_HOST_PASSWORD=1234
+    networks:
+      - backend
+
+  redisinsight:
+    container_name: redisinsight
+    image: redislabs/redisinsight:latest
+    
+    ports:
+      - '8001:8001'
     networks:
       - backend
      

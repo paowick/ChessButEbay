@@ -11,7 +11,6 @@ const secret = "56709";
 app.use(express.json())
 
 app.post('/auth/logInVerify', async (req, res) => {
-
     res.json(await userCheck(req))
 
 })
