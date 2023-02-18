@@ -1,7 +1,7 @@
 import express from 'express';
 const app = express();
 const port = 8080;
-
+import * as redis from './redisScript.js'
 
 import jwt from "jsonwebtoken"
 
@@ -52,8 +52,9 @@ async function userCheck(req){
 
 }
 
-app.post('/auth/signUp', (req, res) => {
-
+app.post('/auth/signUp', async (req, res) => {
+    await redis.test()
+    res.send('hi')
 })
 
 app.listen(port, () => {

@@ -49,6 +49,8 @@ services:
     container_name: authredis
     restart: always
     image: redis
+    environment:
+      - REDIS_HOST_PASSWORD=1234
     networks:
       - backend
      

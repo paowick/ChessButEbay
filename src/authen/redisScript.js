@@ -1,5 +1,9 @@
 import redis from "redis"
-const redisClient = redis.createClient({
-  host: 'authredis',
-  port: 6379
-});
+const url = `redis://authredis:6379`
+const redisClient = redis.createClient(6379,'authredis');
+await redisClient.connect()
+
+
+export async function test(){
+  redisClient.set('test','test1')
+}
