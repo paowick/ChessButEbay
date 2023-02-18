@@ -54,6 +54,13 @@ function ValidateEmail(input) {
     if (input.match(validRegex)) {
         return true;
     } else {
+        errEmailInvalid()
+        const loginbutton = document.getElementById('login-bt')
+        if(loginbutton.classList[0] == 'loginbuttRight'){
+            loginbutton.setAttribute('class','loginbuttLeft')
+        }else{
+            loginbutton.setAttribute('class','loginbuttRight')
+        }
         return false;
     }
 

@@ -11,7 +11,27 @@ body{
     display: flex;
     flex-direction: column;
 }
-@media (min-width: 650px) {
+
+.loginbuttRight{
+    transform: translateX(100px) !important;
+}
+
+.loginbuttLeft{
+    transform: translateX(-100px) !important;
+}
+
+#login-bt{
+    transition: 100ms;
+    transform: translateX(0);
+
+}
+
+.SignUp{
+    margin: 10px auto;
+    width: 200px;
+}
+
+@media (min-width: 700px) {
   .flex-container  {
     flex-direction: row;
   }
@@ -22,6 +42,7 @@ body{
     border-radius: 10px;
     background-color: #93BFCF;
     box-shadow: 2px 2px gray;
+    width: 300px;
 }
 .pad-tb{
     padding: 20px 20px;
@@ -42,9 +63,8 @@ button{
     background-color: #93BFCF;
     border-radius: 10px;
     border: 1px solid #EEE9DA;
-    width: 114px;
+    width: 100px;
     height: 30px;
-    margin: 5px 5px;
 }
 button:hover{
     color: black;

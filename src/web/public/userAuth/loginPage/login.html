@@ -20,8 +20,10 @@
             <div class="login card" id="login-form"><br>
                 <input type="email" id="email" placeholder="Email address" required><br>
                 <input type="password" id="password" placeholder="Password" required><br>
-                <button type="submit" onclick="login()">LogIn</button>
-                <button type="submit" onclick="signUp()">SignUp</button><br>
+                <div class="loginbuttCenter" id="loginbutton" >
+                    <button id="login-bt" type="submit" onclick="login()" onmouseover="ValidateEmail(document.getElementById('email').value)">LogIn</button>
+                </div>
+                <button class="SignUp" type="submit" onclick="signUp()">SignUp</button><br>
                 <a href="/test">ForgotPassword</a><br>
                 <div id="err"></div>
             </div>
