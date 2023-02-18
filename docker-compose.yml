@@ -1,7 +1,7 @@
 version: '3.5'
 
 services:
-
+# ===============================   Reverse Proxy   =============================
   nginx:
     container_name: nginx
     image: nginx
@@ -15,6 +15,7 @@ services:
       - fontend
       - backend
 
+# =================================  Node Js  =======================================
   socket:
     container_name: socket
     restart: always
@@ -45,24 +46,6 @@ services:
       - backend
 
 
-  authredis:
-    container_name: authredis
-    restart: always
-    image: redis
-    networks:
-      - backend
-
-  redisinsight:
-    container_name: redisinsight
-    image: redislabs/redisinsight:latest
-    volumes:
-      - ./redisinsight:/db
-    ports:
-      - '8001:8001'
-    networks:
-      - backend
-     
-
   api:
     container_name: api
     restart: always
@@ -79,7 +62,15 @@ services:
       - backend
       - dbNetwork
 
-
+   
+# =================================  Database  =======================================
+  authredis:
+    container_name: authredis
+    restart: always
+    image: redis
+    networks:
+      - backend
+      
   db:
     container_name: db
     image: mariadb
@@ -91,6 +82,18 @@ services:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - dbNetwork
+
+
+# =================================  Monitor   =======================================
+  redisinsight:
+    container_name: redisinsight
+    image: redislabs/redisinsight:latest
+    volumes:
+      - ./redisinsight:/db
+    ports:
+      - '8001:8001'
+    networks:
+      - backend
   
 
   phpmyadmin:
@@ -120,6 +123,8 @@ services:
       - backend
       - dbNetwork
 
+
+# =================================================================================
 
 networks:
   fontend:
