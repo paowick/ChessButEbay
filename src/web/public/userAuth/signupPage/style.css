@@ -1,5 +1,5 @@
 *{
-    background-color: #8FBDD3;
+    background-color: #6096B4;;
 }
 input{
     background-color: white;
@@ -20,6 +20,8 @@ button{
     border: 1px solid #EEE9DA;
     width: 100px;
     height: 30px;
+    margin-top: 10px;
+    margin: auto 10px;
 }
 button:hover{
     color: black;
@@ -29,6 +31,22 @@ button:hover{
 a{
     margin: 5PX 5PX;
 }
-.container{
-     
+
+.title{
+    background-color: #93BFCF;
+    width: 200px;
+    border: 1px solid ;
+    border-radius: 100px;
+    font-size: 40px;
 }
+
+.signup{
+    width: 400px;
+    height: max-content;
+}
+
+.invalid{
+    border: 1px solid red;
+}
+
+
