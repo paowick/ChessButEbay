@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,9 +9,23 @@
     <script src="../../userAuth/signupPage/singup.js"></script>
     <title>signup</title>
 </head>
+
 <body>
 
-    <button  onclick="testredis()">clickme</button>
-    
+    <button onclick="testredis()">clickme</button>
+    <center>
+        <div class="container">
+
+            <div class="login card" id="login-form"><br>
+                <input type="text" id="name" placeholder="User Name" required><br>
+                <input type="email" id="email" placeholder="Email address" required><br>
+                <input type="password" id="password" placeholder="Password" required><br>
+                <input type="password" id="password" placeholder="Password" required><br>
+                <button class="SignUp" type="submit" onclick="signUp()">SignUp</button><br>
+                <div id="err"></div>
+            </div>
+        </div>
+    </center>
 </body>
+
 </html>

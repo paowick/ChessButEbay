@@ -1,0 +1,34 @@
+*{
+    background-color: #8FBDD3;
+}
+input{
+    background-color: white;
+    border: 0px solid black;
+    border-radius: 5px;
+    padding: 10px 13px;
+    margin: 5px auto;
+    font-size: 17px;
+}
+input:focus{
+    outline-color: #8FBDD3;
+}
+button{
+    font-size: 17px;
+    color: white;
+    background-color: #93BFCF;
+    border-radius: 10px;
+    border: 1px solid #EEE9DA;
+    width: 100px;
+    height: 30px;
+}
+button:hover{
+    color: black;
+    border: 1px solid #BDCDD6;
+    background-color: #BDCDD6;
+}
+a{
+    margin: 5PX 5PX;
+}
+.container{
+     
+}
