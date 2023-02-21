@@ -52,8 +52,10 @@ async function userCheck(req){
 }
 
 app.post('/auth/signUp', async (req, res) => {
-    await redis.test()
-    res.send('hi')
+    console.log(req.body);
+    res.json({
+        'hi':"hi"
+    })
 })
 
 app.listen(port, () => {

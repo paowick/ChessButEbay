@@ -1,16 +1,3 @@
-async function testredis() {
-    const data = {
-    }
-    const test = await fetch('/auth/signup', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-    })
-    console.log(test);
-}
-
 function signup() {
     const Name = document.getElementById("name")
     const Email = document.getElementById("email")
@@ -18,12 +5,41 @@ function signup() {
     const Passcomfrim = document.getElementById("password-confrim")
     !fillup(Name, Email, Pass, Passcomfrim) ? errText('Plase fill all of info')
         : !ValidateEmail(Email.value) ? errText('Email invalid')
-            : signupFecth(Name.value, Email.value, Pass.value, Passcomfrim.value);
+            : !samePassword(Pass, Passcomfrim) ? errText('Password not corret')
+                : signupFecth(Name.value, Email.value, Pass.value);
 }
 
-function signupFecth(Name, Email, Pass, Passcomfrim) {
+async function signupFecth(Name, Email, Pass) {
     errText('')
-    console.log(`${Name}${Email}${Pass}${Passcomfrim}`);//do it tomorow
+    console.log(`${Name}${Email}${Pass}`);
+    const data = {
+        Name: Name,
+        Email: Email,
+        Pass: Pass
+    }
+
+    const ressignup = await fetch('/auth/signup', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+
+    const datasignup = await ressignup.json()
+
+    console.log(datasignup);
+}
+
+function samePassword(Pass1, Pass2) {
+    if (Pass1.value != Pass2.value) {
+        Pass1.setAttribute('class', 'invalid')
+        Pass2.setAttribute('class', 'invalid')
+        return false
+    }
+    Pass1.classList.remove('invalid')
+    Pass2.classList.remove('invalid')
+    return true
 }
 
 function fillup(Name, Email, Pass, Passcomfrim) {
