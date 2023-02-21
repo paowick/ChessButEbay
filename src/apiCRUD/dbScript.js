@@ -57,3 +57,20 @@ export async function userCheckBackEndPass(email,password){
         if (conn) conn.end();
     }
 }
+export async function userQurey(email){
+    let conn;
+    try{
+        conn = await pool.getConnection();
+        const rows = await conn.query("SELECT * FROM `User` WHERE Email = ?",[email]);
+        if(rows[0] == null){
+            return{
+                Response:false
+            }
+        }
+        return {
+            Response:true,
+        }
+    }finally{
+        if (conn) conn.end();
+    }
+}

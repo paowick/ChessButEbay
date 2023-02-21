@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { json } from 'express';
 const app = express();
 const port = 8080;
 import * as redis from './redisScript.js'
@@ -16,12 +16,24 @@ app.post('/auth/logInVerify', async (req, res) => {
 })
 
 
+
+
+
+
+
+
 app.post('/auth/signUp', async (req, res) => {
     console.log(req.body);
-    signUp(req)
-    res.json({
-        'hi': "hi"
+    const signupRes = await signUp(req)
+    !signupRes? res.json({
+        Response : signupRes,
+        Message : 'alredy have email'
     })
+    : res.json({
+        Response : signupRes
+    })
+    console.log(signupRes);
+    
 })
 
 app.listen(port, () => {
@@ -29,12 +41,52 @@ app.listen(port, () => {
 })
 
 async function signUp(req) {
-    haveUser(req.body.Email)
+    const isHaveUser = await haveUser(req.body.Email)
+    return isHaveUser ? false
+        : true //here
 }
 
 async function haveUser(Email) {
+    const isHaveUser = await fetch(`http://api:8080/api/qureyEmail?Email=${Email}`)
+    const res = await isHaveUser.json()
+    return res.Response
+}
+
+async function InsertUser(req) {
     // here
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 async function userCheck(req) {
     try {

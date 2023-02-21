@@ -29,6 +29,14 @@ async function signupFecth(Name, Email, Pass) {
     const datasignup = await ressignup.json()
 
     console.log(datasignup);
+
+    !datasignup.Response ? errText(datasignup.Message) : pass()
+}
+
+
+function pass() {
+    alert("sign up sucess")
+    location.href = '/login'
 }
 
 function samePassword(Pass1, Pass2) {

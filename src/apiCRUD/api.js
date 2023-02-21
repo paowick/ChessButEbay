@@ -25,7 +25,11 @@ app.post('/api/userCheckBackEnd', async (req, res) => {
 })
 
 app.get("/api/qureyEmail", async (req,res)=>{
-    console.log(req.query);
+    console.log(req.query.Email);
+    const dbres = await db.userQurey(req.query.Email)
+    res.json({
+        Response:dbres.Response
+    })
 })
 
 app.listen(port, () => {
