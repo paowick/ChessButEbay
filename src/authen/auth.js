@@ -15,9 +15,30 @@ app.post('/auth/logInVerify', async (req, res) => {
 
 })
 
-async function userCheck(req){
-    try{
-    
+
+app.post('/auth/signUp', async (req, res) => {
+    console.log(req.body);
+    signUp(req)
+    res.json({
+        'hi': "hi"
+    })
+})
+
+app.listen(port, () => {
+    console.log(`listen on port ${port}`);
+})
+
+async function signUp(req) {
+    haveUser(req.body.Email)
+}
+
+async function haveUser(Email) {
+    // here
+}
+
+async function userCheck(req) {
+    try {
+
         const data = {
             email: req.body.email,
             password: req.body.password
@@ -35,29 +56,18 @@ async function userCheck(req){
                 Response: false
             }
         }
-    
+
         const token = jwt.sign({
             Id: resResult.body.Id,
             Email: resResult.body.Email
         }, secret, { expiresIn: 5 });
-    
+
         return {
             Response: true,
-            tokencookie:token
+            tokencookie: token
         }
-    }catch(e){
+    } catch (e) {
         console.log(e);
     }
 
 }
-
-app.post('/auth/signUp', async (req, res) => {
-    console.log(req.body);
-    res.json({
-        'hi':"hi"
-    })
-})
-
-app.listen(port, () => {
-    console.log(`listen on port ${port}`);
-})

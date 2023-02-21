@@ -24,6 +24,10 @@ app.post('/api/userCheckBackEnd', async (req, res) => {
     }
 })
 
+app.get("/api/qureyEmail", async (req,res)=>{
+    console.log(req.query);
+})
+
 app.listen(port, () => {
     console.log(`listen on port ${port}`);
 })
