@@ -20,20 +20,33 @@ app.post('/api/userCheckBackEnd', async (req, res) => {
             })
         }
     }catch(e){
-        console.log(e);
+        res.status(500)
     }
 })
 
 app.get("/api/qureyEmail", async (req,res)=>{
-    const dbres = await db.userQurey(req.query.Email)
-    res.json({
-        Response:dbres.Response
-    })
+    try{
+        const dbres = await db.userQurey(req.query.Email)
+        res.json({
+            Response:dbres.Response
+        })
+    }catch(e){
+        res.status(500)
+    }
 })
 
 app.get("/api/qureyId",async (req,res)=>{
-    console.log( await db.qureyId())
-    res.status(200)
+    try{
+        const id = await db.qureyId()
+        res.json(id)
+    }catch(e){
+        res.status(500)
+    }
+})
+
+app.post("/api/insertUser",async (req,res)=>{
+    const insertres = await db.InsertUser(req.body.id,req.body.email,req.body.password,req.body.name,req.body.score,req.body.admin)
+    res.json({Response:insertres})
 })
 
 app.listen(port, () => {

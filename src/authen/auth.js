@@ -10,27 +10,42 @@ const secret = "56709";
 app.use(express.json())
 
 app.post('/auth/logInVerify', async (req, res, next) => {
-    const userCheckres = await userCheck(req)
-    !userCheckres ? res.json({ userCheckres })
-        : res.cookie('tokencookie', userCheckres.tokencookie)
-            .json({
-                Response: userCheckres.Response
-            })
+    try {
+        const userCheckres = await userCheck(req)
+        !userCheckres ? res.json({ userCheckres })
+            : res.cookie('tokencookie', userCheckres.tokencookie)
+                .json({
+                    Response: userCheckres.Response
+                })
+    } catch (e) {
+        res.status(500)
+    }
 })
 
 
 
 
 app.post('/auth/signUp', async (req, res) => {
-    const signupRes = await signUp(req)
-    !signupRes ? res.json({
-        Response: signupRes,
-        Message: 'alredy have email'
-    })
-        : res.json({
-            Response: signupRes
+    try {
+        const signupRes = await signUp(req)
+        !signupRes ? res.json({
+            Response: signupRes,
+            Message: 'alredy have email'
         })
-
+            : res.json({
+                Response: signupRes
+            })
+    } catch (e) {
+        if(e instanceof TypeError){
+           return res.status(500).json({
+            Message: "an error occurred please try again later"
+        })
+        }
+        console.log(e);
+        res.status(500).json({
+            Message: e
+        })
+    }
 })
 
 app.listen(port, () => {
@@ -40,9 +55,7 @@ app.listen(port, () => {
 async function signUp(req) {
     const isHaveUser = await haveUser(req.body.Email)
     return isHaveUser ? false
-        : InsertUser(req)
-
-        // must return true
+        : !await InsertUser(req) ? (function () { throw "an error occurred please try again later" }()) : true
 }
 
 async function haveUser(Email) {
@@ -53,16 +66,34 @@ async function haveUser(Email) {
 
 async function InsertUser(req) {
     // here
-    id()
-    return true
+
+    const id = await lastid()
+    const newid = parseInt(id.Id) + 1
+    const data = {
+        id: newid,
+        email: req.body.Email,
+        password: req.body.Pass,
+        name: req.body.Name,
+        score: 0,
+        admin: 0x0
+    }
+
+    const insert = await fetch('http://api:8080/api/insertUser', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+    const insertres = await insert.json()
+    return insertres.Response
 }
 
-async function id() {
-    fetch('http://api:8080/api/qureyId')
+async function lastid() {
+    const id = await fetch('http://api:8080/api/qureyId')
+    const idjson = await id.json()
+    return idjson
 }
-
-
-
 
 async function userCheck(req) {
     try {

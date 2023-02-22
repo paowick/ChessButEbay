@@ -11,19 +11,36 @@ app.use(express.json())
 app.use(cookieParser())
 
 app.get('/login', (req, res) => {
-    res.sendFile(`${__dirname}/public/userAuth/loginPage/login.html`)
+    try {
+        res.sendFile(`${__dirname}/public/userAuth/loginPage/login.html`)
+    } catch (e) {
+        res.status(500)
+    }
+
 })
 
-app.get('/signup',(req,res)=>{
-    res.sendFile(`${__dirname}/public/userAuth/signupPage/signup.html`)    
+app.get('/signup', (req, res) => {
+    try {
+        res.sendFile(`${__dirname}/public/userAuth/signupPage/signup.html`)
+    } catch (e) {
+        res.status(500)
+    }
 })
 
 app.get('/Game', (req, res) => {
-    res.sendFile(`${__dirname}/public/Game/Game.html`)
+    try {
+        res.sendFile(`${__dirname}/public/Game/Game.html`)
+    } catch (e) {
+        res.status(500)
+    }
 })
 
 app.get('/', async (req, res) => {
-    await Script.isUser(req)? res.sendFile(`${__dirname}/public/main/index.html`):res.redirect('/login')
+    try {
+        await Script.isUser(req) ? res.sendFile(`${__dirname}/public/main/index.html`) : res.redirect('/login')
+    } catch (e) {
+        res.status(500)
+    }
 })
 
 
