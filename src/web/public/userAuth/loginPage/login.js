@@ -18,7 +18,8 @@ async function userCheck(loginInput, passInput) {
         body: JSON.stringify(data),
     })
     const resdata = await resLogin.json()
-    !resdata.Response ? errEmailPassword() : loginPass(resdata.tokencookie)
+    console.log(resdata);
+    !resdata.Response ? errEmailPassword() : loginPass()
 
 }
 
@@ -39,8 +40,7 @@ function errEmailPassword() {
     form.innerHTML += '<h7 style="color: red;" class="err-text" >Please check your email or password<h7>'
 }
 
-function loginPass(newCookie) {
-    cookieSet(newCookie)
+function loginPass() {
     location.href = '/'
 }
 

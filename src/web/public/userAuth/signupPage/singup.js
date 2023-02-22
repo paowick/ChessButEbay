@@ -5,7 +5,7 @@ function signup() {
     const Passcomfrim = document.getElementById("password-confrim")
     !fillup(Name, Email, Pass, Passcomfrim) ? errText('Plase fill all of info')
         : !ValidateEmail(Email.value) ? errText('Email invalid')
-            : !samePassword(Pass, Passcomfrim) ? errText('Password not corret')
+            : !samePassword(Pass, Passcomfrim) ? errText('Password do not match')
                 : signupFecth(Name.value, Email.value, Pass.value);
 }
 

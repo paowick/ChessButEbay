@@ -1,7 +1,6 @@
 import express, { json } from 'express';
 const app = express();
 const port = 8080;
-import * as redis from './redisScript.js'
 
 import jwt from "jsonwebtoken"
 
@@ -10,14 +9,14 @@ const secret = "56709";
 
 app.use(express.json())
 
-app.post('/auth/logInVerify', async (req, res) => {
-    res.json(await userCheck(req))
-
+app.post('/auth/logInVerify', async (req, res, next) => {
+    const userCheckres = await userCheck(req)
+    !userCheckres ? res.json({ userCheckres })
+        : res.cookie('tokencookie', userCheckres.tokencookie)
+            .json({
+                Response: userCheckres.Response
+            })
 })
-
-
-
-
 
 
 
@@ -25,15 +24,15 @@ app.post('/auth/logInVerify', async (req, res) => {
 app.post('/auth/signUp', async (req, res) => {
     console.log(req.body);
     const signupRes = await signUp(req)
-    !signupRes? res.json({
-        Response : signupRes,
-        Message : 'alredy have email'
+    !signupRes ? res.json({
+        Response: signupRes,
+        Message: 'alredy have email'
     })
-    : res.json({
-        Response : signupRes
-    })
+        : res.json({
+            Response: signupRes
+        })
     console.log(signupRes);
-    
+
 })
 
 app.listen(port, () => {
@@ -44,6 +43,8 @@ async function signUp(req) {
     const isHaveUser = await haveUser(req.body.Email)
     return isHaveUser ? false
         : true //here
+
+        // must return true
 }
 
 async function haveUser(Email) {
