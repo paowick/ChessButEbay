@@ -22,7 +22,6 @@ app.post('/auth/logInVerify', async (req, res, next) => {
 
 
 app.post('/auth/signUp', async (req, res) => {
-    console.log(req.body);
     const signupRes = await signUp(req)
     !signupRes ? res.json({
         Response: signupRes,
@@ -31,7 +30,6 @@ app.post('/auth/signUp', async (req, res) => {
         : res.json({
             Response: signupRes
         })
-    console.log(signupRes);
 
 })
 
@@ -42,7 +40,7 @@ app.listen(port, () => {
 async function signUp(req) {
     const isHaveUser = await haveUser(req.body.Email)
     return isHaveUser ? false
-        : true //here
+        : InsertUser(req)
 
         // must return true
 }
@@ -55,36 +53,13 @@ async function haveUser(Email) {
 
 async function InsertUser(req) {
     // here
+    id()
+    return true
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+async function id() {
+    fetch('http://api:8080/api/qureyId')
+}
 
 
 

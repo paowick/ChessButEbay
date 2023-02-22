@@ -10,7 +10,7 @@ app.post('/api/userCheckBackEnd', async (req, res) => {
         if (req.body.password == null) {
             const dbres = await db.userCheckBackEnd(req.body.email, req.body.id)
             res.json({
-                Response: dbres.Response
+                Response: dbres
             })
         } else {
             const dbres = await db.userCheckBackEndPass(req.body.email, req.body.password)
@@ -25,11 +25,15 @@ app.post('/api/userCheckBackEnd', async (req, res) => {
 })
 
 app.get("/api/qureyEmail", async (req,res)=>{
-    console.log(req.query.Email);
     const dbres = await db.userQurey(req.query.Email)
     res.json({
         Response:dbres.Response
     })
+})
+
+app.get("/api/qureyId",async (req,res)=>{
+    console.log( await db.qureyId())
+    res.status(200)
 })
 
 app.listen(port, () => {

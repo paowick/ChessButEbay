@@ -28,13 +28,9 @@ export async function userCheckBackEnd(email,id){
         conn = await pool.getConnection();
         const rows = await conn.query("SELECT * FROM `User` WHERE Email = ? AND Id = ?",[email,id]);
         if(rows[0] == null){
-            return{
-                Response:false
-            }
+            return false
         }
-        return {
-            Response:true,
-        }
+        return true
     }finally{
         if (conn) conn.end();
     }
@@ -73,4 +69,16 @@ export async function userQurey(email){
     }finally{
         if (conn) conn.end();
     }
+}
+export async function qureyId() {
+    let conn;
+    try{
+        conn = await pool.getConnection();
+        const rows = await conn.query("SELECT MAX(Id) FROM `User`;");
+        console.log(rows[0].json());
+        return rows[0].MAX(Id)//bug here
+    }finally{
+        if (conn) conn.end();
+    }
+    
 }
