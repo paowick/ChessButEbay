@@ -6,7 +6,7 @@ services:
     container_name: nginx
     image: nginx
     volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx_init/nginx.conf:/etc/nginx/nginx.conf
     ports:
       - "80:80"
       - "443:443"
@@ -79,7 +79,7 @@ services:
       MARIADB_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     volumes:
       - ./data/mysql:/var/lib/mysql
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./db_init/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - dbNetwork
 
