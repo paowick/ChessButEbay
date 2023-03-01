@@ -32,6 +32,10 @@ a{
     margin: 5PX 5PX;
 }
 
+.pad-tb{
+    padding: 20px 20px;
+}
+
 .title{
     background-color: #93BFCF;
     width: 200px;

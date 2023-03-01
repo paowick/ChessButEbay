@@ -44,11 +44,6 @@ function loginPass() {
     location.href = '/'
 }
 
-function cookieSet(newCookie) {
-    document.cookie = `tokencookie=${newCookie};`
-
-}
-
 function ValidateEmail(input) {
     var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
     const email = document.getElementById('email')
@@ -56,7 +51,7 @@ function ValidateEmail(input) {
         email.classList.remove('email-invalid')
         return true;
     } else {
-        email.setAttribute('class','email-invalid')
+        email.setAttribute('class', 'email-invalid')
         errEmailInvalid()
         const loginbutton = document.getElementById('login-bt')
         if (loginbutton.classList[0] == 'loginbuttRight') {
