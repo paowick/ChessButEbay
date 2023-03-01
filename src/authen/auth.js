@@ -119,7 +119,7 @@ async function userCheck(req) {
         const token = jwt.sign({
             Id: resResult.body.Id,
             Email: resResult.body.Email
-        }, secret, { expiresIn: 5 });
+        }, secret, { expiresIn: "30d" });
 
         return {
             Response: true,
