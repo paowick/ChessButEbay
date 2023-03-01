@@ -1,0 +1,135 @@
+
+version: '3.5'
+
+services:
+# ===============================   Reverse Proxy   =============================
+  nginx:
+    container_name: nginx
+    image: paowick/chessbutebay_nginx:1.0
+    networks:
+      - fontend
+      - backend
+      - webproxy
+    deploy:
+        replicas: 1
+        labels:
+          - traefik.docker.network=webproxy
+          - traefik.enable=true
+          - traefik.constraint-label=webproxy
+          - traefik.http.routers.spcn23test-https.entrypoints=websecure
+          - traefik.http.routers.spcn23test-https.rule=Host("spcn23test.xops.ipv9.me")
+          - traefik.http.routers.spcn23test-https.tls.certresolver=default
+          - traefik.http.services.spcn23test.loadbalancer.server.port=80
+          - traefik.http.routers.spcn23test-https.tls=true
+        resources:
+          reservations:
+            cpus: '0.1'
+            memory: 10M
+          limits:
+            cpus: '0.4'
+            memory: 250M
+
+# =================================  Node Js  =======================================
+  socket:
+    container_name: socket
+    image: paowick/chessbutebay_socket:1.0
+    networks:
+      - backend
+      
+
+  web:
+    container_name: web
+    image: paowick/chessbutebay_web:1.0
+    networks:
+      - backend
+
+
+  auth:
+    container_name: auth
+    image: paowick/chessbutebay_auth:1.0
+    networks:
+      - backend
+
+
+  api:
+    container_name: api
+    image: paowick/chessbutebay_apicrud:1.0
+    environment:
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_USER=root
+      - DB_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - DB_NAME=${MYSQL_DATABASE_NAME}
+    networks:
+      - backend
+      - dbNetwork
+
+   
+# =================================  Database  =======================================
+  # authredis:
+  #   container_name: authredis
+  #   restart: always
+  #   image: redis
+  #   networks:
+  #     - backend
+      
+  db:
+    container_name: db
+    image: paowick/chessbutebay_db:1.0
+    environment:
+      MARIADB_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    networks:
+      - dbNetwork
+
+
+# =================================  Monitor   =======================================
+  # redisinsight:
+  #   container_name: redisinsight
+  #   image: redislabs/redisinsight:latest
+  #   volumes:
+  #     - ./redisinsight:/db
+  #   ports:
+  #     - '8001:8001'
+  #   networks:
+  #     - backend
+  
+
+  # phpmyadmin:
+  #   image: phpmyadmin/phpmyadmin
+  #   container_name: pma
+  #   restart: always
+  #   ports:
+  #     - 8000:80
+  #   environment:
+  #     PMA_HOST: db
+  #     MARIADB_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+  #   depends_on:
+  #     - db
+  #   networks:
+  #     - dbNetwork
+
+    
+  # dozzle:
+  #   container_name: dozzle
+  #   image: amir20/dozzle:latest
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #   ports:
+  #     - 9999:8080
+  #   networks:
+  #     - fontend
+  #     - backend
+  #     - dbNetwork
+
+
+# =================================================================================
+
+networks:
+  fontend:
+    driver: overlay
+  backend:
+    driver: overlay
+  dbNetwork:
+    driver: overlay
+  webproxy:
+    external: true

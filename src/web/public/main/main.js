@@ -1,17 +1,19 @@
-async function cookieCheck() {
-    const allCookies = document.cookie;
-    const data = {
-        data: allCookies
+//function to clear cookies
+function clearCookies() {
+    var cookies = document.cookie.split(";");
+    for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i];
+        var eqPos = cookie.indexOf("=");
+        var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
     }
-    const sesssion = await fetch(`/session`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-    })
-    if(sesssion.redirected){ return location.href = `${sesssion.url}`}
-    const resdata = await sesssion.json()
-    console.log(resdata);
 }
-cookieCheck()
+
+// function to handle logout
+function logout() {
+    // clear cookies
+    clearCookies();
+
+    // redirect to login page or home page
+    window.location.href = "/";
+}

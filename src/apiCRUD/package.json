@@ -1,12 +1,12 @@
 {
-  "name": "login",
+  "name": "apicrud",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon auth.js"
+    "start": "nodemon api.js"
   },
   "keywords": [],
   "author": "",
@@ -14,9 +14,7 @@
   "dependencies": {
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
-    "jsonwebtoken": "^9.0.0",
     "mariadb": "^3.0.2",
-    "nodemon": "^2.0.20",
-    "redis": "^4.6.4"
+    "nodemon": "^2.0.20"
   }
 }

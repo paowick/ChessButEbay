@@ -1,4 +1,4 @@
-body{
+*{
     background-color: #6096B4;
 }
 .login{
@@ -11,7 +11,43 @@ body{
     display: flex;
     flex-direction: column;
 }
-@media (min-width: 650px) {
+
+.forgot{
+    background-color: #8FBDD3;
+}
+
+#err{
+    background-color: #8FBDD3;
+}
+
+.err-text{
+    background-color: #8FBDD3;
+}
+
+.login-con{
+    background-color: #8FBDD3;
+}
+
+.loginbuttRight{
+    transform: translateX(100px) !important;
+}
+
+.loginbuttLeft{
+    transform: translateX(-100px) !important;
+}
+
+#login-bt{
+    transition: 100ms;
+    transform: translateX(0);
+
+}
+
+.SignUp{
+    margin: 10px auto;
+    width: 200px;
+}
+
+@media (min-width: 700px) {
   .flex-container  {
     flex-direction: row;
   }
@@ -22,12 +58,19 @@ body{
     border-radius: 10px;
     background-color: #93BFCF;
     box-shadow: 2px 2px gray;
+    width: 300px;
 }
 .pad-tb{
     padding: 20px 20px;
 }
+
+.email-invalid{
+    border: 1px solid red;
+}
+
 input{
-    border: 1px solid black;
+    background-color: white;
+    border: 0px solid black;
     border-radius: 5px;
     padding: 10px 13px;
     margin: 5px auto;
@@ -42,9 +85,8 @@ button{
     background-color: #93BFCF;
     border-radius: 10px;
     border: 1px solid #EEE9DA;
-    width: 114px;
+    width: 100px;
     height: 30px;
-    margin: 5px 5px;
 }
 button:hover{
     color: black;

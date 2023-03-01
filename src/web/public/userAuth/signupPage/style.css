@@ -1,0 +1,56 @@
+*{
+    background-color: #6096B4;;
+}
+input{
+    background-color: white;
+    border: 0px solid black;
+    border-radius: 5px;
+    padding: 10px 13px;
+    margin: 5px auto;
+    font-size: 17px;
+}
+input:focus{
+    outline-color: #8FBDD3;
+}
+button{
+    font-size: 17px;
+    color: white;
+    background-color: #93BFCF;
+    border-radius: 10px;
+    border: 1px solid #EEE9DA;
+    width: 100px;
+    height: 30px;
+    margin-top: 10px;
+    margin: auto 10px;
+}
+button:hover{
+    color: black;
+    border: 1px solid #BDCDD6;
+    background-color: #BDCDD6;
+}
+a{
+    margin: 5PX 5PX;
+}
+
+.pad-tb{
+    padding: 20px 20px;
+}
+
+.title{
+    background-color: #93BFCF;
+    width: 200px;
+    border: 1px solid ;
+    border-radius: 100px;
+    font-size: 40px;
+}
+
+.signup{
+    width: 400px;
+    height: max-content;
+}
+
+.invalid{
+    border: 1px solid red;
+}
+
+
