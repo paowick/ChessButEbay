@@ -7,15 +7,22 @@ function signup() {
     !fillup(Name, Email, VerifyCode, Pass, Passcomfrim) ? errText('Plase fill all of info')
         : !ValidateEmail(Email.value) ? errText('Email invalid')
             : !samePassword(Pass, Passcomfrim) ? errText('Password do not match')
-                : signupFecth(Name.value, Email.value, Pass.value);
+                : signupFecth(Name.value, Email.value, VerifyCode.value, Pass.value);
 }
 
-async function signupFecth(Name, Email, Pass) {
+async function getVerifyCode() {
+    const rescode = await fetch('/auth/getVerifyCode', {
+        method: 'POST',
+    })
+    console.log(rescode.status);
+}
+
+async function signupFecth(Name, Email, VerifyCode, Pass) {
     errText('')
-    console.log(`${Name}${Email}${Pass}`);
     const data = {
         Name: Name,
         Email: Email,
+        VerifyCode: VerifyCode,
         Pass: Pass
     }
 
@@ -56,7 +63,7 @@ function fillup(Name, Email, VerifyCode, Pass, Passcomfrim) {
         : Name.classList.remove('invalid')
     Email.value == '' ? Email.setAttribute('class', 'invalid')
         : Email.classList.remove('invalid')
-    VerifyCode.value == '' ? VerifyCode.setAttribute('class','invalid') 
+    VerifyCode.value == '' ? VerifyCode.setAttribute('class', 'invalid')
         : VerifyCode.classList.remove('invalid')
     Pass.value == '' ? Pass.setAttribute('class', 'invalid')
         : Pass.classList.remove('invalid')

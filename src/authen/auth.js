@@ -1,4 +1,4 @@
-import express, { json } from 'express';
+import express from 'express';
 const app = express();
 const port = 8080;
 
@@ -23,10 +23,18 @@ app.post('/auth/logInVerify', async (req, res, next) => {
 })
 
 
-
+app.post("/auth/getVerifyCode", async (req,res)=>{
+    try{
+        
+        res.sendStatus(200)
+    }catch{
+        res.sendStatus(500)
+    }
+})
 
 app.post('/auth/signUp', async (req, res) => {
     try {
+        console.log(req.body);
         const signupRes = await signUp(req)
         !signupRes ? res.json({
             Response: signupRes,
