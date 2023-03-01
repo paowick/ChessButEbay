@@ -32,6 +32,20 @@ a{
     margin: 5PX 5PX;
 }
 
+#verify{
+    width: 160px;
+}
+
+.send_btn{
+    margin: 0px 0px;
+    border-radius: 5px;
+    background-color: white;
+    color: black;
+    width: 50px;
+    height: 40px;
+    align-items: center;
+}
+
 .pad-tb{
     padding: 20px 20px;
 }

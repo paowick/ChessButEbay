@@ -1,9 +1,10 @@
 function signup() {
     const Name = document.getElementById("name")
     const Email = document.getElementById("email")
+    const VerifyCode = document.getElementById("verify")
     const Pass = document.getElementById("password")
     const Passcomfrim = document.getElementById("password-confrim")
-    !fillup(Name, Email, Pass, Passcomfrim) ? errText('Plase fill all of info')
+    !fillup(Name, Email, VerifyCode, Pass, Passcomfrim) ? errText('Plase fill all of info')
         : !ValidateEmail(Email.value) ? errText('Email invalid')
             : !samePassword(Pass, Passcomfrim) ? errText('Password do not match')
                 : signupFecth(Name.value, Email.value, Pass.value);
@@ -50,19 +51,18 @@ function samePassword(Pass1, Pass2) {
     return true
 }
 
-function fillup(Name, Email, Pass, Passcomfrim) {
+function fillup(Name, Email, VerifyCode, Pass, Passcomfrim) {
     Name.value == '' ? Name.setAttribute('class', 'invalid')
         : Name.classList.remove('invalid')
-    Email.value == '' ?
-        Email.setAttribute('class', 'invalid')
+    Email.value == '' ? Email.setAttribute('class', 'invalid')
         : Email.classList.remove('invalid')
-    Pass.value == '' ?
-        Pass.setAttribute('class', 'invalid')
+    VerifyCode.value == '' ? VerifyCode.setAttribute('class','invalid') 
+        : VerifyCode.classList.remove('invalid')
+    Pass.value == '' ? Pass.setAttribute('class', 'invalid')
         : Pass.classList.remove('invalid')
-    Passcomfrim.value == '' ?
-        Passcomfrim.setAttribute('class', 'invalid')
+    Passcomfrim.value == '' ? Passcomfrim.setAttribute('class', 'invalid')
         : Passcomfrim.classList.remove('invalid')
-    if (Name.value != '' && Email.value != '' && Pass.value != '' && Passcomfrim.value != '') {
+    if (Name.value != '' && Email.value != '' && VerifyCode.value != '' && Pass.value != '' && Passcomfrim.value != '') {
         return true
     }
     return false
