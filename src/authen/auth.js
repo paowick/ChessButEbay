@@ -7,6 +7,9 @@ import jwt from "jsonwebtoken"
 const secret = "56709";
 // chage it!!!
 
+import * as mail from "./nodemailScript.js"
+// mail.test()
+mail.testsend()
 app.use(express.json())
 
 app.post('/auth/logInVerify', async (req, res, next) => {
@@ -25,7 +28,7 @@ app.post('/auth/logInVerify', async (req, res, next) => {
 
 app.post("/auth/getVerifyCode", async (req,res)=>{
     try{
-        
+
         res.sendStatus(200)
     }catch{
         res.sendStatus(500)
