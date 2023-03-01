@@ -8,8 +8,6 @@ const secret = "56709";
 // chage it!!!
 
 import * as mail from "./nodemailScript.js"
-// mail.test()
-mail.testsend()
 app.use(express.json())
 
 app.post('/auth/logInVerify', async (req, res, next) => {
@@ -26,11 +24,13 @@ app.post('/auth/logInVerify', async (req, res, next) => {
 })
 
 
-app.post("/auth/getVerifyCode", async (req,res)=>{
-    try{
+app.post("/auth/getVerifyCode", async (req, res) => {
+    try {
+        
+        mail.sendVerifycode('korn2k9@gmail.com','1234')
 
         res.sendStatus(200)
-    }catch{
+    } catch {
         res.sendStatus(500)
     }
 })
@@ -47,10 +47,10 @@ app.post('/auth/signUp', async (req, res) => {
                 Response: signupRes
             })
     } catch (e) {
-        if(e instanceof TypeError){
-           return res.status(500).json({
-            Message: "an error occurred please try again later"
-        })
+        if (e instanceof TypeError) {
+            return res.status(500).json({
+                Message: "an error occurred please try again later"
+            })
         }
         console.log(e);
         res.status(500).json({

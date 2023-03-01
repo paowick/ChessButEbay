@@ -1,35 +1,47 @@
 import nodemailer from "nodemailer"
 
+import * as dotenv from 'dotenv'
+dotenv.config()
+
 // config
 const transporter = nodemailer.createTransport({
-  host: "mail",
-  port: 587,
-  secure: false, // upgrade later with STARTTLS
+  host: process.env.HOST,
+  service: process.env.SERVICE,
+  port: 465,
+  secure: true, // upgrade later with STARTTLS
+  auth: {
+    user: process.env.EMAIL,
+    pass: process.env.PASS
+  }
 });
 
-let mailOptions = {
-      from: "korn2k9@gmail.com", // sender address
-      to: "korn2k9@gmail.com", // list of receivers
-      subject: "test" , // Subject line
-      text: "test", // plain text body
-      html: "<h1>test<h1/>"// html body
-    };
 
-export async function testsend() {
+export async function sendVerifycode(email,code) {
+  try {
+    let mailOptions = {
+      from: "ChessButEbay@gmail.com", // sender address
+      to: email, // list of receivers
+      subject: "Verify Code <ChessButEbay>", // Subject line
+      html: `<h1>your code is ${code}<h1/>`// html body
+    };
     transporter.sendMail(mailOptions,
       (error, info) => {
         console.log(info);
+        console.log(error);
       });
+  } catch(e) {
+    throw Error(e)
+  }
 }
 
-export async function test(){
-// verify connection configuration
-transporter.verify(function (error, success) {
-  if (error) {
-    console.log(error);
-  } else {
-    console.log("Server is ready to take our messages");
-  }
-});
+export async function test() {
+  // verify connection configuration
+  transporter.verify(function (error, success) {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("Server is ready to take our messages");
+    }
+  });
 
 }

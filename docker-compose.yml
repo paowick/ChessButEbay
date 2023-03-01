@@ -42,6 +42,11 @@ services:
     build: src/authen
     volumes:
       - ./src/authen:/usr/src/app
+    environment:
+      - HOST=${HOST}
+      - EMAIL=${EMAIL}
+      - PASS=${PASS}
+      - SERVICE=${SERVICE}
     networks:
       - backend
 
@@ -123,15 +128,6 @@ services:
       - backend
       - dbNetwork
 
-
-# ================================  Mail smtp =============================================
-
-  mail:
-    container_name: mail
-    image: bytemark/smtp
-    restart: always
-    networks:
-      - backend
 
 # =============================================================================
 
