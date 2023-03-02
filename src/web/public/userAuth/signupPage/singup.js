@@ -14,8 +14,30 @@ async function getVerifyCode() {
     const rescode = await fetch('/auth/getVerifyCode', {
         method: 'POST',
     })
-    console.log(rescode.status);
+    if (rescode.status == 200) {
+        return alert(`send verification code to ${email.value}`)
+    }
+    return errText("Server error please try again later")
 }
+
+function stageOfbtn() {
+    const email = document.getElementById('email')
+    const sendbtn = document.getElementById("send_btn")
+    if (!ValidateEmail(email.value)) {
+        return errText("Email invalid plase check your email")
+    } else {
+        errText('')
+        sendbtn.disabled = true
+        sendbtn.classList.add("send_btn_tog")
+        email.classList.remove('invalid')
+        setTimeout(() => {
+            sendbtn.classList.remove("send_btn_tog")
+            sendbtn.disabled = false
+        }, 60000);
+        getVerifyCode()
+    }
+}
+
 
 async function signupFecth(Name, Email, VerifyCode, Pass) {
     errText('')
@@ -33,11 +55,7 @@ async function signupFecth(Name, Email, VerifyCode, Pass) {
         },
         body: JSON.stringify(data),
     })
-
     const datasignup = await ressignup.json()
-
-    console.log(datasignup);
-
     !datasignup.Response ? errText(datasignup.Message) : pass()
 }
 

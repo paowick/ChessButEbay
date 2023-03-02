@@ -27,7 +27,7 @@ app.post('/auth/logInVerify', async (req, res, next) => {
 app.post("/auth/getVerifyCode", async (req, res) => {
     try {
         
-        mail.sendVerifycode('korn2k9@gmail.com','1234')
+        // mail.sendVerifycode('korn2k9@gmail.com','1234')
 
         res.sendStatus(200)
     } catch {
