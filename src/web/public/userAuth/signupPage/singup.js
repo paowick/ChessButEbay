@@ -4,10 +4,12 @@ function signup() {
     const VerifyCode = document.getElementById("verify")
     const Pass = document.getElementById("password")
     const Passcomfrim = document.getElementById("password-confrim")
-    !fillup(Name, Email, VerifyCode, Pass, Passcomfrim) ? errText('Plase fill all of info')
-        : !ValidateEmail(Email.value) ? errText('Email invalid')
-            : !samePassword(Pass, Passcomfrim) ? errText('Password do not match')
-                : signupFecth(Name.value, Email.value, VerifyCode.value, Pass.value);
+
+    if (!fillup(Name, Email, VerifyCode, Pass, Passcomfrim)) return errText('Plase fill all of info')
+    if (!ValidateEmail(Email.value)) return errText('Email invalid')
+    if (!ValidatePassword(Pass.value)) return errText('Password must containat least one letter and must be at least 8 characters')
+    if (!samePassword(Pass, Passcomfrim)) return errText('Password do not match')
+    signupFecth(Name.value, Email.value, VerifyCode.value, Pass.value);
 }
 
 async function getVerifyCode() {
@@ -102,6 +104,19 @@ function ValidateEmail(input) {
         return true;
     } else {
         email.setAttribute('class', 'invalid')
+        return false
+    }
+
+}
+
+function ValidatePassword(input) {
+    var validRegex = /[a-z]/i;
+    const password = document.getElementById('password')
+    if (input.match(validRegex) && input.length >= 6) {
+        password.classList.remove('invalid')
+        return true;
+    } else {
+        password.setAttribute('class', 'invalid')
         return false
     }
 

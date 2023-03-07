@@ -5,6 +5,7 @@ const port = 8080;
 import * as sc from "./fetchScript.js"
 
 import * as mail from "./nodemailScript.js"
+
 app.use(express.json())
 
 app.post('/auth/logInVerify', async (req, res, next) => {
@@ -16,7 +17,7 @@ app.post('/auth/logInVerify', async (req, res, next) => {
                     Response: userCheckres.Response
                 })
     } catch (e) {
-        res.status(500)
+        res.sendStatus(500)
     }
 })
 
@@ -34,9 +35,11 @@ app.post("/auth/getVerifyCode", async (req, res) => {
 
 app.post('/auth/signUp', async (req, res) => {
     try {
+        if(!fillup(req.body.Name,req.body.Email,req.body.VerifyCode,req.body.Pass)) return res.sendStatus(400)
+        if(!ValidatePassword(req.body.password)) return res.sendStatus(400)
         console.log(req.body);
         const signupRes = await sc.signUp(req)
-        !signupRes ? res.json({
+        !signupRes ? res.status(500).json({
             Response: signupRes,
             Message: 'alredy have email'
         })
@@ -44,6 +47,7 @@ app.post('/auth/signUp', async (req, res) => {
                 Response: signupRes
             })
     } catch (e) {
+        console.log(e);//hereeeeeeeeeeeee
         if (e instanceof TypeError) {
             return res.status(500).json({
                 Message: "an error occurred please try again later"
@@ -59,3 +63,24 @@ app.post('/auth/signUp', async (req, res) => {
 app.listen(port, () => {
     console.log(`listen on port ${port}`);
 })
+
+
+
+function fillup(Name, Email, VerifyCode, Pass) {
+    if(Name == '') return false
+    if(Email == '') return false
+    if(VerifyCode == '') return false
+    if(Pass == '') return false
+    return true
+}
+
+
+function ValidatePassword(input) {
+    var validRegex = /[a-z]/i;
+    if (input.match(validRegex) && input.length >= 6) {
+        return true;
+    } else {
+        return false
+    }
+
+}
