@@ -6,6 +6,8 @@ import * as sc from "./fetchScript.js"
 
 import * as mail from "./nodemailScript.js"
 
+import * as redis from "./redisScript.js"
+
 app.use(express.json())
 
 app.post('/auth/logInVerify', async (req, res, next) => {
@@ -24,7 +26,10 @@ app.post('/auth/logInVerify', async (req, res, next) => {
 
 app.post("/auth/getVerifyCode", async (req, res) => {
     try {
-        
+        const value = Math.floor(Math.random() * 9999);
+        redis.insertVerifyCode(req.body.key,value)
+
+
         // mail.sendVerifycode('korn2k9@gmail.com','1234')
 
         res.sendStatus(200)

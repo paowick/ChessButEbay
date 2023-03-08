@@ -13,8 +13,16 @@ function signup() {
 }
 
 async function getVerifyCode() {
+    const Email = document.getElementById("email")
+    const data = {
+        key: Email.value
+    }
     const rescode = await fetch('/auth/getVerifyCode', {
         method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
     })
     if (rescode.status == 200) {
         return alert(`send verification code to ${email.value}`)
