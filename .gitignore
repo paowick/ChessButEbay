@@ -1,6 +1,4 @@
-*.pem
-.vscode
-*/logs/*
 node_modules
-data/*
+data
 redisinsight
+.env

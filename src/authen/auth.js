@@ -1,34 +1,50 @@
-import express, { json } from 'express';
+import express from 'express';
 const app = express();
 const port = 8080;
 
-import jwt from "jsonwebtoken"
+import * as sc from "./fetchScript.js"
 
-const secret = "56709";
-// chage it!!!
+import * as mail from "./nodemailScript.js"
+
+import * as redis from "./redisScript.js"
 
 app.use(express.json())
 
 app.post('/auth/logInVerify', async (req, res, next) => {
     try {
-        const userCheckres = await userCheck(req)
+        const userCheckres = await sc.userCheck(req)
         !userCheckres ? res.json({ userCheckres })
             : res.cookie('tokencookie', userCheckres.tokencookie)
                 .json({
                     Response: userCheckres.Response
                 })
     } catch (e) {
-        res.status(500)
+        res.sendStatus(500)
     }
 })
 
 
+app.post("/auth/getVerifyCode", async (req, res) => {
+    try {
+        const value = Math.floor(Math.random() * 9999);
+        redis.insertVerifyCode(req.body.key,value)
 
+
+        // mail.sendVerifycode('korn2k9@gmail.com','1234')
+
+        res.sendStatus(200)
+    } catch {
+        res.sendStatus(500)
+    }
+})
 
 app.post('/auth/signUp', async (req, res) => {
     try {
-        const signupRes = await signUp(req)
-        !signupRes ? res.json({
+        if(!fillup(req.body.Name,req.body.Email,req.body.VerifyCode,req.body.Pass)) return res.sendStatus(400)
+        if(!ValidatePassword(req.body.Pass)) return res.sendStatus(400)
+        console.log(req.body);
+        const signupRes = await sc.signUp(req)
+        !signupRes ? res.status(500).json({
             Response: signupRes,
             Message: 'alredy have email'
         })
@@ -36,10 +52,11 @@ app.post('/auth/signUp', async (req, res) => {
                 Response: signupRes
             })
     } catch (e) {
-        if(e instanceof TypeError){
-           return res.status(500).json({
-            Message: "an error occurred please try again later"
-        })
+        console.log(e);
+        if (e instanceof TypeError) {
+            return res.status(500).json({
+                Message: "an error occurred please try again later"
+            })
         }
         console.log(e);
         res.status(500).json({
@@ -52,81 +69,23 @@ app.listen(port, () => {
     console.log(`listen on port ${port}`);
 })
 
-async function signUp(req) {
-    const isHaveUser = await haveUser(req.body.Email)
-    return isHaveUser ? false
-        : !await InsertUser(req) ? (function () { throw "an error occurred please try again later" }()) : true
+
+
+function fillup(Name, Email, VerifyCode, Pass) {
+    if(Name == '') return false
+    if(Email == '') return false
+    if(VerifyCode == '') return false
+    if(Pass == '') return false
+    return true
 }
 
-async function haveUser(Email) {
-    const isHaveUser = await fetch(`http://api:8080/api/qureyEmail?Email=${Email}`)
-    const res = await isHaveUser.json()
-    return res.Response
-}
 
-async function InsertUser(req) {
-    // here
-
-    const id = await lastid()
-    const newid = parseInt(id.Id) + 1
-    const data = {
-        id: newid,
-        email: req.body.Email,
-        password: req.body.Pass,
-        name: req.body.Name,
-        score: 0,
-        admin: 0x0
-    }
-
-    const insert = await fetch('http://api:8080/api/insertUser', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-    })
-    const insertres = await insert.json()
-    return insertres.Response
-}
-
-async function lastid() {
-    const id = await fetch('http://api:8080/api/qureyId')
-    const idjson = await id.json()
-    return idjson
-}
-
-async function userCheck(req) {
-    try {
-
-        const data = {
-            email: req.body.email,
-            password: req.body.password
-        }
-        const result = await fetch('http://api:8080/api/userCheckBackEnd', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        })
-        const resResult = await result.json()
-        if (!resResult.Response) {
-            return {
-                Response: false
-            }
-        }
-
-        const token = jwt.sign({
-            Id: resResult.body.Id,
-            Email: resResult.body.Email
-        }, secret, { expiresIn: 5 });
-
-        return {
-            Response: true,
-            tokencookie: token
-        }
-    } catch (e) {
-        console.log(e);
+function ValidatePassword(input) {
+    var validRegex = /[a-z]/i;
+    if (input.match(validRegex) && (input.length >= 6)) {
+        return true;
+    } else {
+        return false
     }
 
 }

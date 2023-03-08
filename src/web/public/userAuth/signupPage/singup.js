@@ -1,20 +1,60 @@
 function signup() {
     const Name = document.getElementById("name")
     const Email = document.getElementById("email")
+    const VerifyCode = document.getElementById("verify")
     const Pass = document.getElementById("password")
     const Passcomfrim = document.getElementById("password-confrim")
-    !fillup(Name, Email, Pass, Passcomfrim) ? errText('Plase fill all of info')
-        : !ValidateEmail(Email.value) ? errText('Email invalid')
-            : !samePassword(Pass, Passcomfrim) ? errText('Password do not match')
-                : signupFecth(Name.value, Email.value, Pass.value);
+
+    if (!fillup(Name, Email, VerifyCode, Pass, Passcomfrim)) return errText('Plase fill all of info')
+    if (!ValidateEmail(Email.value)) return errText('Email invalid')
+    if (!ValidatePassword(Pass.value)) return errText('Password must containat least one letter and must be at least 8 characters')
+    if (!samePassword(Pass, Passcomfrim)) return errText('Password do not match')
+    signupFecth(Name.value, Email.value, VerifyCode.value, Pass.value);
 }
 
-async function signupFecth(Name, Email, Pass) {
+async function getVerifyCode() {
+    const Email = document.getElementById("email")
+    const data = {
+        key: Email.value
+    }
+    const rescode = await fetch('/auth/getVerifyCode', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+    if (rescode.status == 200) {
+        return alert(`send verification code to ${email.value}`)
+    }
+    return errText("Server error please try again later")
+}
+
+function stageOfbtn() {
+    const email = document.getElementById('email')
+    const sendbtn = document.getElementById("send_btn")
+    if (!ValidateEmail(email.value)) {
+        return errText("Email invalid plase check your email")
+    } else {
+        errText('')
+        sendbtn.disabled = true
+        sendbtn.classList.add("send_btn_tog")
+        email.classList.remove('invalid')
+        setTimeout(() => {
+            sendbtn.classList.remove("send_btn_tog")
+            sendbtn.disabled = false
+        }, 60000);
+        getVerifyCode()
+    }
+}
+
+
+async function signupFecth(Name, Email, VerifyCode, Pass) {
     errText('')
-    console.log(`${Name}${Email}${Pass}`);
     const data = {
         Name: Name,
         Email: Email,
+        VerifyCode: VerifyCode,
         Pass: Pass
     }
 
@@ -25,11 +65,7 @@ async function signupFecth(Name, Email, Pass) {
         },
         body: JSON.stringify(data),
     })
-
     const datasignup = await ressignup.json()
-
-    console.log(datasignup);
-
     !datasignup.Response ? errText(datasignup.Message) : pass()
 }
 
@@ -50,19 +86,18 @@ function samePassword(Pass1, Pass2) {
     return true
 }
 
-function fillup(Name, Email, Pass, Passcomfrim) {
+function fillup(Name, Email, VerifyCode, Pass, Passcomfrim) {
     Name.value == '' ? Name.setAttribute('class', 'invalid')
         : Name.classList.remove('invalid')
-    Email.value == '' ?
-        Email.setAttribute('class', 'invalid')
+    Email.value == '' ? Email.setAttribute('class', 'invalid')
         : Email.classList.remove('invalid')
-    Pass.value == '' ?
-        Pass.setAttribute('class', 'invalid')
+    VerifyCode.value == '' ? VerifyCode.setAttribute('class', 'invalid')
+        : VerifyCode.classList.remove('invalid')
+    Pass.value == '' ? Pass.setAttribute('class', 'invalid')
         : Pass.classList.remove('invalid')
-    Passcomfrim.value == '' ?
-        Passcomfrim.setAttribute('class', 'invalid')
+    Passcomfrim.value == '' ? Passcomfrim.setAttribute('class', 'invalid')
         : Passcomfrim.classList.remove('invalid')
-    if (Name.value != '' && Email.value != '' && Pass.value != '' && Passcomfrim.value != '') {
+    if (Name.value != '' && Email.value != '' && VerifyCode.value != '' && Pass.value != '' && Passcomfrim.value != '') {
         return true
     }
     return false
@@ -77,6 +112,19 @@ function ValidateEmail(input) {
         return true;
     } else {
         email.setAttribute('class', 'invalid')
+        return false
+    }
+
+}
+
+function ValidatePassword(input) {
+    var validRegex = /[a-z]/i;
+    const password = document.getElementById('password')
+    if (input.match(validRegex) && input.length >= 6) {
+        password.classList.remove('invalid')
+        return true;
+    } else {
+        password.setAttribute('class', 'invalid')
         return false
     }
 

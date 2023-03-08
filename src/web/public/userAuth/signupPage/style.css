@@ -32,6 +32,33 @@ a{
     margin: 5PX 5PX;
 }
 
+#verify{
+    width: 110px;
+}
+
+.send_btn{
+    margin: 0px 0px;
+    border-radius: 5px;
+    background-color: white;
+    color: black;
+    width: 100px;
+    height: 40px;
+    align-items: center;
+}
+.send_btn_tog{
+    margin: 0px 0px;
+    border-radius: 5px;
+    background-color: white;
+    color: gray !important;
+    width: 100px;
+    height: 40px;
+    align-items: center;
+}
+
+.send_btn_tog:hover{
+    background-color: white;
+    color: black;
+}
 .pad-tb{
     padding: 20px 20px;
 }

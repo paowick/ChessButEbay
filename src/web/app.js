@@ -37,8 +37,10 @@ app.get('/Game', (req, res) => {
 
 app.get('/', async (req, res) => {
     try {
-        await Script.isUser(req) ? res.sendFile(`${__dirname}/public/main/index.html`) : res.redirect('/login')
+        await Script.isUser(req) ? res.sendFile(`${__dirname}/public/main/index.html`) 
+        : res.clearCookie("tokencookie").redirect("/login")
     } catch (e) {
+        console.log(e);
         res.status(500)
     }
 })
