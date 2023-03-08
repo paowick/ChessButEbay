@@ -47,7 +47,7 @@ app.post('/auth/signUp', async (req, res) => {
                 Response: signupRes
             })
     } catch (e) {
-        console.log(e);//hereeeeeeeeeeeee
+        console.log(e);
         if (e instanceof TypeError) {
             return res.status(500).json({
                 Message: "an error occurred please try again later"
