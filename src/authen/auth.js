@@ -36,7 +36,7 @@ app.post("/auth/getVerifyCode", async (req, res) => {
 app.post('/auth/signUp', async (req, res) => {
     try {
         if(!fillup(req.body.Name,req.body.Email,req.body.VerifyCode,req.body.Pass)) return res.sendStatus(400)
-        if(!ValidatePassword(req.body.password)) return res.sendStatus(400)
+        if(!ValidatePassword(req.body.Pass)) return res.sendStatus(400)
         console.log(req.body);
         const signupRes = await sc.signUp(req)
         !signupRes ? res.status(500).json({
@@ -77,7 +77,7 @@ function fillup(Name, Email, VerifyCode, Pass) {
 
 function ValidatePassword(input) {
     var validRegex = /[a-z]/i;
-    if (input.match(validRegex) && input.length >= 6) {
+    if (input.match(validRegex) && (input.length >= 6)) {
         return true;
     } else {
         return false
