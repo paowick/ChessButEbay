@@ -26,12 +26,9 @@ app.post('/auth/logInVerify', async (req, res, next) => {
 
 app.post("/auth/getVerifyCode", async (req, res) => {
     try {
-        const value = Math.floor(Math.random() * 9999);
+        const value = Math.floor(Math.random() * (9999 - 1000 + 1) + 1000);
         redis.insertVerifyCode(req.body.key,value)
-
-
-        // mail.sendVerifycode('korn2k9@gmail.com','1234')
-
+        mail.sendVerifycode(req.body.key,value)
         res.sendStatus(200)
     } catch {
         res.sendStatus(500)
@@ -68,6 +65,7 @@ app.post('/auth/signUp', async (req, res) => {
 app.listen(port, () => {
     console.log(`listen on port ${port}`);
 })
+
 
 
 

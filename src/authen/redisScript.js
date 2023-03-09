@@ -16,7 +16,6 @@ export async function test() {
 export async function insertVerifyCode(key,value) {
     try {
         
-        const value = Math.floor(Math.random() * 9999);
 
         redisClient.set(key, value,{
             EX : 86400,
