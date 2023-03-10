@@ -17,8 +17,6 @@ export async function haveUser(Email) {
 }
 
 export async function InsertUser(req) {
-    // here
-
     const data = {
         email: req.body.Email,
         password: req.body.Pass,

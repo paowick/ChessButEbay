@@ -74,7 +74,7 @@ async function signupFecth(Name, Email, VerifyCode, Pass) {
 
 function pass() {
     alert("sign up sucess")
-    // location.href = '/login'
+    location.href = '/login'
 }
 
 function samePassword(Pass1, Pass2) {
