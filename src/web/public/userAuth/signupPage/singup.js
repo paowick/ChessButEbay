@@ -65,8 +65,7 @@ async function signupFecth(Name, Email, VerifyCode, Pass) {
         },
         body: JSON.stringify(data),
     })
-    const datasignup = await ressignup.json()
-    if(ressignup.status == 400) return errText(datasignup.Message)
+    if(ressignup.status == 400) return errText("already have this email")
     if(ressignup.status == 500) return errText("Server error please try again later")
     pass()
 }

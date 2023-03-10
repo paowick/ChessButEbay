@@ -39,21 +39,13 @@ app.post('/auth/signUp', async (req, res) => {
     try {
         if (!fillup(req.body.Name, req.body.Email, req.body.VerifyCode, req.body.Pass)) return res.sendStatus(400)
         if (!ValidatePassword(req.body.Pass)) return res.sendStatus(400)
-        console.log(req.body);
         const signupRes = await sc.signUp(req)
         if (!signupRes) {
-            return res.status(400).json({
-                Response: signupRes,
-                Message: 'alredy have email'
-            })
+            return res.sendStatus(400)
         }
-        console.log(signupRes);
         res.sendStatus(200)
     } catch (e) {
-        console.log(e);
-        res.status(500).json({
-            Message: "an error occurred please try again later"
-        })
+        res.sendStatus(500)
     }
 })
 
