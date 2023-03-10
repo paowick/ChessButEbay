@@ -27,8 +27,8 @@ app.post('/auth/logInVerify', async (req, res, next) => {
 app.post("/auth/getVerifyCode", async (req, res) => {
     try {
         const value = Math.floor(Math.random() * (9999 - 1000 + 1) + 1000);
-        redis.insertVerifyCode(req.body.key,value)
-        mail.sendVerifycode(req.body.key,value)
+        redis.insertVerifyCode(req.body.key, value)
+        mail.sendVerifycode(req.body.key, value)
         res.sendStatus(200)
     } catch {
         res.sendStatus(500)
@@ -36,28 +36,24 @@ app.post("/auth/getVerifyCode", async (req, res) => {
 })
 
 app.post('/auth/signUp', async (req, res) => {
+    // caonnot insert data use AUTO_INCREMENT
     try {
-        if(!fillup(req.body.Name,req.body.Email,req.body.VerifyCode,req.body.Pass)) return res.sendStatus(400)
-        if(!ValidatePassword(req.body.Pass)) return res.sendStatus(400)
+        // if (!fillup(req.body.Name, req.body.Email, req.body.VerifyCode, req.body.Pass)) return res.sendStatus(400)
+        // if (!ValidatePassword(req.body.Pass)) return res.sendStatus(400)
         console.log(req.body);
         const signupRes = await sc.signUp(req)
-        !signupRes ? res.status(500).json({
-            Response: signupRes,
-            Message: 'alredy have email'
-        })
-            : res.json({
-                Response: signupRes
-            })
-    } catch (e) {
-        console.log(e);
-        if (e instanceof TypeError) {
-            return res.status(500).json({
-                Message: "an error occurred please try again later"
+        if (!signupRes) {
+            return res.status(400).json({
+                Response: signupRes,
+                Message: 'alredy have email'
             })
         }
+        console.log(signupRes);
+        res.sendStatus(200)
+    } catch (e) {
         console.log(e);
         res.status(500).json({
-            Message: e
+            Message: "an error occurred please try again later"
         })
     }
 })
@@ -70,10 +66,10 @@ app.listen(port, () => {
 
 
 function fillup(Name, Email, VerifyCode, Pass) {
-    if(Name == '') return false
-    if(Email == '') return false
-    if(VerifyCode == '') return false
-    if(Pass == '') return false
+    if (Name == '') return false
+    if (Email == '') return false
+    if (VerifyCode == '') return false
+    if (Pass == '') return false
     return true
 }
 

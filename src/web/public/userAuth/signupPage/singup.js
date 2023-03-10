@@ -1,4 +1,4 @@
-function signup() {
+async function signup() {
     const Name = document.getElementById("name")
     const Email = document.getElementById("email")
     const VerifyCode = document.getElementById("verify")
@@ -9,7 +9,7 @@ function signup() {
     if (!ValidateEmail(Email.value)) return errText('Email invalid')
     if (!ValidatePassword(Pass.value)) return errText('Password must containat least one letter and must be at least 8 characters')
     if (!samePassword(Pass, Passcomfrim)) return errText('Password do not match')
-    signupFecth(Name.value, Email.value, VerifyCode.value, Pass.value);
+    await signupFecth(Name.value, Email.value, VerifyCode.value, Pass.value);
 }
 
 async function getVerifyCode() {
@@ -25,7 +25,7 @@ async function getVerifyCode() {
         body: JSON.stringify(data),
     })
     if (rescode.status == 200) {
-        return alert(`send verification code to ${email.value}`)
+        return alert(`send verification code to ${Email.value}`)
     }
     return errText("Server error please try again later")
 }
@@ -66,13 +66,15 @@ async function signupFecth(Name, Email, VerifyCode, Pass) {
         body: JSON.stringify(data),
     })
     const datasignup = await ressignup.json()
-    !datasignup.Response ? errText(datasignup.Message) : pass()
+    if(ressignup.status == 400) return errText(datasignup.Message)
+    if(ressignup.status == 500) return errText("Server error please try again later")
+    pass()
 }
 
 
 function pass() {
     alert("sign up sucess")
-    location.href = '/login'
+    // location.href = '/login'
 }
 
 function samePassword(Pass1, Pass2) {
