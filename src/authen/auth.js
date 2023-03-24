@@ -39,12 +39,14 @@ app.post('/auth/signUp', async (req, res) => {
     try {
         if (!fillup(req.body.Name, req.body.Email, req.body.VerifyCode, req.body.Pass)) return res.sendStatus(400)
         if (!ValidatePassword(req.body.Pass)) return res.sendStatus(400)
+        if(!redis.verifyCodeChecker(req.body.Email,req.body.VerifyCode)) return res.sendStatus(400)
         const signupRes = await sc.signUp(req)
         if (!signupRes) {
             return res.sendStatus(400)
         }
         res.sendStatus(200)
     } catch (e) {
+        console.log(e);
         res.sendStatus(500)
     }
 })

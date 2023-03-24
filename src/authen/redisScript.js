@@ -1,3 +1,4 @@
+import { verify } from "jsonwebtoken";
 import redis from "redis"
 const redisClient = redis.createClient({
     socket: {
@@ -22,6 +23,16 @@ export async function insertVerifyCode(key,value) {
             NX: false
         })
 
+    }catch(e){
+        console.log(e);
+        throw Error(e)
+    }
+}
+
+export async function verifyCodeChecker(key,value){
+    try{
+        console.log(key);
+        console.log(value); // here
     }catch(e){
         console.log(e);
         throw Error(e)
