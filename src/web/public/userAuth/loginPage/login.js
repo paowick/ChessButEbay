@@ -10,7 +10,7 @@ async function userCheck(loginInput, passInput) {
         email: loginInput,
         password: passInput
     }
-    const resLogin = await fetch(`/auth/logInVerify`, {
+    const resLogin = await fetch(`/logInVerify`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

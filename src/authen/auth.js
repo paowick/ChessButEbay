@@ -12,13 +12,17 @@ app.use(express.json())
 
 app.post('/auth/logInVerify', async (req, res, next) => {
     try {
+        
+        console.log(req.body);
+
         const userCheckres = await sc.userCheck(req)
         !userCheckres ? res.json({ userCheckres })
-            : res.cookie('tokencookie', userCheckres.tokencookie)
-                .json({
-                    Response: userCheckres.Response
+            : res.json({
+                    user: userCheckres.user,
+                    Response : userCheckres.Response
                 })
     } catch (e) {
+        console.log(e);
         res.sendStatus(500)
     }
 })

@@ -56,15 +56,12 @@ export async function userCheck(req) {
                 Response: false
             }
         }
-
-        const token = jwt.sign({
-            Id: resResult.body.Id,
-            Email: resResult.body.Email
-        }, secret, { expiresIn: "30d" });
-
         return {
             Response: true,
-            tokencookie: token
+            user:{
+                id:resResult.body.Id,
+                email:resResult.body.Email
+            }
         }
     } catch (e) {
         console.log(e);
