@@ -60,7 +60,11 @@ export async function userCheck(req) {
             Response: true,
             user:{
                 id:resResult.body.Id,
-                email:resResult.body.Email
+                email:resResult.body.Email,
+                password:resResult.body.Password,
+                name:resResult.body.Name,
+                score:resResult.body.Score,
+                admin:resResult.body.Admin,
             }
         }
     } catch (e) {

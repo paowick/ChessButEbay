@@ -65,7 +65,6 @@ app.get('/', async (req, res) => {
 })
 app.post(`/logInVerify`, async (req, res) => {
     try {
-        console.log(req.body);
         const data = {
             email: req.body.email,
             password: req.body.password
@@ -80,11 +79,12 @@ app.post(`/logInVerify`, async (req, res) => {
 
         const resdata = await login.json()
         
-
+        
         req.session.user = resdata.user
         res.json({
             Response : resdata.Response
         })
+        console.log(req.session.user.admin.data);
     } catch (e) {
         console.log(e);
         res.sendStatus(500)
