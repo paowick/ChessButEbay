@@ -46,9 +46,6 @@ app.get('/Game', (req, res) => {
         if (!req.session.user) {
             return res.redirect("/login")
         }
-        if (!Script.isUser(req)) {
-            return res.redirect("/login")
-        }
         res.sendFile(`${__dirname}/public/Game/Game.html`)
     } catch (e) {
         res.status(500)
@@ -58,9 +55,6 @@ app.get('/Game', (req, res) => {
 app.get('/', async (req, res) => {
     try {
         if (!req.session.user) {
-            return res.redirect("/login")
-        }
-        if (!Script.isUser(req)) {
             return res.redirect("/login")
         }
         res.sendFile(`${__dirname}/public/main/index.html`)
