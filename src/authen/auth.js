@@ -43,7 +43,8 @@ app.post('/auth/signUp', async (req, res) => {
     try {
         if (!fillup(req.body.Name, req.body.Email, req.body.VerifyCode, req.body.Pass)) return res.sendStatus(400)
         if (!ValidatePassword(req.body.Pass)) return res.sendStatus(400)
-        if(!redis.verifyCodeChecker(req.body.Email,req.body.VerifyCode)) return res.sendStatus(400)
+        const codeIsTruth = await redis.verifyCodeChecker(req.body.Email,req.body.VerifyCode)
+        if(!codeIsTruth) return res.sendStatus(406)
         const signupRes = await sc.signUp(req)
         if (!signupRes) {
             return res.sendStatus(400)

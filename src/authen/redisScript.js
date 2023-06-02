@@ -1,4 +1,3 @@
-import { verify } from "jsonwebtoken";
 import redis from "redis"
 const redisClient = redis.createClient({
     socket: {
@@ -16,8 +15,6 @@ export async function test() {
 
 export async function insertVerifyCode(key,value) {
     try {
-        
-
         redisClient.set(key, value,{
             EX : 86400,
             NX: false
@@ -31,8 +28,9 @@ export async function insertVerifyCode(key,value) {
 
 export async function verifyCodeChecker(key,value){
     try{
-        console.log(key);
-        console.log(value); // here
+        const truthCode = await redisClient.get(key)
+        if(value != truthCode){return false}
+        return true
     }catch(e){
         console.log(e);
         throw Error(e)

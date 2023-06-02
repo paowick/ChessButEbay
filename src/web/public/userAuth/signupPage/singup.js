@@ -67,6 +67,7 @@ async function signupFecth(Name, Email, VerifyCode, Pass) {
     })
     if(ressignup.status == 400) return errText("already have this email")
     if(ressignup.status == 500) return errText("Server error please try again later")
+    if(ressignup.status == 406) return errText("please check verify code")
     pass()
 }
 
