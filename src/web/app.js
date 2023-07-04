@@ -84,7 +84,7 @@ app.post(`/logInVerify`, async (req, res) => {
         res.json({
             Response : resdata.Response
         })
-        console.log(req.session.user.admin.data);
+        console.log(req.session.user);
     } catch (e) {
         console.log(e);
         res.sendStatus(500)
