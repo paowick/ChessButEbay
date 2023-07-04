@@ -17,12 +17,7 @@ export async function haveUser(Email) {
 }
 
 export async function InsertUser(req) {
-    // here
-
-    const id = await lastid()
-    const newid = parseInt(id.Id) + 1
     const data = {
-        id: newid,
         email: req.body.Email,
         password: req.body.Pass,
         name: req.body.Name,
@@ -39,12 +34,6 @@ export async function InsertUser(req) {
     })
     const insertres = await insert.json()
     return insertres.Response
-}
-
-export async function lastid() {
-    const id = await fetch('http://api:8080/api/qureyId')
-    const idjson = await id.json()
-    return idjson
 }
 
 export async function userCheck(req) {
@@ -67,15 +56,16 @@ export async function userCheck(req) {
                 Response: false
             }
         }
-
-        const token = jwt.sign({
-            Id: resResult.body.Id,
-            Email: resResult.body.Email
-        }, secret, { expiresIn: "30d" });
-
         return {
             Response: true,
-            tokencookie: token
+            user:{
+                id:resResult.body.Id,
+                email:resResult.body.Email,
+                password:resResult.body.Password,
+                name:resResult.body.Name,
+                score:resResult.body.Score,
+                admin:resResult.body.Admin,
+            }
         }
     } catch (e) {
         console.log(e);

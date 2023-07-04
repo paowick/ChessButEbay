@@ -12,13 +12,17 @@ app.use(express.json())
 
 app.post('/auth/logInVerify', async (req, res, next) => {
     try {
+        
+        console.log(req.body);
+
         const userCheckres = await sc.userCheck(req)
         !userCheckres ? res.json({ userCheckres })
-            : res.cookie('tokencookie', userCheckres.tokencookie)
-                .json({
-                    Response: userCheckres.Response
+            : res.json({
+                    user: userCheckres.user,
+                    Response : userCheckres.Response
                 })
     } catch (e) {
+        console.log(e);
         res.sendStatus(500)
     }
 })
@@ -26,12 +30,9 @@ app.post('/auth/logInVerify', async (req, res, next) => {
 
 app.post("/auth/getVerifyCode", async (req, res) => {
     try {
-        const value = Math.floor(Math.random() * 9999);
-        redis.insertVerifyCode(req.body.key,value)
-
-
-        // mail.sendVerifycode('korn2k9@gmail.com','1234')
-
+        const value = Math.floor(Math.random() * (9999 - 1000 + 1) + 1000);
+        redis.insertVerifyCode(req.body.key, value)
+        mail.sendVerifycode(req.body.key, value)
         res.sendStatus(200)
     } catch {
         res.sendStatus(500)
@@ -40,28 +41,18 @@ app.post("/auth/getVerifyCode", async (req, res) => {
 
 app.post('/auth/signUp', async (req, res) => {
     try {
-        if(!fillup(req.body.Name,req.body.Email,req.body.VerifyCode,req.body.Pass)) return res.sendStatus(400)
-        if(!ValidatePassword(req.body.Pass)) return res.sendStatus(400)
-        console.log(req.body);
+        if (!fillup(req.body.Name, req.body.Email, req.body.VerifyCode, req.body.Pass)) return res.sendStatus(400)
+        if (!ValidatePassword(req.body.Pass)) return res.sendStatus(400)
+        const codeIsTruth = await redis.verifyCodeChecker(req.body.Email,req.body.VerifyCode)
+        if(!codeIsTruth) return res.sendStatus(406)
         const signupRes = await sc.signUp(req)
-        !signupRes ? res.status(500).json({
-            Response: signupRes,
-            Message: 'alredy have email'
-        })
-            : res.json({
-                Response: signupRes
-            })
+        if (!signupRes) {
+            return res.sendStatus(400)
+        }
+        res.sendStatus(200)
     } catch (e) {
         console.log(e);
-        if (e instanceof TypeError) {
-            return res.status(500).json({
-                Message: "an error occurred please try again later"
-            })
-        }
-        console.log(e);
-        res.status(500).json({
-            Message: e
-        })
+        res.sendStatus(500)
     }
 })
 
@@ -71,11 +62,12 @@ app.listen(port, () => {
 
 
 
+
 function fillup(Name, Email, VerifyCode, Pass) {
-    if(Name == '') return false
-    if(Email == '') return false
-    if(VerifyCode == '') return false
-    if(Pass == '') return false
+    if (Name == '') return false
+    if (Email == '') return false
+    if (VerifyCode == '') return false
+    if (Pass == '') return false
     return true
 }
 

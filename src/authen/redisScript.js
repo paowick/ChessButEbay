@@ -15,14 +15,22 @@ export async function test() {
 
 export async function insertVerifyCode(key,value) {
     try {
-        
-        const value = Math.floor(Math.random() * 9999);
-
         redisClient.set(key, value,{
             EX : 86400,
             NX: false
         })
 
+    }catch(e){
+        console.log(e);
+        throw Error(e)
+    }
+}
+
+export async function verifyCodeChecker(key,value){
+    try{
+        const truthCode = await redisClient.get(key)
+        if(value != truthCode){return false}
+        return true
     }catch(e){
         console.log(e);
         throw Error(e)

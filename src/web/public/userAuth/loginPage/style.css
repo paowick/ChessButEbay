@@ -65,13 +65,15 @@
 }
 
 .email-invalid{
-    border: 1px solid red;
+    color: red;
+    border-bottom: 1px solid red;
 }
 
 input{
-    background-color: white;
-    border: 0px solid black;
-    border-radius: 5px;
+    outline: none;
+    border: 0;
+    border-bottom: 2px solid black;
+    background-color: #93BFCF;
     padding: 10px 13px;
     margin: 5px auto;
     font-size: 17px;

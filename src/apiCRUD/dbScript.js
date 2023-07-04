@@ -70,22 +70,12 @@ export async function userQurey(email) {
         if (conn) conn.end();
     }
 }
-export async function qureyId() {
-    let conn;
-    try {
-        conn = await pool.getConnection();
-        const rows = await conn.query("SELECT Id from `User` ORDER BY id DESC LIMIT 1;",);
-        return rows[0]//bug here
-    } finally {
-        if (conn) conn.end();
-    }
 
-}
-export async function InsertUser(Id, Email, Password, Name, Score, Admin) {
+export async function InsertUser(Email, Password, Name, Score, Admin) {
     let conn;
     try {
         conn = await pool.getConnection();
-        const rows = await conn.query("INSERT INTO `User` (`Id`, `Email`, `Password`, `Name`, `Score`, `Admin`) VALUES (?, ?, ?, ?, ?, ?);", [Id, Email, Password, Name, Score, Admin]);
+        const rows = await conn.query("INSERT INTO `User` (`Email`, `Password`, `Name`, `Score`, `Admin`) VALUES (?, ?, ?, ?, ?);", [Email, Password, Name, Score, Admin]);
         console.log(rows.affectedRows);
         return rows.affectedRows == 1 ? true : false
     } finally {

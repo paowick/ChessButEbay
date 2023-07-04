@@ -1,21 +1,16 @@
-import jwt from "jsonwebtoken"
 
-const secret = "56709";
-// chage it!!!
 
 
 export async function isUser(req){
     try{
-        if (req.cookies.tokencookie == null) {
+        console.log(req.session);
+        if (req.session.user == null) {
             return false
         }
-        const jwtverify = jwt.verify(req.cookies.tokencookie, secret, function(err,decoded) {
-            if (err) console.log(err);
-            else return decoded;
-        });
+        
         const data = {
-            email: jwtverify.Email,
-            id: jwtverify.Id
+            email: req.session.user.email,
+            id: req.session.user.id
         }
         const result = await fetch('http://api:8080/api/userCheckBackEnd', {
             method: 'POST',
@@ -25,6 +20,7 @@ export async function isUser(req){
             body: JSON.stringify(data),
         })
         const JsonResult = await result.json()
+        console.log(JsonResult);
         if (!JsonResult.Response) {
             return false
         }
