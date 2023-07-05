@@ -1,0 +1,97 @@
+*{
+    background-color: #6096B4;
+}
+
+.forgot{
+    background-color: #8FBDD3;
+}
+
+#err{
+    background-color: #8FBDD3;
+}
+
+.err-text{
+    background-color: #8FBDD3;
+}
+
+@media (min-width: 700px) {
+  .flex-container  {
+    flex-direction: row;
+  }
+}
+.card{
+    outline: 1px;
+    border: 1px solid black;
+    border-radius: 10px;
+    background-color: #93BFCF;
+    box-shadow: 2px 2px gray;
+    width: 300px;
+    height: 300px;
+}
+.pad-tb{
+    padding: 20px 20px;
+}
+
+.email-invalid{
+    color: red;
+    border-bottom: 1px solid red;
+}
+
+#verify{
+    width: 110px;
+}
+
+.send_btn{
+    margin: 0px 0px;
+    border-radius: 5px;
+    background-color: white;
+    color: black;
+    width: 100px;
+    height: 40px;
+    align-items: center;
+}
+.send_btn_tog{
+    margin: 0px 0px;
+    border-radius: 5px;
+    background-color: white;
+    color: gray !important;
+    width: 100px;
+    height: 40px;
+    align-items: center;
+}
+
+.send_btn_tog:hover{
+    background-color: white;
+    color: black;
+}
+
+input{
+    outline: none;
+    border: 0;
+    border-bottom: 2px solid black;
+    background-color: #93BFCF;
+    padding: 10px 13px;
+    margin: 5px auto;
+    font-size: 17px;
+}
+input:focus{
+    outline-color: #8FBDD3;
+}
+button{
+    margin: 10px;
+    font-size: 17px;
+    color: white;
+    background-color: #93BFCF;
+    border-radius: 10px;
+    border: 1px solid #EEE9DA;
+    width: 100px;
+    height: 30px;
+}
+button:hover{
+    color: black;
+    border: 1px solid #BDCDD6;
+    background-color: #BDCDD6;
+}
+a{
+    margin: 5PX 5PX;
+}
