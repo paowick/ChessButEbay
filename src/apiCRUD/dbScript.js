@@ -83,3 +83,17 @@ export async function InsertUser(Email, Password, Name, Score, Admin) {
     }
 
 }
+
+export async function resetPassword(email,newPassword) {
+    let conn;
+    try {
+        console.log(email);
+        console.log(newPassword);
+        conn = await pool.getConnection();
+        const rows = await conn.query("UPDATE User SET User.Password = ? WHERE User.Email = ?;",[newPassword,email]);
+        console.log(rows);
+        return rows.affectedRows == 1 ? true : false
+    } finally {
+        if (conn) conn.end();
+    }
+}

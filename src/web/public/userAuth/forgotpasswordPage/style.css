@@ -40,7 +40,9 @@
 #verify{
     width: 110px;
 }
-
+.invalid{
+    border-bottom: 1px solid red;
+}
 .send_btn{
     margin: 0px 0px;
     border-radius: 5px;

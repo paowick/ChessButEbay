@@ -1,5 +1,7 @@
 async function getVerifyCode() {
     const Email = document.getElementById("email")
+    const next_btn = document.getElementById('next')
+    next_btn.style.display = "inline-block"
     const data = {
         key: Email.value
     }
@@ -53,11 +55,19 @@ function errText(Text) {
     form.innerHTML += `<h7 style="color: red;" class="err-text">${Text}<h7>`
 }
 
-function nextBtn() {
+function samePassword(Pass1, Pass2) {
+    if (Pass1.value != Pass2.value) {
+        Pass1.setAttribute('class', 'invalid')
+        Pass2.setAttribute('class', 'invalid')
+        return false
+    }
+    Pass1.classList.remove('invalid')
+    Pass2.classList.remove('invalid')
+    errText("")
+    return true
+}
 
-
-    //here 
-    temp = true
+async function nextBtn() {
     const email = document.getElementById('email')
     const verify = document.getElementById('verify')
     const send_btn = document.getElementById('send_btn')
@@ -66,7 +76,21 @@ function nextBtn() {
     const next_btn = document.getElementById('next')
     const submit_btn = document.getElementById('submit')
 
-    if (temp) {
+    const data = {
+        email: email.value,
+        code: verify.value
+    }
+    const resCodeCheck = await fetch(`/auth/codecheck`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+    if (resCodeCheck.status == 406) { return errText("check your code on email") }
+    if (resCodeCheck.status == 500) { return errText("Server error please try again later") }
+    errText('')
+    if (resCodeCheck.status == 200) {
         email.style.display = "none"
         verify.style.display = "none"
         send_btn.style.display = "none"
@@ -75,4 +99,34 @@ function nextBtn() {
         next_btn.style.display = "none"
         submit_btn.style.display = "inline-block"
     }
+}
+
+async function subMit() {
+
+    const email = document.getElementById('email')
+    const verify = document.getElementById('verify')
+    const pass = document.getElementById('password')
+    const passConfrim = document.getElementById('password-confrim')
+    if (!samePassword(password, passConfrim)) { return errText("it,s not the same password") }
+
+    const data = {
+        email: email.value,
+        code: verify.value,
+        password: pass.value
+    }
+    const resetPassword = await fetch(`/auth/resetpassword`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+
+
+    if (resetPassword.status == 200) {
+        alert("reset password sucess")
+        location.href = '/login'
+    }
+    if (resetPassword.status == 400) return errText('Password must containat least one letter and must be at least 8 characters')
+    if (resetPassword.status == 500) { return errText("Server error please try again later") }
 }
