@@ -52,6 +52,15 @@ app.get('/Game', (req, res) => {
     }
 })
 
+app.get('/forgotPassword',(req,res) => {
+    try {
+        res.sendFile(`${__dirname}/public/userAuth/forgotpasswordPage/forgot.html`)
+    } catch (e) {
+        console.log(e);
+        res.status(500)
+    }
+})
+
 app.get('/', async (req, res) => {
     try {
         if (!req.session.user) {
@@ -90,6 +99,7 @@ app.post(`/logInVerify`, async (req, res) => {
         res.sendStatus(500)
     }
 })
+
 
 app.get(`/clear`,(req,res)=>{
     req.session.destroy((err) => {

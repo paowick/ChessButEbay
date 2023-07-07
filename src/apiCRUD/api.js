@@ -39,7 +39,16 @@ app.get("/api/qureyEmail", async (req,res)=>{
 
 app.post("/api/insertUser",async (req,res)=>{
     const insertres = await db.InsertUser(req.body.email,req.body.password,req.body.name,req.body.score,req.body.admin)
-    res.json({Response:insertres})
+    if(insertres){
+        res.sendStatus(200)
+    }else{
+        res.sendStatus(500)
+    }
+})
+
+app.post('/api/resetpassword',async (req,res)=>{
+    const resetpassword = await db.resetPassword(req.body.email,req.body.pass)
+    res.sendStatus(200)
 })
 
 app.listen(port, () => {
