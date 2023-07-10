@@ -61,6 +61,18 @@ app.get('/forgotPassword',(req,res) => {
     }
 })
 
+app.get('/user',(req,res) => {
+    try {
+        if(!req.session.user){
+            return res.redirect("/login")
+        }
+        res.sendFile(`${__dirname}/public/userPage/user.html`)
+    } catch (e) {
+        console.log(e);
+        res.status(500)
+    }
+})
+
 app.get('/', async (req, res) => {
     try {
         if (!req.session.user) {
@@ -100,6 +112,17 @@ app.post(`/logInVerify`, async (req, res) => {
     }
 })
 
+app.get(`/getsession`,(req,res) =>{
+    try {
+        console.log(req.session.user);
+        res.json({
+            data: req.session.user
+        })
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500)
+    }
+})
 
 app.get(`/clear`,(req,res)=>{
     req.session.destroy((err) => {
