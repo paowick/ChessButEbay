@@ -10,6 +10,13 @@
     <link type="text/css" rel="stylesheet" href="./style.css">
 </head>
 <body>
+    <script src="https://code.jquery.com/jquery.min.js"></script>
+    <div id="nav-ph"></div>
+    <script>
+        $(function () {
+            $("#nav-ph").load("../../assets/component/navbar.html")
+        })
+    </script>
     <div align="center">
         <button onclick="test()">test</button>
     </div>

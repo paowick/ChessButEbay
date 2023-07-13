@@ -1,0 +1,34 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.container{
+    max-width: 1140px ;
+    margin: 0 auto;
+}
+nav{
+    background-color: black;
+}
+.nav-con{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+}
+.manu{
+    display: flex;
+}
+
+.manu li{
+    list-style: none;
+    margin: 1rem;
+}
+.logo a {
+    font-size: 2rem;
+}
+a{
+    color: #fff;
+    text-decoration: none;
+
+}
