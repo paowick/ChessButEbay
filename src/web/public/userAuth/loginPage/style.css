@@ -1,10 +1,16 @@
-*{
-    background-color: #6096B4;
+body {
+    /* background-color: #6096B4; */
+    background-image: url("../../assets/image/bg.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
-.login{
+
+.login {
     padding: 10px 20px;
 }
-.flex-container{
+
+.flex-container {
     min-width: fit-content;
     width: fit-content;
     text-align: center;
@@ -12,47 +18,48 @@
     flex-direction: column;
 }
 
-.forgot{
+.forgot {
     background-color: #8FBDD3;
 }
 
-#err{
+#err {
     background-color: #8FBDD3;
 }
 
-.err-text{
+.err-text {
     background-color: #8FBDD3;
 }
 
-.login-con{
+.login-con {
     background-color: #8FBDD3;
 }
 
-.loginbuttRight{
+.loginbuttRight {
     transform: translateX(100px) !important;
 }
 
-.loginbuttLeft{
+.loginbuttLeft {
     transform: translateX(-100px) !important;
 }
 
-#login-bt{
+#login-bt {
     transition: 100ms;
     transform: translateX(0);
 
 }
 
-.SignUp{
+.SignUp {
     margin: 10px auto;
     width: 200px;
 }
 
 @media (min-width: 700px) {
-  .flex-container  {
-    flex-direction: row;
-  }
+    .flex-container {
+        flex-direction: row;
+    }
 }
-.card{
+
+.card {
     outline: 1px;
     border: 1px solid black;
     border-radius: 10px;
@@ -60,16 +67,17 @@
     box-shadow: 2px 2px gray;
     width: 300px;
 }
-.pad-tb{
+
+.pad-tb {
     padding: 20px 20px;
 }
 
-.email-invalid{
+.email-invalid {
     color: red;
     border-bottom: 1px solid red;
 }
 
-input{
+input {
     outline: none;
     border: 0;
     border-bottom: 2px solid black;
@@ -78,10 +86,12 @@ input{
     margin: 5px auto;
     font-size: 17px;
 }
-input:focus{
+
+input:focus {
     outline-color: #8FBDD3;
 }
-button{
+
+button {
     font-size: 17px;
     color: white;
     background-color: #93BFCF;
@@ -89,12 +99,15 @@ button{
     border: 1px solid #EEE9DA;
     width: 100px;
     height: 30px;
+    background-position-y: top;
 }
-button:hover{
+
+button:hover {
     color: black;
     border: 1px solid #BDCDD6;
     background-color: #BDCDD6;
 }
-a{
+
+a {
     margin: 5PX 5PX;
 }

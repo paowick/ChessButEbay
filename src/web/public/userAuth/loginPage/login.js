@@ -63,3 +63,8 @@ function ValidateEmail(input) {
     }
 
 }
+
+function popup() {
+    const form = document.getElementById("login-form")
+    form.style.display = "inline-block"
+}

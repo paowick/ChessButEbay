@@ -12,22 +12,18 @@
 
 <body>
     <center style="padding-top: 100px; padding-bottom: 200px ;">
-        <div class="flex-container">
-
-            <div id="logo" class="pad-tb">
-                <img src="../assets/image/bocchi.jpg" alt="">
+        <div class="login card" id="login-form" style="display: none;"><br>
+            <input type="email" id="email" placeholder="Email address" required><br>
+            <input type="password" id="password" placeholder="Password" required><br>
+            <div class="login-con" id="loginbutton">
+                <button id="login-bt" type="submit" onclick="login()"
+                    onmouseover="ValidateEmail(document.getElementById('email').value)">LogIn</button>
             </div>
-            <div class="login card" id="login-form"><br>
-                <input type="email" id="email" placeholder="Email address" required><br>
-                <input type="password" id="password" placeholder="Password" required><br>
-                <div class="login-con" id="loginbutton" >
-                    <button id="login-bt" type="submit" onclick="login()" onmouseover="ValidateEmail(document.getElementById('email').value)">LogIn</button>
-                </div>
-                <button class="SignUp" type="submit" onclick="signUp()">SignUp</button><br>
-                <a href="/forgotPassword" class="forgot" >ForgotPassword</a><br>
-                <div id="err"></div>
-            </div>
+            <button class="SignUp" type="submit" onclick="signUp()">SignUp</button><br>
+            <a href="/forgotPassword" class="forgot">ForgotPassword</a><br>
+            <div id="err"></div>
         </div>
+        
     </center>
 
 </body>
