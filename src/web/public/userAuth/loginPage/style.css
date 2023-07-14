@@ -31,6 +31,8 @@ body {
 }
 
 .login-con {
+    display: flex;
+    justify-content: center;
     background-color: #8FBDD3;
 }
 
@@ -60,13 +62,18 @@ body {
 }
 
 .card {
+    margin: 0 auto;
+    padding: 15px;
+    margin-top: 20px;
     outline: 1px;
     border: 1px solid black;
     border-radius: 10px;
     background-color: #93BFCF;
     box-shadow: 2px 2px gray;
     width: 300px;
+    justify-content: left;
 }
+
 
 .pad-tb {
     padding: 20px 20px;
@@ -77,15 +84,21 @@ body {
     border-bottom: 1px solid red;
 }
 
+.bott-con{
+    display: flex;
+    justify-content: center;
+}
+
 input {
     outline: none;
     border: 0;
     border-bottom: 2px solid black;
-    background-color: #93BFCF;
+    background-color: inherit;
     padding: 10px 13px;
     margin: 5px auto;
-    font-size: 17px;
+    font-size: 20px;
 }
+
 
 input:focus {
     outline-color: #8FBDD3;
@@ -109,5 +122,5 @@ button:hover {
 }
 
 a {
-    margin: 5PX 5PX;
+    margin: 5px 5px;
 }

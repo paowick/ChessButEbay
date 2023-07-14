@@ -18,7 +18,6 @@
             $("#nav-ph").load("../../assets/component/navbar.html")
         })
     </script>
-    <center style="padding-top: 100px; padding-bottom: 200px ;">
         <div class="login card" id="login-form" style="display: block;"><br>
             <input type="email" id="email" placeholder="Email address" required><br>
             <input type="password" id="password" placeholder="Password" required><br>
@@ -26,12 +25,19 @@
                 <button id="login-bt" type="submit" onclick="login()"
                     onmouseover="ValidateEmail(document.getElementById('email').value)">LogIn</button>
             </div>
-            <button class="SignUp" type="submit" onclick="signUp()">SignUp</button><br>
-            <a href="/forgotPassword" class="forgot">ForgotPassword</a><br>
-            <div id="err"></div>
+            <div class="bott-con">
+                <button class="SignUp" type="submit" onclick="signUp()">SignUp</button>
+            </div>
+            <div class="bott-con">
+                <a href="/forgotPassword" class="forgot">ForgotPassword</a>
+
+            </div>
+            <div class="bott-con">
+
+                <div id="err"></div>
+            </div>
         </div>
 
-    </center>
 
 </body>
 
