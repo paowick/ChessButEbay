@@ -8,5 +8,5 @@ if (path.includes(window.location.pathname)) {
 
 } else {
 
-    document.getElementById("login-con").style.display = "none"
+    document.getElementById("login-bar").style.display = "none"
 }
