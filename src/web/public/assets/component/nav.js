@@ -1,14 +1,12 @@
-const path = ["/login","/signup","/forgotPassword"]
+const path = ["/login", "/signup", "/forgotPassword"]
 
-if(path.includes(window.location.pathname)){
-    document.getElementById("home").style.display = "none"
-    document.getElementById("user").style.display = "none"
-    document.getElementById("setting").style.display = "none"
-    document.getElementById("about").style.display = "none"
-    document.getElementById("contact").style.display = "none"
-    document.getElementById("logout").style.display = "none"
-    document.getElementById("login").style.display = "list-item"
-}else{
-    
-    document.getElementById("login").style.display = "none"
+if (path.includes(window.location.pathname)) {
+
+    document.getElementById("login-bar").style.display = "inline-block"
+    document.getElementById("manu").style.display = "none"
+
+
+} else {
+
+    document.getElementById("login-con").style.display = "none"
 }
