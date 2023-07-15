@@ -61,12 +61,14 @@ ul, li {
 a{
     color: #fff;
     text-decoration: none;
+    width: 50px;
 }
 
 .logo{
     position: relative;
     background: url(../image/logo.png);
     width: 200px;
+    height: 35px;
     left: 15px;
     background-size: cover;
     background-repeat: no-repeat;
