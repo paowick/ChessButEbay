@@ -41,6 +41,7 @@ body {
 }
 
 .forgot {
+    width: max-content;
     background-color: #171717;
 }
 
@@ -161,6 +162,7 @@ button:hover {
 
 a {
     margin: 5px 5px;
+    text-align: center;
 }
 
 .title{
