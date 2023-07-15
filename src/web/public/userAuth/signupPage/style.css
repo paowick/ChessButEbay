@@ -7,19 +7,26 @@ body {
 
 
 .card {
+    position: absolute;
+    left: 0;
+    right: 0;
     margin: 0 auto;
+    margin-top: 10px;
     padding: 15px;
     outline: 1px;
     border: 1px solid black;
     border-radius: 10px;
-    background-color: #93BFCF;
+    background-color: #171717;
     box-shadow: 2px 2px gray;
-    width: 300px;
+    width: 330px;
     justify-content: left;
+}
 
-::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+::placeholder {
+    /* Chrome, Firefox, Opera, Safari 10.1+ */
     color: #808B96;
-  opacity: 1; /* Firefox */
+    opacity: 1;
+    /* Firefox */
 
 }
 
@@ -41,18 +48,19 @@ input {
 }
 
 button {
-    font-size: 17px;
+    font-size: 20px;
     color: white;
     background-color: #171717;
     border-radius: 10px;
-
     width: 130px;
-    height: 40px;
+    height: 50px;
     transition: .4s ease-in-out;
     border-radius: 25px;
     box-shadow: 0 0 20px #000000;
+    margin-top: 10px;
 }
-button:hover{
+
+button:hover {
     border-radius: 10px;
     border: 1px solid #171717;
     color: white;
@@ -66,17 +74,16 @@ a {
 }
 
 
-#verify{
-    width: 190px;
+#verify {
+    width: 180px;
 }
-
-.send_btn{
+.send_btn {
     margin: 0px 0px;
     border-radius: 25px;
     background-color: #171717;
     color: white;
     width: 100px;
-    height: 40px;
+    height: 50px;
     align-items: center;
 }
 
@@ -86,13 +93,13 @@ a {
     background-color: #171717;
     color: white !important;
     width: 100px;
-    height: 40px;
+    height: 50px;
     align-items: center;
 }
 
 
 
-.send_btn_tog:hover{
+.send_btn_tog:hover {
     background-color: #171717;
     color: white;
 
@@ -104,14 +111,16 @@ a {
 
 
 
-.title{
+.title {
+    margin: 0 auto;
+    margin-top: 130px;
     background-color: #171717;
     color: white;
     width: 300px;
     border-radius: 60px;
     font-size: 60px;
     box-shadow: 0 0 50px #000000;
-
+    text-align: center;
 }
 
 .signup {
@@ -124,7 +133,7 @@ a {
     border-bottom: 1px solid red;
 }
 
-.bott-con{
+.bott-con {
     display: flex;
     justify-content: space-around;
 }

@@ -95,13 +95,12 @@ body {
     padding: 15px;
     margin-top: 20px;
     outline: 1px;
-
     border: 1px solid black;
     border-radius: 20px;
     background-color: #171717;
     width: 300px;
     justify-content: left;
-    height: 350px;
+    height: 380px;
 }
 
 .card:hover{
