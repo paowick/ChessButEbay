@@ -15,10 +15,10 @@ body {
     padding: 15px;
     outline: 1px;
     border: 1px solid black;
-    border-radius: 10px;
+    border-radius: 25px;
     background-color: #171717;
     box-shadow: 2px 2px gray;
-    width: 330px;
+    width: 360px;
     justify-content: left;
 }
 
@@ -33,18 +33,14 @@ body {
 input {
     outline: none;
     border: 0;
-
-
     background-color: #171717;
     padding: 15px 25px;
     width: 300px;
-
     margin: 5px auto;
     font-size: 17px;
     border-radius: 25px;
     box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
     color: white;
-    box-shadow: 0 0 20px #000000;
 }
 
 button {
@@ -119,7 +115,7 @@ a {
     width: 300px;
     border-radius: 60px;
     font-size: 60px;
-    box-shadow: 0 0 50px #000000;
+    box-shadow: 0 0 50px white;
     text-align: center;
 }
 
