@@ -18,13 +18,23 @@
             $("#nav-ph").load("../../assets/component/navbar.html")
         })
     </script>
+
+
+
+  
+        
+        <img src="../../assets/image/logo02.png" alt="LogoGame" class="logo02">
+
+
         <div class="login card" id="login-form" style="display: block;"><br>
+            <p class="title">Login</p>
             <input type="email" id="email" placeholder="Email address" required><br>
             <input type="password" id="password" placeholder="Password" required><br>
             <div class="login-con" id="loginbutton">
                 <button id="login-bt" type="submit" onclick="login()"
                     onmouseover="ValidateEmail(document.getElementById('email').value)">LogIn</button>
             </div>
+
             <div class="bott-con">
                 <button class="SignUp" type="submit" onclick="signUp()">SignUp</button>
             </div>
@@ -37,6 +47,14 @@
                 <div id="err"></div>
             </div>
         </div>
+
+
+            <button class="SignUp" type="submit" onclick="signUp()">SignUp</button><br>
+            <a href="/forgotPassword" class="forgot">ForgotPassword</a><br>
+            <div id="err"></div>
+            
+        </div>
+        
 
 
 </body>
