@@ -45,11 +45,25 @@ ul, li {
     font-size: 2rem;
     
 }
+#login-bar{
+    padding: 15px 20px;
+    height: 60px;
+    background-color: #E5DC13;
+}
+#login-bar:hover{
+    background-color: #B6B614;
+}
+#login-bar a {
+    color: black;
+    font-size: 1.5rem;
+}
+
 a{
     color: #fff;
     text-decoration: none;
 
 }
+
 .logo{
     position: relative;
     background: url(../image/logo.png);
@@ -58,4 +72,5 @@ a{
     background-size: cover;
     background-repeat: no-repeat;
 }
+
 

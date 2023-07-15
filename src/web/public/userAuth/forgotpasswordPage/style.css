@@ -1,12 +1,11 @@
 body {
-    background-image: url("../../assets/image/bg02.png");
+    /* background-color: #6096B4; */
+    background-image: url("../../assets/image/bg.png");
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
 }
-*{
-    background-color: #6096B4;
-}
+
 
 .forgot{
     background-color: #8FBDD3;
@@ -26,13 +25,16 @@ body {
   }
 }
 .card{
+    margin: 0 auto;
+    padding: 15px;
+    margin-top: 20px;
     outline: 1px;
     border: 1px solid black;
     border-radius: 10px;
     background-color: #93BFCF;
     box-shadow: 2px 2px gray;
     width: 300px;
-    height: 300px;
+    justify-content: left;
 }
 .pad-tb{
     padding: 20px 20px;
@@ -44,13 +46,13 @@ body {
 }
 
 #verify{
-    width: 110px;
+    width: 140px;
 }
 .invalid{
     border-bottom: 1px solid red;
 }
 .send_btn{
-    margin: 0px 0px;
+    margin: 0px 10px;
     border-radius: 5px;
     background-color: white;
     color: black;
@@ -59,7 +61,7 @@ body {
     align-items: center;
 }
 .send_btn_tog{
-    margin: 0px 0px;
+    margin: 0px 10px;
     border-radius: 5px;
     background-color: white;
     color: gray !important;
@@ -72,7 +74,10 @@ body {
     background-color: white;
     color: black;
 }
-
+.bott-con{
+    display: flex;
+    justify-content: space-around;
+}
 input{
     outline: none;
     border: 0;
@@ -80,7 +85,7 @@ input{
     background-color: #93BFCF;
     padding: 10px 13px;
     margin: 5px auto;
-    font-size: 17px;
+    font-size: 20px;
 }
 input:focus{
     outline-color: #8FBDD3;

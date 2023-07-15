@@ -20,9 +20,11 @@
     </script>
 
 
-    <center style="padding-top: 50px;">
+
+  
         
         <img src="../../assets/image/logo02.png" alt="LogoGame" class="logo02">
+
 
         <div class="login card" id="login-form" style="display: block;"><br>
             <p class="title">Login</p>
@@ -32,13 +34,28 @@
                 <button id="login-bt" type="submit" onclick="login()"
                     onmouseover="ValidateEmail(document.getElementById('email').value)">LogIn</button>
             </div>
+
+            <div class="bott-con">
+                <button class="SignUp" type="submit" onclick="signUp()">SignUp</button>
+            </div>
+            <div class="bott-con">
+                <a href="/forgotPassword" class="forgot">ForgotPassword</a>
+
+            </div>
+            <div class="bott-con">
+
+                <div id="err"></div>
+            </div>
+        </div>
+
+
             <button class="SignUp" type="submit" onclick="signUp()">SignUp</button><br>
             <a href="/forgotPassword" class="forgot">ForgotPassword</a><br>
             <div id="err"></div>
             
         </div>
         
-    </center>
+
 
 </body>
 

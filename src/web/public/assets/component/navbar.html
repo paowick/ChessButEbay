@@ -1,19 +1,22 @@
 <nav>
     <link rel="stylesheet" href="../../assets/component/nav.css">
+    <script src="../../assets/component/nav.js"></script>
     <div class="container">
         <div class="nav-con">
             <div class="logo">
                 <a href="/" re>Auction War</a>
             </div>
-            <ul class="manu">
-                <li><a href="">Home</a></li>
-                <li><a href="/user">User</a></li>
-                <li><a href="">Setting</a></li>
-                <li><a href="">About</a></li>
-                <li><a href="">Contact</a></li>
-                <li><a href="/clear">Logout</a></li>
-                
+            <ul class="manu" id="manu">
+                <li id="home"><a href="">Home</a></li>
+                <li id="user"><a href="/user">User</a></li>
+                <li id="setting"><a href="">Setting</a></li>
+                <li id="about"><a href="">About</a></li>
+                <li id="contact"><a href="">Contact</a></li>
+                <li id="logout"><a href="/clear">Logout</a></li>
             </ul>
+            <div class="login" id="login-bar">
+                <a href="/login">Login</a>
+            </div>
         </div>
     </div>
 </nav>
