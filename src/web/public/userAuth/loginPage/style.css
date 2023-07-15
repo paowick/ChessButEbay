@@ -94,7 +94,7 @@ body {
 .card {
     margin: 0 auto;
     padding: 15px;
-    margin-top: 20px;
+    margin-top: 15px;
     outline: 1px;
     border: 1px solid black;
     border-radius: 20px;
@@ -147,7 +147,7 @@ button {
     font-size: 17px;
     color: white;
     background-color: #252525;
-    border-radius: 10px;
+    border-radius: 25px;
     width: 100px;
     height: 30px;
     transition: .4s ease-in-out;
