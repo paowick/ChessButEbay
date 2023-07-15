@@ -8,7 +8,7 @@
     margin: 0 auto;
 }
 nav{
-    background-color: black;
+    background-color: #171717;
 }
 .nav-con{
     display: flex;
@@ -17,18 +17,45 @@ nav{
     height: 60px;
 }
 .manu{
+    color: white;
+    font-size: 17px;
     display: flex;
+}
+
+ul, li {
+    list-style: none outside none;
 }
 
 .manu li{
     list-style: none;
     margin: 1rem;
 }
+
+.manu >li :hover{
+    border-radius: 50%;
+    box-shadow:  
+    0 0 20px #F0B27A,
+    0 0 50px #F5CBA7;
+    text-shadow: 
+    0 0 20px #000000,
+    0 0 50px #000000;
+}
+
 .logo a {
     font-size: 2rem;
+    
 }
 a{
     color: #fff;
     text-decoration: none;
 
 }
+.logo{
+    position: relative;
+    background: url(../image/logo.png);
+    width: 200px;
+    left: 15px;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
