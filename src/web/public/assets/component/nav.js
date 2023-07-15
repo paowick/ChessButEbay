@@ -10,3 +10,9 @@ if (path.includes(window.location.pathname)) {
 
     document.getElementById("login-bar").style.display = "none"
 }
+
+function logo() {
+
+    window.location.href = "/"
+
+}
