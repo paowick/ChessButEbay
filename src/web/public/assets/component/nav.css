@@ -58,6 +58,13 @@ ul, li {
     font-size: 1.5rem;
 }
 
+.profile > img {
+    width: 40px;
+    height: 40px;
+    object-fit: fill;
+    border-radius: 100%;
+}
+
 a{
     color: #fff;
     text-decoration: none;
