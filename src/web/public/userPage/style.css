@@ -4,3 +4,33 @@ body {
     background-repeat: no-repeat;
     background-attachment: fixed;
 }
+
+main{
+    display: flex;
+}
+
+.user-con{
+    backdrop-filter: blur(10px);
+    display: flex;
+    margin: 0 auto;
+    width: 1000px;
+    border: solid 1px red;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    gap: 50px;
+}
+button{
+    font-size: 20px;
+}
+.user-game-info{
+    margin: 0 auto;
+    width: 1000px;
+    border: solid 1px red;
+}
+.profile-main > img{
+    width: 400px;
+    height: 400px;
+    object-fit: fill;
+    border-radius: 100%;
+}

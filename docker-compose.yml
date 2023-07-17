@@ -52,6 +52,14 @@ services:
     networks:
       - backend
 
+  userimg:
+    container_name: userimg
+    restart: always
+    build: src/userimage
+    volumes:
+      - ./src/userimage:/usr/src/app
+    networks:
+      - backend
 
   api:
     container_name: api

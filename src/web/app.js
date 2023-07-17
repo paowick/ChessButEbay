@@ -52,7 +52,7 @@ app.get('/Game', (req, res) => {
     }
 })
 
-app.get('/forgotPassword',(req,res) => {
+app.get('/forgotPassword', (req, res) => {
     try {
         res.sendFile(`${__dirname}/public/userAuth/forgotpasswordPage/forgot.html`)
     } catch (e) {
@@ -61,9 +61,9 @@ app.get('/forgotPassword',(req,res) => {
     }
 })
 
-app.get('/user',(req,res) => {
+app.get('/user', (req, res) => {
     try {
-        if(!req.session.user){
+        if (!req.session.user) {
             return res.redirect("/login")
         }
         res.sendFile(`${__dirname}/public/userPage/user.html`)
@@ -99,11 +99,11 @@ app.post(`/logInVerify`, async (req, res) => {
         })
 
         const resdata = await login.json()
-        
-        
+
+
         req.session.user = resdata.user
         res.json({
-            Response : resdata.Response
+            Response: resdata.Response
         })
         console.log(req.session.user);
     } catch (e) {
@@ -112,7 +112,7 @@ app.post(`/logInVerify`, async (req, res) => {
     }
 })
 
-app.get(`/getsession`,(req,res) =>{
+app.get(`/getsession`, (req, res) => {
     try {
         console.log(req.session.user);
         res.json({
@@ -124,10 +124,10 @@ app.get(`/getsession`,(req,res) =>{
     }
 })
 
-app.get(`/clear`,(req,res)=>{
+app.get(`/clear`, (req, res) => {
     req.session.destroy((err) => {
-    res.redirect('/') // will always fire after session is destroyed
-})
+        res.redirect('/') // will always fire after session is destroyed
+    })
 })
 app.listen(port, () => {
     console.log(`listen on port ${port}`);

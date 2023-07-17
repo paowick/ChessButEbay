@@ -51,7 +51,7 @@ app.post('/auth/signUp', async (req, res) => {
         }
         res.sendStatus(200)
     } catch (e) {
-        console.log(e);
+        if( e instanceof SyntaxError){ return res.sendStatus(200)}
         res.sendStatus(500)
     }
 })
