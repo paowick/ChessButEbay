@@ -64,6 +64,15 @@ ul, li {
     font-family: Courier New;
     font-weight: 650;
 }
+h1{
+    color: #fff;
+}
+.pro-con{
+    gap: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
 
 .profile > img {
     width: 40px;
@@ -80,7 +89,7 @@ a{
 
 .logo{
     position: relative;
-    background: url(../image/logo.png);
+    background: url(../../image/logo.png);
     width: 200px;
     height: 35px;
     left: 15px;

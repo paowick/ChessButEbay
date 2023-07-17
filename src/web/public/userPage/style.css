@@ -6,6 +6,8 @@ body {
 }
 
 main{
+    margin: 0 auto;
+    width: fit-content;
     display: flex;
 }
 

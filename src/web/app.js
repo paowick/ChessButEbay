@@ -124,6 +124,14 @@ app.get(`/getsession`, (req, res) => {
     }
 })
 
+app.get(`/about`, (req,res)=>{
+    try {
+        res.sendFile(`${__dirname}/public/about/about.html`)
+    } catch (e) {
+        res.status(500)
+    }
+})
+
 app.get(`/clear`, (req, res) => {
     req.session.destroy((err) => {
         res.redirect('/') // will always fire after session is destroyed

@@ -4,6 +4,11 @@ body {
     background-repeat: no-repeat;
     background-attachment: fixed;
 }
+main{
+    margin: 0 auto;
+    width: fit-content;
+    display: flex;
+}
 .boxwhite{
     width: 100px;
     height: 100px;
