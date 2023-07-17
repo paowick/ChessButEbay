@@ -10,23 +10,47 @@ main{
 }
 
 .user-con{
+    margin: 30px;
+    font-family: Courier New;
+    font-weight: 650;
     backdrop-filter: blur(10px);
+    border-radius: 50px;
     display: flex;
-    margin: 0 auto;
-    width: 1000px;
-    border: solid 1px red;
+    width: 700px;
     justify-content: center;
     flex-direction: column;
     text-align: center;
     gap: 50px;
 }
 button{
+    font-family: Courier New;
+    font-weight: 650;
     font-size: 20px;
+    color: white;
+    background-color: #171717;
+    padding: 10px;
+    width: auto;
+    height: 50px;
+    transition: .4s ease-in-out;
+    border-radius: 25px;
+    box-shadow: 0 0 20px #000000;
+    margin-bottom: 10px;
+}
+
+button:hover {
+    scale: 1.05;
+    border-radius: 25px;
+    color: white;
+    background-color: black;
+    text-shadow: 0 0 5px #ffffff;
+    
+
 }
 .user-game-info{
-    margin: 0 auto;
+    margin: 30px;
     width: 1000px;
-    border: solid 1px red;
+    border-radius: 50px;
+    background-color: #171717;
 }
 .profile-main > img{
     width: 400px;
