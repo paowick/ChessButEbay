@@ -77,7 +77,10 @@ export async function InsertUser(Email, Password, Name, Score, Admin) {
         conn = await pool.getConnection();
         const rows = await conn.query("INSERT INTO `User` (`Email`, `Password`, `Name`, `Score`, `Admin`) VALUES (?, ?, ?, ?, ?);", [Email, Password, Name, Score, Admin]);
         console.log(rows.affectedRows);
-        return rows.affectedRows == 1 ? true : false
+        if(rows.affectedRows == 1){
+            return true
+        }
+        return false
     } finally {
         if (conn) conn.end();
     }
