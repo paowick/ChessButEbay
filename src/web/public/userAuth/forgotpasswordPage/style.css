@@ -25,9 +25,12 @@ body {
   }
 }
 .card{
+    font-family: Courier New;
+    font-weight: 650;
     margin: 0 auto;
     padding: 20px;
     margin-top: 200px;
+    margin-bottom: 50px;
     outline: 1px;
     border: 1px solid black;
     border-radius: 10px;
@@ -42,6 +45,8 @@ body {
 }
 
 .email-invalid{
+    font-family: Courier New;
+    font-weight: 650;
     color: red;
     border-bottom: 1px solid red;
 }
@@ -53,6 +58,8 @@ body {
     border-bottom: 1px solid red;
 }
 .send_btn{
+    font-family: Courier New;
+    font-weight: 650;
     font-size: 20px;
     color: white;
     background-color: #171717;
@@ -66,6 +73,8 @@ body {
     margin-left: 10px;
 }
 .send_btn_tog{
+    font-family: Courier New;
+    font-weight: 650;
     font-size: 20px;
     color: white;
     background-color: #171717;
@@ -87,6 +96,8 @@ body {
     justify-content: space-around;
 }
 input{
+    font-family: Courier New;
+    font-weight: 650;
     outline: none;
     border: 0;
     background-color: #171717;
@@ -102,6 +113,8 @@ input:focus{
     outline-color: #171717;
 }
 button{
+    font-family: Courier New;
+    font-weight: 650;
     font-size: 20px;
     color: white;
     background-color: #171717;
@@ -114,6 +127,8 @@ button{
     margin-top: 10px;
 }
 button:hover{
+    font-family: Courier New;
+    font-weight: 650;
     color: white;
     background-color: black;
     text-shadow: 0 0 5px #ffffff;

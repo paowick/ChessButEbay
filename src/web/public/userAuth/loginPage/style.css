@@ -116,6 +116,8 @@ body {
 }
 
 .email-invalid {
+    font-family: Courier New;
+    font-weight: 650;
     margin-top: 10px;
     color: red;
     border-bottom: 1px solid red;
@@ -124,9 +126,13 @@ body {
 .bott-con{
     display: flex;
     justify-content: center;
+    font-family: Courier New;
+    font-weight: 650;
 }
 
 input {
+    font-family: Courier New;
+    font-weight: 650;
     outline: none;
     border: 0;
     background-color: #171717;
@@ -144,6 +150,8 @@ input:focus {
 }
 
 button {
+    font-family: Courier New;
+    font-weight: 650;
     font-size: 17px;
     color: white;
     background-color: #252525;
@@ -155,6 +163,8 @@ button {
 }
 
 button:hover {
+    font-family: Courier New;
+    font-weight: 650;
     color: white;
     background-color: black;
     text-shadow: 0 0 5px #ffffff;
@@ -166,6 +176,8 @@ a {
 }
 
 .title{
+    font-family: Courier New;
+    font-weight: 650;
     font-size: 1.8rem;
     color: white;
     text-align: center;

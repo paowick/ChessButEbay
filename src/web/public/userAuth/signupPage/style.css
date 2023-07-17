@@ -31,6 +31,8 @@ body {
 }
 
 input {
+    font-family: Courier New;
+    font-weight: 650;
     outline: none;
     border: 0;
     background-color: #171717;
@@ -44,6 +46,8 @@ input {
 }
 
 button {
+    font-family: Courier New;
+    font-weight: 650;
     font-size: 20px;
     color: white;
     background-color: #171717;
@@ -74,6 +78,8 @@ a {
     width: 180px;
 }
 .send_btn {
+    font-family: Courier New;
+    font-weight: 650;
     margin: 0px 0px;
     border-radius: 25px;
     background-color: #171717;
@@ -84,6 +90,8 @@ a {
 }
 
 .send_btn_tog {
+    font-family: Courier New;
+    font-weight: 650;
     margin: 0px 10px;
     border-radius: 5px;
     background-color: #171717;
@@ -98,6 +106,8 @@ a {
 .send_btn_tog:hover {
     background-color: #171717;
     color: white;
+    font-family: Courier New;
+    font-weight: 650;
 
 }
 
@@ -108,6 +118,8 @@ a {
 
 
 .title {
+    font-family: Courier New;
+    font-weight: 650;
     margin: 0 auto;
     margin-top: 130px;
     background-color: #171717;

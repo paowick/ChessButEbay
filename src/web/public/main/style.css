@@ -27,3 +27,14 @@ body {
     caret-color: transparent;
 }
 
+.board{
+    display: block;
+    width: 1064px;
+    max-height: 900px;
+    min-height: 300px;
+    margin-left: 150px;
+    margin-top: 70px;
+    background-color: #171717;
+    border-radius: 30px;
+}
+
