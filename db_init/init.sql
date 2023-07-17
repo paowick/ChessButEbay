@@ -7,7 +7,6 @@ CREATE TABLE `User` (
   `Email` text NOT NULL,
   `Password` text NOT NULL,
   `Name` text NOT NULL,
-  `ImgPath` text ,
   `Score` int(10) DEFAULT NULL,
   `Admin` binary(1) NOT NULL COMMENT '1 = admin\r\n0 = not admin',
   PRIMARY KEY (`Id`)
