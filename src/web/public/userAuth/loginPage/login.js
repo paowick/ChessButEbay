@@ -41,6 +41,7 @@ function errEmailPassword() {
 }
 
 function loginPass() {
+    getSession()
     location.href = '/'
 }
 
@@ -67,4 +68,12 @@ function ValidateEmail(input) {
 function popup() {
     const form = document.getElementById("login-form")
     form.style.display = "inline-block"
+}
+async function getSession() {
+    const response = await fetch("/getsession");
+    const user = await response.json();
+
+
+    localStorage.setItem("user",JSON.stringify(user.data))
+    console.log(localStorage.getItem('user'));
 }

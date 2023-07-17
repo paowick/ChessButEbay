@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,8 +8,9 @@
     <link rel="stylesheet" href="../../userPage/style.css">
     <script src="../../userPage/user.js"></script>
     <title>User</title>
-    
+
 </head>
+
 <body>
     <script src="https://code.jquery.com/jquery.min.js"></script>
     <div id="nav-ph"></div>
@@ -17,11 +19,23 @@
             $("#nav-ph").load("../../assets/component/navbar.html")
         })
     </script>
-    <center>
-        <h1>user</h1>
-        <div id="userdata">
+    <main>
+        <div class="user-con">
+                <div class="profile-main" id="profile-main"></div>
+                    <div id="name"></div>
+                    <div id="email"></div>
+                    <div id="score"></div>
+            <div class="button-con">
+
+                <button>Change Password</button>
+                <button>Edit</button>
+            </div>
+            
         </div>
-    </center>
+        <div class="user-game-info">
+            <h1>info</h1>
+        </div>
+    </main>
 </body>
 
 </html>

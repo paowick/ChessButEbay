@@ -24,13 +24,7 @@ function logo() {
 async function profile() {
     const profile = document.getElementById('profile')
     const img = document.createElement("img");
-    img.src = `/userimg/getimg?id=${await getSession()}`
+    const user = JSON.parse(localStorage.getItem('user'))
+    img.src = `/userimg/getimg?id=${user.id}`
     profile.appendChild(img)
-}
-async function getSession() {
-    const response = await fetch("/getsession");
-    const user = await response.json();
-
-    console.log(user.data);
-    return user.data.id
 }
