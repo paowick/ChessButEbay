@@ -1,0 +1,190 @@
+body {
+    background-image: url("../../assets/image/bg02.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.logo02{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 60%;
+    
+    
+}
+.logo02:hover{
+    transform: scale(1.01);
+    transition: .4s ease-in-out;
+
+}
+
+
+@keyframes textclip {
+    to {
+      background-position: 200% center;
+    }
+  }
+
+.login {
+    padding: 20px 20px;
+}
+
+.flex-container {
+    min-width: fit-content;
+    width: 320px;
+    background-color: rgb(255, 255, 255);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+   
+}
+
+.forgot {
+    width: max-content;
+    background-color: #171717;
+}
+
+#err {
+    background-color: #171717;
+}
+
+.err-text {
+    background-color: #171717;
+}
+
+.login-con {
+    display: flex;
+    justify-content: center;
+
+    background-color: #171717;
+
+}
+
+.loginbuttRight {
+    transform: translateX(70px) !important;
+}
+
+.loginbuttLeft {
+    transform: translateX(-70px) !important;
+}
+
+#login-bt {
+    transition: 100ms;
+    transform: translateX(0);
+    margin-top: 20px;
+    width: 150px;
+    height: 40px;
+
+}
+
+.SignUp {
+    margin: 10px auto;
+    width: 150px;
+    height: 40px;
+}
+
+@media (min-width: 700px) {
+    .flex-container {
+        flex-direction: row;
+    }
+}
+
+
+.card {
+    margin: 0 auto;
+    padding: 15px;
+    margin-top: 15px;
+    outline: 1px;
+    border: 1px solid black;
+    border-radius: 20px;
+    background-color: #171717;
+    width: 300px;
+    justify-content: left;
+    height: 380px;
+}
+
+.card:hover{
+    transform: scale(1.10);
+    border: 1px solid black;
+    transition: .4s ease-in-out;
+}
+
+
+.pad-tb {
+    padding: 20px 20px;
+}
+
+.email-invalid {
+    font-family: Courier New;
+    font-weight: 650;
+    margin-top: 10px;
+    color: red;
+    border-bottom: 1px solid red;
+}
+
+.bott-con{
+    display: flex;
+    justify-content: center;
+    font-family: Courier New;
+    font-weight: 650;
+}
+
+input {
+    font-family: Courier New;
+    font-weight: 650;
+    outline: none;
+    border: 0;
+    background-color: #171717;
+    padding: 10px 13px;
+    margin: 5px auto;
+    font-size: 20px;
+    border-radius: 25px;
+    box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
+    color: white;
+}
+
+
+input:focus {
+    outline-color:#171717;
+}
+
+button {
+    font-family: Courier New;
+    font-weight: 650;
+    font-size: 17px;
+    color: white;
+    background-color: #252525;
+    border-radius: 25px;
+    width: 100px;
+    height: 30px;
+    transition: .4s ease-in-out;
+    
+}
+
+button:hover {
+    font-family: Courier New;
+    font-weight: 650;
+    color: white;
+    background-color: black;
+    text-shadow: 0 0 5px #ffffff;
+}
+
+a {
+    margin: 5px 5px;
+    text-align: center;
+}
+
+.title{
+    font-family: Courier New;
+    font-weight: 650;
+    font-size: 1.8rem;
+    color: white;
+    text-align: center;
+    line-height: 2rem;
+    padding-bottom: 15px;
+}
+
+
+
+

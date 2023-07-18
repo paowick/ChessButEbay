@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link type="text/css" rel="stylesheet" href="../../userAuth/loginPage/style.css">
+    <script src="../../userAuth/loginPage/login.js"></script>
+</head>
+
+<body>
+    <script src="https://code.jquery.com/jquery.min.js"></script>
+    <div id="nav-ph"></div>
+    <script>
+        $(function () {
+            $("#nav-ph").load("../../assets/component/navbar/navbar.html")
+        })
+    </script>
+
+
+
+  
+        
+        <img src="../../assets/image/logo02.png" alt="LogoGame" class="logo02">
+
+
+        <div class="login card" id="login-form" style="display: block;"><br>
+            <p class="title">Login</p>
+            <input type="email" id="email" placeholder="Email address" required><br>
+            <input type="password" id="password" placeholder="Password" required><br>
+            <div class="login-con" id="loginbutton">
+                <button id="login-bt" type="submit" onclick="login()"
+                    onmouseover="ValidateEmail(document.getElementById('email').value)">LogIn</button>
+            </div>
+
+            <div class="bott-con">
+                <button class="SignUp" type="submit" onclick="signUp()">SignUp</button>
+            </div>
+            <div class="bott-con">
+                <a href="/forgotPassword" class="forgot">ForgotPassword</a>
+            </div>
+            <div class="bott-con">
+                <div id="err"></div>
+            </div>
+        </div>
+        </div>
+        
+
+
+</body>
+
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../userAuth/signupPage/style.css">
+    <script src="../../userAuth/signupPage/singup.js"></script>
+    
+    <title>signup</title>
+</head>
+
+<body>
+    <script src="https://code.jquery.com/jquery.min.js"></script>
+    <div id="nav-ph"></div>
+    <script>
+        $(function () {
+            $("#nav-ph").load("../../assets/component/navbar/navbar.html")
+        })
+    </script>
+
+
+    <div class="title" id="title">
+        <p>
+
+
+
+        <div class="title" id="title">
+
+            SIGNUP
+        </p>
+    </div>
+    <div class="card">
+        <input type="text" id="User-name" placeholder="User Name" required><br>
+        <input type="email" id="email" placeholder="Email address" required><br>
+        <input type="text" id="verify" placeholder="Verify Code" required>
+        <button class="send_btn" id="send_btn" onclick="stageOfbtn()">Send</button><br>
+        <input type="password" id="password" placeholder="Password" required><br>
+        <input type="password" id="password-confrim" placeholder="Password" required><br>
+        <div class="bott-con">
+            <button class="back" type="button" onclick="back()">Back</button>
+            <button class="SignUp" type="submit" onclick="signup()">SignUp</button>
+        </div>
+
+        <div id="err"></div>
+
+    </div>
+
+
+</body>
+
+</html>
