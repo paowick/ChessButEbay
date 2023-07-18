@@ -5,13 +5,13 @@ body {
     background-attachment: fixed;
 }
 
-main{
+main {
     margin: 0 auto;
     width: fit-content;
     display: flex;
 }
 
-.user-con{
+.user-con {
     margin: 30px;
     font-family: Courier New;
     font-weight: 650;
@@ -24,7 +24,8 @@ main{
     text-align: center;
     gap: 50px;
 }
-button{
+
+button {
     font-family: Courier New;
     font-weight: 650;
     font-size: 20px;
@@ -45,18 +46,79 @@ button:hover {
     color: white;
     background-color: black;
     text-shadow: 0 0 5px #ffffff;
-    
+
 
 }
-.user-game-info{
+
+.user-game-info {
     margin: 30px;
     width: 1000px;
     border-radius: 50px;
     background-color: #171717;
 }
-.profile-main > img{
-    width: 400px;
-    height: 400px;
+
+.profile-main>img {
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 100%;
+}
+
+.edit-icon{
+    width: 50px;
+    height: 50px;
+    object-fit: fill;
+    border-radius: 100%;
+    position: absolute;
+    transform: translate(250%,-80%);
+}
+
+.edit-icon > img{
+    width: 50px;
+    height: 50px;
     object-fit: fill;
     border-radius: 100%;
 }
+
+.edit-icon:hover {
+    backdrop-filter: blur(10px);
+    background-color: #EDBA00;
+
+}
+
+
+
+.edit-pop {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    visibility: hidden;
+    margin: 0 auto;
+    /* background-color: #171710; */
+    backdrop-filter: blur(10px);
+    width: 300px;
+    height: 500px;
+    position: absolute;
+    transform: translate(267%, -130%);
+}
+
+
+.profile-pop>img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 100%;
+}
+
+
+
+h3 {
+    color: white;
+}
+
+.h3-con {
+    display: flex;
+    justify-content: space-between;
+}
+

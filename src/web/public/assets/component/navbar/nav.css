@@ -77,7 +77,7 @@ h1{
 .profile > img {
     width: 40px;
     height: 40px;
-    object-fit: fill;
+    object-fit: cover;
     border-radius: 100%;
 }
 
