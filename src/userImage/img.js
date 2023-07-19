@@ -1,5 +1,6 @@
 import express from 'express';
 import fs from 'fs'
+import multer from 'multer'
 const app = express();
 const port = 8080;
 
@@ -7,6 +8,36 @@ import path from "path"
 const __dirname = path.resolve();
 
 app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+// Configure Multer middleware to handle file uploads
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        const dir = `${__dirname}/image_user/${req.query.id}`
+        if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir)
+            fs.writeFile(`${dir}/img.txt`, '', function (err) {
+                if (err) throw err; console.log('Results Received');
+            })
+        }
+        const oldfile = getFiles(dir)
+        const old_file_extension = oldfile[0].split('.').pop()
+        fs.rmSync(`${__dirname}/image_user/${req.query.id}/img.${old_file_extension}`)
+        cb(null, `./image_user/${req.query.id}/`)  // Set the destination folder for uploaded files
+    },
+    filename: function (req, file, cb) {
+        const file_ext = file.originalname.split('.').pop()
+        cb(null, `img.${file_ext}`) // Use the original file name for uploaded files
+    }
+
+
+});
+
+
+
+
+const upload = multer({ storage: storage });
+
 
 app.get(`/userimg/getimg`, async (req, res) => {
     try {
@@ -19,8 +50,14 @@ app.get(`/userimg/getimg`, async (req, res) => {
     }
 })
 
-app.post(`/userimg/chageimg`, async (req, res) => {
-// here
+app.post(`/userimg/chageimg`, upload.single('file'), async (req, res) => {
+    try {
+
+        res.sendStatus(200)
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500)
+    }
 })
 
 app.listen(port, () => {
@@ -32,9 +69,8 @@ function imageStoreCheck() {
     try {
         const dir = `${__dirname}/image_user/`
         const file = getFiles(dir)
-        console.log(file);
     } catch (error) {
-    fs.mkdirSync('image_user');
+        fs.mkdirSync('image_user');
     }
 }
 imageStoreCheck()

@@ -112,6 +112,19 @@ app.post(`/logInVerify`, async (req, res) => {
     }
 })
 
+app.post(`/editinfo`,(req,res)=>{
+    try {
+        req.session.user.name = req.body.Username
+        req.session.user.fname = req.body.Fname
+        req.session.user.lname = req.body.Lname
+        console.log(req.session.user);
+        res.sendStatus(200)
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500)       
+    }
+})
+
 app.get(`/getsession`, (req, res) => {
     try {
         console.log(req.session.user);

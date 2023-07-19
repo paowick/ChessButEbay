@@ -1,9 +1,10 @@
 async function signup() {
-    const Name = document.getElementById("name")
+    const Name = document.getElementById("User-name")
     const Email = document.getElementById("email")
     const VerifyCode = document.getElementById("verify")
     const Pass = document.getElementById("password")
     const Passcomfrim = document.getElementById("password-confrim")
+    console.log(Name.value);
 
     if (!fillup(Name, Email, VerifyCode, Pass, Passcomfrim)) return errText('Plase fill all of info')
     if (!ValidateEmail(Email.value)) return errText('Email invalid')
@@ -51,6 +52,7 @@ function stageOfbtn() {
 
 async function signupFecth(Name, Email, VerifyCode, Pass) {
     errText('')
+    console.log(Name);
     const data = {
         Name: Name,
         Email: Email,

@@ -21,21 +21,76 @@
     </script>
     <main>
         <div class="user-con">
-                <div class="profile-main" id="profile-main"></div>
-                    <div id="name"></div>
-                    <div id="email"></div>
-                    <div id="score"></div>
-            <div class="button-con">
-
-                <button>Change Password</button>
-                <button>Edit</button>
+            <div class="profile-main" id="profile-main">
+                <img id="profile-pic" alt="">
             </div>
-            
+            <div id="name-main"></div>
+            <div id="FLname"></div>
+            <div id="email"></div>
+            <div id="score"></div>
+            <div class="button-con">
+                <button>Change Password</button>
+                <button onclick="Edit()">Edit</button>
+            </div>
+
         </div>
         <div class="user-game-info">
             <h1>info</h1>
         </div>
     </main>
+    
+    <div class="edit-pop" id="edit-pop">
+        <form id="edit-form" method="post" enctype="multipart/form-data">
+        <div class="profile-pop" id="profile-pop">
+            <img id="profile-pic-pop" alt="">
+        </form>
+            <div class="edit-icon" onclick="document.getElementById('up-but').click();" >
+                    <img src="../assets/image/edit-profile-icon.png" alt="">
+                    <input type="file" name="file" id="up-but" hidden action="/">
+                </div>
+            </div>
+            <div class="h3-con">
+                <h3>User Name: </h3>
+                <input id="name-pop" type="text">
+            </div>
+             <div class="h3-con">
+                <h3>First Name: </h3>
+                <input id="Fname-pop" type="text">
+            </div>
+            <div class="h3-con">
+                <h3>Last Name: </h3>
+                <input id="Lname-pop" type="text">
+            </div>
+            <div class="button-con">
+                <button onclick="save()">Save</button>
+            </div>
+        </div>
 </body>
 
+<script>
+    // Get the input element and the preview element
+		const input = document.getElementById('up-but');
+		const preview = document.getElementById('profile-pic-pop');
+
+        
+		// Listen for changes to the input element
+		input.addEventListener('change', function() {
+            Array.from(input.files).splice(1,1)
+			// If a file is selected
+			if (input.files && input.files[0]) {
+				// Create a FileReader object
+				const reader = new FileReader();
+
+				// When the file is loaded
+				reader.addEventListener('load', function() {
+					// Set the preview image source to the loaded data URL
+					preview.src = reader.result;
+				});
+
+				// Read the file as a data URL
+				reader.readAsDataURL(input.files[0]);
+			}
+		});
+</script>
 </html>
+
