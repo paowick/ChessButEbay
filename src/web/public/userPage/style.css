@@ -15,7 +15,8 @@ main {
     margin: 30px;
     font-family: Courier New;
     font-weight: 650;
-    backdrop-filter: blur(10px);
+    /* backdrop-filter: blur(10px); */
+    background-color: rgba(23,23,23,0.5);
     border-radius: 50px;
     display: flex;
     width: 700px;
@@ -54,7 +55,7 @@ button:hover {
     margin: 30px;
     width: 1000px;
     border-radius: 50px;
-    background-color: #171717;
+    background-color: rgba(23,23,23,0.5);
 }
 
 .profile-main>img {

@@ -12,7 +12,8 @@ window.onload = async function profileMain() {
     const h1_flname = document.createElement("h1");
     const h1_email = document.createElement("h1");
     const h1_score = document.createElement("h1");
-
+    if (user.fname == null) { user.fname = "" }
+    if (user.lname == null) { user.lname = "" }
     h1_name.innerText = `User Name: ${user.name}`
     h1_flname.innerText = `name: ${user.fname}  ${user.lname}`
     h1_email.innerText = `Email: ${user.email}`
@@ -43,6 +44,8 @@ function Edit() {
         const name = document.getElementById("name-pop")
         const Fname = document.getElementById("Fname-pop")
         const Lname = document.getElementById("Lname-pop")
+        if (user.fname == null) { user.fname = "" }
+        if (user.lname == null) { user.lname = "" }
         name.value = `${user.name}`
         Fname.value = `${user.fname}`
         Lname.value = `${user.lname}`
@@ -66,7 +69,7 @@ async function upload() {
         method: 'POST',
         body: formData,
     };
-    const img  = await fetch(`/userimg/chageimg?id=${user.id}`, options);
+    const img = await fetch(`/userimg/chageimg?id=${user.id}`, options);
 
     const data = {
         Username: document.getElementById('name-pop').value,
@@ -80,11 +83,11 @@ async function upload() {
         },
         body: JSON.stringify(data)
     })
-    if(img.status == 200 && editinfo.status == 200){
+    if (img.status == 200 && editinfo.status == 200) {
         getSession()
         window.location.reload()
     }
-    if(img.status == 500 || editinfo.status ==500){
+    if (img.status == 500 || editinfo.status == 500) {
         alert(`Server error please try again later`)
     }
 }
@@ -94,7 +97,7 @@ async function getSession() {
     const user = await response.json();
 
     localStorage.removeItem("user")
-    localStorage.setItem("user",JSON.stringify(user.data))
+    localStorage.setItem("user", JSON.stringify(user.data))
     console.log(localStorage.getItem('user'));
 }
 

@@ -6,7 +6,7 @@ const port = 8080;
 app.use(express.json())
 
 app.post('/api/userCheckBackEnd', async (req, res) => {
-    try{
+    try {
         if (req.body.password == null) {
             const dbres = await db.userCheckBackEnd(req.body.email, req.body.id)
             res.json({
@@ -19,36 +19,55 @@ app.post('/api/userCheckBackEnd', async (req, res) => {
                 body: dbres.data
             })
         }
-    }catch(e){
+    } catch (e) {
         res.status(500)
     }
 })
 
-app.get("/api/qureyEmail", async (req,res)=>{
-    try{
+app.get("/api/qureyEmail", async (req, res) => {
+    try {
         const dbres = await db.userQurey(req.query.Email)
         res.json({
-            Response:dbres.Response
+            Response: dbres.Response
         })
-    }catch(e){
+    } catch (e) {
         res.status(500)
     }
 })
 
 
 
-app.post("/api/insertUser",async (req,res)=>{
-    const insertres = await db.InsertUser(req.body.email,req.body.password,req.body.name,req.body.score,req.body.admin)
-    if(insertres){
+app.post("/api/insertUser", async (req, res) => {
+    const insertres = await db.InsertUser(req.body.email, req.body.password, req.body.name, req.body.score, req.body.admin)
+    if (insertres) {
         res.sendStatus(200)
-    }else{
+    } else {
         res.sendStatus(500)
     }
 })
 
-app.post('/api/resetpassword',async (req,res)=>{
-    const resetpassword = await db.resetPassword(req.body.email,req.body.pass)
-    res.sendStatus(200)
+app.post('/api/resetpassword', async (req, res) => {
+    const resetpassword = await db.resetPassword(req.body.email, req.body.pass)
+    if (resetpassword) {
+        res.sendStatus(200)
+    } else {
+        res.sendStatus(500)
+    }
+})
+
+app.post('/api/editinfo', async (req, res) => {
+    try {
+        console.log(req.body);
+        const editinfo = db.editinfo(req.body.id, req.body.name, req.body.fname, req.body.lname)
+        if (editinfo) {
+            res.sendStatus(200)
+        } else {
+            res.sendStatus(500)
+        }
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500)
+    }
 })
 
 app.listen(port, () => {
