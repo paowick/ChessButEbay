@@ -6,32 +6,50 @@ body {
 }
 
 main {
+    padding: 50px;
     width: 100%;
     display: flex;
     justify-content: center;
-
+    gap: 40px;
 }
 
-
-.board {
-    margin: 50px;
-    padding: 10px;
-    width: 1064px;
-    height: 700px;
+.option-con {
+    background-color: #171717;
+    width: 30%;
+    height: 700px; 
+    padding: 2px;
     background-color: #171717;
     border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.board-con{
+    width: 70%;
+    height: 700px;
+    padding: 2px;
+    background-color: #171717;
+    border-radius: 30px;
+}
+
+.board {
+    width: 98%;
+    height: 97%;
     overflow: auto;
+    border-radius: 30px;
+    background-color: #171717;
+    margin: 10px;
 }
 
 ::-webkit-scrollbar {
     width: 12px;
     height: 12px;
-    transform: translateX( -10px);
 }
 
 ::-webkit-scrollbar-track {
-    margin-top: 20px;
-    margin-bottom: 20px;
     border: 1px solid yellowgreen;
     border-radius: 10px;
 }
@@ -42,9 +60,56 @@ main {
 }
 
 .room {
+    padding: 1%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     border-radius: 50px;
     margin: 10px auto;
     width: 100%;
     height: 10%;
     background-color: aliceblue;
 }
+.cre-but{
+    width: 274px;
+}
+
+input {
+    font-family: Courier New;
+    font-weight: 650;
+    outline: none;
+    border: 0;
+    background-color: #171717;
+    padding: 10px 13px;
+    margin: 5px auto;
+    font-size: 20px;
+    border-radius: 25px;
+    box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
+    color: white;
+}
+button {
+    font-family: Courier New;
+    font-weight: 650;
+    font-size: 17px;
+    color: white;
+    background-color: #252525;
+    border-radius: 25px;
+    width: 100px;
+    height: 30px;
+    transition: .4s ease-in-out;
+    
+}
+
+
+p{
+    font-family: Courier New;
+    font-size: 40px;
+    color: #000000;
+}
+
+.test{
+    background-color: #000000;
+    height: 70%;
+
+}
+
