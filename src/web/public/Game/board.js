@@ -31,9 +31,10 @@ console.log(board);
 
 var source = null
 var destination = null
-document.querySelectorAll('th')
+document.querySelectorAll('.box')
     .forEach(div => {
         div.addEventListener('click', function () {
+            console.log();
             if (source == null && destination == null) {
                 source = this.id;
             } else if (source != null && destination == null) {
@@ -42,6 +43,8 @@ document.querySelectorAll('th')
             }
         })
     })
+
+
 function move(){
     if (destination != source) {
         console.log(`${source} => ${destination}`)

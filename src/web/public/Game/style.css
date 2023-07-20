@@ -1,20 +1,98 @@
 .boxwhite{
-    width: 100px;
-    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80px;
+    height: 80px;
     background-color: rgb(202, 249, 202);
-   
 }
 .boxblack{
-    width: 100px;
-    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80px;
+    height: 80px;
     background-color: rgb(75, 149, 75);
-
 }
 
 .boxpiece{
-    flex-wrap: wrap;
-    font-size: 50px;
+    width: 80px;
+    height: 80px;
+    font-size: 60px;
+    text-align: center;
+}
 
+main{
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.fake-board{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: blue;
+    width: 654px;
+    height: 654px;
+}
+
+.container-col-text{
+    display: flex;
+    justify-content: center;
+    width: fit-content;
+}
+.collumn-text{
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    height: 654px;
+    gap: 2px;
+}
+.per-text-col{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    height: 80px;
+}
+
+.per-text-col > h2{
+    text-align: center;
+}
+
+.container-fuckin-all{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: fit-content;
+}
+.row-text{
+    display: flex;
+    height: fit-content;
+    justify-content: center;
+    width: 678px;
+    gap: 2px;
+}
+.per-text-row{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    width: 80px;
+}
+
+.per-text-row > h2{
+    text-align: center;
+}
+
+.board-con{
+    display: flex;
+    width: 654px;
+    height: 654px;
+    gap: 2px;
+    flex-wrap: wrap;
+    background-color: gray;
 }
 
 *{
