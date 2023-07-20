@@ -6,6 +6,15 @@
     height: 80px;
     background-color: rgb(202, 249, 202);
 }
+
+.boxwhite-hight-light{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80px;
+    height: 80px;
+    background-color: rgb(214,214,189);
+}
 .boxblack{
     display: flex;
     justify-content: center;
@@ -13,6 +22,14 @@
     width: 80px;
     height: 80px;
     background-color: rgb(75, 149, 75);
+}
+.boxblack-hight-light{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80px;
+    height: 80px;
+    background-color: rgb(214,214,189);
 }
 
 .boxpiece{
