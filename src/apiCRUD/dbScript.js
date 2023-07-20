@@ -100,3 +100,15 @@ export async function resetPassword(email,newPassword) {
         if (conn) conn.end();
     }
 }
+
+export async function editinfo(id,name,fname,lname) {
+    let conn;
+    try {
+        conn = await pool.getConnection();
+        const rows = await conn.query("UPDATE User SET User.Name = ? , User.Fname = ? , User.Lname = ? WHERE Id = ?;",[name,fname,lname,id]);
+        console.log(rows);
+        return rows.affectedRows == 1 ? true : false
+    } finally {
+        if (conn) conn.end();
+    }
+}

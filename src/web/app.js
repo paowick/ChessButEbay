@@ -112,16 +112,36 @@ app.post(`/logInVerify`, async (req, res) => {
     }
 })
 
-app.post(`/editinfo`,(req,res)=>{
+app.post(`/editinfo`, async (req, res) => {
     try {
+        console.log(req.session.user.name);
+
+
+
         req.session.user.name = req.body.Username
         req.session.user.fname = req.body.Fname
         req.session.user.lname = req.body.Lname
-        console.log(req.session.user);
+
+
+        const data = {
+            id: req.session.user.id,
+            name: req.body.Username,
+            fname: req.body.Fname,
+            lname: req.body.Lname
+        }
+        const editinfoRES = await fetch(`http://api:8080/api/editinfo`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        })
+
+        if (editinfoRES.status == 500) { res.sendStatus(500) }
         res.sendStatus(200)
     } catch (e) {
         console.log(e);
-        res.sendStatus(500)       
+        res.sendStatus(500)
     }
 })
 
@@ -137,7 +157,7 @@ app.get(`/getsession`, (req, res) => {
     }
 })
 
-app.get(`/about`, (req,res)=>{
+app.get(`/about`, (req, res) => {
     try {
         res.sendFile(`${__dirname}/public/about/about.html`)
     } catch (e) {
