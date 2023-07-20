@@ -1,7 +1,10 @@
 import express from 'express';
 import cookieParser from 'cookie-parser';
-import * as Script from './script.js'
 import sessions from 'express-session';
+import RedisStore from "connect-redis"
+import {createClient} from "redis"
+import bodyParser from 'body-parser'
+
 const app = express();
 const port = 8080;
 import path from "path"
@@ -13,15 +16,40 @@ dotenv.config()
 app.use(express.static('public'));
 app.use(express.json())
 app.use(cookieParser())
+app.set('trust proxy', 1);
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+
+let redisClient = createClient({
+    socket: {
+        host: 'authredis',
+        port: '6379'
+    }
+})
+redisClient.connect().catch(console.error)
+
+let redisStore = new RedisStore({
+  client: redisClient,
+  prefix: "myapp:",
+})
+
+
 
 
 const age = 365 * 24 * 60 * 60 * 1000;
 app.use(sessions({
+    store: redisStore,
     secret: process.env.SESSIONKEY,
-    saveUninitialized: true,
-    cookie: { maxAge: age },
-    resave: false
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        maxAge: age
+    },
 }));
+
+
+
 
 
 app.get('/login', (req, res) => {

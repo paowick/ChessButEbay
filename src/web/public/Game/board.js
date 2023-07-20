@@ -37,6 +37,7 @@ document.querySelectorAll('.box')
             console.log();
             if (source == null && destination == null) {
                 source = this.id;
+                console.log(this);
             } else if (source != null && destination == null) {
                 destination = this.id;
                 move()
@@ -45,7 +46,7 @@ document.querySelectorAll('.box')
     })
 
 
-function move(){
+function move(newpos){
     if (destination != source) {
         console.log(`${source} => ${destination}`)
         socket.emit("move", {
@@ -54,7 +55,7 @@ function move(){
         })
 
         kingWhite.unset()
-        kingWhite.pos = "01" 
+        kingWhite.pos = "02"
         kingWhite.setPiece()
 
         destination = null
