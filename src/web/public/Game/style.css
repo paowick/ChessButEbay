@@ -1,4 +1,4 @@
-.boxwhite{
+.boxwhite {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -7,15 +7,7 @@
     background-color: rgb(202, 249, 202);
 }
 
-.boxwhite-hight-light{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 80px;
-    height: 80px;
-    background-color: rgb(214,214,189);
-}
-.boxblack{
+.boxblack {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -23,30 +15,30 @@
     height: 80px;
     background-color: rgb(75, 149, 75);
 }
-.boxblack-hight-light{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+
+.hight-light {
     width: 80px;
-    height: 80px;
-    background-color: rgb(214,214,189);
+    height: 90px;
+    font-size: 60px;
+    justify-content: center;
+    text-align: center;
 }
 
-.boxpiece{
+.boxpiece {
     width: 80px;
     height: 80px;
     font-size: 60px;
     text-align: center;
 }
 
-main{
+main {
     padding: 20px;
     display: flex;
     justify-content: center;
     width: 100%;
 }
 
-.fake-board{
+.fake-board {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -55,19 +47,21 @@ main{
     height: 654px;
 }
 
-.container-col-text{
+.container-col-text {
     display: flex;
     justify-content: center;
     width: fit-content;
 }
-.collumn-text{
+
+.collumn-text {
     display: flex;
     flex-direction: column;
     width: fit-content;
     height: 654px;
     gap: 2px;
 }
-.per-text-col{
+
+.per-text-col {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -75,35 +69,37 @@ main{
     height: 80px;
 }
 
-.per-text-col > h2{
+.per-text-col>h2 {
     text-align: center;
 }
 
-.container-fuckin-all{
+.container-fuckin-all {
     display: flex;
     justify-content: center;
     flex-direction: column;
     width: fit-content;
 }
-.row-text{
+
+.row-text {
     display: flex;
     height: fit-content;
     justify-content: center;
     width: 678px;
     gap: 2px;
 }
-.per-text-row{
+
+.per-text-row {
     display: flex;
     justify-content: center;
     text-align: center;
     width: 80px;
 }
 
-.per-text-row > h2{
+.per-text-row>h2 {
     text-align: center;
 }
 
-.board-con{
+.board-con {
     display: flex;
     width: 654px;
     height: 654px;
@@ -112,6 +108,6 @@ main{
     background-color: gray;
 }
 
-*{
+* {
     caret-color: transparent;
 }

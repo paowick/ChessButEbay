@@ -52,18 +52,12 @@ document.querySelectorAll('.box')
         })
     })
 
-    
+
 function clearHightLight(piece) {
     const posList = piece.moveAblepos()
     posList.forEach(element => {
         const id = tranSlateToId(element)
-        console.log(document.getElementById(id).classList);
-        if (document.getElementById(id).classList[0] == `boxwhite-hight-light`) {
-            document.getElementById(id).setAttribute('class', `boxwhite`)
-        }
-        if (document.getElementById(id).classList[0] == `boxblack-hight-light`) {
-            document.getElementById(id).setAttribute('class', `boxblack`)
-        }
+        document.getElementById(id).innerHTML = ``
     });
 }
 
@@ -71,12 +65,7 @@ function showMoveAble(piece) {
     const posList = piece.moveAblepos()
     posList.forEach(element => {
         const id = tranSlateToId(element)
-        if (document.getElementById(id).classList[0] == `boxblack`) {
-            document.getElementById(id).setAttribute('class', `boxblack-hight-light`)
-        }
-        if (document.getElementById(id).classList[0] == `boxwhite`) {
-            document.getElementById(id).setAttribute('class', `boxwhite-hight-light`)
-        }
+        document.getElementById(id).innerHTML = `<div class="hight-light">&#9900<//div>`
     });
 }
 

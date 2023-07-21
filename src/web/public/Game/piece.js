@@ -80,7 +80,7 @@ export class pieces {
         this.board[this.pos[0]][this.pos[1]] = this
         var id = this.tranSlateToId()
         var box = document.querySelector(`#${id}`)
-        box.innerHTML = `<div class= "boxpiece kingWhite">&#9812;</div>`
+        box.innerHTML = `<div class="boxpiece kingWhite">&#9812;</div>`
     }
     unset() {
         this.board[this.pos[0]][this.pos[1]] = null
