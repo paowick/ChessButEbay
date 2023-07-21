@@ -26,8 +26,9 @@ var board = [
     [null, null, null, null, null, null, null, null],
 ]
 
-var kingWhite = new pieces.king("king", "02", "w", board)
-var queenWhite = new pieces.queen("queen", "12", "W", board)
+new pieces.king("king", "02", "W", board)
+new pieces.queen("queen", "12", "W", board)
+new pieces.queen("queen", "14", "B", board)
 
 var source = null
 var destination = null
