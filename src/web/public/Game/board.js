@@ -1,4 +1,4 @@
-import { pieces, king } from './piece.js';
+import * as pieces from './piece.js';
 
 
 
@@ -26,8 +26,8 @@ var board = [
     [null, null, null, null, null, null, null, null],
 ]
 
-var kingWhite = new king("king", "02", board)
-
+var kingWhite = new pieces.king("king", "02", "w", board)
+var queenWhite = new pieces.queen("queen", "12", "W", board)
 
 var source = null
 var destination = null
@@ -42,7 +42,11 @@ document.querySelectorAll('.box')
                 showMoveAble(piece)
             } else if (source != null && destination == null) {
                 const piece = havePiece(source)
-                if (!pieceMoveable(piece, this.id)) { return destination = null }
+                if (!pieceMoveable(piece, this.id)) {
+                    clearHightLight(piece)
+                    source = null
+                    return destination = null
+                }
                 destination = this.id;
                 clearHightLight(havePiece(source))
                 moveClient(source, destination)
@@ -54,7 +58,7 @@ document.querySelectorAll('.box')
 
 
 function clearHightLight(piece) {
-    const posList = piece.moveAblepos()
+    const posList = piece.moveAblepos(board)
     posList.forEach(element => {
         const id = tranSlateToId(element)
         document.getElementById(id).innerHTML = ``
@@ -62,7 +66,7 @@ function clearHightLight(piece) {
 }
 
 function showMoveAble(piece) {
-    const posList = piece.moveAblepos()
+    const posList = piece.moveAblepos(board)
     posList.forEach(element => {
         const id = tranSlateToId(element)
         document.getElementById(id).innerHTML = `<div class="hight-light">&#9900<//div>`
@@ -70,7 +74,7 @@ function showMoveAble(piece) {
 }
 
 function pieceMoveable(piece, source) {
-    if (!piece.moveAblepos().includes(tranSlateTopos(source))) {
+    if (!piece.moveAblepos(board).includes(tranSlateTopos(source))) {
         return false
     }
     return true

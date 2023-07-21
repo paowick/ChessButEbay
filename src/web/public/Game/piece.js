@@ -1,8 +1,9 @@
 export class pieces {
-    constructor(name, pos, board) {
+    constructor(name, pos, team, board) {
         this.name = name
         this.pos = pos
         this.board = board
+        this.team = team
         this.setPiece()
     }
     tranSlateToId() {
@@ -76,12 +77,6 @@ export class pieces {
         return temp;
     }
 
-    setPiece() {
-        this.board[this.pos[0]][this.pos[1]] = this
-        var id = this.tranSlateToId()
-        var box = document.querySelector(`#${id}`)
-        box.innerHTML = `<div class="boxpiece kingWhite">&#9812;</div>`
-    }
     unset() {
         this.board[this.pos[0]][this.pos[1]] = null
         var id = this.tranSlateToId()
@@ -91,8 +86,15 @@ export class pieces {
 }
 
 export class king extends pieces {
-
-    moveAblepos() {
+    
+    setPiece() {
+        this.board[this.pos[0]][this.pos[1]] = this
+        var id = this.tranSlateToId()
+        var box = document.querySelector(`#${id}`)
+        box.innerHTML = `<div class="boxpiece kingWhite">&#9812;</div>`
+    }
+    
+    moveAblepos(board) {
         const result = []
         const row = parseInt(this.pos[1])
         const col = parseInt(this.pos[0])
@@ -105,8 +107,24 @@ export class king extends pieces {
         if (col - 1 > -1 && row + 1 < 8) { result.push(`${col - 1}${row + 1}`) };
         if (col - 1 > -1 && row - 1 > -1) { result.push(`${col - 1}${row - 1}`) };
 
+        result.forEach(function(item,index,object){
+            if(board[item[0]][item[1]] != null){
+                object.splice(index,1)
+            }
+        });
+
         return result
     }
 
 
-} 
+}
+export class queen extends pieces {
+
+    setPiece() {
+        this.board[this.pos[0]][this.pos[1]] = this
+        var id = this.tranSlateToId()
+        var box = document.querySelector(`#${id}`)
+        box.innerHTML = `<div class="boxpiece queenWhite">&#9813;</div>`
+    }
+}
+
