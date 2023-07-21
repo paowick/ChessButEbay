@@ -30,6 +30,9 @@
     font-size: 60px;
     text-align: center;
 }
+.boxpiece:hover{
+    cursor: pointer;
+}
 
 main {
     padding: 20px;
