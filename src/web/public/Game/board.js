@@ -26,21 +26,33 @@ var board = [
     [null, null, null, null, null, null, null, null],
 ]
 
-new pieces.king("king", "02", "W", board)
-new pieces.queen("queen", "12", "B", board)
-new pieces.queen("queen", "14", "B", board)
+new pieces.king("king", "03", "W", true,board)
+new pieces.king("king", "73", "B", true,board)
+// new pieces.queen("queen", "12", "B", false,board)
+// new pieces.queen("queen", "14", "B", false,board)
 
 var source = null
 var destination = null
 document.querySelectorAll('.box')
     .forEach(div => {
         div.addEventListener('click', function () {
+
+
             if (source == null && destination == null) {
+                // source position ====================================================================
+
                 const piece = havePiece(this.id)
                 if (piece == null) { return source = null; }
                 source = this.id;
                 showMoveAble(piece)
+
+
+
+
             } else if (source != null && destination == null) {
+                // destination position ===============================================================
+
+
                 const piece = havePiece(source)
                 if (!pieceMoveable(piece, this.id)) {
                     clearHightLight(piece)
@@ -52,7 +64,15 @@ document.querySelectorAll('.box')
                 moveClient(source, destination)
                 source = null
                 destination = null
+
+
+
+
+                // end here ===========================================================================
             }
+
+
+
         })
     })
 

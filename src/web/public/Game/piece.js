@@ -1,9 +1,12 @@
+import * as base from './board.js'
+
 export class pieces {
-    constructor(name, pos, team, board) {
+    constructor(name, pos, team, isKing, board) {
         this.name = name
         this.pos = pos
         this.board = board
         this.team = team
+        this.isKing = isKing
         this.setPiece()
     }
     tranSlateToId() {
@@ -86,15 +89,57 @@ export class pieces {
 }
 
 export class king extends pieces {
-    
+
+    findEnamyMove(board) {
+        let result = []
+        for (let index = 0; index < board.length; index++) {
+            const elements = board[index];
+            for (let index = 0; index < elements.length; index++) {
+                const element = elements[index];
+                if (element == null || element.team == this.team) { continue }
+                if (element.isKing) { result = result.concat(element.moveAbleposForKing(board)); continue }
+                result = result.concat(element.moveAblepos(board))
+
+            }
+        }
+        return result
+    }
+
     setPiece() {
         this.board[this.pos[0]][this.pos[1]] = this
         var id = this.tranSlateToId()
         var box = document.querySelector(`#${id}`)
         box.innerHTML = `<div class="boxpiece kingWhite">&#9812;</div>`
     }
-    
+
     moveAblepos(board) {
+        const result = []
+        const filterResult = []
+        const row = parseInt(this.pos[1])
+        const col = parseInt(this.pos[0])
+        if (col + 1 < 8) { result.push(`${col + 1}${row}`) };
+        if (col - 1 > -1) { result.push(`${col - 1}${row}`) };
+        if (row + 1 < 8) { result.push(`${col}${row + 1}`) };
+        if (row - 1 > -1) { result.push(`${col}${row - 1}`) };
+        if (col + 1 < 8 && row + 1 < 8) { result.push(`${col + 1}${row + 1}`) };
+        if (col + 1 < 8 && row - 1 > -1) { result.push(`${col + 1}${row - 1}`) };
+        if (col - 1 > -1 && row + 1 < 8) { result.push(`${col - 1}${row + 1}`) };
+        if (col - 1 > -1 && row - 1 > -1) { result.push(`${col - 1}${row - 1}`) };
+
+        const allEnamyMove = this.findEnamyMove(board)
+        for (let index = 0; index < result.length; index++) {
+            const element = result[index];
+            const box = board[element[0]][element[1]]
+            if (box != null &&
+                box.team == this.team) { continue }
+            if (allEnamyMove.includes(element)) { continue }
+            filterResult.push(element)
+        }
+
+        return filterResult
+    }
+
+    moveAbleposForKing(board) {
         const result = []
         const filterResult = []
         const row = parseInt(this.pos[1])
@@ -110,7 +155,9 @@ export class king extends pieces {
 
         for (let index = 0; index < result.length; index++) {
             const element = result[index];
-            if (board[element[0]][element[1]] != null && board[element[0]][element[1]].team == this.team) {continue}
+            const box = board[element[0]][element[1]]
+            if (box != null &&
+                box.team == this.team) { continue }
             filterResult.push(element)
         }
 
@@ -145,7 +192,7 @@ export class queen extends pieces {
 
         for (let index = 0; index < result.length; index++) {
             const element = result[index];
-            if (board[element[0]][element[1]] != null && board[element[0]][element[1]].team == this.team) {continue}
+            if (board[element[0]][element[1]] != null && board[element[0]][element[1]].team == this.team) { continue }
             filterResult.push(element)
         }
 
