@@ -63,6 +63,8 @@ export async function userCheck(req) {
                 email:resResult.body.Email,
                 password:resResult.body.Password,
                 name:resResult.body.Name,
+                fname:resResult.body.Fname,
+                lname:resResult.body.Lname,
                 score:resResult.body.Score,
                 admin:resResult.body.Admin,
             }
