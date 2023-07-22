@@ -29,7 +29,7 @@
             <div id="email" align="left"></div>
             <div id="score" align="left"></div>
             <div class="button-con">
-                <button>Change Password</button>
+                <button onclick="ChangePassword()">Change Password</button>
                 <button onclick="Edit()">Edit</button>
             </div>
 
@@ -65,6 +65,25 @@
                 <button onclick="save()">Save</button>
             </div>
         </div>
+
+
+    <div class="changePassword-pop" id="changePassword-pop">
+            <div class="h3-con">
+                <h3>Old Password: </h3>
+                <input id="oldPw-pop" type="password">
+            </div>
+            <div class="h3-con">
+                <h3>New Password: </h3>
+                <input id="newPw-pop" type="password">
+            </div>
+            <div class="h3-con">
+                <h3>Confirm Password: </h3>
+                <input id="conPw-pop" type="password">
+            </div>
+            <div class="button-pw">
+                <button onclick="changePw()">Change Password</button>
+            </div>
+    </div>
 </body>
 
 <script>

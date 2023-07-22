@@ -6,6 +6,7 @@ body {
 }
 
 main {
+    justify-content: center;
     margin: 0 auto;
     width: 100%;
     display: flex;
@@ -15,6 +16,7 @@ main {
     margin: 30px;
     font-family: Courier New;
     font-weight: 650;
+    padding: 25px;
     /* backdrop-filter: blur(10px); */
     background-color: rgba(23,23,23,0.5);
     border-radius: 50px;
@@ -35,7 +37,6 @@ button {
     padding: 10px;
     width: auto;
     height: 50px;
-    transition: .4s ease-in-out;
     border-radius: 25px;
     box-shadow: 0 0 20px #000000;
     margin-bottom: 10px;
@@ -66,23 +67,22 @@ button:hover {
 }
 
 .edit-icon{
-    width: 50px;
-    height: 50px;
+    width: 80px;
+    height: 80px;
     object-fit: fill;
     border-radius: 100%;
     position: absolute;
-    transform: translate(250%,-80%);
+    transform: translate(240%,-80%);
 }
 
 .edit-icon > img{
-    width: 50px;
-    height: 50px;
+    width: 80px;
+    height: 80px;
     object-fit: fill;
     border-radius: 100%;
 }
 
 .edit-icon:hover {
-    backdrop-filter: blur(10px);
     background-color: #EDBA00;
 
 }
@@ -90,24 +90,34 @@ button:hover {
 
 
 .edit-pop {
+    font-family: Courier New;
+    font-weight: 650;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
     visibility: hidden;
     margin: 0 auto;
-    /* background-color: #171710; */
-    backdrop-filter: blur(10px);
-    width: 300px;
-    height: 500px;
+    border: 1px solid black;
+    border-radius: 25px;
+    background-color: #171717;
+    box-shadow: 2px 2px gray;
+    width: 600px;
+    height: 800px;
     position: absolute;
-    transform: translate(267%, -130%);
+    left: 0;
+    right: 0;
+    top: 15%;
 }
 
+.edit-pop:hover{
+    transform: scale(1.05);
+    transition: .4s ;
+}
 
 .profile-pop>img {
-    width: 200px;
-    height: 200px;
+    width: 250px;
+    height: 250px;
     object-fit: cover;
     border-radius: 100%;
 }
@@ -116,10 +126,109 @@ button:hover {
 
 h3 {
     color: white;
+    
 }
 
 .h3-con {
+    width: 400px;
+    height: 40px;
+    margin: 0 auto;
+    font-size: 17px;
+    font-family: Courier New;
+    font-weight: 650;
     display: flex;
     justify-content: space-between;
 }
 
+#name-pop{
+    padding: 10px 20px;
+    background-color: #171717;
+    font-size: 17px;
+    font-family: Courier New;
+    font-weight: 650;
+    border-radius: 25px;
+    box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
+    color: white;
+
+}
+
+#Fname-pop{
+    padding: 10px 20px;
+    background-color: #171717;
+    font-size: 17px;
+    font-family: Courier New;
+    font-weight: 650;
+    border-radius: 25px;
+    box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
+    color: white;
+}
+
+#Lname-pop{
+    padding: 10px 20px;
+    background-color: #171717;
+    font-size: 17px;
+    font-family: Courier New;
+    font-weight: 650;
+    border-radius: 25px;
+    box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
+    color: white;
+}
+
+.changePassword-pop{
+    font-family: Courier New;
+    font-weight: 650;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    visibility: hidden;
+    margin: 0 auto;
+    border: 1px solid black;
+    border-radius: 25px;
+    background-color: #171717;
+    box-shadow: 2px 2px gray;
+    width: 500px;
+    height: 600px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 15%;
+}
+
+.changePassword-pop:hover{
+    transform: scale(1.05);
+    transition: .4s ;
+}
+
+#oldPw-pop{
+    padding: 10px 20px;
+    background-color: #171717;
+    font-size: 17px;
+    font-family: Courier New;
+    font-weight: 650;
+    border-radius: 25px;
+    box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
+    color: white;
+}
+
+#newPw-pop{
+    padding: 10px 20px;
+    background-color: #171717;
+    font-size: 17px;
+    font-family: Courier New;
+    font-weight: 650;
+    border-radius: 25px;
+    box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
+    color: white;
+}
+
+#conPw-pop{
+    padding: 10px 20px;
+    background-color: #171717;
+    font-size: 17px;
+    font-family: Courier New;
+    font-weight: 650;
+    border-radius: 25px;
+    box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
+    color: white;
+}
