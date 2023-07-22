@@ -101,4 +101,78 @@ async function getSession() {
     console.log(localStorage.getItem('user'));
 }
 
+function ChangePassword(){
 
+    const popupPw = document.querySelector(".changePassword-pop")
+    const user = JSON.parse(localStorage.getItem('user'))
+ 
+
+    if (popupPw.style.visibility == 'visible') {
+        popupPw.style.visibility = 'hidden'
+        form.reset()
+    } else {
+        popupPw.style.visibility = 'visible'
+        const oldPw = document.getElementById("oldPw-pop")
+    const newPw = document.getElementById("newPw-pop")
+    const conPw = document.getElementById("conPw-pop")
+
+   /* oldPw.value = ``
+    newPw.value = ``
+    conPw.value = ``*/
+
+    if (!fillup(oldPw, newPw, conPw)) return errText('Plase fill all of info')
+    if (!ValidatePassword(newPw.value)) return errText('Password must containat least one letter and must be at least 8 characters')
+    if (!checkPasswordPassword(newPw, conPw)) return
+    /*await ChangePw(oldPw.value, newPw.value, conPw.value);*/
+    
+    }
+    
+}
+
+function ValidatePassword(input) {
+    var validRegex = /[a-z]/i;
+    const password = document.getElementById('password')
+    if (input.match(validRegex) && input.length >= 6) {
+        password.classList.remove('invalid')
+        return true;
+    } else {
+        password.setAttribute('class', 'invalid')
+        return false
+    }
+
+}
+
+function fillup(oldPw,newPw,conPw){
+    oldPw.value == '' ? oldPw.setAttribute('class', 'invalid')
+    : oldPw.classList.remove('invalid')
+    newPw.value == '' ? newPw.setAttribute('class', 'invalid')
+    : newPw.classList.remove('invalid')
+    conPw.value == '' ? conPw.setAttribute('class', 'invalid')
+    : conPw.classList.remove('invalid')
+    if (oldPw.value != '' && newPw.value != '' && conPw.value != '') {
+        return true
+    }
+    return false
+}
+
+function checkPassword(){
+    if(oldPw != user.password){
+        oldPw.setAttribute('class', 'invalid')
+        errText ('Old Password invalid')
+        return false
+    }
+    else if (newPw.value != conPw.value) {
+        newPw.setAttribute('class', 'invalid')
+        conPw.setAttribute('class', 'invalid')
+        errText('Password do not match')
+        return false
+    }
+    newPw.classList.remove('invalid')
+    conPw.classList.remove('invalid')
+    return true
+
+}
+
+async function ChangePw(){
+
+}

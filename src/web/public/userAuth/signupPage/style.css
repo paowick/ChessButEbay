@@ -7,6 +7,8 @@ body {
 
 
 .card {
+    font-family: Courier New;
+    font-weight: 650;
     position: absolute;
     left: 0;
     right: 0;
@@ -75,7 +77,9 @@ a {
 
 
 #verify {
-    width: 180px;
+    width: 160px;
+    
+    
 }
 .send_btn {
     font-family: Courier New;
@@ -108,6 +112,8 @@ a {
     color: white;
     font-family: Courier New;
     font-weight: 650;
+    width: 100px;
+    height: 50px;
 
 }
 

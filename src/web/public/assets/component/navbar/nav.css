@@ -30,7 +30,7 @@ ul, li {
 .manu li{
     font-family: Courier New;
     font-weight: 650;
-    font-size: auto;
+    font-size: 20px;
     list-style: none;
     margin: 1rem;
 }
@@ -68,6 +68,8 @@ h1{
     color: #fff;
 }
 .pro-con{
+    font-family: Courier New;
+    font-weight: 650;
     gap: 10px;
     display: flex;
     flex-direction: row;
