@@ -1,4 +1,3 @@
-import * as base from './board.js'
 
 export class pieces {
     constructor(name, pos, team, isKing, board) {
@@ -106,10 +105,18 @@ export class king extends pieces {
     }
 
     setPiece() {
-        this.board[this.pos[0]][this.pos[1]] = this
-        var id = this.tranSlateToId()
-        var box = document.querySelector(`#${id}`)
-        box.innerHTML = `<div class="boxpiece kingWhite">&#9812;</div>`
+        if(this.team == "B"){
+            this.board[this.pos[0]][this.pos[1]] = this
+            var id = this.tranSlateToId()
+            var box = document.querySelector(`#${id}`)
+            box.innerHTML = `<div class="boxpiece kingWhite">&#9818;</div>`
+        }
+        if(this.team == "W"){
+            this.board[this.pos[0]][this.pos[1]] = this
+            var id = this.tranSlateToId()
+            var box = document.querySelector(`#${id}`)
+            box.innerHTML = `<div class="boxpiece kingWhite">&#9812;</div>`
+        }
     }
 
     moveAblepos(board) {
@@ -169,10 +176,18 @@ export class king extends pieces {
 export class queen extends pieces {
 
     setPiece() {
-        this.board[this.pos[0]][this.pos[1]] = this
-        var id = this.tranSlateToId()
-        var box = document.querySelector(`#${id}`)
-        box.innerHTML = `<div class="boxpiece queenWhite">&#9813;</div>`
+        if (this.team == "B") {
+            this.board[this.pos[0]][this.pos[1]] = this
+            var id = this.tranSlateToId()
+            var box = document.querySelector(`#${id}`)
+            box.innerHTML = `<div class="boxpiece queenWhite">&#9819;</div>`
+        }
+        if (this.team == "W") {
+            this.board[this.pos[0]][this.pos[1]] = this
+            var id = this.tranSlateToId()
+            var box = document.querySelector(`#${id}`)
+            box.innerHTML = `<div class="boxpiece queenWhite">&#9813;</div>`
+        }
     }
 
 
