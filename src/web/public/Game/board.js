@@ -26,15 +26,15 @@ var board = [
     [null, null, null, null, null, null, null, null],
 ]
 
-var kingWhite = new pieces.king("king", "02", "w", board)
-var queenWhite = new pieces.queen("queen", "12", "W", board)
+new pieces.king("king", "02", "W", board)
+new pieces.queen("queen", "12", "B", board)
+new pieces.queen("queen", "14", "B", board)
 
 var source = null
 var destination = null
 document.querySelectorAll('.box')
     .forEach(div => {
         div.addEventListener('click', function () {
-            console.log();
             if (source == null && destination == null) {
                 const piece = havePiece(this.id)
                 if (piece == null) { return source = null; }
@@ -61,7 +61,9 @@ function clearHightLight(piece) {
     const posList = piece.moveAblepos(board)
     posList.forEach(element => {
         const id = tranSlateToId(element)
-        document.getElementById(id).innerHTML = ``
+        document.getElementById(id).removeChild(document.getElementById(id).lastChild)
+        document.getElementById(id).style.backgroundColor = ``
+
     });
 }
 
@@ -69,7 +71,13 @@ function showMoveAble(piece) {
     const posList = piece.moveAblepos(board)
     posList.forEach(element => {
         const id = tranSlateToId(element)
-        document.getElementById(id).innerHTML = `<div class="hight-light">&#9900<//div>`
+        if (document.getElementById(id).childNodes.length > 0) {
+
+            document.getElementById(id).style.backgroundColor = `rgba(255, 0, 0,0.5)`
+            document.getElementById(id).innerHTML += `<div></div>`
+            return 0
+        }
+        document.getElementById(id).innerHTML += `<div class="hight-light">&#9900</div>`
     });
 }
 
@@ -110,7 +118,7 @@ function moveClient(source, destination) {
     piece.unset()
     piece.pos = newpos
     piece.setPiece()
-    move(source, destination)
+    // move(source, destination)
 }
 
 function tranSlateTopos(id) {
