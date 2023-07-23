@@ -102,36 +102,18 @@ async function getSession() {
 }
 
 function ChangePassword(){
-
     const popupPw = document.querySelector(".changePassword-pop")
-    const user = JSON.parse(localStorage.getItem('user'))
- 
-
     if (popupPw.style.visibility == 'visible') {
         popupPw.style.visibility = 'hidden'
         form.reset()
     } else {
         popupPw.style.visibility = 'visible'
-        const oldPw = document.getElementById("oldPw-pop")
-    const newPw = document.getElementById("newPw-pop")
-    const conPw = document.getElementById("conPw-pop")
-
-   /* oldPw.value = ``
-    newPw.value = ``
-    conPw.value = ``*/
-
-    if (!fillup(oldPw, newPw, conPw)) return errText('Plase fill all of info')
-    if (!ValidatePassword(newPw.value)) return errText('Password must containat least one letter and must be at least 8 characters')
-    if (!checkPasswordPassword(newPw, conPw)) return
-    /*await ChangePw(oldPw.value, newPw.value, conPw.value);*/
-    
     }
-    
 }
 
 function ValidatePassword(input) {
     var validRegex = /[a-z]/i;
-    const password = document.getElementById('password')
+    const password = document.getElementById('newPw-pop')
     if (input.match(validRegex) && input.length >= 6) {
         password.classList.remove('invalid')
         return true;
@@ -139,7 +121,7 @@ function ValidatePassword(input) {
         password.setAttribute('class', 'invalid')
         return false
     }
-
+    
 }
 
 function fillup(oldPw,newPw,conPw){
@@ -155,8 +137,9 @@ function fillup(oldPw,newPw,conPw){
     return false
 }
 
-function checkPassword(){
-    if(oldPw != user.password){
+function checkPassword(oldPw,newPw,conPw){
+    const user = JSON.parse(localStorage.getItem('user'))
+    if(oldPw.value != user.password){
         oldPw.setAttribute('class', 'invalid')
         errText ('Old Password invalid')
         return false
@@ -169,10 +152,45 @@ function checkPassword(){
     }
     newPw.classList.remove('invalid')
     conPw.classList.remove('invalid')
+    errText('')
     return true
-
+    
 }
 
-async function ChangePw(){
+async function changePw(){
+    const oldPw = document.getElementById("oldPw-pop")
+    const newPw = document.getElementById("newPw-pop")
+    const conPw = document.getElementById("conPw-pop")
+    if (!fillup(oldPw, newPw, conPw)) return errText('Plase fill all of info')
+    if (!ValidatePassword(newPw.value)) return errText('Password must containat least one letter and must be at least 8 characters')
+    if (!checkPassword(oldPw,newPw, conPw)) return 0
 
+    changePasswordFetch(newPw.value)
+    
+}
+
+async function changePasswordFetch(password) {
+    const data = {
+        password:password
+    }
+    const raw = await fetch(`/editpassword`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+    })
+    if (raw.status == 200) {
+        getSession()
+        window.location.reload()
+    }
+    if (raw.status == 500) {
+        errText(`Server error please try again later`)
+    }
+}
+
+function errText(Text) {
+    const form = document.getElementById('err')
+    form.innerHTML = ''
+    form.innerHTML += `<h7 style="color: red;" class="err-text">${Text}<h7>`
 }

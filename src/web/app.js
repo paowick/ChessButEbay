@@ -173,6 +173,33 @@ app.post(`/editinfo`, async (req, res) => {
     }
 })
 
+app.post(`/editpassword`, async (req, res) => {
+    try {
+        console.log(req.session.user);
+
+        req.session.user.password = req.body.password
+
+
+        const data = {
+            id: req.session.user.id,
+            password:req.body.password
+        }
+        const editinfoRES = await fetch(`http://api:8080/api/editpassword`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        })
+
+        if (editinfoRES.status == 500) { res.sendStatus(500) }
+        res.sendStatus(200)
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500)
+    }
+})
+
 app.get(`/getsession`, (req, res) => {
     try {
         console.log(req.session.user);
