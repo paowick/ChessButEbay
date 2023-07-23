@@ -389,7 +389,7 @@ export class knight extends pieces {
 }
 
 export class pawn extends pieces {
-    constructor(name, pos, team, isKing, board,firstmove) {
+    constructor(name, pos, team, isKing, board, firstmove) {
         super(name, pos, team, isKing, board)
         this.firstmove = firstmove
     };
@@ -413,18 +413,60 @@ export class pawn extends pieces {
         const filterResult = []
         const row = parseInt(this.pos[1])
         const col = parseInt(this.pos[0])
-        console.log(this.firstmove);
         if (this.team == 'B') {
             if (this.firstmove == true) {
-                result.push(`${col + 1}${row}`)
-                result.push(`${col + 2}${row}`)
-            }else if (col + 1 < 8) { result.push(`${col + 1}${row}`) };
+                if (board[col + 1][row] == null) {
+                    result.push(`${col + 1}${row}`)
+                    if (board[col + 2][row] == null) {
+                        result.push(`${col + 2}${row}`)
+                    }
+                } 
+                if (board[col + 1][row + 1] != null && board[col + 1][row + 1].team != this.team) {
+                    result.push(`${col + 1}${row + 1}`)
+                }
+                if (board[col + 1][row - 1] != null && board[col + 1][row - 1].team != this.team) {
+                    result.push(`${col + 1}${row - 1}`)
+                }
+            } else if (col + 1 < 8) {
+                if (board[col + 1][row] == null) {
+                    result.push(`${col + 1}${row}`)
+                }
+                if (board[col + 1][row + 1] != null && board[col + 1][row + 1].team != this.team) {
+                    result.push(`${col + 1}${row + 1}`)
+                }
+                if (board[col + 1][row - 1] != null && board[col + 1][row - 1].team != this.team) {
+                    result.push(`${col + 1}${row - 1}`)
+                }
+
+            };
+
+
         }
         if (this.team == 'W') {
             if (this.firstmove == true) {
-                result.push(`${col - 1}${row}`)
-                result.push(`${col - 2}${row}`)
-            }else if(col - 1 > -1) { result.push(`${col - 1}${row}`) };
+                if (board[col - 1][row] == null) {
+                    result.push(`${col - 1}${row}`)
+                    if (board[col - 2][row] == null) {
+                        result.push(`${col - 2}${row}`)
+                    }
+                }
+                if (board[col - 1][row + 1] != null && board[col - 1][row + 1].team != this.team) {
+                    result.push(`${col - 1}${row + 1}`)
+                }
+                if (board[col - 1][row - 1] != null && board[col - 1][row - 1].team != this.team) {
+                    result.push(`${col - 1}${row - 1}`)
+                }
+            } else if (col - 1 > -1) { 
+                 if (board[col - 1][row] == null) {
+                    result.push(`${col - 1}${row}`)
+                }
+                if (board[col - 1][row + 1] != null && board[col - 1][row + 1].team != this.team) {
+                    result.push(`${col - 1}${row + 1}`)
+                }
+                if (board[col - 1][row - 1] != null && board[col - 1][row - 1].team != this.team) {
+                    result.push(`${col - 1}${row - 1}`)
+                }
+            };
         }
         for (let index = 0; index < result.length; index++) {
             const element = result[index];
