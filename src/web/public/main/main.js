@@ -98,6 +98,18 @@ function roomtab(code, player1, player2) {
     return tag
 }
 
+async function createRoom() {
+    const data = {}
+    const res = await fetch("/createRoom",{
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+}
+
+
 
 
 

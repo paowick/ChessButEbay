@@ -85,6 +85,13 @@ services:
     image: redis
     networks:
       - backend
+
+  gameredis:
+    container_name: gameredis
+    restart: always
+    image: redis
+    networks:
+      - backend
       
   db:
     container_name: db

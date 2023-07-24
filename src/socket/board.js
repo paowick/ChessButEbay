@@ -1,5 +1,4 @@
 import * as pieces from './piece.js';
-import { move } from './socket.js';
 
 
 
@@ -64,49 +63,6 @@ new pieces.pawn("pawn", "15", "B", false, board, true)
 new pieces.pawn("pawn", "16", "B", false, board, true)
 new pieces.pawn("pawn", "17", "B", false, board, true)
 
-var source = null
-var destination = null
-document.querySelectorAll('.box')
-    .forEach(div => {
-        div.addEventListener('click', function () {
-
-
-            if (source == null && destination == null) {
-                // source position ====================================================================
-
-                // if (!myTurn) { return source = null; }
-                const piece = havePiece(this.id)
-                if (piece == null) { return source = null; }
-                source = this.id;
-                showMoveAble(piece)
-
-
-            } else if (source != null && destination == null) {
-                // destination position ===============================================================
-
-
-                const piece = havePiece(source)
-                if (!pieceMoveable(piece, this.id)) {
-                    clearHightLight(piece)
-                    source = null
-                    return destination = null
-                }
-                destination = this.id;
-                clearHightLight(havePiece(source))
-                moveClient(source, destination)
-                source = null
-                destination = null
-
-
-
-
-                // end here ===========================================================================
-            }
-
-
-
-        })
-    })
 
 
     function moveClient(source, destination) {
