@@ -64,6 +64,7 @@ async function createRoom() {
         body: JSON.stringify(data),
     })
     const resdata = await res.json()
+    localStorage.setItem('currentGame',resdata.roomcode)
     window.location = `/Game?code=${resdata.roomcode}`
     if (res.status == 500) {
         alert('server down')

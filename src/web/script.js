@@ -47,3 +47,14 @@ export async function getallRoom() {
     }
     return result
 }
+
+export async function getboardInfo(key) {
+    try {
+        const res = await redisClient.get(key)
+        const info = await JSON.parse(res)
+        return info.board
+        
+    } catch (error) {
+        throw new Error
+    }
+}
