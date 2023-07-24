@@ -191,8 +191,23 @@ app.post(`/editpassword`, async (req, res) => {
 })
 
 app.post(`/createRoom`, async (req,res)=>{
-    sc.createRoom()
-    res.sendStatus(200)
+    try {
+        const roomcode = await sc.createRoom(req.body.user.id,req.body.user.name)
+        res.json({
+            roomcode:roomcode
+        })
+    } catch (error) {
+        res.sendStatus(500)
+    }
+})
+
+app.get(`/getroom`, async (req,res)=>{
+    try{
+        const data = await sc.getallRoom()
+        res.json({data})
+    }catch(e){
+
+    }
 })
 
 app.get(`/getsession`, (req, res) => {

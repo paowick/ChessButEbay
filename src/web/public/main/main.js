@@ -1,70 +1,23 @@
-window.onload = () => {
-    const roomlist = [
-        {
-            code: "N8O5",
-            player1: "Halla",
-            player2: null
-        },
-        {
-            code: "J8C5",
-            player1: "Charity",
-            player2: "Phoebe"
-        },
-        {
-            code: "Z8H5",
-            player1: "Adrian",
-            player2: null
-        },
-        {
-            code: "G5M2",
-            player1: "Rooney",
-            player2: null
-        },
-        {
-            code: "B3G4",
-            player1: "Ross",
-            player2: "Imani"
-        },
-        {
-            code: "Y7O5",
-            player1: "Ezekiel",
-            player2: "Kane"
-        },
-        {
-            code: "C2K4",
-            player1: "Daniel",
-            player2: null
-        },
-        {
-            code: "P1S4",
-            player1: "Allistair",
-            player2: null
-        },
-        {
-            code: "W3D5",
-            player1: "Kaseem",
-            player2: "Colleen"
-        },
-        {
-            code: "F4U9",
-            player1: "Preston",
-            player2: "Kimberley"
-        },
-    ]
+window.onload = async () => {
+    const room = await fetch('/getroom')
+    const roomlist = await room.json()
+    console.log(roomlist);
 
-    roomlist.forEach(element => {
-        if (element.player2 == null) {
+    roomlist.data.forEach(element => {
+        const room = JSON.parse(element)
+        if (room.player2 == null) {
 
-            document.getElementById("board").appendChild(roomtabview(element.code, element.player1))
+            document.getElementById("board").appendChild(roomtabview(room.code, room.player1))
         }else{
 
-            document.getElementById("board").appendChild(roomtab(element.code, element.player1, element.player2))
+            document.getElementById("board").appendChild(roomtab(room.code, room.player1, room.player2))
         }
 
     });
 
 
 }
+
 
 function roomtabview(code, player1) {
     const text = `
@@ -99,7 +52,10 @@ function roomtab(code, player1, player2) {
 }
 
 async function createRoom() {
-    const data = {}
+    const user = JSON.parse(localStorage.getItem('user'))
+    const data = {
+        user : user
+    }
     const res = await fetch("/createRoom",{
         method: 'POST',
         headers: {
@@ -107,6 +63,14 @@ async function createRoom() {
         },
         body: JSON.stringify(data),
     })
+    const resdata = await res.json()
+    window.location = `/Game?code=${resdata.roomcode}`
+    if (res.status == 500) {
+        alert('server down')
+    }
+
+
+
 }
 
 

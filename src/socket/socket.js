@@ -34,17 +34,19 @@ sever.listen(8080, () => {
 io.of("/").on("connection", (socket) => {
     console.log(`connnect ${socket.id}`)
 
-    socket.on('createRoom', (room) => {
+    socket.on('createRoom', (data) => {
+        console.log(data.room);
         const value = {
-            player1:null,
+            code:data.room,
+            player1:data.name,
             Player2:null,
             board:board
         }
-        redisClient.set(room, stringify(value),{
+        redisClient.set(data.room, stringify(value),{
             NX: false
         })
-        socket.join(room);
-        console.log(io.sockets.adapter.rooms.has(room))
+        socket.join(data.room);
+        console.log(io.sockets.adapter.rooms.has(data.room))
     });
 
     socket.on("move", (arg) => {
