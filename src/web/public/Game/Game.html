@@ -8,7 +8,7 @@
         Game
     </title>
     <link type="text/css" rel="stylesheet" href="./style.css">
-    
+
     <script type="module" src="../Game/board.js"></script>
     <script type="module" src="../Game/piece.js"></script>
     <script type="module" src="../Game/socket.js"></script>
@@ -39,6 +39,10 @@
 
 
     <main>
+        <div class="join-butt-con">
+            <button id="join_black" class="join_butt">join black</button>
+            <button id="join_white" class="join_butt">join white</button>
+        </div>
         <div class="container-fuckin-all">
             <div class="row-text">
                 <div class="per-text-row">
@@ -222,6 +226,8 @@
                 </div>
             </div>
         </div>
+
+        <div id="inhand" class="inhand"></div>
     </main>
 
 </body>

@@ -35,10 +35,9 @@ io.of("/").on("connection", (socket) => {
     console.log(`connnect ${socket.id}`)
 
     socket.on('createRoom', (data) => {
-        console.log(data.room);
         const value = {
             code:data.room,
-            player1:data.name,
+            player1:null,
             Player2:null,
             board:board
         }

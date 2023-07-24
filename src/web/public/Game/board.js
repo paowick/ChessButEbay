@@ -1,9 +1,10 @@
 import * as pieces from './piece.js';
 import { move } from './socket.js';
+const currentGame = JSON.parse(localStorage.getItem("currentGame"))
+
 window.onload = async () => {
-    const code = localStorage.getItem("currentGame")
-    const res = await fetch(`/getboardInfo?code=${code}`)
-    if(res.status == 500 ){window.location = '/'}
+    const res = await fetch(`/getboardInfo?code=${currentGame.code}`)
+    if (res.status == 500) { window.location = '/' }
     const info = await res.json()
     for (let index = 0; index < info.data.length; index++) {
         const elements = info.data[index];
@@ -37,6 +38,13 @@ window.onload = async () => {
             }
         }
     }
+    if(currentGame.role != 'viewer'){
+        const join_con = document.querySelector(".join-butt-con")
+        join_con.style.display = 'none'
+        const inhand = document.querySelector(".inhand")
+        inhand.style.display = 'none'
+    }
+    
 }
 export var board = [
     [null, null, null, null, null, null, null, null],
@@ -63,50 +71,80 @@ export var board = [
 // Black_KnightU = "&#9822"
 // Black_Pawn	  = "&#9823"
 
-
+document.querySelector('#join_black')
+    .addEventListener('click',()=>{
+        const join_con = document.querySelector(".join-butt-con")
+        join_con.style.display = 'none'
+        const inhand = document.querySelector(".inhand")
+        inhand.style.display = 'none'
+        const data= {
+            code:currentGame.code,
+            role:"B"
+        }
+        localStorage.setItem('currentGame',JSON.stringify(data))
+    })
+document.querySelector('#join_white')
+    .addEventListener('click',()=>{
+        const join_con = document.querySelector(".join-butt-con")
+        join_con.style.display = 'none'
+        const inhand = document.querySelector(".inhand")
+        inhand.style.display = 'none' 
+        const data= {
+            code:currentGame.code,
+            role:"W"
+        }
+        localStorage.setItem('currentGame',JSON.stringify(data))
+    })
 var source = null
 var destination = null
 document.querySelectorAll('.box')
     .forEach(div => {
         div.addEventListener('click', function () {
 
-
-            if (source == null && destination == null) {
-                // source position ====================================================================
-
-                // if (!myTurn) { return source = null; }
-                const piece = havePiece(this.id)
-                if (piece == null) { return source = null; }
-                source = this.id;
-                showMoveAble(piece)
-
-
-            } else if (source != null && destination == null) {
-                // destination position ===============================================================
-
-
-                const piece = havePiece(source)
-                if (!pieceMoveable(piece, this.id)) {
-                    clearHightLight(piece)
+            if (currentGame.role != 'viewer') {
+                if (source == null && destination == null) {
+                    // source position ====================================================================
+                    // if (!myTurn) { return source = null; }
+                    const piece = havePiece(this.id)
+                    if (piece == null) { return source = null; }
+                    source = this.id;
+                    showMoveAble(piece)
+                    
+                    
+                } else if (source != null && destination == null) {
+                    // destination position ===============================================================
+                    
+                    
+                    const piece = havePiece(source)
+                    if(currentGame.role != piece.team){
+                        clearHightLight(havePiece(source))
+                        source = null
+                        return 
+                    }
+                    if (!pieceMoveable(piece, this.id)) {
+                        clearHightLight(piece)
+                        source = null
+                        return destination = null
+                    }
+                    destination = this.id;
+                    clearHightLight(havePiece(source))
+                    moveClient(source, destination)
                     source = null
-                    return destination = null
+                    destination = null
+
+
+
+
+                    // end here ===========================================================================
                 }
-                destination = this.id;
-                clearHightLight(havePiece(source))
-                moveClient(source, destination)
-                source = null
-                destination = null
 
 
-
-
-                // end here ===========================================================================
             }
-
-
-
         })
+
+
     })
+
 
 
 function moveClient(source, destination) {
