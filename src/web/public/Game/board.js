@@ -103,7 +103,7 @@ var destination = null
 document.querySelectorAll('.box')
     .forEach(div => {
         div.addEventListener('click', function () {
-
+            const currentGame = JSON.parse(localStorage.getItem("currentGame"))
             if (currentGame.role != 'viewer') {
                 if (source == null && destination == null) {
                     // source position ====================================================================
