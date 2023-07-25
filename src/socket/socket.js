@@ -28,18 +28,32 @@ sever.listen(8080, () => {
 })
 
 
+io.use(function(socket, next) {
+  var handshakeData = socket.request;
+  console.log("middleware:", handshakeData._query['code']);
+  next();
+});
 
 
-
-io.of("/").on("connection", (socket) => {
+io.sockets.on("connection", (socket) => {
     console.log(`connnect ${socket.id}`)
+    // console.log(socket.request._query.code);
+    socket.join(socket.request._query.code)
+    const data = {
+        board:board
+    }
+    if(socket.request._query.code != "admin"){
+        io.sockets.to(socket.request._query.code).emit("board",{
+            board:stringify(data)
+        });
+    }
 
     socket.on('createRoom', (data) => {
         const value = {
             code:data.room,
             player1:null,
             Player2:null,
-            board:board
+            log:null
         }
         redisClient.set(data.room, stringify(value),{
             NX: false
@@ -47,11 +61,9 @@ io.of("/").on("connection", (socket) => {
         socket.join(data.room);
         console.log(io.sockets.adapter.rooms.has(data.room))
     });
-
     socket.on("move", (arg) => {
-        console.log(io.sockets.adapter.rooms.has('tes'))
         console.log(`move ${arg.source} to ${arg.destination}`)
-        socket.broadcast.emit(`move_server`, arg)
+        socket.broadcast.to(socket.request._query.code).emit(`move_server`, arg)
     })
 
     socket.on("disconnect", () => {

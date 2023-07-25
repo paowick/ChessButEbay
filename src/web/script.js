@@ -1,6 +1,8 @@
 import { io } from "socket.io-client";
 
-const socket = io("ws://socket:8080", {})
+const socket = io("ws://socket:8080", {
+    query:'code=admin'
+})
 
 import redis from "redis"
 const redisClient = redis.createClient({
@@ -44,15 +46,4 @@ export async function getallRoom() {
         result.push(res)
     }
     return result
-}
-
-export async function getboardInfo(key) {
-    try {
-        const res = await redisClient.get(key)
-        const info = await JSON.parse(res)
-        return info.board
-        
-    } catch (error) {
-        throw new Error
-    }
 }

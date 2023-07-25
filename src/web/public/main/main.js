@@ -50,12 +50,13 @@ function roomtab(code, player1, player2) {
     return tag
 }
 
-function joingame(code) { 
+function joingame(code) {
 
     const currentGame = localStorage.getItem('currentGame')
-    if(currentGame != null){ return window.location = '/Game'}
-    console.log(currentGame);
-       const userdata = {
+    const currentGameJSON = JSON.parse(currentGame)
+    console.log(currentGameJSON);
+    if (currentGame != null && currentGameJSON.code == code ) { return window.location = '/Game' }
+    const userdata = {
         code: code,
         role: "viewer"
     }

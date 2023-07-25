@@ -1,12 +1,9 @@
-import { io } from "https://cdn.socket.io/4.3.2/socket.io.esm.min.js";
 import { board, moveClient_Server} from "./board.js";
+import { socket } from "./board.js";
 
-const socket = io();
+const currentGame = JSON.parse(localStorage.getItem('currentGame'))
 const user = JSON.parse(localStorage.getItem('user'))
-socket.emit('userdata',{
-    user:user,
-    board:board
-})
+
 export function move(source, destination) {
     if (destination != source) {
         socket.emit("move", {
@@ -15,12 +12,13 @@ export function move(source, destination) {
         })
     }
 }
+import('./board.js').then(({ socket }) => {
+    socket.on('move_server', (arg)=>{
+        console.log(arg);
+        moveClient_Server(arg.source,arg.destination)
+    })
 
-socket.on('move_server', (arg)=>{
-    console.log(arg);
-    moveClient_Server(arg.source,arg.destination)
-})
+}).catch((error) => {
+  console.error('Error loading socket:', error);
+});
 
-socket.on('gamedata', (arg)=>{
-    console.log(arg);
-})

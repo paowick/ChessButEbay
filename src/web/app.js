@@ -210,17 +210,6 @@ app.get(`/getroom`, async (req,res)=>{
     }
 })
 
-app.get(`/getboardInfo`, async (req,res)=>{
-    try {
-        const data = await sc.getboardInfo(req.query.code)
-        res.json({
-            data: data
-        })
-        
-    } catch (error) {
-        res.sendStatus(500)
-    }
-})
 
 app.get(`/getsession`, (req, res) => {
     try {

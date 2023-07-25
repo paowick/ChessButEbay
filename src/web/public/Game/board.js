@@ -1,50 +1,53 @@
 import * as pieces from './piece.js';
 import { move } from './socket.js';
-const currentGame = JSON.parse(localStorage.getItem("currentGame"))
+import { io } from "https://cdn.socket.io/4.3.2/socket.io.esm.min.js";
 
-window.onload = async () => {
-    const res = await fetch(`/getboardInfo?code=${currentGame.code}`)
-    if (res.status == 500) { window.location = '/' }
-    const info = await res.json()
-    for (let index = 0; index < info.data.length; index++) {
-        const elements = info.data[index];
-        for (let index = 0; index < elements.length; index++) {
-            const element = elements[index];
-            if (element == null) { continue }
-            console.log(element);
-            if (element.name == 'king') {
-                new pieces.king("king", element.pos, element.team, true, board)
-                continue
-            }
-            if (element.name == 'queen') {
-                new pieces.queen("queen", element.pos, element.team, false, board)
-                continue
-            }
-            if (element.name == 'bishop') {
-                new pieces.bishop("bishop", element.pos, element.team, false, board)
-                continue
-            }
-            if (element.name == 'rook') {
-                new pieces.rook("rook", element.pos, element.team, false, board)
-                continue
-            }
-            if (element.name == 'knight') {
-                new pieces.knight("knight", element.pos, element.team, false, board)
-                continue
-            }
-            if (element.name == 'pawn') {
-                new pieces.pawn("pawn", element.pos, element.team, false, board, true)
-                continue
+const currentGame = JSON.parse(localStorage.getItem("currentGame"))
+export var socket = io(window.location.origin, { query: `code=${currentGame.code}` });
+run()
+async function run() {
+    socket.on('board', async (arg) => {
+        const info = await JSON.parse(arg.board)
+        for (let index = 0; index < info.board.length; index++) {
+            const elements = info.board[index];
+            for (let index = 0; index < elements.length; index++) {
+                const element = elements[index];
+                if (element == null) { continue }
+                console.log(element);
+                if (element.name == 'king') {
+                    new pieces.king("king", element.pos, element.team, true, board)
+                    continue
+                }
+                if (element.name == 'queen') {
+                    new pieces.queen("queen", element.pos, element.team, false, board)
+                    continue
+                }
+                if (element.name == 'bishop') {
+                    new pieces.bishop("bishop", element.pos, element.team, false, board)
+                    continue
+                }
+                if (element.name == 'rook') {
+                    new pieces.rook("rook", element.pos, element.team, false, board)
+                    continue
+                }
+                if (element.name == 'knight') {
+                    new pieces.knight("knight", element.pos, element.team, false, board)
+                    continue
+                }
+                if (element.name == 'pawn') {
+                    new pieces.pawn("pawn", element.pos, element.team, false, board, true)
+                    continue
+                }
             }
         }
-    }
-    if(currentGame.role != 'viewer'){
-        const join_con = document.querySelector(".join-butt-con")
-        join_con.style.display = 'none'
-        const inhand = document.querySelector(".inhand")
-        inhand.style.display = 'none'
-    }
-    
+        if (currentGame.role != 'viewer') {
+            const join_con = document.querySelector(".join-butt-con")
+            join_con.style.display = 'none'
+            const inhand = document.querySelector(".inhand")
+            inhand.style.display = 'none'
+        }
+    })
+
 }
 export var board = [
     [null, null, null, null, null, null, null, null],
@@ -72,28 +75,28 @@ export var board = [
 // Black_Pawn	  = "&#9823"
 
 document.querySelector('#join_black')
-    .addEventListener('click',()=>{
+    .addEventListener('click', () => {
         const join_con = document.querySelector(".join-butt-con")
         join_con.style.display = 'none'
         const inhand = document.querySelector(".inhand")
         inhand.style.display = 'none'
-        const data= {
-            code:currentGame.code,
-            role:"B"
+        const data = {
+            code: currentGame.code,
+            role: "B"
         }
-        localStorage.setItem('currentGame',JSON.stringify(data))
+        localStorage.setItem('currentGame', JSON.stringify(data))
     })
 document.querySelector('#join_white')
-    .addEventListener('click',()=>{
+    .addEventListener('click', () => {
         const join_con = document.querySelector(".join-butt-con")
         join_con.style.display = 'none'
         const inhand = document.querySelector(".inhand")
-        inhand.style.display = 'none' 
-        const data= {
-            code:currentGame.code,
-            role:"W"
+        inhand.style.display = 'none'
+        const data = {
+            code: currentGame.code,
+            role: "W"
         }
-        localStorage.setItem('currentGame',JSON.stringify(data))
+        localStorage.setItem('currentGame', JSON.stringify(data))
     })
 var source = null
 var destination = null
@@ -109,17 +112,17 @@ document.querySelectorAll('.box')
                     if (piece == null) { return source = null; }
                     source = this.id;
                     showMoveAble(piece)
-                    
-                    
+
+
                 } else if (source != null && destination == null) {
                     // destination position ===============================================================
-                    
-                    
+
+
                     const piece = havePiece(source)
-                    if(currentGame.role != piece.team){
+                    if (currentGame.role != piece.team) {
                         clearHightLight(havePiece(source))
                         source = null
-                        return 
+                        return
                     }
                     if (!pieceMoveable(piece, this.id)) {
                         clearHightLight(piece)
