@@ -1,6 +1,7 @@
 import * as pieces from './piece.js';
 import { move } from './socket.js';
 import { io } from "https://cdn.socket.io/4.3.2/socket.io.esm.min.js";
+import { join } from './socket.js';
 
 const currentGame = JSON.parse(localStorage.getItem("currentGame"))
 export var socket = io(window.location.origin, { query: `code=${currentGame.code}` });
@@ -13,7 +14,6 @@ async function run() {
             for (let index = 0; index < elements.length; index++) {
                 const element = elements[index];
                 if (element == null) { continue }
-                console.log(element);
                 if (element.name == 'king') {
                     new pieces.king("king", element.pos, element.team, true, board)
                     continue
@@ -100,6 +100,7 @@ document.querySelector('#join_black')
             role: "B"
         }
         localStorage.setItem('currentGame', JSON.stringify(data))
+        join(data)
     })
 document.querySelector('#join_white')
     .addEventListener('click', () => {
@@ -116,6 +117,7 @@ document.querySelector('#join_white')
             role: "W"
         }
         localStorage.setItem('currentGame', JSON.stringify(data))
+        join(data)
     })
 var source = null
 var destination = null
@@ -196,8 +198,11 @@ function clearHightLight(piece) {
     const posList = piece.moveAblepos(board)
     posList.forEach(element => {
         const id = tranSlateToId(element)
-        document.getElementById(id).removeChild(document.getElementById(id).lastChild)
-        document.getElementById(id).style.backgroundColor = ``
+        document.querySelectorAll(`#${id}`).forEach(element=>{
+            element.removeChild(element.lastChild)
+            element.style.backgroundColor = ``
+
+        })
 
     });
 }
@@ -206,13 +211,17 @@ function showMoveAble(piece) {
     const posList = piece.moveAblepos(board)
     posList.forEach(element => {
         const id = tranSlateToId(element)
-        if (document.getElementById(id).childNodes.length > 0) {
 
-            document.getElementById(id).style.backgroundColor = `rgba(255, 0, 0,0.5)`
-            document.getElementById(id).innerHTML += `<div></div>`
-            return 0
-        }
-        document.getElementById(id).innerHTML += `<div class="hight-light">&#9900</div>`
+        document.querySelectorAll(`#${id}`).forEach(element =>{
+
+            if (element.childNodes.length > 0) {
+    
+                element.style.backgroundColor = `rgba(255, 0, 0,0.5)`
+                element.innerHTML += `<div></div>`
+                return 0
+            }
+            element.innerHTML += `<div class="hight-light">&#9900</div>`
+        })
     });
 }
 

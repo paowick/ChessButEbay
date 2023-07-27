@@ -1,4 +1,4 @@
-import { board, moveClient_Server} from "./board.js";
+import { board, moveClient_Server } from "./board.js";
 import { socket } from "./board.js";
 
 const currentGame = JSON.parse(localStorage.getItem('currentGame'))
@@ -13,12 +13,19 @@ export function move(source, destination) {
     }
 }
 import('./board.js').then(({ socket }) => {
-    socket.on('move_server', (arg)=>{
+    socket.on('move_server', (arg) => {
         console.log(arg);
-        moveClient_Server(arg.source,arg.destination)
+        moveClient_Server(arg.source, arg.destination)
     })
 
 }).catch((error) => {
-  console.error('Error loading socket:', error);
+    console.error('Error loading socket:', error);
 });
 
+export function join(data) {
+    import('./board.js').then(({ socket }) => {
+        socket.emit('join', data)
+    }).catch((error) => {
+        console.error('Error loading socket:', error);
+    })
+}

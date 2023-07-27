@@ -21,8 +21,6 @@ const io = new Server(sever, {
         methods: ["GET", "POST"]
     },
 })
-
-
 sever.listen(8080, () => {
     console.log('8080')
 })
@@ -66,10 +64,20 @@ io.sockets.on("connection", (socket) => {
         socket.broadcast.to(socket.request._query.code).emit(`move_server`, arg)
     })
 
+    socket.on('join', (data)=>{
+        console.log(data);
+    })
+
     socket.on("disconnect", () => {
         console.log('dis')
     })
 });
+
+
+
+
+
+
 function stringify(obj) {
   let cache = [];
   let str = JSON.stringify(obj, function(key, value) {
