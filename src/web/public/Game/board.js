@@ -4,7 +4,13 @@ import { io } from "https://cdn.socket.io/4.3.2/socket.io.esm.min.js";
 import { join } from './socket.js';
 
 const currentGame = JSON.parse(localStorage.getItem("currentGame"))
-export var socket = io(window.location.origin, { query: `code=${currentGame.code}` });
+const user = JSON.parse(localStorage.getItem("user"))
+export var socket = io(window.location.origin, { 
+    query: {
+        code:currentGame.code,
+        id:user.id
+    }
+});
 run()
 async function run() {
     socket.on('board', async (arg) => {

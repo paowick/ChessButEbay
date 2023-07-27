@@ -64,16 +64,25 @@ io.sockets.on("connection", (socket) => {
         socket.broadcast.to(socket.request._query.code).emit(`move_server`, arg)
     })
 
-    socket.on('join', (data)=>{
-        console.log(data);
+    socket.on('join', async (data)=>{
+        storedata(data,socket)
+        
     })
-
+    
     socket.on("disconnect", () => {
         console.log('dis')
     })
 });
 
-
+async function storedata(data,socket) {
+        const roomJSON = await redisClient.get(data.code)
+        const room = await JSON.parse(roomJSON)
+        if(data.role == 'B'){room.playerB = socket.request._query.id}
+        if(data.role == 'W'){room.playerW = socket.request._query.id}
+        redisClient.set(data.code, stringify(room),{
+            NX: false
+        })
+}
 
 
 

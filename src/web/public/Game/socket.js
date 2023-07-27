@@ -4,6 +4,7 @@ import { socket } from "./board.js";
 const currentGame = JSON.parse(localStorage.getItem('currentGame'))
 const user = JSON.parse(localStorage.getItem('user'))
 
+
 export function move(source, destination) {
     if (destination != source) {
         socket.emit("move", {
