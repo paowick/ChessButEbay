@@ -51,8 +51,8 @@ io.sockets.on("connection", (socket) => {
     socket.on('createRoom', (data) => {
         const value = {
             code:data.room,
-            player1:null,
-            Player2:null,
+            playerB:null,
+            PlayerW:null,
             log:null
         }
         redisClient.set(data.room, stringify(value),{

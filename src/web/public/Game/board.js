@@ -45,6 +45,17 @@ async function run() {
             join_con.style.display = 'none'
             const inhand = document.querySelector(".inhand")
             inhand.style.display = 'none'
+            if (currentGame.role == "B") {
+                const board_white = document.querySelector('#board-white')
+                board_white.style.display = "none"
+                const board_black = document.querySelector('#board-black')
+                board_black.style.display = 'flex'
+            } else {
+                const board_white = document.querySelector('#board-white')
+                board_white.style.display = "flex"
+                const board_black = document.querySelector('#board-black')
+                board_black.style.display = 'none'
+            }
         }
     })
 
@@ -80,6 +91,10 @@ document.querySelector('#join_black')
         join_con.style.display = 'none'
         const inhand = document.querySelector(".inhand")
         inhand.style.display = 'none'
+        const board_white = document.querySelector('#board-white')
+        board_white.style.display = "none"
+        const board_black = document.querySelector('#board-black')
+        board_black.style.display = 'flex'
         const data = {
             code: currentGame.code,
             role: "B"
@@ -92,6 +107,10 @@ document.querySelector('#join_white')
         join_con.style.display = 'none'
         const inhand = document.querySelector(".inhand")
         inhand.style.display = 'none'
+        const board_white = document.querySelector('#board-white')
+        board_white.style.display = "flex"
+        const board_black = document.querySelector('#board-black')
+        board_black.style.display = 'none'
         const data = {
             code: currentGame.code,
             role: "W"
