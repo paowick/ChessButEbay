@@ -1,5 +1,64 @@
 import * as pieces from './piece.js';
+import { move } from './socket.js';
+import { io } from "https://cdn.socket.io/4.3.2/socket.io.esm.min.js";
 
+const currentGame = JSON.parse(localStorage.getItem("currentGame"))
+export var socket = io(window.location.origin, { query: `code=${currentGame.code}` });
+run()
+async function run() {
+    socket.on('board', async (arg) => {
+        const info = await JSON.parse(arg.board)
+        for (let index = 0; index < info.board.length; index++) {
+            const elements = info.board[index];
+            for (let index = 0; index < elements.length; index++) {
+                const element = elements[index];
+                if (element == null) { continue }
+                console.log(element);
+                if (element.name == 'king') {
+                    new pieces.king("king", element.pos, element.team, true, board)
+                    continue
+                }
+                if (element.name == 'queen') {
+                    new pieces.queen("queen", element.pos, element.team, false, board)
+                    continue
+                }
+                if (element.name == 'bishop') {
+                    new pieces.bishop("bishop", element.pos, element.team, false, board)
+                    continue
+                }
+                if (element.name == 'rook') {
+                    new pieces.rook("rook", element.pos, element.team, false, board)
+                    continue
+                }
+                if (element.name == 'knight') {
+                    new pieces.knight("knight", element.pos, element.team, false, board)
+                    continue
+                }
+                if (element.name == 'pawn') {
+                    new pieces.pawn("pawn", element.pos, element.team, false, board, true)
+                    continue
+                }
+            }
+        }
+        if (currentGame.role != 'viewer') {
+            const join_con = document.querySelector(".join-butt-con")
+            join_con.style.display = 'none'
+            const inhand = document.querySelector(".inhand")
+            inhand.style.display = 'none'
+        }
+    })
+
+}
+export var board = [
+    [null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null],
+]
 
 
 // White_King	  = "&#9812"
@@ -15,100 +74,105 @@ import * as pieces from './piece.js';
 // Black_KnightU = "&#9822"
 // Black_Pawn	  = "&#9823"
 
-var board = [
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-]
-
-new pieces.king("king", "74", "W", true,board)
-new pieces.queen("queen", "73", "W", false,board)
-new pieces.bishop("bishop", "72", "W", false,board)
-new pieces.bishop("bishop", "75", "W", false,board)
-new pieces.rook("rook", "70", "W", false,board)
-new pieces.rook("rook", "77", "W", false,board)
-new pieces.knight("knight", "71", "W", false,board)
-new pieces.knight("knight", "76", "W", false,board)
-
-new pieces.pawn("pawn", "60", "W", false,board,true)
-new pieces.pawn("pawn", "61", "W", false,board,true)
-new pieces.pawn("pawn", "62", "W", false,board,true)
-new pieces.pawn("pawn", "63", "W", false,board,true)
-new pieces.pawn("pawn", "64", "W", false,board,true)
-new pieces.pawn("pawn", "65", "W", false,board,true)
-new pieces.pawn("pawn", "66", "W", false,board,true)
-new pieces.pawn("pawn", "67", "W", false,board,true)
-
-
-new pieces.king("king", "04", "B", true,board)
-new pieces.queen("queen", "03", "B", false,board)
-new pieces.bishop("bishop", "02", "B", false,board)
-new pieces.bishop("bishop", "05", "B", false,board)
-new pieces.rook("rook", "00", "B", false,board)
-new pieces.rook("rook", "07", "B", false,board)
-new pieces.knight("knight", "01", "B", false,board)
-new pieces.knight("knight", "06", "B", false,board)
-
-new pieces.pawn("pawn", "10", "B", false,board,true)
-new pieces.pawn("pawn", "11", "B", false,board,true)
-new pieces.pawn("pawn", "12", "B", false,board,true)
-new pieces.pawn("pawn", "13", "B", false,board,true)
-new pieces.pawn("pawn", "14", "B", false,board,true)
-new pieces.pawn("pawn", "15", "B", false,board,true)
-new pieces.pawn("pawn", "16", "B", false,board,true)
-new pieces.pawn("pawn", "17", "B", false,board,true)
-
+document.querySelector('#join_black')
+    .addEventListener('click', () => {
+        const join_con = document.querySelector(".join-butt-con")
+        join_con.style.display = 'none'
+        const inhand = document.querySelector(".inhand")
+        inhand.style.display = 'none'
+        const data = {
+            code: currentGame.code,
+            role: "B"
+        }
+        localStorage.setItem('currentGame', JSON.stringify(data))
+    })
+document.querySelector('#join_white')
+    .addEventListener('click', () => {
+        const join_con = document.querySelector(".join-butt-con")
+        join_con.style.display = 'none'
+        const inhand = document.querySelector(".inhand")
+        inhand.style.display = 'none'
+        const data = {
+            code: currentGame.code,
+            role: "W"
+        }
+        localStorage.setItem('currentGame', JSON.stringify(data))
+    })
 var source = null
 var destination = null
 document.querySelectorAll('.box')
     .forEach(div => {
         div.addEventListener('click', function () {
+            const currentGame = JSON.parse(localStorage.getItem("currentGame"))
+            if (currentGame.role != 'viewer') {
+                if (source == null && destination == null) {
+                    // source position ====================================================================
+                    // if (!myTurn) { return source = null; }
+                    const piece = havePiece(this.id)
+                    if (piece == null) { return source = null; }
+                    source = this.id;
+                    showMoveAble(piece)
 
 
-            if (source == null && destination == null) {
-                // source position ====================================================================
-
-                const piece = havePiece(this.id)
-                if (piece == null) { return source = null; }
-                source = this.id;
-                showMoveAble(piece)
+                } else if (source != null && destination == null) {
+                    // destination position ===============================================================
 
 
-
-
-            } else if (source != null && destination == null) {
-                // destination position ===============================================================
-
-
-                const piece = havePiece(source)
-                if (!pieceMoveable(piece, this.id)) {
-                    clearHightLight(piece)
+                    const piece = havePiece(source)
+                    if (currentGame.role != piece.team) {
+                        clearHightLight(havePiece(source))
+                        source = null
+                        return
+                    }
+                    if (!pieceMoveable(piece, this.id)) {
+                        clearHightLight(piece)
+                        source = null
+                        return destination = null
+                    }
+                    destination = this.id;
+                    clearHightLight(havePiece(source))
+                    moveClient(source, destination)
                     source = null
-                    return destination = null
+                    destination = null
+
+
+
+
+                    // end here ===========================================================================
                 }
-                destination = this.id;
-                clearHightLight(havePiece(source))
-                moveClient(source, destination)
-                source = null
-                destination = null
 
 
-
-
-                // end here ===========================================================================
             }
-
-
-
         })
+
+
     })
 
 
+
+function moveClient(source, destination) {
+    const oldpos = tranSlateTopos(source)
+    const newpos = tranSlateTopos(destination)
+    const piece = board[oldpos[0]][oldpos[1]];
+    piece.unset()
+    piece.pos = newpos
+    piece.setPiece()
+    if (piece.firstmove != undefined) { piece.firstmove = false }
+    move(source, destination)
+    destination = null
+    source = null
+}
+export function moveClient_Server(source, destination) {
+    const oldpos = tranSlateTopos(source)
+    const newpos = tranSlateTopos(destination)
+    const piece = board[oldpos[0]][oldpos[1]];
+    piece.unset()
+    piece.pos = newpos
+    piece.setPiece()
+    if (piece.firstmove != undefined) { piece.firstmove = false }
+    destination = null
+    source = null
+}
 function clearHightLight(piece) {
     const posList = piece.moveAblepos(board)
     posList.forEach(element => {
@@ -146,33 +210,6 @@ function havePiece(id) {
     return piece
 }
 
-function move(source, destination) {
-    if (destination != source) {
-        socket.emit("move", {
-            source: source,
-            destination: destination
-        })
-
-
-        destination = null
-        source = null
-    } else {
-        destination = null
-        source = null
-    }
-
-}
-
-function moveClient(source, destination) {
-    const oldpos = tranSlateTopos(source)
-    const newpos = tranSlateTopos(destination)
-    const piece = board[oldpos[0]][oldpos[1]];
-    piece.unset()
-    piece.pos = newpos
-    piece.setPiece()
-    if(piece.firstmove != undefined){piece.firstmove = false}
-    // move(source, destination)
-}
 
 function tranSlateTopos(id) {
     var temp = ""

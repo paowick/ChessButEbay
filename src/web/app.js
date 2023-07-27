@@ -4,6 +4,7 @@ import sessions from 'express-session';
 import RedisStore from "connect-redis"
 import {createClient} from "redis"
 import bodyParser from 'body-parser'
+import * as sc from './script.js'
 
 const app = express();
 const port = 8080;
@@ -125,10 +126,7 @@ app.post(`/logInVerify`, async (req, res) => {
             },
             body: JSON.stringify(data)
         })
-
         const resdata = await login.json()
-
-
         req.session.user = resdata.user
         res.json({
             Response: resdata.Response
@@ -143,14 +141,9 @@ app.post(`/logInVerify`, async (req, res) => {
 app.post(`/editinfo`, async (req, res) => {
     try {
         console.log(req.session.user.name);
-
-
-
         req.session.user.name = req.body.Username
         req.session.user.fname = req.body.Fname
         req.session.user.lname = req.body.Lname
-
-
         const data = {
             id: req.session.user.id,
             name: req.body.Username,
@@ -176,10 +169,7 @@ app.post(`/editinfo`, async (req, res) => {
 app.post(`/editpassword`, async (req, res) => {
     try {
         console.log(req.session.user);
-
         req.session.user.password = req.body.password
-
-
         const data = {
             id: req.session.user.id,
             password:req.body.password
@@ -199,6 +189,27 @@ app.post(`/editpassword`, async (req, res) => {
         res.sendStatus(500)
     }
 })
+
+app.post(`/createRoom`, async (req,res)=>{
+    try {
+        const roomcode = await sc.createRoom(req.body.user.id,req.body.user.name)
+        res.json({
+            roomcode:roomcode
+        })
+    } catch (error) {
+        res.sendStatus(500)
+    }
+})
+
+app.get(`/getroom`, async (req,res)=>{
+    try{
+        const data = await sc.getallRoom()
+        res.json({data})
+    }catch(e){
+
+    }
+})
+
 
 app.get(`/getsession`, (req, res) => {
     try {

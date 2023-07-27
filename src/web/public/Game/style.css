@@ -40,7 +40,7 @@
 main {
     padding: 20px;
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     width: 100%;
 }
 
@@ -112,6 +112,40 @@ main {
     gap: 2px;
     flex-wrap: wrap;
     background-color: gray;
+}
+
+.inhand{
+    display: flex;
+    width: 30%;
+    height: auto;
+    background-color: #252525;
+}
+
+.join-butt-con{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 50%;
+}
+
+button {
+    font-family: Courier New;
+    font-weight: 650;
+    font-size: 17px;
+    color: white;
+    background-color: #252525;
+    border-radius: 25px;
+    width: 200px;
+    height: 60px;
+    transition: .4s ease-in-out;
+}
+
+button:hover {
+    font-family: Courier New;
+    font-weight: 650;
+    color: white;
+    background-color: black;
+    text-shadow: 0 0 5px #ffffff;
 }
 
 * {
