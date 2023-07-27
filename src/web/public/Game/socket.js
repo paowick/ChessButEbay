@@ -1,7 +1,6 @@
 import { board, moveClient_Server } from "./board.js";
 import { socket } from "./board.js";
 
-const currentGame = JSON.parse(localStorage.getItem('currentGame'))
 const user = JSON.parse(localStorage.getItem('user'))
 
 
@@ -17,6 +16,14 @@ import('./board.js').then(({ socket }) => {
     socket.on('move_server', (arg) => {
         console.log(arg);
         moveClient_Server(arg.source, arg.destination)
+    })
+    socket.on("req-board",(arg)=>{
+        const board = localStorage.getItem('board')
+        if(arg.id == user.id){
+            socket.emit('res-board',{
+                board:board
+            })
+        }
     })
 
 }).catch((error) => {

@@ -1,3 +1,13 @@
+export var board = [
+    [null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null],
+]
 import * as pieces from './piece.js';
 import { move } from './socket.js';
 import { io } from "https://cdn.socket.io/4.3.2/socket.io.esm.min.js";
@@ -5,16 +15,17 @@ import { join } from './socket.js';
 
 const currentGame = JSON.parse(localStorage.getItem("currentGame"))
 const user = JSON.parse(localStorage.getItem("user"))
-export var socket = io(window.location.origin, { 
+export var socket = io(window.location.origin, {
     query: {
-        code:currentGame.code,
-        id:user.id
+        code: currentGame.code,
+        id: user.id
     }
 });
 run()
 async function run() {
     socket.on('board', async (arg) => {
         const info = await JSON.parse(arg.board)
+        console.log(info);
         for (let index = 0; index < info.board.length; index++) {
             const elements = info.board[index];
             for (let index = 0; index < elements.length; index++) {
@@ -63,19 +74,12 @@ async function run() {
                 board_black.style.display = 'none'
             }
         }
+        localStorage.setItem("board", stringify(board))
+        // const data = JSON.parse(localStorage.getItem("board"))
+        // console.log(data);
     })
 
 }
-export var board = [
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-]
 
 
 // White_King	  = "&#9812"
@@ -188,6 +192,7 @@ function moveClient(source, destination) {
     move(source, destination)
     destination = null
     source = null
+    localStorage.setItem("board",stringify(board))
 }
 export function moveClient_Server(source, destination) {
     const oldpos = tranSlateTopos(source)
@@ -199,12 +204,13 @@ export function moveClient_Server(source, destination) {
     if (piece.firstmove != undefined) { piece.firstmove = false }
     destination = null
     source = null
+    localStorage.setItem("board",stringify(board))
 }
 function clearHightLight(piece) {
     const posList = piece.moveAblepos(board)
     posList.forEach(element => {
         const id = tranSlateToId(element)
-        document.querySelectorAll(`#${id}`).forEach(element=>{
+        document.querySelectorAll(`#${id}`).forEach(element => {
             element.removeChild(element.lastChild)
             element.style.backgroundColor = ``
 
@@ -218,10 +224,10 @@ function showMoveAble(piece) {
     posList.forEach(element => {
         const id = tranSlateToId(element)
 
-        document.querySelectorAll(`#${id}`).forEach(element =>{
+        document.querySelectorAll(`#${id}`).forEach(element => {
 
             if (element.childNodes.length > 0) {
-    
+
                 element.style.backgroundColor = `rgba(255, 0, 0,0.5)`
                 element.innerHTML += `<div></div>`
                 return 0
@@ -245,6 +251,22 @@ function havePiece(id) {
 }
 
 
+function stringify(obj) {
+    let cache = [];
+    let str = JSON.stringify(obj, function (key, value) {
+        if (typeof value === "object" && value !== null) {
+            if (cache.indexOf(value) !== -1) {
+                // Circular reference found, discard key
+                return;
+            }
+            // Store value in our collection
+            cache.push(value);
+        }
+        return value;
+    });
+    cache = null; // reset the cache
+    return str;
+}
 function tranSlateTopos(id) {
     var temp = ""
     switch (`${id[1]}`) {
