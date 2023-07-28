@@ -1,7 +1,10 @@
 import { io } from "socket.io-client";
 
 const socket = io("ws://socket:8080", {
-    query:'code=admin'
+    query: {
+        code: "admin",
+        name: "admin"
+    }
 })
 
 import redis from "redis"
@@ -18,21 +21,21 @@ await redisClient.connect()
 export async function createRoom() {
     const room = generateString(5)
     const data = {
-        room:room
+        room: room
     }
-    socket.emit('createRoom',data);
+    socket.emit('createRoom', data);
     return room
 }
 
-const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 let temp = []
 function generateString(length) {
     let result = ' ';
     const charactersLength = characters.length;
-    for ( let i = 0; i < length; i++ ) {
+    for (let i = 0; i < length; i++) {
         result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
-    if(temp.includes(result)){generateString(5)}
+    if (temp.includes(result)) { generateString(5) }
     temp.push(result)
     return result
 }

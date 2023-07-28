@@ -82,8 +82,10 @@ export class pieces {
     unset() {
         this.board[this.pos[0]][this.pos[1]] = null
         var id = this.tranSlateToId()
-        var box = document.querySelector(`#${id}`)
-        box.innerHTML = ""
+        var box = document.querySelectorAll(`#${id}`)
+        box.forEach(element => {
+            element.innerHTML = "" 
+        });
     }
 
     recur_top(list, row, col, board) {
@@ -181,14 +183,19 @@ export class king extends pieces {
         if (this.team == "B") {
             this.board[this.pos[0]][this.pos[1]] = this
             var id = this.tranSlateToId()
-            var box = document.querySelector(`#${id}`)
-            box.innerHTML = `<div class="boxpiece kingBlack">&#9818;</div>`
+            var box = document.querySelectorAll(`#${id}`)
+            box.forEach(element => {
+                element.innerHTML = `<div class="boxpiece kingBlack">&#9818;</div>`  
+            });
         }
         if (this.team == "W") {
             this.board[this.pos[0]][this.pos[1]] = this
             var id = this.tranSlateToId()
-            var box = document.querySelector(`#${id}`)
-            box.innerHTML = `<div class="boxpiece kingWhite">&#9812;</div>`
+            var box = document.querySelectorAll(`#${id}`)
+            box.forEach(element => {
+                element.innerHTML = `<div class="boxpiece kingWhite">&#9812;</div>`
+                
+            });
         }
     }
     moveAblepos(board) {
@@ -245,14 +252,18 @@ export class queen extends pieces {
         if (this.team == "B") {
             this.board[this.pos[0]][this.pos[1]] = this
             var id = this.tranSlateToId()
-            var box = document.querySelector(`#${id}`)
-            box.innerHTML = `<div class="boxpiece queenBlack">&#9819;</div>`
+            var box = document.querySelectorAll(`#${id}`)
+            box.forEach(element => {
+                element.innerHTML = `<div class="boxpiece queenBlack">&#9819;</div>`
+            });
         }
         if (this.team == "W") {
             this.board[this.pos[0]][this.pos[1]] = this
             var id = this.tranSlateToId()
-            var box = document.querySelector(`#${id}`)
-            box.innerHTML = `<div class="boxpiece queenWhite">&#9813;</div>`
+            var box = document.querySelectorAll(`#${id}`)
+            box.forEach(element => {
+                element.innerHTML = `<div class="boxpiece queenWhite">&#9813;</div>`
+            });
         }
     }
     moveAblepos(board) {
@@ -285,14 +296,18 @@ export class bishop extends pieces {
         if (this.team == "B") {
             this.board[this.pos[0]][this.pos[1]] = this
             var id = this.tranSlateToId()
-            var box = document.querySelector(`#${id}`)
-            box.innerHTML = `<div class="boxpiece bishopBlack">&#9821;</div>`
+            var box = document.querySelectorAll(`#${id}`)
+            box.forEach(element => {
+                element.innerHTML = `<div class="boxpiece bishopBlack">&#9821;</div>`  
+            });
         }
         if (this.team == "W") {
             this.board[this.pos[0]][this.pos[1]] = this
             var id = this.tranSlateToId()
-            var box = document.querySelector(`#${id}`)
-            box.innerHTML = `<div class="boxpiece bishopWhite">&#9815;</div>`
+            var box = document.querySelectorAll(`#${id}`)
+            box.forEach(element => {
+                element.innerHTML = `<div class="boxpiece bishopWhite">&#9815;</div>`
+            });
         }
     }
     moveAblepos(board) {
@@ -320,14 +335,18 @@ export class rook extends pieces {
         if (this.team == "B") {
             this.board[this.pos[0]][this.pos[1]] = this
             var id = this.tranSlateToId()
-            var box = document.querySelector(`#${id}`)
-            box.innerHTML = `<div class="boxpiece rookBlack">&#9820;</div>`
+            var box = document.querySelectorAll(`#${id}`)
+            box.forEach(element => {
+                element.innerHTML = `<div class="boxpiece rookBlack">&#9820;</div>`
+            });
         }
         if (this.team == "W") {
             this.board[this.pos[0]][this.pos[1]] = this
             var id = this.tranSlateToId()
-            var box = document.querySelector(`#${id}`)
-            box.innerHTML = `<div class="boxpiece rookWhite">&#9814;</div>`
+            var box = document.querySelectorAll(`#${id}`)
+            box.forEach(element => {
+                element.innerHTML = `<div class="boxpiece rookWhite">&#9814;</div>`
+            });
         }
     }
     moveAblepos(board) {
@@ -355,14 +374,19 @@ export class knight extends pieces {
         if (this.team == "B") {
             this.board[this.pos[0]][this.pos[1]] = this
             var id = this.tranSlateToId()
-            var box = document.querySelector(`#${id}`)
-            box.innerHTML = `<div class="boxpiece rookBlack">&#9822;</div>`
+            var box = document.querySelectorAll(`#${id}`)
+            box.forEach(element => {
+                element.innerHTML = `<div class="boxpiece rookBlack">&#9822;</div>`
+            });
         }
         if (this.team == "W") {
             this.board[this.pos[0]][this.pos[1]] = this
             var id = this.tranSlateToId()
-            var box = document.querySelector(`#${id}`)
-            box.innerHTML = `<div class="boxpiece rookWhite">&#9816;</div>`
+            var box = document.querySelectorAll(`#${id}`)
+            box.forEach(element => {
+                element.innerHTML = `<div class="boxpiece rookWhite">&#9816;</div>`
+                
+            });
         }
     }
     moveAblepos(board) {
@@ -398,14 +422,20 @@ export class pawn extends pieces {
         if (this.team == "B") {
             this.board[this.pos[0]][this.pos[1]] = this
             var id = this.tranSlateToId()
-            var box = document.querySelector(`#${id}`)
-            box.innerHTML = `<div class="boxpiece rookBlack">&#9823;</div>`
+            var box = document.querySelectorAll(`#${id}`)
+            box.forEach(element => {
+                element.innerHTML = `<div class="boxpiece rookBlack">&#9823;</div>`
+                
+            });
         }
         if (this.team == "W") {
             this.board[this.pos[0]][this.pos[1]] = this
             var id = this.tranSlateToId()
-            var box = document.querySelector(`#${id}`)
-            box.innerHTML = `<div class="boxpiece rookWhite">&#9817;</div>`
+            var box = document.querySelectorAll(`#${id}`)
+            box.forEach(element => {
+                element.innerHTML = `<div class="boxpiece rookWhite">&#9817;</div>`
+                
+            });
         }
     }
     moveAblepos(board) {

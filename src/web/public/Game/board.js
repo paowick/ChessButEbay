@@ -1,19 +1,36 @@
+export var board = [
+    [null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null],
+]
 import * as pieces from './piece.js';
 import { move } from './socket.js';
 import { io } from "https://cdn.socket.io/4.3.2/socket.io.esm.min.js";
+import { join } from './socket.js';
 
 const currentGame = JSON.parse(localStorage.getItem("currentGame"))
-export var socket = io(window.location.origin, { query: `code=${currentGame.code}` });
+const user = JSON.parse(localStorage.getItem("user"))
+export var socket = io(window.location.origin, {
+    query: {
+        code: currentGame.code,
+        id: user.id
+    }
+});
 run()
 async function run() {
     socket.on('board', async (arg) => {
         const info = await JSON.parse(arg.board)
+        console.log(info);
         for (let index = 0; index < info.board.length; index++) {
             const elements = info.board[index];
             for (let index = 0; index < elements.length; index++) {
                 const element = elements[index];
                 if (element == null) { continue }
-                console.log(element);
                 if (element.name == 'king') {
                     new pieces.king("king", element.pos, element.team, true, board)
                     continue
@@ -45,20 +62,24 @@ async function run() {
             join_con.style.display = 'none'
             const inhand = document.querySelector(".inhand")
             inhand.style.display = 'none'
+            if (currentGame.role == "B") {
+                const board_white = document.querySelector('#board-white')
+                board_white.style.display = "none"
+                const board_black = document.querySelector('#board-black')
+                board_black.style.display = 'flex'
+            } else {
+                const board_white = document.querySelector('#board-white')
+                board_white.style.display = "flex"
+                const board_black = document.querySelector('#board-black')
+                board_black.style.display = 'none'
+            }
         }
+        localStorage.setItem("board", stringify(board))
+        // const data = JSON.parse(localStorage.getItem("board"))
+        // console.log(data);
     })
 
 }
-export var board = [
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-]
 
 
 // White_King	  = "&#9812"
@@ -80,11 +101,16 @@ document.querySelector('#join_black')
         join_con.style.display = 'none'
         const inhand = document.querySelector(".inhand")
         inhand.style.display = 'none'
+        const board_white = document.querySelector('#board-white')
+        board_white.style.display = "none"
+        const board_black = document.querySelector('#board-black')
+        board_black.style.display = 'flex'
         const data = {
             code: currentGame.code,
             role: "B"
         }
         localStorage.setItem('currentGame', JSON.stringify(data))
+        join(data)
     })
 document.querySelector('#join_white')
     .addEventListener('click', () => {
@@ -92,11 +118,16 @@ document.querySelector('#join_white')
         join_con.style.display = 'none'
         const inhand = document.querySelector(".inhand")
         inhand.style.display = 'none'
+        const board_white = document.querySelector('#board-white')
+        board_white.style.display = "flex"
+        const board_black = document.querySelector('#board-black')
+        board_black.style.display = 'none'
         const data = {
             code: currentGame.code,
             role: "W"
         }
         localStorage.setItem('currentGame', JSON.stringify(data))
+        join(data)
     })
 var source = null
 var destination = null
@@ -161,6 +192,7 @@ function moveClient(source, destination) {
     move(source, destination)
     destination = null
     source = null
+    localStorage.setItem("board",stringify(board))
 }
 export function moveClient_Server(source, destination) {
     const oldpos = tranSlateTopos(source)
@@ -172,13 +204,17 @@ export function moveClient_Server(source, destination) {
     if (piece.firstmove != undefined) { piece.firstmove = false }
     destination = null
     source = null
+    localStorage.setItem("board",stringify(board))
 }
 function clearHightLight(piece) {
     const posList = piece.moveAblepos(board)
     posList.forEach(element => {
         const id = tranSlateToId(element)
-        document.getElementById(id).removeChild(document.getElementById(id).lastChild)
-        document.getElementById(id).style.backgroundColor = ``
+        document.querySelectorAll(`#${id}`).forEach(element => {
+            element.removeChild(element.lastChild)
+            element.style.backgroundColor = ``
+
+        })
 
     });
 }
@@ -187,13 +223,17 @@ function showMoveAble(piece) {
     const posList = piece.moveAblepos(board)
     posList.forEach(element => {
         const id = tranSlateToId(element)
-        if (document.getElementById(id).childNodes.length > 0) {
 
-            document.getElementById(id).style.backgroundColor = `rgba(255, 0, 0,0.5)`
-            document.getElementById(id).innerHTML += `<div></div>`
-            return 0
-        }
-        document.getElementById(id).innerHTML += `<div class="hight-light">&#9900</div>`
+        document.querySelectorAll(`#${id}`).forEach(element => {
+
+            if (element.childNodes.length > 0) {
+
+                element.style.backgroundColor = `rgba(255, 0, 0,0.5)`
+                element.innerHTML += `<div></div>`
+                return 0
+            }
+            element.innerHTML += `<div class="hight-light">&#9900</div>`
+        })
     });
 }
 
@@ -211,6 +251,22 @@ function havePiece(id) {
 }
 
 
+function stringify(obj) {
+    let cache = [];
+    let str = JSON.stringify(obj, function (key, value) {
+        if (typeof value === "object" && value !== null) {
+            if (cache.indexOf(value) !== -1) {
+                // Circular reference found, discard key
+                return;
+            }
+            // Store value in our collection
+            cache.push(value);
+        }
+        return value;
+    });
+    cache = null; // reset the cache
+    return str;
+}
 function tranSlateTopos(id) {
     var temp = ""
     switch (`${id[1]}`) {
