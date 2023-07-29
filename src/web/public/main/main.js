@@ -1,9 +1,9 @@
 window.onload = async () => {
     const room = await fetch('/getroom')
     const roomlist = await room.json()
-    roomlist.data.forEach(element => {
-        const room = JSON.parse(element)
-        document.getElementById("board").appendChild(roomtabview(room))
+    console.log(roomlist);
+    roomlist.datares.forEach(element => {
+        document.getElementById("board").appendChild(roomtabview(element))
     });
 
 

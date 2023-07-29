@@ -203,9 +203,20 @@ app.post(`/createRoom`, async (req,res)=>{
 
 app.get(`/getroom`, async (req,res)=>{
     try{
+        let datares = []
         const data = await sc.getallRoom()
-        console.log(data);
-        res.json({data})
+        data.forEach(element => {
+            const dataconvert = JSON.parse(element)
+            let data = {
+                code:dataconvert.code,
+                playerB:dataconvert.playerB,
+                playerBName:dataconvert.playerBName,
+                playerW:dataconvert.playerW,
+                playerWName:dataconvert.playerWName
+            }
+            datares.push(data)
+        });
+        res.json({datares})
     }catch(e){
 
     }
