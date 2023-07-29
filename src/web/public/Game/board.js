@@ -110,7 +110,7 @@ document.querySelector('#join_black')
             role: "B"
         }
         localStorage.setItem('currentGame', JSON.stringify(data))
-        join(data)
+        join(data,user.name)
     })
 document.querySelector('#join_white')
     .addEventListener('click', () => {
@@ -127,7 +127,7 @@ document.querySelector('#join_white')
             role: "W"
         }
         localStorage.setItem('currentGame', JSON.stringify(data))
-        join(data)
+        join(data,user.name)
     })
 var source = null
 var destination = null

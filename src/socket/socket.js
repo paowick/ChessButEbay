@@ -47,8 +47,8 @@ io.sockets.on("connection", async (socket) => {
         });
 
     }
-    socket.on('join', async (data) => {
-        storedata(data, socket)
+    socket.on('join', async (arg) => {
+        storedata(arg, socket)
     })
 
 
@@ -56,7 +56,9 @@ io.sockets.on("connection", async (socket) => {
         const value = {
             code: data.room,
             playerB: null,
+            playerBName: null,
             playerW: null,
+            playerWName: null,
             board: board,
             log: null
         }
@@ -92,13 +94,21 @@ async function setBoardRedis(code, board) {
     })
 }
 
-async function storedata(data, socket) {
-    const roomJSON = await redisClient.get(data.code)
+async function storedata(arg, socket) {
+    const roomJSON = await redisClient.get(arg.data.code)
     const room = await JSON.parse(roomJSON)
-    if (data.role == 'B') { room.playerB = socket.request._query.id }
-    if (data.role == 'W') { room.playerW = socket.request._query.id }
+    console.log(arg);
     console.log(room);
-    redisClient.set(data.code, stringify(room), {
+    if (arg.data.role == 'B') {
+        room.playerB = socket.request._query.id
+        room.playerBName = arg.username
+    }
+    if (arg.data.role == 'W') {
+        room.playerW = socket.request._query.id
+        room.playerWName = arg.username
+    }
+    console.log(room);
+    redisClient.set(arg.data.code, stringify(room), {
         NX: false
     })
 }

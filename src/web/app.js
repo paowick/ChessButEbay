@@ -192,7 +192,7 @@ app.post(`/editpassword`, async (req, res) => {
 
 app.post(`/createRoom`, async (req,res)=>{
     try {
-        const roomcode = await sc.createRoom(req.body.user.id,req.body.user.name)
+        const roomcode = await sc.createRoom()
         res.json({
             roomcode:roomcode
         })
@@ -204,6 +204,7 @@ app.post(`/createRoom`, async (req,res)=>{
 app.get(`/getroom`, async (req,res)=>{
     try{
         const data = await sc.getallRoom()
+        console.log(data);
         res.json({data})
     }catch(e){
 

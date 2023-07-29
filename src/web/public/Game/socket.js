@@ -25,7 +25,11 @@ import('./board.js').then(({ socket }) => {
     console.error('Error loading socket:', error);
 });
 
-export function join(data) {
+export function join(game,username) {
+    let data = {
+        data:game,
+        username:username
+    }
     import('./board.js').then(({ socket }) => {
         socket.emit('join', data)
     }).catch((error) => {
