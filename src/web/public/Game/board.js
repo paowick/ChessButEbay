@@ -73,13 +73,14 @@ async function run() {
                 const board_black = document.querySelector('#board-black')
                 board_black.style.display = 'none'
             }
+        }else if (currentGame.role == 'viewer'){
+            if(info.playerB != null){document.querySelector('#join_white').style.display = 'none'}
+            if(info.playerW != null){document.querySelector('#join_black').style.display = 'none'}
         }
-        localStorage.setItem("board", stringify(board))
-        // const data = JSON.parse(localStorage.getItem("board"))
-        // console.log(data);
     })
 
 }
+
 
 
 // White_King	  = "&#9812"
@@ -110,7 +111,7 @@ document.querySelector('#join_black')
             role: "B"
         }
         localStorage.setItem('currentGame', JSON.stringify(data))
-        join(data)
+        join(data,user.name)
     })
 document.querySelector('#join_white')
     .addEventListener('click', () => {
@@ -127,7 +128,7 @@ document.querySelector('#join_white')
             role: "W"
         }
         localStorage.setItem('currentGame', JSON.stringify(data))
-        join(data)
+        join(data,user.name)
     })
 var source = null
 var destination = null

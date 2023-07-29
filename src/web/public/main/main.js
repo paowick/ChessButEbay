@@ -1,31 +1,36 @@
 window.onload = async () => {
     const room = await fetch('/getroom')
     const roomlist = await room.json()
-    roomlist.data.forEach(element => {
-        const room = JSON.parse(element)
-        if (room.player2 == null) {
-
-            document.getElementById("board").appendChild(roomtabview(room.code, room.player1))
-        } else {
-
-            document.getElementById("board").appendChild(roomtab(room.code, room.player1, room.player2))
-        }
-
+    console.log(roomlist);
+    roomlist.datares.forEach(element => {
+        document.getElementById("board").appendChild(roomtabview(element))
     });
 
 
 }
 
 
-function roomtabview(code, player1) {
+function roomtabview(room) {
+    let player = ''
+    if (room.playerB == null && room.playerW == null) {
+        player = "No one play"
+    }
+    if (room.playerB != null && room.playerW == null) {
+        player = `${room.playerBName} as Black`
+    }
+    if (room.playerB == null && room.playerW != null) {
+        player = `${room.playerWName} as white`
+    }
+    if (room.playerB != null && room.playerW != null) {
+        player = `${room.playerWName} VS ${room.playerBName}`
+    }
     const text = `
                     <div class="room-code">
-                        <p class="code">Room code: ${code}</p>
                     </div>
-                    <div class="player-info">
-                        <p class="player">${player1} vs     </p>
+                    <div class="info">
+                        <p class="player">${player}</p>
                     </div>
-                    <button class="join-butt" type="button" value="${code}" onclick="joingame(this.value)">join</button>
+                    <button class="join-butt" type="button" value="${room.code}" onclick="joingame(this.value)">Enter</button>
     `
     const tag = document.createElement("div");
     tag.classList.add("room")
@@ -34,28 +39,13 @@ function roomtabview(code, player1) {
 }
 
 
-function roomtab(code, player1, player2) {
-    const text = `
-                    <div class="room-code">
-                    <p class="code">Room code: ${code}</p>
-                    </div>
-                    <div class="player-info">
-                    <p class="player">${player1} vs ${player2}</p>
-                    </div>
-                    <button class="join-butt" type="button" onclick="">view</button>
-                    `
-    const tag = document.createElement("div");
-    tag.classList.add("room")
-    tag.innerHTML = text
-    return tag
-}
 
 function joingame(code) {
 
     const currentGame = localStorage.getItem('currentGame')
     const currentGameJSON = JSON.parse(currentGame)
     console.log(currentGameJSON);
-    if (currentGame != null && currentGameJSON.code == code ) { return window.location = '/Game' }
+    if (currentGame != null && currentGameJSON.code == code) { return window.location = '/Game' }
     const userdata = {
         code: code,
         role: "viewer"

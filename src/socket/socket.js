@@ -40,47 +40,15 @@ io.sockets.on("connection", async (socket) => {
     socket.join(socket.request._query.code)
 
     if (socket.request._query.code != "admin") {
-        let data
-        let roomdata = await fecthroom(socket.request._query.code)
-        if (roomdata?.playerB === null || roomdata?.playerW === null) {
-            data = {
-                board: board
-            }
-            io.sockets.to(socket.request._query.code).emit("board", {
-                board: stringify(data)
-            });
-        } else if (socket.request._query.id == roomdata?.playerB) {
-            io.sockets.to(socket.request._query.code).emit("req-board", {
-                id: roomdata?.playerW
-            });
-        } else if (socket.request._query.id == roomdata?.playerW) {
-            io.sockets.to(socket.request._query.code).emit("req-board", {
-                id: roomdata?.playerB
-            });
-        } else {
-            io.sockets.to(socket.request._query.code).emit("req-board", {
-                id: roomdata?.playerW
-            });
-        }
-
-        socket.on('res-board', (arg) => {
-            const board_res = JSON.parse(arg.board)
-            data = {
-                board: board_res
-            }
-            socket.broadcast.to(socket.request._query.code).emit("board", {
-                board: stringify(data)
-            });
-        })
-
-
+        const boardRedisJSON = await redisClient.get(socket.request._query.code)
+        const boardRedis = await JSON.parse(boardRedisJSON)
+        io.sockets.to(socket.request._query.code).emit("board", {
+            board: stringify(boardRedis)
+        });
 
     }
-
-
-
-    socket.on('join', async (data) => {
-        storedata(data, socket)
+    socket.on('join', async (arg) => {
+        storedata(arg, socket)
     })
 
 
@@ -88,7 +56,10 @@ io.sockets.on("connection", async (socket) => {
         const value = {
             code: data.room,
             playerB: null,
+            playerBName: null,
             playerW: null,
+            playerWName: null,
+            board: board,
             log: null
         }
         redisClient.set(data.room, stringify(value), {
@@ -98,8 +69,14 @@ io.sockets.on("connection", async (socket) => {
         console.log(io.sockets.adapter.rooms.has(data.room))
     });
     socket.on("move", (arg) => {
-        console.log(`move ${arg.source} to ${arg.destination}`)
-        socket.broadcast.to(socket.request._query.code).emit(`move_server`, arg)
+        const data = JSON.parse(arg)
+        console.log(`move ${data.source} to ${data.destination}`)
+        setBoardRedis(socket.request._query.code, data.board)
+        let move = {
+            source: data.source,
+            destination: data.destination,
+        }
+        socket.broadcast.to(socket.request._query.code).emit(`move_server`, move)
     })
 
 
@@ -108,25 +85,33 @@ io.sockets.on("connection", async (socket) => {
     })
 });
 
-async function storedata(data, socket) {
-    const roomJSON = await redisClient.get(data.code)
+async function setBoardRedis(code, board) {
+    const roomJSON = await redisClient.get(code)
     const room = await JSON.parse(roomJSON)
-    console.log(data);
-    console.log(room);
-    if (data.role == 'B') { room.playerB = socket.request._query.id }
-    if (data.role == 'W') { room.playerW = socket.request._query.id }
-    console.log(room);
-    redisClient.set(data.code, stringify(room), {
+    room.board = await board
+    redisClient.set(code, stringify(room), {
         NX: false
     })
 }
 
-async function fecthroom(code) {
-    const roomJSON = await redisClient.get(code)
+async function storedata(arg, socket) {
+    const roomJSON = await redisClient.get(arg.data.code)
     const room = await JSON.parse(roomJSON)
-    return room
+    console.log(arg);
+    console.log(room);
+    if (arg.data.role == 'B') {
+        room.playerB = socket.request._query.id
+        room.playerBName = arg.username
+    }
+    if (arg.data.role == 'W') {
+        room.playerW = socket.request._query.id
+        room.playerWName = arg.username
+    }
+    console.log(room);
+    redisClient.set(arg.data.code, stringify(room), {
+        NX: false
+    })
 }
-
 
 
 function stringify(obj) {

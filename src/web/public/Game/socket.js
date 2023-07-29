@@ -5,11 +5,13 @@ const user = JSON.parse(localStorage.getItem('user'))
 
 
 export function move(source, destination) {
+    let data = {
+        source: source,
+        destination: destination,
+        board:board
+    }
     if (destination != source) {
-        socket.emit("move", {
-            source: source,
-            destination: destination
-        })
+        socket.emit("move", stringify(data))
     }
 }
 import('./board.js').then(({ socket }) => {
@@ -17,23 +19,38 @@ import('./board.js').then(({ socket }) => {
         console.log(arg);
         moveClient_Server(arg.source, arg.destination)
     })
-    socket.on("req-board",(arg)=>{
-        const board = localStorage.getItem('board')
-        if(arg.id == user.id){
-            socket.emit('res-board',{
-                board:board
-            })
-        }
-    })
+
 
 }).catch((error) => {
     console.error('Error loading socket:', error);
 });
 
-export function join(data) {
+export function join(game,username) {
+    let data = {
+        data:game,
+        username:username
+    }
     import('./board.js').then(({ socket }) => {
         socket.emit('join', data)
     }).catch((error) => {
         console.error('Error loading socket:', error);
     })
+}
+
+
+function stringify(obj) {
+    let cache = [];
+    let str = JSON.stringify(obj, function (key, value) {
+        if (typeof value === "object" && value !== null) {
+            if (cache.indexOf(value) !== -1) {
+                // Circular reference found, discard key
+                return;
+            }
+            // Store value in our collection
+            cache.push(value);
+        }
+        return value;
+    });
+    cache = null; // reset the cache
+    return str;
 }
