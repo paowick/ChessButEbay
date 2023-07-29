@@ -13,20 +13,19 @@ window.onload = async () => {
 function roomtabview(room) {
     let player = ''
     if (room.playerB == null && room.playerW == null) {
-        player = "0/2"
+        player = "No one play"
     }
     if (room.playerB != null && room.playerW == null) {
-        player = "1/2"
+        player = `${room.playerBName} as Black`
     }
     if (room.playerB == null && room.playerW != null) {
-        player = "1/2"
+        player = `${room.playerWName} as white`
     }
     if (room.playerB != null && room.playerW != null) {
-        player = "2/2"
+        player = `${room.playerWName} VS ${room.playerBName}`
     }
     const text = `
                     <div class="room-code">
-                        <p class="code">Room code: ${room.code}</p>
                     </div>
                     <div class="info">
                         <p class="player">${player}</p>

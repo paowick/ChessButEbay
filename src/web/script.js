@@ -50,3 +50,8 @@ export async function getallRoom() {
     }
     return result
 }
+
+export async function getroom(code) {
+    const data = await redisClient.get(code)
+    return data
+}
