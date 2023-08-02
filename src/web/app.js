@@ -55,7 +55,7 @@ app.use(sessions({
 
 app.get('/login', (req, res) => {
     try {
-        res.sendFile(`${__dirname}/public/userAuth/loginPage/login.html`)
+        res.sendFile(`${__dirname}/public/loginPage/login.html`)
     } catch (e) {
         res.status(500)
     }
@@ -64,7 +64,7 @@ app.get('/login', (req, res) => {
 
 app.get('/signup', (req, res) => {
     try {
-        res.sendFile(`${__dirname}/public/userAuth/signupPage/signup.html`)
+        res.sendFile(`${__dirname}/public/signupPage/signup.html`)
     } catch (e) {
         res.status(500)
     }
@@ -83,7 +83,7 @@ app.get('/Game', (req, res) => {
 
 app.get('/forgotPassword', (req, res) => {
     try {
-        res.sendFile(`${__dirname}/public/userAuth/forgotpasswordPage/forgot.html`)
+        res.sendFile(`${__dirname}/public/forgotpasswordPage/forgot.html`)
     } catch (e) {
         console.log(e);
         res.status(500)
