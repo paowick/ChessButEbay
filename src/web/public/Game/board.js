@@ -21,6 +21,7 @@ export var socket = io(window.location.origin, {
         id: user.id
     }
 });
+let myturn = false
 run()
 export async function run() {
     socket.on('board', async (arg) => {
@@ -56,8 +57,6 @@ export async function run() {
                 }
             }
         }
-        currentGame.role = arg.role
-        localStorage.setItem('currentGame',JSON.stringify(currentGame))
         if (currentGame.role != 'viewer') {
             const join_con = document.querySelector(".join-butt-con")
             join_con.style.display = 'none'
@@ -77,6 +76,14 @@ export async function run() {
         }else if (currentGame.role == 'viewer'){
             if(info.playerB != null){document.querySelector('#join_black').style.display = 'none'}
             if(info.playerW != null){document.querySelector('#join_white').style.display = 'none'}
+        }
+        currentGame.role = arg.role
+        localStorage.setItem('currentGame',JSON.stringify(currentGame))
+        console.log(arg);
+        if(arg.turn === arg.role){
+            myturn = false
+        }else{
+            myturn = true
         }
     })
 
@@ -140,7 +147,6 @@ document.querySelectorAll('.box')
             if (currentGame.role != 'viewer') {
                 if (source == null && destination == null) {
                     // source position ====================================================================
-                    // if (!myTurn) { return source = null; }
                     const piece = havePiece(this.id)
                     if (piece == null) { return source = null; }
                     source = this.id;
@@ -149,8 +155,14 @@ document.querySelectorAll('.box')
 
                 } else if (source != null && destination == null) {
                     // destination position ===============================================================
-
-
+                    
+                    
+                    if (!myturn) { 
+                        clearHightLight(havePiece(source))
+                        source = null;
+                        destination = null;
+                        return
+                    }
                     const piece = havePiece(source)
                     if (currentGame.role != piece.team) {
                         clearHightLight(havePiece(source))
@@ -195,6 +207,7 @@ function moveClient(source, destination) {
     destination = null
     source = null
     localStorage.setItem("board",stringify(board))
+    myturn = false
 }
 export function moveClient_Server(source, destination) {
     const oldpos = tranSlateTopos(source)
@@ -207,6 +220,7 @@ export function moveClient_Server(source, destination) {
     destination = null
     source = null
     localStorage.setItem("board",stringify(board))
+    myturn = true
 }
 function clearHightLight(piece) {
     const posList = piece.moveAblepos(board)

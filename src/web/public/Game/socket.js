@@ -6,7 +6,10 @@ const user = JSON.parse(localStorage.getItem('user'))
 
 
 export function move(source, destination) {
+
+    const currentGame = JSON.parse(localStorage.getItem("currentGame"))
     let data = {
+        turn: currentGame.role,
         source: source,
         destination: destination,
         board: board
