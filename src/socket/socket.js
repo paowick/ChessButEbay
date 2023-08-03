@@ -40,23 +40,26 @@ io.sockets.on("connection", async (socket) => {
     socket.join(socket.request._query.code)
 
     if (socket.request._query.code != "admin") {
+        let socketRole = 'viewer'
         const boardRedisJSON = await redisClient.get(socket.request._query.code)
         const boardRedis = await JSON.parse(boardRedisJSON)
+        if (socket.request._query.id == boardRedis.playerB) {socketRole = 'B'}
+        if (socket.request._query.id == boardRedis.playerW) {socketRole = 'W'}
         io.sockets.to(socket.request._query.code).emit("board", {
-            board: stringify(boardRedis)
+            board: stringify(boardRedis),
+            role: socketRole
         });
 
     }
     socket.on('join', async (arg) => {
-        console.log(arg);
-        await storedata(arg, socket).then( async ()=>{
+        await storedata(arg, socket).then(async () => {
             const boardRedisJSON = await redisClient.get(socket.request._query.code)
             const boardRedis = await JSON.parse(boardRedisJSON)
-            socket.broadcast.to(socket.request._query.code).emit(`join_server`,{
+            socket.broadcast.to(socket.request._query.code).emit(`join_server`, {
                 board: stringify(boardRedis)
             })
 
-        }) 
+        })
     })
 
 
@@ -74,7 +77,6 @@ io.sockets.on("connection", async (socket) => {
             NX: false
         })
         socket.join(data.room);
-        console.log(io.sockets.adapter.rooms.has(data.room))
     });
     socket.on("move", (arg) => {
         const data = JSON.parse(arg)
@@ -105,8 +107,6 @@ async function setBoardRedis(code, board) {
 async function storedata(arg, socket) {
     const roomJSON = await redisClient.get(arg.data.code)
     const room = await JSON.parse(roomJSON)
-    console.log(arg);
-    console.log(room);
     if (arg.data.role == 'B') {
         room.playerB = socket.request._query.id
         room.playerBName = arg.username
@@ -115,7 +115,6 @@ async function storedata(arg, socket) {
         room.playerW = socket.request._query.id
         room.playerWName = arg.username
     }
-    console.log(room);
     redisClient.set(arg.data.code, stringify(room), {
         NX: false
     })

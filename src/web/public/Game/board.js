@@ -56,6 +56,8 @@ export async function run() {
                 }
             }
         }
+        currentGame.role = arg.role
+        localStorage.setItem('currentGame',JSON.stringify(currentGame))
         if (currentGame.role != 'viewer') {
             const join_con = document.querySelector(".join-butt-con")
             join_con.style.display = 'none'
