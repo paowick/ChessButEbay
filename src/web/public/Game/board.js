@@ -22,10 +22,9 @@ export var socket = io(window.location.origin, {
     }
 });
 run()
-async function run() {
+export async function run() {
     socket.on('board', async (arg) => {
         const info = await JSON.parse(arg.board)
-        console.log(info);
         for (let index = 0; index < info.board.length; index++) {
             const elements = info.board[index];
             for (let index = 0; index < elements.length; index++) {
@@ -74,8 +73,8 @@ async function run() {
                 board_black.style.display = 'none'
             }
         }else if (currentGame.role == 'viewer'){
-            if(info.playerB != null){document.querySelector('#join_white').style.display = 'none'}
-            if(info.playerW != null){document.querySelector('#join_black').style.display = 'none'}
+            if(info.playerB != null){document.querySelector('#join_black').style.display = 'none'}
+            if(info.playerW != null){document.querySelector('#join_white').style.display = 'none'}
         }
     })
 

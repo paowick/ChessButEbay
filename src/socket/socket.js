@@ -48,7 +48,15 @@ io.sockets.on("connection", async (socket) => {
 
     }
     socket.on('join', async (arg) => {
-        storedata(arg, socket)
+        console.log(arg);
+        await storedata(arg, socket).then( async ()=>{
+            const boardRedisJSON = await redisClient.get(socket.request._query.code)
+            const boardRedis = await JSON.parse(boardRedisJSON)
+            socket.broadcast.to(socket.request._query.code).emit(`join_server`,{
+                board: stringify(boardRedis)
+            })
+
+        }) 
     })
 
 

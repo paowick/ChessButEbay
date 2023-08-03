@@ -1,5 +1,6 @@
 import { board, moveClient_Server } from "./board.js";
 import { socket } from "./board.js";
+import { run } from "./board.js";
 
 const user = JSON.parse(localStorage.getItem('user'))
 
@@ -8,7 +9,7 @@ export function move(source, destination) {
     let data = {
         source: source,
         destination: destination,
-        board:board
+        board: board
     }
     if (destination != source) {
         socket.emit("move", stringify(data))
@@ -20,15 +21,21 @@ import('./board.js').then(({ socket }) => {
         moveClient_Server(arg.source, arg.destination)
     })
 
+    socket.on('join_server', async (arg) => {
+        const info = JSON.parse(arg.board)
+        if (info.playerB != null) { document.querySelector('#join_black').style.display = 'none' }
+        if (info.playerW != null) { document.querySelector('#join_white').style.display = 'none' }
+    })
+
 
 }).catch((error) => {
     console.error('Error loading socket:', error);
 });
 
-export function join(game,username) {
+export function join(game, username) {
     let data = {
-        data:game,
-        username:username
+        data: game,
+        username: username
     }
     import('./board.js').then(({ socket }) => {
         socket.emit('join', data)
