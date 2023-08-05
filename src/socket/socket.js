@@ -43,8 +43,8 @@ io.sockets.on("connection", async (socket) => {
         let socketRole = 'viewer'
         const boardRedisJSON = await redisClient.get(socket.request._query.code)
         const boardRedis = await JSON.parse(boardRedisJSON)
-        if (socket.request._query.id == boardRedis.playerB) {socketRole = 'B'}
-        if (socket.request._query.id == boardRedis.playerW) {socketRole = 'W'}
+        if (socket.request._query.id == boardRedis?.playerB) {socketRole = 'B'}
+        if (socket.request._query.id == boardRedis?.playerW) {socketRole = 'W'}
         io.sockets.to(socket.id).emit("board", {
             board: stringify(boardRedis),
             role: socketRole,
@@ -85,6 +85,7 @@ io.sockets.on("connection", async (socket) => {
         console.log(`move ${data.source} to ${data.destination}`)
         setBoardRedis(socket.request._query.code, data.board,data.turn)
         let move = {
+            promoted:data.promoted,
             source: data.source,
             destination: data.destination,
         }
