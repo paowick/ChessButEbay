@@ -525,14 +525,28 @@ export class pawn extends pieces {
 
 
 
-    async promoted(board) {
+    async promoted(board, promoted) {
         const currentGame = JSON.parse(localStorage.getItem("currentGame"))
         if (currentGame.role != this.team) { return 0 }
         console.log(this.promotedPos);
         console.log(this.pos);
         if (this.promotedPos.includes(`${this.pos}`)) {
-            this.unset
-            return new queen("queen", this.pos, this.team, true, board)
+            if (promoted == 'queen') {
+                this.unset
+                return new queen("queen", this.pos, this.team, true, board)
+            }
+            if (promoted == 'bishop') {
+                this.unset
+                return new bishop("bishop", this.pos, this.team, true, board)
+            }
+            if (promoted == 'rook') {
+                this.unset
+                return new rook("rook", this.pos, this.team, true, board)
+            }
+            if (promoted == 'knight') {
+                this.unset
+                return new knight("knight", this.pos, this.team, true, board)
+            }
 
         }
     }

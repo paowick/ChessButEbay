@@ -174,12 +174,23 @@ document.querySelectorAll('.box')
                         source = null
                         return destination = null
                     }
+                    const oldpos = tranSlateTopos(source)
+                    const thispiece = board[oldpos[0]][oldpos[1]];
+                    if (thispiece.name == "pawn") {
+                        console.log(destination);
+                        if(thispiece.promotedPos.includes(tranSlateTopos(this.id)))
+                        destination = this.id;
+                        clearHightLight(havePiece(source))
+                        moveClient(source, destination,"rook") // <----------
+                        source = null
+                        destination = null
+                        return
+                    }
                     destination = this.id;
                     clearHightLight(havePiece(source))
-                    moveClient(source, destination)
+                    moveClient(source, destination,null)
                     source = null
                     destination = null
-
 
 
 
@@ -195,7 +206,7 @@ document.querySelectorAll('.box')
 
 
 
-async function moveClient(source, destination) {
+async function moveClient(source, destination,promoted) {
     const oldpos = tranSlateTopos(source)
     const newpos = tranSlateTopos(destination)
     const piece = board[oldpos[0]][oldpos[1]];
@@ -203,11 +214,9 @@ async function moveClient(source, destination) {
     piece.pos = newpos
     piece.setPiece()
     if (piece.firstmove != undefined) { piece.firstmove = false }
-    if (typeof piece.promoted === 'function') {
-        const newPiece = await piece.promoted(board)
-        console.log(newPiece);
-
-        if(newPiece != null){
+    if (typeof piece.promoted === 'function' && promoted != null ) {
+        const newPiece = await piece.promoted(board,promoted)
+        if (newPiece != null) {
             const dataNewPiece = {
                 name: newPiece.name,
                 pos: newPiece.pos,
@@ -221,11 +230,11 @@ async function moveClient(source, destination) {
             myturn = false
         }
     }
-        move(source, destination, null)
-        destination = null
-        source = null
-        localStorage.setItem("board", stringify(board))
-        myturn = false
+    move(source, destination, null)
+    destination = null
+    source = null
+    localStorage.setItem("board", stringify(board))
+    myturn = false
 }
 export function moveClient_Server(source, destination, promoted) {
     const oldpos = tranSlateTopos(source)
