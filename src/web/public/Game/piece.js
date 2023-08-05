@@ -528,8 +528,7 @@ export class pawn extends pieces {
     async promoted(board, promoted) {
         const currentGame = JSON.parse(localStorage.getItem("currentGame"))
         if (currentGame.role != this.team) { return 0 }
-        console.log(this.promotedPos);
-        console.log(this.pos);
+       
         if (this.promotedPos.includes(`${this.pos}`)) {
             if (promoted == 'queen') {
                 this.unset
@@ -553,9 +552,7 @@ export class pawn extends pieces {
 
     promoted_server(board, promoted) {
         if (this.promotedPos.includes(`${this.pos}`)) {
-            console.log('must promote');
             this.unset
-            console.log(promoted);
             if (promoted.name == "queen") {
 
                 return new queen("queen", promoted.pos, promoted.team, false, board)

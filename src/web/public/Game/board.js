@@ -79,7 +79,6 @@ export async function run() {
         }
         currentGame.role = arg.role
         localStorage.setItem('currentGame', JSON.stringify(currentGame))
-        console.log(arg);
         if (arg.turn === arg.role) {
             myturn = false
         } else {
@@ -177,18 +176,18 @@ document.querySelectorAll('.box')
                     const oldpos = tranSlateTopos(source)
                     const thispiece = board[oldpos[0]][oldpos[1]];
                     if (thispiece.name == "pawn") {
-                        console.log(destination);
-                        if(thispiece.promotedPos.includes(tranSlateTopos(this.id)))
-                        destination = this.id;
-                        clearHightLight(havePiece(source))
-                        moveClient(source, destination,"rook") // <----------
-                        source = null
-                        destination = null
-                        return
+                        if (thispiece.promotedPos.includes(tranSlateTopos(this.id))) {
+                            destination = this.id;
+                            askPlayer(source, destination)
+                            clearHightLight(havePiece(source))
+                            source = null
+                            destination = null
+                            return
+                        }
                     }
                     destination = this.id;
                     clearHightLight(havePiece(source))
-                    moveClient(source, destination,null)
+                    moveClient(source, destination, null)
                     source = null
                     destination = null
 
@@ -205,36 +204,59 @@ document.querySelectorAll('.box')
     })
 
 
+function askPlayer(source, destination) {
+    document.querySelector('#prom-pop').style.display = 'block'
+    document.querySelectorAll('#choi').forEach(button => {
+        button.addEventListener('click', async () => {
+            console.log(source);
+            console.log(destination);
+            console.log(button);
+            document.querySelector('#prom-pop').style.display = 'none'
+            await moveClient(source, destination, button.value) // <----------
+        })
+    })
 
-async function moveClient(source, destination,promoted) {
-    const oldpos = tranSlateTopos(source)
-    const newpos = tranSlateTopos(destination)
-    const piece = board[oldpos[0]][oldpos[1]];
-    piece.unset()
-    piece.pos = newpos
-    piece.setPiece()
-    if (piece.firstmove != undefined) { piece.firstmove = false }
-    if (typeof piece.promoted === 'function' && promoted != null ) {
-        const newPiece = await piece.promoted(board,promoted)
-        if (newPiece != null) {
-            const dataNewPiece = {
-                name: newPiece.name,
-                pos: newPiece.pos,
-                team: newPiece.team,
-                isKing: false
+
+
+}
+
+
+
+
+
+async function moveClient(source, destination, promoted) {
+    try {
+        const oldpos = tranSlateTopos(source)
+        const newpos = tranSlateTopos(destination)
+        const piece = board[oldpos[0]][oldpos[1]];
+        piece.unset()
+        piece.pos = newpos
+        piece.setPiece()
+        if (piece.firstmove != undefined) { piece.firstmove = false }
+        if (typeof piece.promoted === 'function' && promoted != null) {
+            const newPiece = await piece.promoted(board, promoted)
+            if (newPiece != null) {
+                const dataNewPiece = {
+                    name: newPiece.name,
+                    pos: newPiece.pos,
+                    team: newPiece.team,
+                    isKing: false
+                }
+                move(source, destination, dataNewPiece)
+                destination = null
+                source = null
+                localStorage.setItem("board", stringify(board))
+                myturn = false
             }
-            move(source, destination, dataNewPiece)
-            destination = null
-            source = null
-            localStorage.setItem("board", stringify(board))
-            myturn = false
         }
+        move(source, destination, null)
+        destination = null
+        source = null
+        localStorage.setItem("board", stringify(board))
+        myturn = false
+    } catch (error) {
+        console.log(error);
     }
-    move(source, destination, null)
-    destination = null
-    source = null
-    localStorage.setItem("board", stringify(board))
-    myturn = false
 }
 export function moveClient_Server(source, destination, promoted) {
     const oldpos = tranSlateTopos(source)
@@ -246,7 +268,6 @@ export function moveClient_Server(source, destination, promoted) {
     if (piece.firstmove != undefined) { piece.firstmove = false }
     if (typeof piece.promoted === 'function' && promoted != null) {
         const newPiece = piece.promoted_server(board, promoted)
-        console.log(newPiece);
         destination = null
         source = null
         localStorage.setItem("board", stringify(board))
