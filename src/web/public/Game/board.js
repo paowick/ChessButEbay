@@ -205,58 +205,69 @@ document.querySelectorAll('.box')
 
 
 function askPlayer(source, destination) {
-    document.querySelector('#prom-pop').style.display = 'block'
-    document.querySelectorAll('#choi').forEach(button => {
-        button.addEventListener('click', async () => {
-            console.log(source);
-            console.log(destination);
-            console.log(button);
-            document.querySelector('#prom-pop').style.display = 'none'
-            await moveClient(source, destination, button.value) // <----------
-        })
-    })
+  const buttons = document.querySelectorAll('#choi');
 
+  function handleButtonClick(button) {
+    console.log(source);
+    console.log(destination);
+    console.log(button);
+    document.querySelector('#prom-pop').style.display = 'none';
+    moveClient(source, destination, button.value); // Assuming moveClient is not an async function
+  }
 
+  function removeAllEventListeners() {
+    buttons.forEach(button => {
+      const newButton = button.cloneNode(true);
+      button.parentNode.replaceChild(newButton, button);
+    });
+  }
 
+  document.querySelector('#prom-pop').style.display = 'block';
+
+  buttons.forEach(button => {
+    button.addEventListener('click', function onClick(event) {
+      handleButtonClick(event.target);
+      removeAllEventListeners();
+    });
+  });
 }
 
 
 
 
 
+
 async function moveClient(source, destination, promoted) {
-    try {
-        const oldpos = tranSlateTopos(source)
-        const newpos = tranSlateTopos(destination)
-        const piece = board[oldpos[0]][oldpos[1]];
-        piece.unset()
-        piece.pos = newpos
-        piece.setPiece()
-        if (piece.firstmove != undefined) { piece.firstmove = false }
-        if (typeof piece.promoted === 'function' && promoted != null) {
-            const newPiece = await piece.promoted(board, promoted)
-            if (newPiece != null) {
-                const dataNewPiece = {
-                    name: newPiece.name,
-                    pos: newPiece.pos,
-                    team: newPiece.team,
-                    isKing: false
-                }
-                move(source, destination, dataNewPiece)
-                destination = null
-                source = null
-                localStorage.setItem("board", stringify(board))
-                myturn = false
+
+    const oldpos = tranSlateTopos(source)
+    const newpos = tranSlateTopos(destination)
+    const piece = board[oldpos[0]][oldpos[1]];
+    piece.unset()
+    piece.pos = newpos
+    piece.setPiece()
+    if (piece.firstmove != undefined) { piece.firstmove = false }
+    if (typeof piece.promoted === 'function' && promoted != null) {
+        const newPiece = await piece.promoted(board, promoted)
+        if (newPiece != null) {
+            const dataNewPiece = {
+                name: newPiece.name,
+                pos: newPiece.pos,
+                team: newPiece.team,
+                isKing: false
             }
+            move(source, destination, dataNewPiece)
+            destination = null
+            source = null
+            localStorage.setItem("board", stringify(board))
+            myturn = false
         }
-        move(source, destination, null)
-        destination = null
-        source = null
-        localStorage.setItem("board", stringify(board))
-        myturn = false
-    } catch (error) {
-        console.log(error);
     }
+    move(source, destination, null)
+    destination = null
+    source = null
+    localStorage.setItem("board", stringify(board))
+    myturn = false
+
 }
 export function moveClient_Server(source, destination, promoted) {
     const oldpos = tranSlateTopos(source)
