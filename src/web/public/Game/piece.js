@@ -84,7 +84,7 @@ export class pieces {
         var id = this.tranSlateToId()
         var box = document.querySelectorAll(`#${id}`)
         box.forEach(element => {
-            element.innerHTML = "" 
+            element.innerHTML = ""
         });
     }
 
@@ -185,7 +185,7 @@ export class king extends pieces {
             var id = this.tranSlateToId()
             var box = document.querySelectorAll(`#${id}`)
             box.forEach(element => {
-                element.innerHTML = `<div class="boxpiece kingBlack">&#9818;</div>`  
+                element.innerHTML = `<div class="boxpiece kingBlack">&#9818;</div>`
             });
         }
         if (this.team == "W") {
@@ -194,7 +194,7 @@ export class king extends pieces {
             var box = document.querySelectorAll(`#${id}`)
             box.forEach(element => {
                 element.innerHTML = `<div class="boxpiece kingWhite">&#9812;</div>`
-                
+
             });
         }
     }
@@ -298,7 +298,7 @@ export class bishop extends pieces {
             var id = this.tranSlateToId()
             var box = document.querySelectorAll(`#${id}`)
             box.forEach(element => {
-                element.innerHTML = `<div class="boxpiece bishopBlack">&#9821;</div>`  
+                element.innerHTML = `<div class="boxpiece bishopBlack">&#9821;</div>`
             });
         }
         if (this.team == "W") {
@@ -385,7 +385,7 @@ export class knight extends pieces {
             var box = document.querySelectorAll(`#${id}`)
             box.forEach(element => {
                 element.innerHTML = `<div class="boxpiece rookWhite">&#9816;</div>`
-                
+
             });
         }
     }
@@ -416,6 +416,13 @@ export class pawn extends pieces {
     constructor(name, pos, team, isKing, board, firstmove) {
         super(name, pos, team, isKing, board)
         this.firstmove = firstmove
+        if (team == 'W') {
+            this.promotedPos = ['00', '01', '02', '03', '04', '05', '06', '07']
+        } else if (team = 'B') {
+            this.promotedPos = ['70', '71', '72', '73', '74', '75', '76', '77']
+        }
+
+
     };
 
     setPiece() {
@@ -425,7 +432,7 @@ export class pawn extends pieces {
             var box = document.querySelectorAll(`#${id}`)
             box.forEach(element => {
                 element.innerHTML = `<div class="boxpiece rookBlack">&#9823;</div>`
-                
+
             });
         }
         if (this.team == "W") {
@@ -434,7 +441,7 @@ export class pawn extends pieces {
             var box = document.querySelectorAll(`#${id}`)
             box.forEach(element => {
                 element.innerHTML = `<div class="boxpiece rookWhite">&#9817;</div>`
-                
+
             });
         }
     }
@@ -445,58 +452,68 @@ export class pawn extends pieces {
         const col = parseInt(this.pos[0])
         if (this.team == 'B') {
             if (this.firstmove == true) {
-                if (board[col + 1][row] == null) {
-                    result.push(`${col + 1}${row}`)
-                    if (board[col + 2][row] == null) {
-                        result.push(`${col + 2}${row}`)
-                    }
-                } 
-                if (board[col + 1][row + 1] != null && board[col + 1][row + 1].team != this.team) {
-                    result.push(`${col + 1}${row + 1}`)
-                }
-                if (board[col + 1][row - 1] != null && board[col + 1][row - 1].team != this.team) {
-                    result.push(`${col + 1}${row - 1}`)
-                }
-            } else if (col + 1 < 8) {
-                if (board[col + 1][row] == null) {
-                    result.push(`${col + 1}${row}`)
-                }
-                if (board[col + 1][row + 1] != null && board[col + 1][row + 1].team != this.team) {
-                    result.push(`${col + 1}${row + 1}`)
-                }
-                if (board[col + 1][row - 1] != null && board[col + 1][row - 1].team != this.team) {
-                    result.push(`${col + 1}${row - 1}`)
-                }
 
-            };
+                if (col + 1 < 8) {
+                    if (board[col + 1][row] == null) {
+                        result.push(`${col + 1}${row}`)
+                        if (col + 2 < 8) {
+                            if (board[col + 2][row] == null) {
+                                result.push(`${col + 2}${row}`)
+                            }
+                        }
+                    }
+                    if (board[col + 1][row + 1] != null && board[col + 1][row + 1].team != this.team) {
+                        result.push(`${col + 1}${row + 1}`)
+                    }
+                    if (board[col + 1][row - 1] != null && board[col + 1][row - 1].team != this.team) {
+                        result.push(`${col + 1}${row - 1}`)
+                    }
+                } else if (col + 1 < 8) {
+                    if (board[col + 1][row] == null) {
+                        result.push(`${col + 1}${row}`)
+                    }
+                    if (board[col + 1][row + 1] != null && board[col + 1][row + 1].team != this.team) {
+                        result.push(`${col + 1}${row + 1}`)
+                    }
+                    if (board[col + 1][row - 1] != null && board[col + 1][row - 1].team != this.team) {
+                        result.push(`${col + 1}${row - 1}`)
+                    }
+
+                };
+            }
 
 
         }
         if (this.team == 'W') {
-            if (this.firstmove == true) {
-                if (board[col - 1][row] == null) {
-                    result.push(`${col - 1}${row}`)
-                    if (board[col - 2][row] == null) {
-                        result.push(`${col - 2}${row}`)
+            if (col - 1 > -1) {
+                if (this.firstmove == true) {
+                    if (board[col - 1][row] == null) {
+                        result.push(`${col - 1}${row}`)
+                        if (col - 2 > -1) {
+                            if (board[col - 2][row] == null) {
+                                result.push(`${col - 2}${row}`)
+                            }
+                        }
+
                     }
-                }
-                if (board[col - 1][row + 1] != null && board[col - 1][row + 1].team != this.team) {
-                    result.push(`${col - 1}${row + 1}`)
-                }
-                if (board[col - 1][row - 1] != null && board[col - 1][row - 1].team != this.team) {
-                    result.push(`${col - 1}${row - 1}`)
-                }
-            } else if (col - 1 > -1) { 
-                 if (board[col - 1][row] == null) {
-                    result.push(`${col - 1}${row}`)
-                }
-                if (board[col - 1][row + 1] != null && board[col - 1][row + 1].team != this.team) {
-                    result.push(`${col - 1}${row + 1}`)
-                }
-                if (board[col - 1][row - 1] != null && board[col - 1][row - 1].team != this.team) {
-                    result.push(`${col - 1}${row - 1}`)
-                }
-            };
+                    if (board[col - 1][row + 1] != null && board[col - 1][row + 1].team != this.team) {
+                        result.push(`${col - 1}${row + 1}`)
+                    }
+                    if (board[col - 1][row - 1] != null && board[col - 1][row - 1].team != this.team) {
+                        result.push(`${col - 1}${row - 1}`)
+                    }
+                } else if (col - 1 > -1) {
+                    if (board[col - 1][row] == null) {
+                        result.push(`${col - 1}${row}`)
+                    }
+                    if (board[col - 1][row + 1] != null && board[col - 1][row + 1].team != this.team) {
+                        result.push(`${col - 1}${row + 1}`)
+                    }
+                    if (board[col - 1][row - 1] != null && board[col - 1][row - 1].team != this.team) {
+                        result.push(`${col - 1}${row - 1}`)
+                    }
+                };
+            }
         }
         for (let index = 0; index < result.length; index++) {
             const element = result[index];
@@ -504,6 +521,56 @@ export class pawn extends pieces {
             filterResult.push(element)
         }
         return filterResult
+    }
+
+
+
+    async promoted(board, promoted) {
+        const currentGame = JSON.parse(localStorage.getItem("currentGame"))
+        if (currentGame.role != this.team) { return 0 }
+       
+        if (this.promotedPos.includes(`${this.pos}`)) {
+            if (promoted == 'queen') {
+                this.unset
+                return new queen("queen", this.pos, this.team, true, board)
+            }
+            if (promoted == 'bishop') {
+                this.unset
+                return new bishop("bishop", this.pos, this.team, true, board)
+            }
+            if (promoted == 'rook') {
+                this.unset
+                return new rook("rook", this.pos, this.team, true, board)
+            }
+            if (promoted == 'knight') {
+                this.unset
+                return new knight("knight", this.pos, this.team, true, board)
+            }
+
+        }
+    }
+
+    promoted_server(board, promoted) {
+        if (this.promotedPos.includes(`${this.pos}`)) {
+            this.unset
+            if (promoted.name == "queen") {
+
+                return new queen("queen", promoted.pos, promoted.team, false, board)
+            }
+            if (promoted.name == "bishop") {
+
+                return new bishop("bishop", promoted.pos, promoted.team, false, board)
+            }
+            if (promoted.name == "rook") {
+
+                return new rook("rook", promoted.pos, promoted.team, false, board)
+            }
+            if (promoted.name == "knight") {
+
+                return new knight("knight", promoted.pos, promoted.team, false, board)
+            }
+
+        }
     }
 
 }

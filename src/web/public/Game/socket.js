@@ -5,10 +5,11 @@ import { run } from "./board.js";
 const user = JSON.parse(localStorage.getItem('user'))
 
 
-export function move(source, destination) {
-
+export function move(source, destination,promoted) {
+console.log(`socket ${promoted}`);
     const currentGame = JSON.parse(localStorage.getItem("currentGame"))
     let data = {
+        promoted:promoted,
         turn: currentGame.role,
         source: source,
         destination: destination,
@@ -21,7 +22,7 @@ export function move(source, destination) {
 import('./board.js').then(({ socket }) => {
     socket.on('move_server', (arg) => {
         console.log(arg);
-        moveClient_Server(arg.source, arg.destination)
+        moveClient_Server(arg.source, arg.destination,arg.promoted)
     })
 
     socket.on('join_server', async (arg) => {

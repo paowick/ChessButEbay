@@ -73,16 +73,15 @@ export async function run() {
                 const board_black = document.querySelector('#board-black')
                 board_black.style.display = 'none'
             }
-        }else if (currentGame.role == 'viewer'){
-            if(info.playerB != null){document.querySelector('#join_black').style.display = 'none'}
-            if(info.playerW != null){document.querySelector('#join_white').style.display = 'none'}
+        } else if (currentGame.role == 'viewer') {
+            if (info.playerB != null) { document.querySelector('#join_black').style.display = 'none' }
+            if (info.playerW != null) { document.querySelector('#join_white').style.display = 'none' }
         }
         currentGame.role = arg.role
-        localStorage.setItem('currentGame',JSON.stringify(currentGame))
-        console.log(arg);
-        if(arg.turn === arg.role){
+        localStorage.setItem('currentGame', JSON.stringify(currentGame))
+        if (arg.turn === arg.role) {
             myturn = false
-        }else{
+        } else {
             myturn = true
         }
     })
@@ -119,7 +118,7 @@ document.querySelector('#join_black')
             role: "B"
         }
         localStorage.setItem('currentGame', JSON.stringify(data))
-        join(data,user.name)
+        join(data, user.name)
     })
 document.querySelector('#join_white')
     .addEventListener('click', () => {
@@ -136,7 +135,7 @@ document.querySelector('#join_white')
             role: "W"
         }
         localStorage.setItem('currentGame', JSON.stringify(data))
-        join(data,user.name)
+        join(data, user.name)
     })
 var source = null
 var destination = null
@@ -155,9 +154,9 @@ document.querySelectorAll('.box')
 
                 } else if (source != null && destination == null) {
                     // destination position ===============================================================
-                    
-                    
-                    if (!myturn) { 
+
+
+                    if (!myturn) {
                         clearHightLight(havePiece(source))
                         source = null;
                         destination = null;
@@ -174,12 +173,23 @@ document.querySelectorAll('.box')
                         source = null
                         return destination = null
                     }
+                    const oldpos = tranSlateTopos(source)
+                    const thispiece = board[oldpos[0]][oldpos[1]];
+                    if (thispiece.name == "pawn") {
+                        if (thispiece.promotedPos.includes(tranSlateTopos(this.id))) {
+                            destination = this.id;
+                            askPlayer(source, destination)
+                            clearHightLight(havePiece(source))
+                            source = null
+                            destination = null
+                            return
+                        }
+                    }
                     destination = this.id;
                     clearHightLight(havePiece(source))
-                    moveClient(source, destination)
+                    moveClient(source, destination, null)
                     source = null
                     destination = null
-
 
 
 
@@ -194,22 +204,41 @@ document.querySelectorAll('.box')
     })
 
 
+function askPlayer(source, destination) {
+  const buttons = document.querySelectorAll('#choi');
 
-function moveClient(source, destination) {
-    const oldpos = tranSlateTopos(source)
-    const newpos = tranSlateTopos(destination)
-    const piece = board[oldpos[0]][oldpos[1]];
-    piece.unset()
-    piece.pos = newpos
-    piece.setPiece()
-    if (piece.firstmove != undefined) { piece.firstmove = false }
-    move(source, destination)
-    destination = null
-    source = null
-    localStorage.setItem("board",stringify(board))
-    myturn = false
+  function handleButtonClick(button) {
+    console.log(source);
+    console.log(destination);
+    console.log(button);
+    document.querySelector('#prom-pop').style.display = 'none';
+    moveClient(source, destination, button.value); // Assuming moveClient is not an async function
+  }
+
+  function removeAllEventListeners() {
+    buttons.forEach(button => {
+      const newButton = button.cloneNode(true);
+      button.parentNode.replaceChild(newButton, button);
+    });
+  }
+
+  document.querySelector('#prom-pop').style.display = 'block';
+
+  buttons.forEach(button => {
+    button.addEventListener('click', function onClick(event) {
+      handleButtonClick(event.target);
+      removeAllEventListeners();
+    });
+  });
 }
-export function moveClient_Server(source, destination) {
+
+
+
+
+
+
+async function moveClient(source, destination, promoted) {
+
     const oldpos = tranSlateTopos(source)
     const newpos = tranSlateTopos(destination)
     const piece = board[oldpos[0]][oldpos[1]];
@@ -217,10 +246,49 @@ export function moveClient_Server(source, destination) {
     piece.pos = newpos
     piece.setPiece()
     if (piece.firstmove != undefined) { piece.firstmove = false }
+    if (typeof piece.promoted === 'function' && promoted != null) {
+        const newPiece = await piece.promoted(board, promoted)
+        if (newPiece != null) {
+            const dataNewPiece = {
+                name: newPiece.name,
+                pos: newPiece.pos,
+                team: newPiece.team,
+                isKing: false
+            }
+            move(source, destination, dataNewPiece)
+            destination = null
+            source = null
+            localStorage.setItem("board", stringify(board))
+            myturn = false
+        }
+    }
+    move(source, destination, null)
     destination = null
     source = null
-    localStorage.setItem("board",stringify(board))
-    myturn = true
+    localStorage.setItem("board", stringify(board))
+    myturn = false
+
+}
+export function moveClient_Server(source, destination, promoted) {
+    const oldpos = tranSlateTopos(source)
+    const newpos = tranSlateTopos(destination)
+    const piece = board[oldpos[0]][oldpos[1]];
+    piece.unset()
+    piece.pos = newpos
+    piece.setPiece()
+    if (piece.firstmove != undefined) { piece.firstmove = false }
+    if (typeof piece.promoted === 'function' && promoted != null) {
+        const newPiece = piece.promoted_server(board, promoted)
+        destination = null
+        source = null
+        localStorage.setItem("board", stringify(board))
+        myturn = true
+    } else {
+        destination = null
+        source = null
+        localStorage.setItem("board", stringify(board))
+        myturn = true
+    }
 }
 function clearHightLight(piece) {
     const posList = piece.moveAblepos(board)
