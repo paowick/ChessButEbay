@@ -113,14 +113,3 @@ export async function editinfo(id,name,fname,lname) {
     }
 }
 
-export async function editpassword(id,password) {
-    let conn;
-    try {
-        conn = await pool.getConnection();
-        const rows = await conn.query("UPDATE User SET User.Password = ? WHERE Id = ?;",[password,id]);
-        console.log(rows);
-        return rows.affectedRows == 1 ? true : false
-    } finally {
-        if (conn) conn.end();
-    }
-}
