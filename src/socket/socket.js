@@ -48,7 +48,7 @@ io.sockets.on("connection", async (socket) => {
         io.sockets.to(socket.id).emit("board", {
             board: stringify(boardRedis),
             role: socketRole,
-            turn: boardRedis.turn
+            turn: boardRedis?.turn
         });
 
     }

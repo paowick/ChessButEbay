@@ -1,3 +1,14 @@
+import { move } from './socket.js';
+import { io } from "https://cdn.socket.io/4.3.2/socket.io.esm.min.js";
+import { join } from './socket.js';
+import { waitingForPlayer,askPlayer } from './script.js';
+import { king } from './king.js';
+import { pawn } from './pawn.js';
+import { queen } from './queen.js';
+import { bishop } from './bishop.js';
+import { knight } from './knight.js';
+import { rook } from './rook.js';
+
 export var board = [
     [null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null, null],
@@ -8,12 +19,6 @@ export var board = [
     [null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null, null],
 ]
-import * as pieces from './piece.js';
-import { move } from './socket.js';
-import { io } from "https://cdn.socket.io/4.3.2/socket.io.esm.min.js";
-import { join } from './socket.js';
-import { waitingForPlayer,askPlayer } from './script.js';
-
 const currentGame = JSON.parse(localStorage.getItem("currentGame"))
 const user = JSON.parse(localStorage.getItem("user"))
 export var socket = io(window.location.origin, {
@@ -38,27 +43,27 @@ export async function run() {
                 const element = elements[index];
                 if (element == null) { continue }
                 if (element.name == 'king') {
-                    new pieces.king("king", element.pos, element.team, true, board)
+                    new king("king", element.pos, element.team, true, board)
                     continue
                 }
                 if (element.name == 'queen') {
-                    new pieces.queen("queen", element.pos, element.team, false, board)
+                    new queen("queen", element.pos, element.team, false, board)
                     continue
                 }
                 if (element.name == 'bishop') {
-                    new pieces.bishop("bishop", element.pos, element.team, false, board)
+                    new bishop("bishop", element.pos, element.team, false, board)
                     continue
                 }
                 if (element.name == 'rook') {
-                    new pieces.rook("rook", element.pos, element.team, false, board)
+                    new rook("rook", element.pos, element.team, false, board)
                     continue
                 }
                 if (element.name == 'knight') {
-                    new pieces.knight("knight", element.pos, element.team, false, board)
+                    new knight("knight", element.pos, element.team, false, board)
                     continue
                 }
                 if (element.name == 'pawn') {
-                    new pieces.pawn("pawn", element.pos, element.team, false, board, true)
+                    new pawn("pawn", element.pos, element.team, false, board, true)
                     continue
                 }
             }
