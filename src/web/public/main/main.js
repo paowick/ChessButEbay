@@ -1,13 +1,20 @@
 window.onload = async () => {
+    roomload()
+}
+
+async function roomload() {
+    
     const room = await fetch('/getroom')
     const roomlist = await room.json()
-    console.log(roomlist);
+    document.getElementById('board').innerHTML = ""
     roomlist.datares.forEach(element => {
         document.getElementById("board").appendChild(roomtabview(element))
     });
-
-
 }
+
+setInterval(()=>{
+    roomload()
+},5000)
 
 
 function roomtabview(room) {
