@@ -61,12 +61,12 @@ export async function run() {
                 }
             }
         }
-        if (currentGame.role != 'viewer') {
+        if (arg.role != 'viewer') {
             const join_con = document.querySelector(".join-butt-con")
             join_con.style.display = 'none'
             const inhand = document.querySelector(".inhand")
             inhand.style.display = 'none'
-            if (currentGame.role == "B") {
+            if (arg.role == "B") {
                 const board_white = document.querySelector('#board-white')
                 board_white.style.display = "none"
                 const board_black = document.querySelector('#board-black')
@@ -77,7 +77,7 @@ export async function run() {
                 const board_black = document.querySelector('#board-black')
                 board_black.style.display = 'none'
             }
-        } else if (currentGame.role == 'viewer') {
+        } else if (arg.role == 'viewer') {
             if (info.playerB != null) { document.querySelector('#join_black').style.display = 'none' }
             if (info.playerW != null) { document.querySelector('#join_white').style.display = 'none' }
         }
@@ -211,31 +211,31 @@ document.querySelectorAll('.box')
 
 
 function askPlayer(source, destination) {
-  const buttons = document.querySelectorAll('#choi');
+    const buttons = document.querySelectorAll('#choi');
 
-  function handleButtonClick(button) {
-    console.log(source);
-    console.log(destination);
-    console.log(button);
-    document.querySelector('#prom-pop').style.display = 'none';
-    moveClient(source, destination, button.value); // Assuming moveClient is not an async function
-  }
+    function handleButtonClick(button) {
+        console.log(source);
+        console.log(destination);
+        console.log(button);
+        document.querySelector('#prom-pop').style.display = 'none';
+        moveClient(source, destination, button.value); // Assuming moveClient is not an async function
+    }
 
-  function removeAllEventListeners() {
+    function removeAllEventListeners() {
+        buttons.forEach(button => {
+            const newButton = button.cloneNode(true);
+            button.parentNode.replaceChild(newButton, button);
+        });
+    }
+
+    document.querySelector('#prom-pop').style.display = 'block';
+
     buttons.forEach(button => {
-      const newButton = button.cloneNode(true);
-      button.parentNode.replaceChild(newButton, button);
+        button.addEventListener('click', function onClick(event) {
+            handleButtonClick(event.target);
+            removeAllEventListeners();
+        });
     });
-  }
-
-  document.querySelector('#prom-pop').style.display = 'block';
-
-  buttons.forEach(button => {
-    button.addEventListener('click', function onClick(event) {
-      handleButtonClick(event.target);
-      removeAllEventListeners();
-    });
-  });
 }
 
 
