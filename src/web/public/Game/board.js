@@ -22,6 +22,10 @@ export var socket = io(window.location.origin, {
     }
 });
 let myturn = false
+
+export function changeMyTurn(data) {
+    myturn = data
+}
 run()
 export async function run() {
     socket.on('board', async (arg) => {
@@ -117,6 +121,7 @@ document.querySelector('#join_black')
             code: currentGame.code,
             role: "B"
         }
+        myturn = false
         localStorage.setItem('currentGame', JSON.stringify(data))
         join(data, user.name)
     })
@@ -134,6 +139,7 @@ document.querySelector('#join_white')
             code: currentGame.code,
             role: "W"
         }
+        myturn = false
         localStorage.setItem('currentGame', JSON.stringify(data))
         join(data, user.name)
     })

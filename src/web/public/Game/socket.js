@@ -1,15 +1,16 @@
 import { board, moveClient_Server } from "./board.js";
 import { socket } from "./board.js";
+import { changeMyTurn } from "./board.js";
 import { run } from "./board.js";
 
 const user = JSON.parse(localStorage.getItem('user'))
 
 
-export function move(source, destination,promoted) {
-console.log(`socket ${promoted}`);
+export function move(source, destination, promoted) {
+    console.log(`socket ${promoted}`);
     const currentGame = JSON.parse(localStorage.getItem("currentGame"))
     let data = {
-        promoted:promoted,
+        promoted: promoted,
         turn: currentGame.role,
         source: source,
         destination: destination,
@@ -22,7 +23,7 @@ console.log(`socket ${promoted}`);
 import('./board.js').then(({ socket }) => {
     socket.on('move_server', (arg) => {
         console.log(arg);
-        moveClient_Server(arg.source, arg.destination,arg.promoted)
+        moveClient_Server(arg.source, arg.destination, arg.promoted)
     })
 
     socket.on('join_server', async (arg) => {
@@ -31,6 +32,16 @@ import('./board.js').then(({ socket }) => {
         if (info.playerW != null) { document.querySelector('#join_white').style.display = 'none' }
     })
 
+    socket.on('start', async (arg) => {
+
+        const currentGame = JSON.parse(localStorage.getItem("currentGame"))
+        const info = JSON.parse(arg.board)
+        if (info.turn === currentGame.role){
+            changeMyTurn(true)
+        }else{
+            changeMyTurn(false)
+        }
+    })
 
 }).catch((error) => {
     console.error('Error loading socket:', error);
