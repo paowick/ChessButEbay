@@ -12,6 +12,7 @@ import * as pieces from './piece.js';
 import { move } from './socket.js';
 import { io } from "https://cdn.socket.io/4.3.2/socket.io.esm.min.js";
 import { join } from './socket.js';
+import { waitingForPlayer,askPlayer } from './script.js';
 
 const currentGame = JSON.parse(localStorage.getItem("currentGame"))
 const user = JSON.parse(localStorage.getItem("user"))
@@ -30,6 +31,7 @@ run()
 export async function run() {
     socket.on('board', async (arg) => {
         const info = await JSON.parse(arg.board)
+        console.log(arg);
         for (let index = 0; index < info.board.length; index++) {
             const elements = info.board[index];
             for (let index = 0; index < elements.length; index++) {
@@ -84,9 +86,9 @@ export async function run() {
         currentGame.role = arg.role
         localStorage.setItem('currentGame', JSON.stringify(currentGame))
         if (arg.turn === arg.role) {
-            myturn = false
-        } else {
             myturn = true
+        } else {
+            myturn = false
         }
     })
 
@@ -163,6 +165,7 @@ document.querySelectorAll('.box')
 
 
                     if (!myturn) {
+                        waitingForPlayer()
                         clearHightLight(havePiece(source))
                         source = null;
                         destination = null;
@@ -210,40 +213,12 @@ document.querySelectorAll('.box')
     })
 
 
-function askPlayer(source, destination) {
-    const buttons = document.querySelectorAll('#choi');
-
-    function handleButtonClick(button) {
-        console.log(source);
-        console.log(destination);
-        console.log(button);
-        document.querySelector('#prom-pop').style.display = 'none';
-        moveClient(source, destination, button.value); // Assuming moveClient is not an async function
-    }
-
-    function removeAllEventListeners() {
-        buttons.forEach(button => {
-            const newButton = button.cloneNode(true);
-            button.parentNode.replaceChild(newButton, button);
-        });
-    }
-
-    document.querySelector('#prom-pop').style.display = 'block';
-
-    buttons.forEach(button => {
-        button.addEventListener('click', function onClick(event) {
-            handleButtonClick(event.target);
-            removeAllEventListeners();
-        });
-    });
-}
 
 
 
 
 
-
-async function moveClient(source, destination, promoted) {
+export async function moveClient(source, destination, promoted) {
 
     const oldpos = tranSlateTopos(source)
     const newpos = tranSlateTopos(destination)

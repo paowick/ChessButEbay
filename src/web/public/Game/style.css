@@ -146,6 +146,20 @@ main {
     
 }
 
+/* .waiting-pop{
+    z-index: 10;
+    background-color: rgba(255,0,0,0.5);
+    backdrop-filter: blur(20px);
+    width: 300px;
+    height: 200px;
+    animation: waiting-pop 5s normal;
+}
+
+@keyframes waiting-pop {
+    0%{opacity: 1;}
+    100%{opacity: 0;}
+} */
+
 button {
     font-family: Courier New;
     font-weight: 650;
