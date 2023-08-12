@@ -1,4 +1,5 @@
 node_modules
-data
+data/*
 redisinsight
 .env
+image_user

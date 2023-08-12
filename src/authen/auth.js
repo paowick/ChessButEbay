@@ -41,6 +41,7 @@ app.post("/auth/getVerifyCode", async (req, res) => {
 
 app.post('/auth/signUp', async (req, res) => {
     try {
+        console.log(req.body.Name);
         if (!fillup(req.body.Name, req.body.Email, req.body.VerifyCode, req.body.Pass)) return res.sendStatus(400)
         if (!ValidatePassword(req.body.Pass)) return res.sendStatus(400)
         const codeIsTruth = await redis.verifyCodeChecker(req.body.Email, req.body.VerifyCode)
@@ -51,7 +52,7 @@ app.post('/auth/signUp', async (req, res) => {
         }
         res.sendStatus(200)
     } catch (e) {
-        console.log(e);
+        if( e instanceof SyntaxError){ return res.sendStatus(200)}
         res.sendStatus(500)
     }
 })

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About</title>
+    <link rel="stylesheet" href="../../about/about.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="../../about/about.js"></script>
+</head>
+<body>
+        <script src="https://code.jquery.com/jquery.min.js"></script>
+    <div id="nav-ph"></div>
+    <script>
+        $(function () {
+            $("#nav-ph").load("../../assets/component/navbar/navbar.html")
+        })
+    </script>
+    <main>
+        
+        <div class="about-con">
+            <div class="title">
+                About
+            </div>
+            <div class="info">
+                <h1>Development</h1>
+                <h1>Art</h1>
+                <h1>Sound and Audio</h1>
+                <h1>Special Thanks</h1>
+                <h1>Social</h1>
+            </div>
+        
+        <ul class="wrapper">
+           
+            <li class="icon facebook" >
+                <span class="tooltip" >Facebook</span>
+                <span><i class="fa fa-facebook" onclick="clickFacebook()"></i></span>
+            </li>
+              <li class="icon twitter">
+                <span class="tooltip">Twitter</span>
+                <span><i class="fa fa-twitter" onclick="clickTwitter()"></i></span>
+              </li>
+              <li class="icon instagram">
+                <span class="tooltip">Instagram</span>
+                <span><i class="fa fa-instagram" onclick="clickInstagram()"></i></span>
+              </li>
+              <li class="icon github">
+                <span class="tooltip">Github</span>
+                <span><i class="fa fa-github" onclick="clickGithub()"></i></span>
+              </li>
+            
+        </ul>
+    </div>
+    </main>
+</body>
+</html>

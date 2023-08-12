@@ -1,0 +1,150 @@
+body {
+    background-image: url("../../assets/image/bg02.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+main {
+    padding: 50px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+}
+
+.about-con{
+    font-family: Courier New;
+    font-weight: 650;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 55%;
+    height: 700px;
+    padding: 2px;
+    background-color: #171717;
+    border-radius: 30px;
+    align-items: center;
+}
+
+.wrapper {
+    display: inline-flex;
+    list-style: none;
+    
+  }
+
+  .icon {
+    background-color: #ffffff;
+    box-shadow: 2px 2px gray;
+    font-family: Courier New;
+    font-weight: 650;
+    position: relative;
+    border-radius: 50%;
+    padding: 15px;
+    margin: 10px;
+    width: 80px;
+    height: 80px;
+    font-size: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+  
+  .tooltip {
+    font-family: Courier New;
+    font-weight: 650;
+    position: absolute;
+    top: 0;
+    font-size: 16px;
+    background: #ffffff;
+    color: #ffffff;
+    padding: 5px 8px;
+    border-radius: 5px;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+
+  .tooltip::before {
+    position: absolute;
+    content: "";
+    height: 8px;
+    width: 8px;
+    background: #ffffff;
+    bottom: -3px;
+    left: 50%;
+    transform: translate(-50%) rotate(45deg);
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+  
+  .icon:hover .tooltip {
+    top: -45px;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+  
+  .icon:hover span,
+  .icon:hover .tooltip {
+    text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.1);
+  }
+  
+  .facebook:hover,
+  .facebook:hover .tooltip,
+  .facebook:hover .tooltip::before {
+    background: #1877F2;
+    color: #ffffff;
+  }
+  
+  .twitter:hover,
+  .twitter:hover .tooltip,
+  .twitter:hover .tooltip::before {
+    background: #1DA1F2;
+    color: #ffffff;
+  }
+  
+  .instagram:hover,
+  .instagram:hover .tooltip,
+  .instagram:hover .tooltip::before {
+    background: #E4405F;
+    color: #ffffff;
+  }
+  
+  .github:hover,
+  .github:hover .tooltip,
+  .github:hover .tooltip::before {
+    background: #333333;
+    color: #ffffff;
+  }
+
+  .title{
+    font-family: Courier New;
+    font-weight: 650;
+    margin: 0 auto;
+    margin-top: 20px;
+    background-color: #171717;
+    color: white;
+    width: 300px;
+    font-size: 60px;
+    text-shadow: #ffffff 0 0 5px;
+
+  }
+
+  .info{
+    display: flex;
+    font-family: Courier New;
+    font-weight: 650;
+    margin: 0 auto;
+    padding: 5px;
+    margin: 10px;
+    background-color: #171717;
+    color: white;
+    font-size: 18px;
+    flex-direction: column;
+  }
