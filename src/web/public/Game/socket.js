@@ -1,6 +1,7 @@
 import { board, moveClient_Server } from "./board.js";
 import { socket } from "./board.js";
 import { changeMyTurn } from "./board.js";
+import { winPop } from "./script.js";
 import { run } from "./board.js";
 
 const user = JSON.parse(localStorage.getItem('user'))
@@ -22,7 +23,6 @@ export function move(source, destination, promoted) {
 }
 import('./board.js').then(({ socket }) => {
     socket.on('move_server', (arg) => {
-        console.log(arg);
         moveClient_Server(arg.source, arg.destination, arg.promoted)
     })
 
@@ -33,12 +33,7 @@ import('./board.js').then(({ socket }) => {
     })
 
     socket.on('win_server', async (arg) => {
-        const currentGame = JSON.parse(localStorage.getItem("currentGame"))
-        if(currentGame.role == arg){
-            console.log("you win");
-        }else{
-            console.log("you lose");
-        }
+        winPop(arg)
     })
 
     socket.on('start', async (arg) => {

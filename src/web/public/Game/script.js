@@ -31,3 +31,21 @@ export function askPlayer(source, destination) {
         });
     });
 }
+
+export function winPop(arg) {
+    const currentGame = JSON.parse(localStorage.getItem("currentGame"))
+    if (currentGame.role == arg) {
+        document.querySelector("#win-pop").style.display = "flex"
+        const para = document.createElement("h1");
+        para.innerText = "You Win";
+        document.querySelector("#win-pop-text").appendChild(para)
+    } else {
+        document.querySelector("#win-pop").style.display = "flex"
+        const para = document.createElement("h1");
+        para.innerText = "You Lose";
+        document.querySelector("#win-pop-text").appendChild(para)
+    }
+    document.querySelector("#win-pop-butt").addEventListener("click", () => {
+        location.reload()
+    })
+}

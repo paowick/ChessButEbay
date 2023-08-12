@@ -146,6 +146,24 @@ main {
     
 }
 
+.win-pop{
+    padding: 10px;
+    border-radius: 50px;
+    display: none;
+    position: absolute;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    top: 20%;
+    left: 40%;
+    z-index: 10;
+    background-color: rgba(17,17,17,0.7);
+    backdrop-filter: blur(10px);
+    width: 400px;
+    height: 400px;
+}
+
+
 /* .waiting-pop{
     z-index: 10;
     background-color: rgba(255,0,0,0.5);
