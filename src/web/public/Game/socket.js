@@ -32,6 +32,15 @@ import('./board.js').then(({ socket }) => {
         if (info.playerW != null) { document.querySelector('#join_white').style.display = 'none' }
     })
 
+    socket.on('win_server', async (arg) => {
+        const currentGame = JSON.parse(localStorage.getItem("currentGame"))
+        if(currentGame.role == arg){
+            console.log("you win");
+        }else{
+            console.log("you lose");
+        }
+    })
+
     socket.on('start', async (arg) => {
 
         const currentGame = JSON.parse(localStorage.getItem("currentGame"))
@@ -58,7 +67,17 @@ export function join(game, username) {
         console.error('Error loading socket:', error);
     })
 }
-
+export function win(team) { 
+    let data = {
+        team: team,
+        username: user.id
+    }
+    import('./board.js').then(({socket})=>{
+        socket.emit('win',data)
+    }).catch((error)=>{
+        console.error('Error loading socket:', error);
+    })
+}
 
 function stringify(obj) {
     let cache = [];

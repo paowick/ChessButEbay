@@ -3,6 +3,7 @@ import { queen } from "./queen.js"
 import { bishop } from "./bishop.js"
 import { rook } from "./rook.js"
 import { knight } from "./knight.js"
+import { win } from "./socket.js"
 export class pawn extends pieces {
     constructor(name, pos, team, isKing, board, firstmove) {
         super(name, pos, team, isKing, board)
@@ -18,6 +19,9 @@ export class pawn extends pieces {
 
     setPiece() {
         if (this.team == "B") {
+            if(this.board[this.pos[0]][this.pos[1]] != null &&this.board[this.pos[0]][this.pos[1]].name == "king"){
+                win("B")
+            }
             this.board[this.pos[0]][this.pos[1]] = this
             var id = this.tranSlateToId()
             var box = document.querySelectorAll(`#${id}`)
@@ -27,6 +31,9 @@ export class pawn extends pieces {
             });
         }
         if (this.team == "W") {
+            if(this.board[this.pos[0]][this.pos[1]] != null && this.board[this.pos[0]][this.pos[1]].name == "king"){
+                win("W")
+            }
             this.board[this.pos[0]][this.pos[1]] = this
             var id = this.tranSlateToId()
             var box = document.querySelectorAll(`#${id}`)

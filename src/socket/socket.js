@@ -52,6 +52,8 @@ io.sockets.on("connection", async (socket) => {
         });
 
     }
+
+
     socket.on('join', async (arg) => {
         await storedata(arg, socket).then(async () => {
             const boardRedisJSON = await redisClient.get(socket.request._query.code)
@@ -91,6 +93,10 @@ io.sockets.on("connection", async (socket) => {
         })
         socket.join(data.room);
     });
+
+
+
+
     socket.on("move", (arg) => {
         const data = JSON.parse(arg)
         console.log(`move ${data.source} to ${data.destination}`)
@@ -101,6 +107,23 @@ io.sockets.on("connection", async (socket) => {
             destination: data.destination,
         }
         socket.broadcast.to(socket.request._query.code).emit(`move_server`, move)
+    })
+
+    socket.on("win", (arg)=>{
+        const value = {
+            turn: null,
+            code: socket.request._query.code,
+            playerB: null,
+            playerBName: null,
+            playerW: null,
+            playerWName: null,
+            board: board,
+            log: null
+        }
+        redisClient.set(socket.request._query.code, stringify(value), {
+            NX: false
+        })
+        socket.broadcast.to(socket.request._query.code).emit(`win_server`, arg.team)
     })
 
 
