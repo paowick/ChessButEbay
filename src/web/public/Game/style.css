@@ -162,6 +162,13 @@ main {
     width: 400px;
     height: 400px;
 }
+.room-code{
+    margin: 0 auto;
+    width: fit-content;
+}
+.room-code > h1{
+    color: black;
+}
 
 
 /* .waiting-pop{

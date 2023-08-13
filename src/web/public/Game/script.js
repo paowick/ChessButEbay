@@ -49,3 +49,34 @@ export function winPop(arg) {
         location.reload()
     })
 }
+
+export function boardSetupUi(arg, currentGame, info) {
+    if (arg.role != 'viewer') {
+        const join_con = document.querySelector(".join-butt-con")
+        join_con.style.display = 'none'
+        const inhand = document.querySelector(".inhand")
+        inhand.style.display = 'none'
+        if (arg.role == "B") {
+            const board_white = document.querySelector('#board-white')
+            board_white.style.display = "none"
+            const board_black = document.querySelector('#board-black')
+            board_black.style.display = 'flex'
+        } else {
+            const board_white = document.querySelector('#board-white')
+            board_white.style.display = "flex"
+            const board_black = document.querySelector('#board-black')
+            board_black.style.display = 'none'
+        }
+    } else if (arg.role == 'viewer') {
+        if (info.playerB != null) { document.querySelector('#join_black').style.display = 'none' }
+        if (info.playerW != null) { document.querySelector('#join_white').style.display = 'none' }
+    }
+    currentGame.role = arg.role
+    localStorage.setItem('currentGame', JSON.stringify(currentGame))
+}
+
+export function codePart(code) {
+    const para = document.createElement("h1");
+    para.innerText = code
+    document.querySelector(".room-code").appendChild(para)
+}
