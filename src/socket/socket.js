@@ -129,6 +129,10 @@ io.sockets.on("connection", async (socket) => {
         socket.broadcast.to(socket.request._query.code).emit(`win_server`, arg.team)
     })
 
+    socket.on("drop",(arg)=>{
+
+    })
+
 
     socket.on("disconnect", () => {
         console.log('dis')
@@ -136,6 +140,11 @@ io.sockets.on("connection", async (socket) => {
 });
 
 async function setBoardRedis(code, board, turn) {
+    if(turn == "W"){
+        turn = "B"
+    }else if(turn == "B"){
+        turn = "W"
+    }
     const roomJSON = await redisClient.get(code)
     const room = await JSON.parse(roomJSON)
     room.board = await board

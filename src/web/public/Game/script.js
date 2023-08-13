@@ -5,6 +5,8 @@ import { bishop } from "./bishop.js";
 import { board } from "./board.js";
 import { tranSlateToId } from "./board.js";
 import { drop } from "./board.js";
+import { clearAllHightLight } from "./board.js";
+import { myturn } from "./board.js";
 export function waitingForPlayer() {
     // document.querySelector("#waiting-pop").style.display = 'block'
     // setTimeout(() => {
@@ -91,7 +93,7 @@ export function codePart(code) {
 
 
 
-
+export let posListTemp = null
 export function invt() {
 
     var sourceinvt = null
@@ -111,21 +113,14 @@ export function invt() {
 
     document.querySelectorAll('.invt-box').forEach(div => {
         div.addEventListener('click', function () {
-            if (sourceinvt == null && destinationboard == null) {
-                showDropAble(invtList[this.id].dropPieceAble(board))
-                hightLightDrop(invtList[this.id],this.id)
-
-
-                sourceinvt = this.id
-            } else if (sourceinvt != null) {
-                console.log(this);
-                clearHightLightDrop(invtList[sourceinvt].dropPieceAble(board))
-                removeAllEvent()
-                temp()
-            }
+            clearAllHightLight()
+            showDropAble(invtList[this.id].dropPieceAble(board))
+            hightLightDrop(invtList[this.id], this.id)
+            removeAllEvent()
+            temp()
         })
     })
-    
+
     function removeAllEvent() {
         document.querySelectorAll('.invt-box').forEach(div => {
             const newdiv = div.cloneNode(true)
@@ -140,13 +135,17 @@ function temp() {
 }
 
 
-function hightLightDrop(piece,id) {
+function hightLightDrop(piece, id) {
     document.querySelectorAll('.drop').forEach(div => {
         div.addEventListener('click', function () {
-            drop(piece,this.id)
+            if (!myturn) { 
+                clearAllHightLight() 
+                return 
+            }
+            drop(piece, this.id)
             removeAllEvent()
             removeInvtList(id)
-            clearHightLightDrop(piece.dropPieceAble(board))
+            clearAllHightLight()
         })
     })
 
@@ -164,14 +163,14 @@ function hightLightDrop(piece,id) {
 
 
 
-document.querySelector("#auctiontest").addEventListener('click', () => {
+// document.querySelector("#auctiontest").addEventListener('click', () => {
 
-    const currentGame = JSON.parse(localStorage.getItem("currentGame"))
-    invtList.push(new bishop("bishop", null, currentGame.role, true, board))
-    // invtList.push(new king("king", null, "W", true, board))
-    // invtList.push(new queen("queen", null, "W", true, board))
-    invt()
-})
+//     const currentGame = JSON.parse(localStorage.getItem("currentGame"))
+//     invtList.push(new bishop("bishop", null, currentGame.role, true, board))
+//     // invtList.push(new king("king", null, "W", true, board))
+//     // invtList.push(new queen("queen", null, "W", true, board))
+//     invt()
+// })
 function showDropAble(posList) {
     posList.forEach(element => {
         const id = tranSlateToId(element)

@@ -9,6 +9,7 @@ import { bishop } from './bishop.js';
 import { knight } from './knight.js';
 import { rook } from './rook.js';
 import { boardSetupUi,codePart,invt } from './script.js';
+import { posListTemp } from './script.js';
 import { clearHightLightDrop } from './script.js';
 export let invtList = []
 export var board = [
@@ -29,7 +30,7 @@ export var socket = io(window.location.origin, {
         id: user.id
     }
 });
-let myturn = false
+export let myturn = false
 
 export function changeMyTurn(data) {
     myturn = data
@@ -37,9 +38,9 @@ export function changeMyTurn(data) {
 run()
 export async function run() {
     socket.on('board', async (arg) => {
-        invtList.push(new king("king", null, "W", true, board))
-        invtList.push(new queen("queen", null, "W", true, board))
-        invtList.push(new bishop("bishop", null, "W", true, board))
+        invtList.push(new king("king", null, currentGame.role, true, board))
+        invtList.push(new queen("queen", null, currentGame.role, true, board))
+        invtList.push(new bishop("bishop", null, currentGame.role, true, board))
         const info = await JSON.parse(arg.board)
         console.log(info);
         for (let index = 0; index < info.board.length; index++) {
@@ -101,6 +102,12 @@ export async function run() {
 // Black_KnightU = "&#9822"
 // Black_Pawn	  = "&#9823"
 
+export function clearAllHightLight() {
+    document.querySelectorAll(".hight-light").forEach(div=>{
+        div.parentNode.removeChild(div)
+    })
+}
+
 document.querySelector('#join_black')
     .addEventListener('click', () => {
         const join_con = document.querySelector(".join-butt-con")
@@ -148,6 +155,7 @@ document.querySelectorAll('.box')
                     console.log(new DOMParser().parseFromString(this.innerHTML,"text/xml").documentElement);
                     // source position ====================================================================
                     const piece = havePiece(this.id)
+                    clearAllHightLight()
                     if (piece == null) { return source = null; }
                     source = this.id;
                     showMoveAble(piece)
@@ -156,22 +164,23 @@ document.querySelectorAll('.box')
                 } else if (source != null && destination == null) {
                     // destination position ===============================================================
 
+                    clearAllHightLight()
 
                     if (!myturn) {
                         waitingForPlayer()
-                        clearHightLight(havePiece(source))
+                        clearAllHightLight()
                         source = null;
                         destination = null;
                         return
                     }
                     const piece = havePiece(source)
                     if (currentGame.role != piece.team) {
-                        clearHightLight(havePiece(source))
+                        clearAllHightLight()
                         source = null
                         return
                     }
                     if (!pieceMoveable(piece, this.id)) {
-                        clearHightLight(piece)
+                        clearAllHightLight()
                         source = null
                         return destination = null
                     }
@@ -181,14 +190,14 @@ document.querySelectorAll('.box')
                         if (thispiece.promotedPos.includes(tranSlateTopos(this.id))) {
                             destination = this.id;
                             askPlayer(source, destination)
-                            clearHightLight(havePiece(source))
+                            clearAllHightLight()
                             source = null
                             destination = null
                             return
                         }
                     }
                     destination = this.id;
-                    clearHightLight(havePiece(source))
+                    clearAllHightLight()
                     moveClient(source, destination, null)
                     source = null
                     destination = null
@@ -206,11 +215,12 @@ document.querySelectorAll('.box')
     })
 
 export function drop(piece,destination) {
-    console.log(piece);
     const pos = tranSlateTopos(destination)
     piece.setpos(pos)
     piece.setInInvt(false)
     piece.setPiece()
+    clearAllHightLight()
+    source = null
     myturn = false
 }
 
