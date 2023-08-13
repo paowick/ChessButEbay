@@ -9,6 +9,7 @@ import { bishop } from './bishop.js';
 import { knight } from './knight.js';
 import { rook } from './rook.js';
 import { boardSetupUi,codePart,invt } from './script.js';
+import { clearHightLightDrop } from './script.js';
 export let invtList = []
 export var board = [
     [null, null, null, null, null, null, null, null],
@@ -141,13 +142,10 @@ var destination = null
 document.querySelectorAll('.box')
     .forEach(div => {
         div.addEventListener('click', function () {
-        invtList.push(new bishop("bishop", null, "W", true, board))
-        invtList.push(new king("king", null, "W", true, board))
-        invtList.push(new queen("queen", null, "W", true, board))
-        invt()
             const currentGame = JSON.parse(localStorage.getItem("currentGame"))
             if (currentGame.role != 'viewer') {
                 if (source == null && destination == null) {
+                    console.log(new DOMParser().parseFromString(this.innerHTML,"text/xml").documentElement);
                     // source position ====================================================================
                     const piece = havePiece(this.id)
                     if (piece == null) { return source = null; }
@@ -207,7 +205,14 @@ document.querySelectorAll('.box')
 
     })
 
-
+export function drop(piece,destination) {
+    console.log(piece);
+    const pos = tranSlateTopos(destination)
+    piece.setpos(pos)
+    piece.setInInvt(false)
+    piece.setPiece()
+    myturn = false
+}
 
 export function removeInvtList(index) {
     let intIndex = parseInt(index)
@@ -218,9 +223,6 @@ export function removeInvtList(index) {
     console.log(invtList);
     invt()
 }
-
-
-
 
 export async function moveClient(source, destination, promoted) {
 
@@ -288,7 +290,7 @@ function clearHightLight(piece) {
     });
 }
 
-function showMoveAble(piece) {
+export function showMoveAble(piece) {
     const posList = piece.moveAblepos(board)
     posList.forEach(element => {
         const id = tranSlateToId(element)
@@ -336,7 +338,7 @@ function stringify(obj) {
     cache = null; // reset the cache
     return str;
 }
-function tranSlateTopos(id) {
+export function tranSlateTopos(id) {
     var temp = ""
     switch (`${id[1]}`) {
         case "8":
@@ -408,7 +410,7 @@ function tranSlateTopos(id) {
 }
 
 
-function tranSlateToId(pos) {
+export function tranSlateToId(pos) {
     var temp = ""
     switch (`${pos[1]}`) {
         case "0":

@@ -13,6 +13,26 @@ export class pieces {
             this.setPiece()
         }
     }
+    setpos(newpos){
+        this.pos = newpos
+    }
+    setInInvt(newvalue){
+        this.inInvt = newvalue
+    }
+    dropPieceAble(board){
+        let temp = []
+        if(this.team == "B"){
+            temp = ['00', '01', '02', '03', '04', '05', '06', '07','10', '11', '12', '13', '14', '15', '16', '17']
+        }else if(this.team == "W"){
+            temp = ['70', '71', '72', '73', '74', '75', '76', '77','60', '61', '62', '63', '64', '65', '66', '67']
+        }
+        temp.forEach((element,index) => {
+            if(board[element[0]][element[1]] != null){
+                temp.splice(index,1)
+            }
+        });
+        return temp
+    }
     tranSlateToId() {
         var temp = ""
         switch (`${this.pos[1]}`) {

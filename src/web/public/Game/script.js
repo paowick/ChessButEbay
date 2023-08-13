@@ -1,6 +1,10 @@
 import { moveClient } from "./board.js";
 import { invtList } from "./board.js";
 import { removeInvtList } from "./board.js";
+import { bishop } from "./bishop.js";
+import { board } from "./board.js";
+import { tranSlateToId } from "./board.js";
+import { drop } from "./board.js";
 export function waitingForPlayer() {
     // document.querySelector("#waiting-pop").style.display = 'block'
     // setTimeout(() => {
@@ -85,7 +89,13 @@ export function codePart(code) {
     document.querySelector(".room-code").appendChild(para)
 }
 
+
+
+
 export function invt() {
+
+    var sourceinvt = null
+    var destinationboard = null
 
 
     const invt = document.querySelector("#invt")
@@ -101,13 +111,21 @@ export function invt() {
 
     document.querySelectorAll('.invt-box').forEach(div => {
         div.addEventListener('click', function () {
-            
-            removeAllEvent()
-            removeInvtList(this.id)
+            if (sourceinvt == null && destinationboard == null) {
+                showDropAble(invtList[this.id].dropPieceAble(board))
+                hightLightDrop(invtList[this.id],this.id)
+
+
+                sourceinvt = this.id
+            } else if (sourceinvt != null) {
+                console.log(this);
+                clearHightLightDrop(invtList[sourceinvt].dropPieceAble(board))
+                removeAllEvent()
+                temp()
+            }
         })
     })
-
-
+    
     function removeAllEvent() {
         document.querySelectorAll('.invt-box').forEach(div => {
             const newdiv = div.cloneNode(true)
@@ -115,4 +133,68 @@ export function invt() {
         })
     }
 
+}
+
+function temp() {
+    invt()
+}
+
+
+function hightLightDrop(piece,id) {
+    document.querySelectorAll('.drop').forEach(div => {
+        div.addEventListener('click', function () {
+            drop(piece,this.id)
+            removeAllEvent()
+            removeInvtList(id)
+            clearHightLightDrop(piece.dropPieceAble(board))
+        })
+    })
+
+    function removeAllEvent() {
+        document.querySelectorAll('.drop').forEach(div => {
+            const newdiv = div.cloneNode(true)
+            div.parentNode.replaceChild(newdiv, div)
+        })
+    }
+}
+
+
+
+
+
+
+
+document.querySelector("#auctiontest").addEventListener('click', () => {
+
+    const currentGame = JSON.parse(localStorage.getItem("currentGame"))
+    invtList.push(new bishop("bishop", null, currentGame.role, true, board))
+    // invtList.push(new king("king", null, "W", true, board))
+    // invtList.push(new queen("queen", null, "W", true, board))
+    invt()
+})
+function showDropAble(posList) {
+    posList.forEach(element => {
+        const id = tranSlateToId(element)
+
+        document.querySelectorAll(`#${id}`).forEach(element => {
+            if (element.childNodes.length > 0) {
+
+                element.style.backgroundColor = `rgba(255, 0, 0,0.5)`
+                element.innerHTML += `<div></div>`
+                return 0
+            }
+            element.innerHTML += `<div class="hight-light drop" id="${id}" value="drop" >&#9900</div>`
+        })
+    });
+}
+export function clearHightLightDrop(posList) {
+    posList.forEach(element => {
+        const id = tranSlateToId(element)
+        document.querySelectorAll(`#${id}`).forEach(element => {
+            element.removeChild(element.lastChild)
+            element.style.backgroundColor = ``
+
+        })
+
+    });
 }
