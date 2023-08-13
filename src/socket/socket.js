@@ -83,8 +83,11 @@ io.sockets.on("connection", async (socket) => {
             code: data.room,
             playerB: null,
             playerBName: null,
+            invtB:null,
             playerW: null,
             playerWName: null,
+            invtW:null,
+            mine:null,
             board: board,
             log: null
         }

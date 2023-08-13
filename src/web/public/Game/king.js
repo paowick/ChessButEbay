@@ -14,12 +14,19 @@ export class king extends pieces {
         }
         return result
     }
+    html() {
+        if (this.team == "B") {
+            return `<div class="boxpiece kingBlack">&#9818;</div>`
+        } else if (this.team == "W") {
+            return `<div class="boxpiece kingWhite">&#9812;</div>`
+        }
+    }
     setPiece() {
         if (this.team == "B") {
-            if(this.board[this.pos[0]][this.pos[1]] != null && this.board[this.pos[0]][this.pos[1]].name == "king"){
+            if (this.board[this.pos[0]][this.pos[1]] != null && this.board[this.pos[0]][this.pos[1]].name == "king") {
                 win("W")
             }
-            if(this.board[this.pos[0]][this.pos[1]] != null &&this.board[this.pos[0]][this.pos[1]].name == "king"){
+            if (this.board[this.pos[0]][this.pos[1]] != null && this.board[this.pos[0]][this.pos[1]].name == "king") {
                 win("B")
             }
             this.board[this.pos[0]][this.pos[1]] = this

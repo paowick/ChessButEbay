@@ -16,7 +16,13 @@ export class pawn extends pieces {
 
 
     };
-
+    html(){
+        if (this.team == "B") {
+            return `<div class="boxpiece rookBlack">&#9823;</div>` 
+        }else if(this.team == "W") {
+            return `<div class="boxpiece rookWhite">&#9817;</div>`
+        }
+    }
     setPiece() {
         if (this.team == "B") {
             if(this.board[this.pos[0]][this.pos[1]] != null &&this.board[this.pos[0]][this.pos[1]].name == "king"){

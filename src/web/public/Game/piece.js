@@ -6,7 +6,12 @@ export class pieces {
         this.board = board
         this.team = team
         this.isKing = isKing
-        this.setPiece()
+        if(pos == null){
+            this.inInvt = true
+        }else{
+            this.inInvt = false
+            this.setPiece()
+        }
     }
     tranSlateToId() {
         var temp = ""

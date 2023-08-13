@@ -1,6 +1,12 @@
 import { pieces } from "./piece.js";
 export class bishop extends pieces {
-
+    html(){
+        if (this.team == "B") {
+            return `<div class="boxpiece bishopBlack">&#9821;</div>`
+        }else if(this.team == "W") {
+            return `<div class="boxpiece bishopWhite">&#9815;</div>`
+        }
+    }
     setPiece() {
         if (this.team == "B") {
             if(this.board[this.pos[0]][this.pos[1]] != null &&this.board[this.pos[0]][this.pos[1]].name == "king"){

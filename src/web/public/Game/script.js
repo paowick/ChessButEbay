@@ -1,4 +1,6 @@
 import { moveClient } from "./board.js";
+import { invtList } from "./board.js";
+import { removeInvtList } from "./board.js";
 export function waitingForPlayer() {
     // document.querySelector("#waiting-pop").style.display = 'block'
     // setTimeout(() => {
@@ -52,6 +54,7 @@ export function winPop(arg) {
 
 export function boardSetupUi(arg, currentGame, info) {
     if (arg.role != 'viewer') {
+        document.querySelector("#invt").style.display = "block"
         const join_con = document.querySelector(".join-butt-con")
         join_con.style.display = 'none'
         const inhand = document.querySelector(".inhand")
@@ -68,6 +71,7 @@ export function boardSetupUi(arg, currentGame, info) {
             board_black.style.display = 'none'
         }
     } else if (arg.role == 'viewer') {
+        document.querySelector("#invt").style.display = "none"
         if (info.playerB != null) { document.querySelector('#join_black').style.display = 'none' }
         if (info.playerW != null) { document.querySelector('#join_white').style.display = 'none' }
     }
@@ -79,4 +83,36 @@ export function codePart(code) {
     const para = document.createElement("h1");
     para.innerText = code
     document.querySelector(".room-code").appendChild(para)
+}
+
+export function invt() {
+
+
+    const invt = document.querySelector("#invt")
+    invt.innerHTML = ''
+    invtList.forEach((element, index) => {
+        var doc = new DOMParser().parseFromString(element.html(), "text/xml").documentElement
+        doc.setAttribute('id', index)
+        doc.classList.add('invt-box')
+        invt.appendChild(doc)
+    })
+
+
+
+    document.querySelectorAll('.invt-box').forEach(div => {
+        div.addEventListener('click', function () {
+            
+            removeAllEvent()
+            removeInvtList(this.id)
+        })
+    })
+
+
+    function removeAllEvent() {
+        document.querySelectorAll('.invt-box').forEach(div => {
+            const newdiv = div.cloneNode(true)
+            div.parentNode.replaceChild(newdiv, div)
+        })
+    }
+
 }

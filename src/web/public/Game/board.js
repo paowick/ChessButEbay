@@ -8,8 +8,8 @@ import { queen } from './queen.js';
 import { bishop } from './bishop.js';
 import { knight } from './knight.js';
 import { rook } from './rook.js';
-import { boardSetupUi,codePart } from './script.js';
-
+import { boardSetupUi,codePart,invt } from './script.js';
+export let invtList = []
 export var board = [
     [null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null, null],
@@ -36,8 +36,11 @@ export function changeMyTurn(data) {
 run()
 export async function run() {
     socket.on('board', async (arg) => {
+        invtList.push(new king("king", null, "W", true, board))
+        invtList.push(new queen("queen", null, "W", true, board))
+        invtList.push(new bishop("bishop", null, "W", true, board))
         const info = await JSON.parse(arg.board)
-        console.log(arg);
+        console.log(info);
         for (let index = 0; index < info.board.length; index++) {
             const elements = info.board[index];
             for (let index = 0; index < elements.length; index++) {
@@ -69,6 +72,7 @@ export async function run() {
                 }
             }
         }
+        invt()
         boardSetupUi(arg,currentGame,info)
         codePart(info.code)
         if (arg.turn === arg.role) {
@@ -79,6 +83,7 @@ export async function run() {
     })
 
 }
+
 
 
 
@@ -136,6 +141,10 @@ var destination = null
 document.querySelectorAll('.box')
     .forEach(div => {
         div.addEventListener('click', function () {
+        invtList.push(new bishop("bishop", null, "W", true, board))
+        invtList.push(new king("king", null, "W", true, board))
+        invtList.push(new queen("queen", null, "W", true, board))
+        invt()
             const currentGame = JSON.parse(localStorage.getItem("currentGame"))
             if (currentGame.role != 'viewer') {
                 if (source == null && destination == null) {
@@ -200,6 +209,15 @@ document.querySelectorAll('.box')
 
 
 
+export function removeInvtList(index) {
+    let intIndex = parseInt(index)
+    invtList.splice(intIndex,1)
+    if(invtList.length === 0){
+        invtList = []
+    }
+    console.log(invtList);
+    invt()
+}
 
 
 

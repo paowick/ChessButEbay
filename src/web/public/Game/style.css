@@ -170,6 +170,32 @@ main {
     color: black;
 }
 
+.invt-con {
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
+
+.invt{
+    margin: 0 auto;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #252525;
+    width: 50%;
+    height: 100px;
+}
+
+.invt > div{
+    margin: 0px 10px;
+    background-color: #ffffff;
+    width: 80px;
+    height: 80px;
+    font-size: 60px;
+    text-align: center;
+}
+.invt>div:hover{
+    cursor: pointer;
+}
 
 /* .waiting-pop{
     z-index: 10;
