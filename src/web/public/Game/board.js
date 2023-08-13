@@ -9,8 +9,8 @@ import { bishop } from './bishop.js';
 import { knight } from './knight.js';
 import { rook } from './rook.js';
 import { boardSetupUi,codePart,invt } from './script.js';
-import { posListTemp } from './script.js';
-import { clearHightLightDrop } from './script.js';
+import { dropEmit } from './socket.js';
+
 export let invtList = []
 export var board = [
     [null, null, null, null, null, null, null, null],
@@ -222,6 +222,7 @@ export function drop(piece,destination) {
     clearAllHightLight()
     source = null
     myturn = false
+    dropEmit(piece,destination,board)
 }
 
 export function removeInvtList(index) {
@@ -287,18 +288,7 @@ export function moveClient_Server(source, destination, promoted) {
         myturn = true
     }
 }
-function clearHightLight(piece) {
-    const posList = piece.moveAblepos(board)
-    posList.forEach(element => {
-        const id = tranSlateToId(element)
-        document.querySelectorAll(`#${id}`).forEach(element => {
-            element.removeChild(element.lastChild)
-            element.style.backgroundColor = ``
 
-        })
-
-    });
-}
 
 export function showMoveAble(piece) {
     const posList = piece.moveAblepos(board)

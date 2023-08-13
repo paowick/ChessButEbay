@@ -83,11 +83,11 @@ io.sockets.on("connection", async (socket) => {
             code: data.room,
             playerB: null,
             playerBName: null,
-            invtB:null,
+            invtB: null,
             playerW: null,
             playerWName: null,
-            invtW:null,
-            mine:null,
+            invtW: null,
+            mine: null,
             board: board,
             log: null
         }
@@ -112,7 +112,7 @@ io.sockets.on("connection", async (socket) => {
         socket.broadcast.to(socket.request._query.code).emit(`move_server`, move)
     })
 
-    socket.on("win", (arg)=>{
+    socket.on("win", (arg) => {
         const value = {
             turn: null,
             code: socket.request._query.code,
@@ -129,8 +129,20 @@ io.sockets.on("connection", async (socket) => {
         socket.broadcast.to(socket.request._query.code).emit(`win_server`, arg.team)
     })
 
-    socket.on("drop",(arg)=>{
-
+    socket.on("drop", (arg) => {
+        const data = JSON.parse(arg);
+        let turn = null
+        setBoardRedis(socket.request._query.code, data.board, data.turn)
+        if (data.turn == "W") {
+            turn = "B"
+        } else if (data.turn == "B") {
+            turn = "W"
+        }
+        const drop = {
+            piece: data.piece,
+            turn:turn
+        }
+        socket.broadcast.to(socket.request._query.code).emit(`drop_server`, drop)
     })
 
 
@@ -140,9 +152,9 @@ io.sockets.on("connection", async (socket) => {
 });
 
 async function setBoardRedis(code, board, turn) {
-    if(turn == "W"){
+    if (turn == "W") {
         turn = "B"
-    }else if(turn == "B"){
+    } else if (turn == "B") {
         turn = "W"
     }
     const roomJSON = await redisClient.get(code)

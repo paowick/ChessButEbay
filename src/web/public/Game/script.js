@@ -95,11 +95,6 @@ export function codePart(code) {
 
 export let posListTemp = null
 export function invt() {
-
-    var sourceinvt = null
-    var destinationboard = null
-
-
     const invt = document.querySelector("#invt")
     invt.innerHTML = ''
     invtList.forEach((element, index) => {
