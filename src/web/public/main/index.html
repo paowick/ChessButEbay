@@ -28,8 +28,8 @@
         <div class="option-con">
             <div class="test"></div>
             <button type="button" class="cre-but" onclick="createRoom()">Create Room</button>
-            <input type="text" placeholder="Search Code">
-            <button type="button" class="join-but" >Join</button>
+            <input type="text" id="code-input" placeholder="Search Code">
+            <button type="button" class="join-but" onclick="joingame(document.getElementById('code-input').value)">Join</button>
         </div>
 
     </main>

@@ -2,19 +2,23 @@ window.onload = async () => {
     roomload()
 }
 
+let roomList = []
+
 async function roomload() {
-    
+
     const room = await fetch('/getroom')
     const roomlist = await room.json()
+    roomList = []
+    roomList = roomlist.datares
     document.getElementById('board').innerHTML = ""
     roomlist.datares.forEach(element => {
         document.getElementById("board").appendChild(roomtabview(element))
     });
 }
 
-setInterval(()=>{
+setInterval(() => {
     roomload()
-},5000)
+}, 5000)
 
 
 function roomtabview(room) {
@@ -48,17 +52,20 @@ function roomtabview(room) {
 
 
 function joingame(code) {
-
     const currentGame = localStorage.getItem('currentGame')
     const currentGameJSON = JSON.parse(currentGame)
-    console.log(currentGameJSON);
-    if (currentGame != null && currentGameJSON.code == code) { return window.location = '/Game' }
-    const userdata = {
-        code: code,
-        role: "viewer"
-    }
-    localStorage.setItem('currentGame', JSON.stringify(userdata))
-    window.location = '/Game'
+    roomList.forEach(element => {
+        if (element.code == code) {
+            if (currentGame != null && currentGameJSON.code == code) { return window.location = '/Game' }
+            const userdata = {
+                code: code,
+                role: "viewer"
+            }
+            localStorage.setItem('currentGame', JSON.stringify(userdata))
+            window.location = '/Game'
+        }
+    });
+    console.log("dint have this room"); // <------
 }
 
 
