@@ -12,6 +12,13 @@
     <script type="module" src="../Game/board.js"></script>
     <script type="module" src="../Game/piece.js"></script>
     <script type="module" src="../Game/socket.js"></script>
+    <script type="module" src="../Game/script.js"></script>
+    <script type="module" src="../Game/king.js"></script>
+    <script type="module" src="../Game/pawn.js"></script>
+    <script type="module" src="../Game/queen.js"></script>
+    <script type="module" src="../Game/bishop.js"></script>
+    <script type="module" src="../Game/knight.js"></script>
+    <script type="module" src="../Game/rook.js"></script>
 </head>
 
 <body>
@@ -22,15 +29,7 @@
             $("#nav-ph").load("../../assets/component/navbar/navbar.html")
         })
     </script>
-    <!-- <button onclick="test()">test</button>
-        <script>
-            function test() {
-                socket.emit("hi", "test")
-            }
-        </script> -->
-
-
-
+    <div class="room-code" id="room-code"></div>
     <main>
         <div class="join-butt-con">
             <button id="join_black" class="join_butt">join black</button>
@@ -408,6 +407,12 @@
     </main>
 
 </body>
+
+<div class="invt-con" id="invt-con">
+    <div class="invt" id="invt"></div>
+    <!-- <button type="submit" id="auctiontest">auction</button> -->
+</div>
+
 <div id="prom-pop" class="prom-pop" style="display: none;">
     <h1>Promoted</h1>
     <button id="choi" value="queen">queen</button>
@@ -415,5 +420,12 @@
     <button id="choi" value="knight">knight</button>
     <button id="choi" value="bishop">bishop</button>
 </div>
+<div class="prom-pop waiting-pop" id="waiting-pop" style="display: none;">
+    <h1>Waiting for player...</h1>
+</div>
+<div id="win-pop" class="win-pop">
+    <div id="win-pop-text" class="win-pop-text"></div>
+    <button id="win-pop-butt" class="win-pop-butt">OK</button>
+</div>
 
-</html
+</html>

@@ -1,3 +1,17 @@
+import { move } from './socket.js';
+import { io } from "https://cdn.socket.io/4.3.2/socket.io.esm.min.js";
+import { join } from './socket.js';
+import { waitingForPlayer,askPlayer } from './script.js';
+import { king } from './king.js';
+import { pawn } from './pawn.js';
+import { queen } from './queen.js';
+import { bishop } from './bishop.js';
+import { knight } from './knight.js';
+import { rook } from './rook.js';
+import { boardSetupUi,codePart,invt } from './script.js';
+import { dropEmit } from './socket.js';
+
+export let invtList = []
 export var board = [
     [null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null, null],
@@ -8,11 +22,6 @@ export var board = [
     [null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null, null],
 ]
-import * as pieces from './piece.js';
-import { move } from './socket.js';
-import { io } from "https://cdn.socket.io/4.3.2/socket.io.esm.min.js";
-import { join } from './socket.js';
-
 const currentGame = JSON.parse(localStorage.getItem("currentGame"))
 const user = JSON.parse(localStorage.getItem("user"))
 export var socket = io(window.location.origin, {
@@ -21,72 +30,62 @@ export var socket = io(window.location.origin, {
         id: user.id
     }
 });
-let myturn = false
+export let myturn = false
+
+export function changeMyTurn(data) {
+    myturn = data
+}
 run()
 export async function run() {
     socket.on('board', async (arg) => {
+        invtList.push(new king("king", null, currentGame.role, true, board))
+        invtList.push(new queen("queen", null, currentGame.role, true, board))
+        invtList.push(new bishop("bishop", null, currentGame.role, true, board))
         const info = await JSON.parse(arg.board)
+        console.log(info);
         for (let index = 0; index < info.board.length; index++) {
             const elements = info.board[index];
             for (let index = 0; index < elements.length; index++) {
                 const element = elements[index];
                 if (element == null) { continue }
                 if (element.name == 'king') {
-                    new pieces.king("king", element.pos, element.team, true, board)
+                    new king("king", element.pos, element.team, true, board)
                     continue
                 }
                 if (element.name == 'queen') {
-                    new pieces.queen("queen", element.pos, element.team, false, board)
+                    new queen("queen", element.pos, element.team, false, board)
                     continue
                 }
                 if (element.name == 'bishop') {
-                    new pieces.bishop("bishop", element.pos, element.team, false, board)
+                    new bishop("bishop", element.pos, element.team, false, board)
                     continue
                 }
                 if (element.name == 'rook') {
-                    new pieces.rook("rook", element.pos, element.team, false, board)
+                    new rook("rook", element.pos, element.team, false, board)
                     continue
                 }
                 if (element.name == 'knight') {
-                    new pieces.knight("knight", element.pos, element.team, false, board)
+                    new knight("knight", element.pos, element.team, false, board)
                     continue
                 }
                 if (element.name == 'pawn') {
-                    new pieces.pawn("pawn", element.pos, element.team, false, board, true)
+                    new pawn("pawn", element.pos, element.team, false, board, true)
                     continue
                 }
             }
         }
-        if (currentGame.role != 'viewer') {
-            const join_con = document.querySelector(".join-butt-con")
-            join_con.style.display = 'none'
-            const inhand = document.querySelector(".inhand")
-            inhand.style.display = 'none'
-            if (currentGame.role == "B") {
-                const board_white = document.querySelector('#board-white')
-                board_white.style.display = "none"
-                const board_black = document.querySelector('#board-black')
-                board_black.style.display = 'flex'
-            } else {
-                const board_white = document.querySelector('#board-white')
-                board_white.style.display = "flex"
-                const board_black = document.querySelector('#board-black')
-                board_black.style.display = 'none'
-            }
-        } else if (currentGame.role == 'viewer') {
-            if (info.playerB != null) { document.querySelector('#join_black').style.display = 'none' }
-            if (info.playerW != null) { document.querySelector('#join_white').style.display = 'none' }
-        }
-        currentGame.role = arg.role
-        localStorage.setItem('currentGame', JSON.stringify(currentGame))
+        invt()
+        boardSetupUi(arg,currentGame,info)
+        codePart(info.code)
         if (arg.turn === arg.role) {
-            myturn = false
-        } else {
             myturn = true
+        } else {
+            myturn = false
         }
     })
 
 }
+
 
 
 
@@ -103,6 +102,12 @@ export async function run() {
 // Black_KnightU = "&#9822"
 // Black_Pawn	  = "&#9823"
 
+export function clearAllHightLight() {
+    document.querySelectorAll(".hight-light").forEach(div=>{
+        div.parentNode.removeChild(div)
+    })
+}
+
 document.querySelector('#join_black')
     .addEventListener('click', () => {
         const join_con = document.querySelector(".join-butt-con")
@@ -117,6 +122,7 @@ document.querySelector('#join_black')
             code: currentGame.code,
             role: "B"
         }
+        myturn = false
         localStorage.setItem('currentGame', JSON.stringify(data))
         join(data, user.name)
     })
@@ -134,6 +140,7 @@ document.querySelector('#join_white')
             code: currentGame.code,
             role: "W"
         }
+        myturn = false
         localStorage.setItem('currentGame', JSON.stringify(data))
         join(data, user.name)
     })
@@ -145,8 +152,10 @@ document.querySelectorAll('.box')
             const currentGame = JSON.parse(localStorage.getItem("currentGame"))
             if (currentGame.role != 'viewer') {
                 if (source == null && destination == null) {
+                    console.log(new DOMParser().parseFromString(this.innerHTML,"text/xml").documentElement);
                     // source position ====================================================================
                     const piece = havePiece(this.id)
+                    clearAllHightLight()
                     if (piece == null) { return source = null; }
                     source = this.id;
                     showMoveAble(piece)
@@ -155,21 +164,23 @@ document.querySelectorAll('.box')
                 } else if (source != null && destination == null) {
                     // destination position ===============================================================
 
+                    clearAllHightLight()
 
                     if (!myturn) {
-                        clearHightLight(havePiece(source))
+                        waitingForPlayer()
+                        clearAllHightLight()
                         source = null;
                         destination = null;
                         return
                     }
                     const piece = havePiece(source)
                     if (currentGame.role != piece.team) {
-                        clearHightLight(havePiece(source))
+                        clearAllHightLight()
                         source = null
                         return
                     }
                     if (!pieceMoveable(piece, this.id)) {
-                        clearHightLight(piece)
+                        clearAllHightLight()
                         source = null
                         return destination = null
                     }
@@ -179,14 +190,14 @@ document.querySelectorAll('.box')
                         if (thispiece.promotedPos.includes(tranSlateTopos(this.id))) {
                             destination = this.id;
                             askPlayer(source, destination)
-                            clearHightLight(havePiece(source))
+                            clearAllHightLight()
                             source = null
                             destination = null
                             return
                         }
                     }
                     destination = this.id;
-                    clearHightLight(havePiece(source))
+                    clearAllHightLight()
                     moveClient(source, destination, null)
                     source = null
                     destination = null
@@ -203,41 +214,28 @@ document.querySelectorAll('.box')
 
     })
 
-
-function askPlayer(source, destination) {
-  const buttons = document.querySelectorAll('#choi');
-
-  function handleButtonClick(button) {
-    console.log(source);
-    console.log(destination);
-    console.log(button);
-    document.querySelector('#prom-pop').style.display = 'none';
-    moveClient(source, destination, button.value); // Assuming moveClient is not an async function
-  }
-
-  function removeAllEventListeners() {
-    buttons.forEach(button => {
-      const newButton = button.cloneNode(true);
-      button.parentNode.replaceChild(newButton, button);
-    });
-  }
-
-  document.querySelector('#prom-pop').style.display = 'block';
-
-  buttons.forEach(button => {
-    button.addEventListener('click', function onClick(event) {
-      handleButtonClick(event.target);
-      removeAllEventListeners();
-    });
-  });
+export function drop(piece,destination) {
+    const pos = tranSlateTopos(destination)
+    piece.setpos(pos)
+    piece.setInInvt(false)
+    piece.setPiece()
+    clearAllHightLight()
+    source = null
+    myturn = false
+    dropEmit(piece,destination,board)
 }
 
+export function removeInvtList(index) {
+    let intIndex = parseInt(index)
+    invtList.splice(intIndex,1)
+    if(invtList.length === 0){
+        invtList = []
+    }
+    console.log(invtList);
+    invt()
+}
 
-
-
-
-
-async function moveClient(source, destination, promoted) {
+export async function moveClient(source, destination, promoted) {
 
     const oldpos = tranSlateTopos(source)
     const newpos = tranSlateTopos(destination)
@@ -290,20 +288,9 @@ export function moveClient_Server(source, destination, promoted) {
         myturn = true
     }
 }
-function clearHightLight(piece) {
-    const posList = piece.moveAblepos(board)
-    posList.forEach(element => {
-        const id = tranSlateToId(element)
-        document.querySelectorAll(`#${id}`).forEach(element => {
-            element.removeChild(element.lastChild)
-            element.style.backgroundColor = ``
 
-        })
 
-    });
-}
-
-function showMoveAble(piece) {
+export function showMoveAble(piece) {
     const posList = piece.moveAblepos(board)
     posList.forEach(element => {
         const id = tranSlateToId(element)
@@ -351,7 +338,7 @@ function stringify(obj) {
     cache = null; // reset the cache
     return str;
 }
-function tranSlateTopos(id) {
+export function tranSlateTopos(id) {
     var temp = ""
     switch (`${id[1]}`) {
         case "8":
@@ -423,7 +410,7 @@ function tranSlateTopos(id) {
 }
 
 
-function tranSlateToId(pos) {
+export function tranSlateToId(pos) {
     var temp = ""
     switch (`${pos[1]}`) {
         case "0":

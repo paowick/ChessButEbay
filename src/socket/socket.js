@@ -43,22 +43,35 @@ io.sockets.on("connection", async (socket) => {
         let socketRole = 'viewer'
         const boardRedisJSON = await redisClient.get(socket.request._query.code)
         const boardRedis = await JSON.parse(boardRedisJSON)
-        if (socket.request._query.id == boardRedis?.playerB) {socketRole = 'B'}
-        if (socket.request._query.id == boardRedis?.playerW) {socketRole = 'W'}
+        if (socket.request._query.id == boardRedis?.playerB) { socketRole = 'B' }
+        if (socket.request._query.id == boardRedis?.playerW) { socketRole = 'W' }
         io.sockets.to(socket.id).emit("board", {
             board: stringify(boardRedis),
             role: socketRole,
-            turn: boardRedis.turn
+            turn: boardRedis?.turn
         });
 
     }
+
+
     socket.on('join', async (arg) => {
         await storedata(arg, socket).then(async () => {
             const boardRedisJSON = await redisClient.get(socket.request._query.code)
             const boardRedis = await JSON.parse(boardRedisJSON)
+
             socket.broadcast.to(socket.request._query.code).emit(`join_server`, {
                 board: stringify(boardRedis)
             })
+            if (boardRedis.playerB != null && boardRedis.playerW != null) {
+                boardRedis.turn = 'W'
+                redisClient.set(socket.request._query.code, stringify(boardRedis), {
+                    NX: false
+                })
+                socket.to(socket.request._query.code).emit(`start`, {
+                    board: stringify(boardRedis)
+                })
+            }
+
 
         })
     })
@@ -66,12 +79,15 @@ io.sockets.on("connection", async (socket) => {
 
     socket.on('createRoom', (data) => {
         const value = {
-            turn:"W",
+            turn: null,
             code: data.room,
             playerB: null,
             playerBName: null,
+            invtB: null,
             playerW: null,
             playerWName: null,
+            invtW: null,
+            mine: null,
             board: board,
             log: null
         }
@@ -80,16 +96,53 @@ io.sockets.on("connection", async (socket) => {
         })
         socket.join(data.room);
     });
+
+
+
+
     socket.on("move", (arg) => {
         const data = JSON.parse(arg)
         console.log(`move ${data.source} to ${data.destination}`)
-        setBoardRedis(socket.request._query.code, data.board,data.turn)
+        setBoardRedis(socket.request._query.code, data.board, data.turn)
         let move = {
-            promoted:data.promoted,
+            promoted: data.promoted,
             source: data.source,
             destination: data.destination,
         }
         socket.broadcast.to(socket.request._query.code).emit(`move_server`, move)
+    })
+
+    socket.on("win", (arg) => {
+        const value = {
+            turn: null,
+            code: socket.request._query.code,
+            playerB: null,
+            playerBName: null,
+            playerW: null,
+            playerWName: null,
+            board: board,
+            log: null
+        }
+        redisClient.set(socket.request._query.code, stringify(value), {
+            NX: false
+        })
+        socket.broadcast.to(socket.request._query.code).emit(`win_server`, arg.team)
+    })
+
+    socket.on("drop", (arg) => {
+        const data = JSON.parse(arg);
+        let turn = null
+        setBoardRedis(socket.request._query.code, data.board, data.turn)
+        if (data.turn == "W") {
+            turn = "B"
+        } else if (data.turn == "B") {
+            turn = "W"
+        }
+        const drop = {
+            piece: data.piece,
+            turn:turn
+        }
+        socket.broadcast.to(socket.request._query.code).emit(`drop_server`, drop)
     })
 
 
@@ -98,7 +151,12 @@ io.sockets.on("connection", async (socket) => {
     })
 });
 
-async function setBoardRedis(code, board,turn) {
+async function setBoardRedis(code, board, turn) {
+    if (turn == "W") {
+        turn = "B"
+    } else if (turn == "B") {
+        turn = "W"
+    }
     const roomJSON = await redisClient.get(code)
     const room = await JSON.parse(roomJSON)
     room.board = await board
@@ -118,6 +176,9 @@ async function storedata(arg, socket) {
     if (arg.data.role == 'W') {
         room.playerW = socket.request._query.id
         room.playerWName = arg.username
+    }
+    if (room.playerB != null && room.playerW != null) {
+        room.turn = "W"
     }
     redisClient.set(arg.data.code, stringify(room), {
         NX: false

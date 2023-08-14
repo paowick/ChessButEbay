@@ -146,6 +146,71 @@ main {
     
 }
 
+.win-pop{
+    padding: 10px;
+    border-radius: 50px;
+    display: none;
+    position: absolute;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    top: 20%;
+    left: 40%;
+    z-index: 10;
+    background-color: rgba(17,17,17,0.7);
+    backdrop-filter: blur(10px);
+    width: 400px;
+    height: 400px;
+}
+.room-code{
+    margin: 0 auto;
+    width: fit-content;
+}
+.room-code > h1{
+    color: black;
+}
+
+.invt-con {
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
+
+.invt{
+    margin: 0 auto;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #252525;
+    width: 50%;
+    height: 100px;
+}
+
+.invt > div{
+    margin: 0px 10px;
+    background-color: #ffffff;
+    width: 80px;
+    height: 80px;
+    font-size: 60px;
+    text-align: center;
+}
+.invt>div:hover{
+    cursor: pointer;
+}
+
+/* .waiting-pop{
+    z-index: 10;
+    background-color: rgba(255,0,0,0.5);
+    backdrop-filter: blur(20px);
+    width: 300px;
+    height: 200px;
+    animation: waiting-pop 5s normal;
+}
+
+@keyframes waiting-pop {
+    0%{opacity: 1;}
+    100%{opacity: 0;}
+} */
+
 button {
     font-family: Courier New;
     font-weight: 650;
