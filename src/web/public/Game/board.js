@@ -42,11 +42,9 @@ export async function run() {
         invtList.push(new queen("queen", null, currentGame.role, true, board))
         invtList.push(new bishop("bishop", null, currentGame.role, true, board))
         const info = await JSON.parse(arg.board)
-        console.log(info);
-        console.log(arg);
         if(arg.role == "W"){
             invtList = info.invtW
-        }else if(arg.role = "B"){
+        }else if(arg.role == "B"){
             invtList = info.invtB
         }else{
             invtList = []
