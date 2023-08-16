@@ -11,7 +11,7 @@ import { rook } from './rook.js';
 import { boardSetupUi,codePart,invt } from './script.js';
 import { dropEmit } from './socket.js';
 
-export let invtList = []
+export var invtList = []
 export var board = [
     [null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null, null],
@@ -43,6 +43,14 @@ export async function run() {
         invtList.push(new bishop("bishop", null, currentGame.role, true, board))
         const info = await JSON.parse(arg.board)
         console.log(info);
+        console.log(arg);
+        if(arg.role == "W"){
+            invtList = info.invtW
+        }else if(arg.role = "B"){
+            invtList = info.invtB
+        }else{
+            invtList = []
+        }
         for (let index = 0; index < info.board.length; index++) {
             const elements = info.board[index];
             for (let index = 0; index < elements.length; index++) {

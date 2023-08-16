@@ -38,13 +38,17 @@ io.sockets.on("connection", async (socket) => {
     console.log(`connnect ${socket.id}`)
     // console.log(socket.request._query.code);
     socket.join(socket.request._query.code)
-
+// server return role as "viewer" but client return "B"
     if (socket.request._query.code != "admin") {
         let socketRole = 'viewer'
         const boardRedisJSON = await redisClient.get(socket.request._query.code)
         const boardRedis = await JSON.parse(boardRedisJSON)
+        if (socket.request._query.id != boardRedis?.playerB &&
+            socket.request._query.id != boardRedis?.playerW
+            ) { socketRole = 'viewer' }
         if (socket.request._query.id == boardRedis?.playerB) { socketRole = 'B' }
         if (socket.request._query.id == boardRedis?.playerW) { socketRole = 'W' }
+        console.log(socketRole);
         io.sockets.to(socket.id).emit("board", {
             board: stringify(boardRedis),
             role: socketRole,
@@ -83,10 +87,10 @@ io.sockets.on("connection", async (socket) => {
             code: data.room,
             playerB: null,
             playerBName: null,
-            invtB: null,
+            invtB: [],
             playerW: null,
             playerWName: null,
-            invtW: null,
+            invtW: [],
             mine: null,
             board: board,
             log: null
