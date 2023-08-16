@@ -36,9 +36,7 @@ io.use(function (socket, next) {
 
 io.sockets.on("connection", async (socket) => {
     console.log(`connnect ${socket.id}`)
-    // console.log(socket.request._query.code);
     socket.join(socket.request._query.code)
-// server return role as "viewer" but client return "B"
     if (socket.request._query.code != "admin") {
         let socketRole = 'viewer'
         const boardRedisJSON = await redisClient.get(socket.request._query.code)

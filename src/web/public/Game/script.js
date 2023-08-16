@@ -96,6 +96,7 @@ export function codePart(code) {
 export let posListTemp = null
 export function invt() {
     const invt = document.querySelector("#invt")
+    invt.style.display = "block"
     invt.innerHTML = ''
     invtList.forEach((element, index) => {
         var doc = new DOMParser().parseFromString(element.html(), "text/xml").documentElement

@@ -38,9 +38,6 @@ export function changeMyTurn(data) {
 run()
 export async function run() {
     socket.on('board', async (arg) => {
-        invtList.push(new king("king", null, currentGame.role, true, board))
-        invtList.push(new queen("queen", null, currentGame.role, true, board))
-        invtList.push(new bishop("bishop", null, currentGame.role, true, board))
         const info = await JSON.parse(arg.board)
         if(arg.role == "W"){
             invtList = info.invtW
@@ -131,6 +128,7 @@ document.querySelector('#join_black')
         myturn = false
         localStorage.setItem('currentGame', JSON.stringify(data))
         join(data, user.name)
+        invt()
     })
 document.querySelector('#join_white')
     .addEventListener('click', () => {
@@ -149,6 +147,7 @@ document.querySelector('#join_white')
         myturn = false
         localStorage.setItem('currentGame', JSON.stringify(data))
         join(data, user.name)
+        invt()
     })
 var source = null
 var destination = null
