@@ -131,6 +131,15 @@ function temp() {
 }
 
 
+
+export function mine() {
+    document.querySelector("#mine-con").style.display = "block"
+}
+
+
+
+
+
 function hightLightDrop(piece, id) {
     document.querySelectorAll('.drop').forEach(div => {
         div.addEventListener('click', function () {

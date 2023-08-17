@@ -10,6 +10,7 @@ import { knight } from './knight.js';
 import { rook } from './rook.js';
 import { boardSetupUi,codePart,invt } from './script.js';
 import { dropEmit } from './socket.js';
+import { mine } from './script.js';
 
 export var invtList = []
 export var board = [
@@ -41,8 +42,12 @@ export async function run() {
         const info = await JSON.parse(arg.board)
         if(arg.role == "W"){
             invtList = info.invtW
+            invt()
+            mine()
         }else if(arg.role == "B"){
             invtList = info.invtB
+            invt()
+            mine()
         }else{
             invtList = []
         }
@@ -77,7 +82,7 @@ export async function run() {
                 }
             }
         }
-        invt()
+        
         boardSetupUi(arg,currentGame,info)
         codePart(info.code)
         if (arg.turn === arg.role) {
@@ -129,6 +134,7 @@ document.querySelector('#join_black')
         localStorage.setItem('currentGame', JSON.stringify(data))
         join(data, user.name)
         invt()
+        mine()
     })
 document.querySelector('#join_white')
     .addEventListener('click', () => {
@@ -148,6 +154,7 @@ document.querySelector('#join_white')
         localStorage.setItem('currentGame', JSON.stringify(data))
         join(data, user.name)
         invt()
+        mine()
     })
 var source = null
 var destination = null

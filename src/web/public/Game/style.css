@@ -40,7 +40,7 @@
 main {
     padding: 20px;
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     width: 100%;
 }
 
@@ -79,11 +79,25 @@ main {
     text-align: center;
 }
 
+.left-con{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 33%;
+    background-color: aqua;
+}
 .container-fuckin-all {
     display: flex;
     justify-content: center;
     flex-direction: column;
     width: fit-content;
+}
+.right-con{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 33%;
+    background-color: aqua;
 }
 
 .row-text {
@@ -120,6 +134,7 @@ main {
     height: auto;
     background-color: #252525;
 }
+
 
 .join-butt-con{
     display: flex;
@@ -196,6 +211,16 @@ main {
 .invt>div:hover{
     cursor: pointer;
 }
+
+.mine-con{
+    width: 50%;
+    height: 50%;
+}
+/* .mine {
+    width: 500px;
+    height: 500px;
+    background-color: #252525;
+} */
 
 /* .waiting-pop{
     z-index: 10;
