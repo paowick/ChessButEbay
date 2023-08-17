@@ -10,9 +10,11 @@ import { knight } from './knight.js';
 import { rook } from './rook.js';
 import { boardSetupUi,codePart,invt } from './script.js';
 import { dropEmit } from './socket.js';
-import { mine } from './script.js';
+import { mineSetUp } from './script.js';
 
 export var invtList = []
+export var mineList = []
+export var minelimt = 3
 export var board = [
     [null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null, null],
@@ -39,15 +41,19 @@ export function changeMyTurn(data) {
 run()
 export async function run() {
     socket.on('board', async (arg) => {
+        mineList.push(new bishop("bishop",null,arg.role,false,board))
+        invtList.push(new queen("queen",null,arg.role,false,board))
+        invtList.push(new rook("rook",null,arg.role,false,board))
+        invtList.push(new knight("knight",null,arg.role,false,board))
         const info = await JSON.parse(arg.board)
         if(arg.role == "W"){
-            invtList = info.invtW
+            // invtList = info.invtW
             invt()
-            mine()
+            mineSetUp()
         }else if(arg.role == "B"){
-            invtList = info.invtB
+            // invtList = info.invtB
             invt()
-            mine()
+            mineSetUp()
         }else{
             invtList = []
         }
@@ -134,7 +140,7 @@ document.querySelector('#join_black')
         localStorage.setItem('currentGame', JSON.stringify(data))
         join(data, user.name)
         invt()
-        mine()
+        mineSetUp()
     })
 document.querySelector('#join_white')
     .addEventListener('click', () => {
@@ -154,7 +160,7 @@ document.querySelector('#join_white')
         localStorage.setItem('currentGame', JSON.stringify(data))
         join(data, user.name)
         invt()
-        mine()
+        mineSetUp()
     })
 var source = null
 var destination = null

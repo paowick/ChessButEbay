@@ -7,6 +7,8 @@ import { tranSlateToId } from "./board.js";
 import { drop } from "./board.js";
 import { clearAllHightLight } from "./board.js";
 import { myturn } from "./board.js";
+import { mineList } from "./board.js";
+import { minelimt } from "./board.js";
 export function waitingForPlayer() {
     // document.querySelector("#waiting-pop").style.display = 'block'
     // setTimeout(() => {
@@ -109,11 +111,16 @@ export function invt() {
 
     document.querySelectorAll('.invt-box').forEach(div => {
         div.addEventListener('click', function () {
+            // when click on invt-box in second time ti will be clear all hightlight
             clearAllHightLight()
             showDropAble(invtList[this.id].dropPieceAble(board))
             hightLightDrop(invtList[this.id], this.id)
             removeAllEvent()
             temp()
+            if(mineList.length >= minelimt){
+                return
+            }
+            hightLightMine(invtList[this.id], this.id)
         })
     })
 
@@ -132,9 +139,41 @@ function temp() {
 
 
 
-export function mine() {
-    document.querySelector("#mine-con").style.display = "block"
+export function mineSetUp() {
+    const mine = document.querySelector("#mine")
+    mine.style.display = "block"
+    mine.innerHTML = ''
+    mineList.forEach((element, index) => {
+        var doc = new DOMParser().parseFromString(element.html(), "text/xml").documentElement
+        doc.setAttribute('id', index)
+        doc.classList.add('mine-box')
+        mine.appendChild(doc)
+    })
 }
+
+export function hightLightMine(piece, id) {
+    document.querySelectorAll('.mine').forEach(div => {
+        div.addEventListener('click', function () {
+            if (!myturn) { 
+                clearAllHightLight() 
+                return 
+            }
+            removeAllEvent()
+            removeInvtList(id)
+            clearAllHightLight()
+            mineList.push(piece)
+            mineSetUp()
+        })
+    })
+
+    function removeAllEvent() {
+        document.querySelectorAll('.mine').forEach(div => {
+            const newdiv = div.cloneNode(true)
+            div.parentNode.replaceChild(newdiv, div)
+        })
+    }
+}
+
 
 
 
