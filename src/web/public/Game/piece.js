@@ -1,17 +1,22 @@
 
 export class pieces {
-    constructor(name, pos, team, isKing, board) {
+    constructor(name, pos, team, isKing, board, timeInMine) {
         this.name = name
         this.pos = pos
         this.board = board
         this.team = team
         this.isKing = isKing
+        this.timeInMine = timeInMine
+        this.currentTimeInMine = 0
         if(pos == null){
             this.inInvt = true
         }else{
             this.inInvt = false
             this.setPiece()
         }
+    }
+    setCurrentTimeInMine(){
+        this.currentTimeInMine = this.timeInMine
     }
     setpos(newpos){
         this.pos = newpos

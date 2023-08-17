@@ -41,10 +41,10 @@ export function changeMyTurn(data) {
 run()
 export async function run() {
     socket.on('board', async (arg) => {
-        mineList.push(new bishop("bishop",null,arg.role,false,board))
-        invtList.push(new queen("queen",null,arg.role,false,board))
-        invtList.push(new rook("rook",null,arg.role,false,board))
-        invtList.push(new knight("knight",null,arg.role,false,board))
+        mineList.push(new bishop("bishop",null,arg.role,false,board,3))
+        invtList.push(new queen("queen",null,arg.role,false,board,3))
+        invtList.push(new rook("rook",null,arg.role,false,board,3))
+        invtList.push(new knight("knight",null,arg.role,false,board,3))
         const info = await JSON.parse(arg.board)
         if(arg.role == "W"){
             // invtList = info.invtW
@@ -63,27 +63,27 @@ export async function run() {
                 const element = elements[index];
                 if (element == null) { continue }
                 if (element.name == 'king') {
-                    new king("king", element.pos, element.team, true, board)
+                    new king("king", element.pos, element.team, true, board, 3)
                     continue
                 }
                 if (element.name == 'queen') {
-                    new queen("queen", element.pos, element.team, false, board)
+                    new queen("queen", element.pos, element.team, false, board, 3)
                     continue
                 }
                 if (element.name == 'bishop') {
-                    new bishop("bishop", element.pos, element.team, false, board)
+                    new bishop("bishop", element.pos, element.team, false, board, 3)
                     continue
                 }
                 if (element.name == 'rook') {
-                    new rook("rook", element.pos, element.team, false, board)
+                    new rook("rook", element.pos, element.team, false, board, 3)
                     continue
                 }
                 if (element.name == 'knight') {
-                    new knight("knight", element.pos, element.team, false, board)
+                    new knight("knight", element.pos, element.team, false, board, 3)
                     continue
                 }
                 if (element.name == 'pawn') {
-                    new pawn("pawn", element.pos, element.team, false, board, true)
+                    new pawn("pawn", element.pos, element.team, false, board, 3, true)
                     continue
                 }
             }

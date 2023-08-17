@@ -161,7 +161,9 @@ export function hightLightMine(piece, id) {
             removeAllEvent()
             removeInvtList(id)
             clearAllHightLight()
+            piece.setCurrentTimeInMine()
             mineList.push(piece)
+            console.log(mineList);
             mineSetUp()
         })
     })
