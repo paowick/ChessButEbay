@@ -9,6 +9,7 @@ import { clearAllHightLight } from "./board.js";
 import { myturn } from "./board.js";
 import { mineList } from "./board.js";
 import { minelimt } from "./board.js";
+import { dropMineEmit } from "./socket.js";
 export function waitingForPlayer() {
     // document.querySelector("#waiting-pop").style.display = 'block'
     // setTimeout(() => {
@@ -165,6 +166,7 @@ export function hightLightMine(piece, id) {
             mineList.push(piece)
             console.log(mineList);
             mineSetUp()
+            dropMineEmit(piece, board)
         })
     })
 

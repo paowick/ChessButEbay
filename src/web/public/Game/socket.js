@@ -9,7 +9,9 @@ import { queen } from './queen.js';
 import { bishop } from './bishop.js';
 import { knight } from './knight.js';
 import { rook } from './rook.js';
-
+import { invtList,mineList } from "./board.js";
+import { mineSetUp } from "./script.js";
+import { mineListPush } from "./board.js";
 const user = JSON.parse(localStorage.getItem('user'))
 
 
@@ -64,35 +66,72 @@ import('./board.js').then(({ socket }) => {
         drop_server(arg.piece)
     })
 
+    socket.on('drop_mine_server', async (arg) => {
+        const currentGame = JSON.parse(localStorage.getItem("currentGame"))
+        console.log(arg);
+        if (arg.turn === currentGame.role) {
+            changeMyTurn(true)
+        } else {
+            changeMyTurn(false)
+        }
+        drop_mine_server(arg.piece)
+    
+    })
 }).catch((error) => {
     console.error('Error loading socket:', error);
 });
 
-function drop_server(element) {
-
-    console.log(element);
+export function drop_mine_server(element) {
     if (element.name == 'king') {
-        new king("king", element.pos, element.team, true, board)
+        mineListPush(new king("king", element.pos, element.team, true, board, 3))
         return
     }
     if (element.name == 'queen') {
-        new queen("queen", element.pos, element.team, false, board)
+        mineListPush(new queen("queen", element.pos, element.team, false, board, 3))
         return
     }
     if (element.name == 'bishop') {
-        new bishop("bishop", element.pos, element.team, false, board)
+        mineListPush(new bishop("bishop", element.pos, element.team, false, board, 3))
         return
     }
     if (element.name == 'rook') {
-        new rook("rook", element.pos, element.team, false, board)
+        mineListPush(new rook("rook", element.pos, element.team, false, board, 3))
         return
     }
     if (element.name == 'knight') {
-        new knight("knight", element.pos, element.team, false, board)
+        mineListPush(new knight("knight", element.pos, element.team, false, board, 3))
         return
     }
     if (element.name == 'pawn') {
-        new pawn("pawn", element.pos, element.team, false, board, true)
+        mineListPush(new pawn("pawn", element.pos, element.team, false, board, 3, true))
+        return
+    }
+}
+
+function drop_server(element) {
+
+    if (element.name == 'king') {
+        new king("king", element.pos, element.team, true, board, 3)
+        return
+    }
+    if (element.name == 'queen') {
+        new queen("queen", element.pos, element.team, false, board, 3)
+        return
+    }
+    if (element.name == 'bishop') {
+        new bishop("bishop", element.pos, element.team, false, board, 3)
+        return
+    }
+    if (element.name == 'rook') {
+        new rook("rook", element.pos, element.team, false, board, 3)
+        return
+    }
+    if (element.name == 'knight') {
+        new knight("knight", element.pos, element.team, false, board, 3)
+        return
+    }
+    if (element.name == 'pawn') {
+        new pawn("pawn", element.pos, element.team, false, board, 3, true)
         return
     }
 }
@@ -106,13 +145,31 @@ export function dropEmit(piece, des, board) {
             pos: piece.pos,
             team: piece.team,
             isKing: piece.isKing,
-            inInvt: piece.inInvt
+            inInvt: piece.inInvt,
+            timeInMine: piece.timeInMine
         },
         board: board
     }
     socket.emit('drop', stringify(data))
 }
 
+export function dropMineEmit(piece,board) {
+    const currentGame = JSON.parse(localStorage.getItem("currentGame"))
+    let data = {
+        turn: currentGame.role,
+        piece: {
+            name: piece.name,
+            pos: piece.pos,
+            team: piece.team,
+            isKing: piece.isKing,
+            inInvt: piece.inInvt,
+            timeInMine: piece.timeInMine
+        },
+        mine : mineList,
+        board: board
+    }
+    socket.emit('drop_mine', stringify(data))
+}
 
 export function join(game, username) {
     let data = {

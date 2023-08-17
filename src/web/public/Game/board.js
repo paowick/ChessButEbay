@@ -41,11 +41,12 @@ export function changeMyTurn(data) {
 run()
 export async function run() {
     socket.on('board', async (arg) => {
-        mineList.push(new bishop("bishop",null,arg.role,false,board,3))
         invtList.push(new queen("queen",null,arg.role,false,board,3))
         invtList.push(new rook("rook",null,arg.role,false,board,3))
         invtList.push(new knight("knight",null,arg.role,false,board,3))
         const info = await JSON.parse(arg.board)
+        console.log(info.mineList);
+        // mineList = info.mine
         if(arg.role == "W"){
             // invtList = info.invtW
             invt()
@@ -231,6 +232,11 @@ document.querySelectorAll('.box')
 
 
     })
+
+export function mineListPush(obj) {
+    mineList.push(obj)
+    mineSetUp()
+}
 
 export function drop(piece,destination) {
     const pos = tranSlateTopos(destination)

@@ -143,11 +143,41 @@ io.sockets.on("connection", async (socket) => {
         socket.broadcast.to(socket.request._query.code).emit(`drop_server`, drop)
     })
 
+    socket.on("drop_mine", (arg) => {
+        const data = JSON.parse(arg);
+        let turn = null
+        setMineRedis(socket.request._query.code, data.mine, data.turn)
+        if (data.turn == "W") {
+            turn = "B"
+        } else if (data.turn == "B") {
+            turn = "W"
+        }
+        const drop = {
+            piece: data.piece,
+            turn: turn
+        }
+        socket.broadcast.to(socket.request._query.code).emit(`drop_mine_server`, drop)
+    })
 
     socket.on("disconnect", () => {
         console.log('dis')
     })
 });
+
+async function setMineRedis(code,mine,turn) {
+    if (turn == "W") {
+        turn = "B"
+    }else if(turn == "B"){
+        turn = "W"
+    }
+    const roomJSON = await redisClient.get(code)
+    const room = await JSON.parse(roomJSON)
+    room.mine = await mine
+    room.turn = await turn
+    redisClient.set(code, stringify(room), {
+        NX: false
+    })
+}
 
 async function setBoardRedis(code, board, turn) {
     if (turn == "W") {
