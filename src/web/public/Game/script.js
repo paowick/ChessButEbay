@@ -7,9 +7,11 @@ import { tranSlateToId } from "./board.js";
 import { drop } from "./board.js";
 import { clearAllHightLight } from "./board.js";
 import { myturn } from "./board.js";
-import { mineList } from "./board.js";
+import { mineList,mineListPush } from "./board.js";
 import { minelimt } from "./board.js";
 import { dropMineEmit } from "./socket.js";
+
+import { mineDropAble,chaangeMineDropAble } from "./board.js";
 export function waitingForPlayer() {
     // document.querySelector("#waiting-pop").style.display = 'block'
     // setTimeout(() => {
@@ -159,17 +161,22 @@ export function hightLightMine(piece, id) {
                 clearAllHightLight() 
                 return 
             }
+            if(!mineDropAble){
+                clearAllHightLight() 
+                return 
+            }
             removeAllEvent()
             removeInvtList(id)
             clearAllHightLight()
             piece.setCurrentTimeInMine()
-            mineList.push(piece)
+            mineListPush(piece)
             console.log(mineList);
             mineSetUp()
+            chaangeMineDropAble(false)
             dropMineEmit(piece, board)
         })
     })
-
+    
     function removeAllEvent() {
         document.querySelectorAll('.mine').forEach(div => {
             const newdiv = div.cloneNode(true)

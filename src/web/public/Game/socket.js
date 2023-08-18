@@ -12,6 +12,7 @@ import { rook } from './rook.js';
 import { invtList,mineList } from "./board.js";
 import { mineSetUp } from "./script.js";
 import { mineListPush } from "./board.js";
+import { mineDropAble,chaangeMineDropAble } from "./board.js";
 const user = JSON.parse(localStorage.getItem('user'))
 
 
@@ -67,13 +68,7 @@ import('./board.js').then(({ socket }) => {
     })
 
     socket.on('drop_mine_server', async (arg) => {
-        const currentGame = JSON.parse(localStorage.getItem("currentGame"))
-        console.log(arg);
-        if (arg.turn === currentGame.role) {
-            changeMyTurn(true)
-        } else {
-            changeMyTurn(false)
-        }
+        chaangeMineDropAble(true)
         drop_mine_server(arg.piece)
     
     })

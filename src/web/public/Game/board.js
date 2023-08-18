@@ -12,6 +12,7 @@ import { boardSetupUi,codePart,invt } from './script.js';
 import { dropEmit } from './socket.js';
 import { mineSetUp } from './script.js';
 
+export var mineDropAble = true
 export var invtList = []
 export var mineList = []
 export var minelimt = 3
@@ -38,6 +39,9 @@ export let myturn = false
 export function changeMyTurn(data) {
     myturn = data
 }
+export function chaangeMineDropAble(data) {
+    mineDropAble = data
+}
 run()
 export async function run() {
     socket.on('board', async (arg) => {
@@ -45,7 +49,6 @@ export async function run() {
         invtList.push(new rook("rook",null,arg.role,false,board,3))
         invtList.push(new knight("knight",null,arg.role,false,board,3))
         const info = await JSON.parse(arg.board)
-        console.log(info.mineList);
         // mineList = info.mine
         if(arg.role == "W"){
             // invtList = info.invtW
