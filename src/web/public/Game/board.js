@@ -11,6 +11,7 @@ import { rook } from './rook.js';
 import { boardSetupUi,codePart,invt } from './script.js';
 import { dropEmit } from './socket.js';
 import { mineSetUp } from './script.js';
+import { drop_mine_server } from './socket.js';
 
 export var mineDropAble = true
 export var invtList = []
@@ -49,7 +50,10 @@ export async function run() {
         invtList.push(new rook("rook",null,arg.role,false,board,3))
         invtList.push(new knight("knight",null,arg.role,false,board,3))
         const info = await JSON.parse(arg.board)
-        // mineList = info.mine
+
+        info.mine.forEach(element => {
+            drop_mine_server(element);
+        })
         if(arg.role == "W"){
             // invtList = info.invtW
             invt()

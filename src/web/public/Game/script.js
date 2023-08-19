@@ -173,7 +173,7 @@ export function hightLightMine(piece, id) {
             console.log(mineList);
             mineSetUp()
             chaangeMineDropAble(false)
-            dropMineEmit(piece, board)
+            dropMineEmit(piece, board, mineList)
         })
     })
     
