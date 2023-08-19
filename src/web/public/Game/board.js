@@ -1,17 +1,18 @@
 import { move } from './socket.js';
 import { io } from "https://cdn.socket.io/4.3.2/socket.io.esm.min.js";
 import { join } from './socket.js';
-import { waitingForPlayer,askPlayer } from './script.js';
+import { waitingForPlayer, askPlayer } from './script.js';
 import { king } from './king.js';
 import { pawn } from './pawn.js';
 import { queen } from './queen.js';
 import { bishop } from './bishop.js';
 import { knight } from './knight.js';
 import { rook } from './rook.js';
-import { boardSetupUi,codePart,invt } from './script.js';
+import { boardSetupUi, codePart, invt } from './script.js';
 import { dropEmit } from './socket.js';
 import { mineSetUp } from './script.js';
 import { drop_mine_server } from './socket.js';
+import { mineUpdate } from './socket.js';
 
 export var mineDropAble = true
 export var invtList = []
@@ -43,26 +44,34 @@ export function changeMyTurn(data) {
 export function chaangeMineDropAble(data) {
     mineDropAble = data
 }
+
+export function mineListCount() {
+    mineList.forEach(element => {
+        element.countCurrentTimeInMine()
+    });
+    console.log(mineList);
+    mineUpdate(mineList)
+}
 run()
 export async function run() {
     socket.on('board', async (arg) => {
-        invtList.push(new queen("queen",null,arg.role,false,board,3))
-        invtList.push(new rook("rook",null,arg.role,false,board,3))
-        invtList.push(new knight("knight",null,arg.role,false,board,3))
+        invtList.push(new queen("queen", null, arg.role, false, board, 3))
+        invtList.push(new rook("rook", null, arg.role, false, board, 3))
+        invtList.push(new knight("knight", null, arg.role, false, board, 3))
         const info = await JSON.parse(arg.board)
 
         info.mine.forEach(element => {
             drop_mine_server(element);
         })
-        if(arg.role == "W"){
+        if (arg.role == "W") {
             // invtList = info.invtW
             invt()
             mineSetUp()
-        }else if(arg.role == "B"){
+        } else if (arg.role == "B") {
             // invtList = info.invtB
             invt()
             mineSetUp()
-        }else{
+        } else {
             invtList = []
         }
         for (let index = 0; index < info.board.length; index++) {
@@ -96,8 +105,8 @@ export async function run() {
                 }
             }
         }
-        
-        boardSetupUi(arg,currentGame,info)
+
+        boardSetupUi(arg, currentGame, info)
         codePart(info.code)
         if (arg.turn === arg.role) {
             myturn = true
@@ -125,7 +134,7 @@ export async function run() {
 // Black_Pawn	  = "&#9823"
 
 export function clearAllHightLight() {
-    document.querySelectorAll(".hight-light").forEach(div=>{
+    document.querySelectorAll(".hight-light").forEach(div => {
         div.parentNode.removeChild(div)
     })
 }
@@ -178,7 +187,7 @@ document.querySelectorAll('.box')
             const currentGame = JSON.parse(localStorage.getItem("currentGame"))
             if (currentGame.role != 'viewer') {
                 if (source == null && destination == null) {
-                    console.log(new DOMParser().parseFromString(this.innerHTML,"text/xml").documentElement);
+                    // console.log(new DOMParser().parseFromString(this.innerHTML, "text/xml").documentElement);
                     // source position ====================================================================
                     const piece = havePiece(this.id)
                     clearAllHightLight()
@@ -245,21 +254,21 @@ export function mineListPush(obj) {
     mineSetUp()
 }
 
-export function drop(piece,destination) {
+export function drop(piece, destination) {
     const pos = tranSlateTopos(destination)
     piece.setpos(pos)
     piece.setInInvt(false)
     piece.setPiece()
     clearAllHightLight()
     source = null
-    myturn = false
-    dropEmit(piece,destination,board)
+    changeMyTurn(false)
+    dropEmit(piece, destination, board)
 }
 
 export function removeInvtList(index) {
     let intIndex = parseInt(index)
-    invtList.splice(intIndex,1)
-    if(invtList.length === 0){
+    invtList.splice(intIndex, 1)
+    if (invtList.length === 0) {
         invtList = []
     }
     console.log(invtList);
@@ -288,15 +297,14 @@ export async function moveClient(source, destination, promoted) {
             destination = null
             source = null
             localStorage.setItem("board", stringify(board))
-            myturn = false
+            changeMyTurn(false)
         }
     }
     move(source, destination, null)
     destination = null
     source = null
     localStorage.setItem("board", stringify(board))
-    myturn = false
-
+    changeMyTurn(false)
 }
 export function moveClient_Server(source, destination, promoted) {
     const oldpos = tranSlateTopos(source)
@@ -311,12 +319,11 @@ export function moveClient_Server(source, destination, promoted) {
         destination = null
         source = null
         localStorage.setItem("board", stringify(board))
-        myturn = true
+        changeMyTurn(true)
     } else {
         destination = null
         source = null
-        localStorage.setItem("board", stringify(board))
-        myturn = true
+        changeMyTurn(true)
     }
 }
 
