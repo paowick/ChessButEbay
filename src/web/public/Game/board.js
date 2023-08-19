@@ -10,8 +10,12 @@ import { knight } from './knight.js';
 import { rook } from './rook.js';
 import { boardSetupUi,codePart,invt } from './script.js';
 import { dropEmit } from './socket.js';
+import { mineSetUp } from './script.js';
 
+export var mineDropAble = true
 export var invtList = []
+export var mineList = []
+export var minelimt = 3
 export var board = [
     [null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null, null],
@@ -35,19 +39,25 @@ export let myturn = false
 export function changeMyTurn(data) {
     myturn = data
 }
+export function chaangeMineDropAble(data) {
+    mineDropAble = data
+}
 run()
 export async function run() {
     socket.on('board', async (arg) => {
-        invtList.push(new king("king", null, currentGame.role, true, board))
-        invtList.push(new queen("queen", null, currentGame.role, true, board))
-        invtList.push(new bishop("bishop", null, currentGame.role, true, board))
+        invtList.push(new queen("queen",null,arg.role,false,board,3))
+        invtList.push(new rook("rook",null,arg.role,false,board,3))
+        invtList.push(new knight("knight",null,arg.role,false,board,3))
         const info = await JSON.parse(arg.board)
-        console.log(info);
-        console.log(arg);
+        // mineList = info.mine
         if(arg.role == "W"){
-            invtList = info.invtW
-        }else if(arg.role = "B"){
-            invtList = info.invtB
+            // invtList = info.invtW
+            invt()
+            mineSetUp()
+        }else if(arg.role == "B"){
+            // invtList = info.invtB
+            invt()
+            mineSetUp()
         }else{
             invtList = []
         }
@@ -57,32 +67,32 @@ export async function run() {
                 const element = elements[index];
                 if (element == null) { continue }
                 if (element.name == 'king') {
-                    new king("king", element.pos, element.team, true, board)
+                    new king("king", element.pos, element.team, true, board, 3)
                     continue
                 }
                 if (element.name == 'queen') {
-                    new queen("queen", element.pos, element.team, false, board)
+                    new queen("queen", element.pos, element.team, false, board, 3)
                     continue
                 }
                 if (element.name == 'bishop') {
-                    new bishop("bishop", element.pos, element.team, false, board)
+                    new bishop("bishop", element.pos, element.team, false, board, 3)
                     continue
                 }
                 if (element.name == 'rook') {
-                    new rook("rook", element.pos, element.team, false, board)
+                    new rook("rook", element.pos, element.team, false, board, 3)
                     continue
                 }
                 if (element.name == 'knight') {
-                    new knight("knight", element.pos, element.team, false, board)
+                    new knight("knight", element.pos, element.team, false, board, 3)
                     continue
                 }
                 if (element.name == 'pawn') {
-                    new pawn("pawn", element.pos, element.team, false, board, true)
+                    new pawn("pawn", element.pos, element.team, false, board, 3, true)
                     continue
                 }
             }
         }
-        invt()
+        
         boardSetupUi(arg,currentGame,info)
         codePart(info.code)
         if (arg.turn === arg.role) {
@@ -133,6 +143,8 @@ document.querySelector('#join_black')
         myturn = false
         localStorage.setItem('currentGame', JSON.stringify(data))
         join(data, user.name)
+        invt()
+        mineSetUp()
     })
 document.querySelector('#join_white')
     .addEventListener('click', () => {
@@ -151,6 +163,8 @@ document.querySelector('#join_white')
         myturn = false
         localStorage.setItem('currentGame', JSON.stringify(data))
         join(data, user.name)
+        invt()
+        mineSetUp()
     })
 var source = null
 var destination = null
@@ -221,6 +235,11 @@ document.querySelectorAll('.box')
 
 
     })
+
+export function mineListPush(obj) {
+    mineList.push(obj)
+    mineSetUp()
+}
 
 export function drop(piece,destination) {
     const pos = tranSlateTopos(destination)

@@ -36,19 +36,13 @@ io.use(function (socket, next) {
 
 io.sockets.on("connection", async (socket) => {
     console.log(`connnect ${socket.id}`)
-    // console.log(socket.request._query.code);
     socket.join(socket.request._query.code)
-// server return role as "viewer" but client return "B"
     if (socket.request._query.code != "admin") {
         let socketRole = 'viewer'
         const boardRedisJSON = await redisClient.get(socket.request._query.code)
         const boardRedis = await JSON.parse(boardRedisJSON)
-        if (socket.request._query.id != boardRedis?.playerB &&
-            socket.request._query.id != boardRedis?.playerW
-            ) { socketRole = 'viewer' }
         if (socket.request._query.id == boardRedis?.playerB) { socketRole = 'B' }
         if (socket.request._query.id == boardRedis?.playerW) { socketRole = 'W' }
-        console.log(socketRole);
         io.sockets.to(socket.id).emit("board", {
             board: stringify(boardRedis),
             role: socketRole,
@@ -149,11 +143,41 @@ io.sockets.on("connection", async (socket) => {
         socket.broadcast.to(socket.request._query.code).emit(`drop_server`, drop)
     })
 
+    socket.on("drop_mine", (arg) => {
+        const data = JSON.parse(arg);
+        let turn = null
+        setMineRedis(socket.request._query.code, data.mine, data.turn)
+        if (data.turn == "W") {
+            turn = "B"
+        } else if (data.turn == "B") {
+            turn = "W"
+        }
+        const drop = {
+            piece: data.piece,
+            turn: turn
+        }
+        socket.broadcast.to(socket.request._query.code).emit(`drop_mine_server`, drop)
+    })
 
     socket.on("disconnect", () => {
         console.log('dis')
     })
 });
+
+async function setMineRedis(code,mine,turn) {
+    if (turn == "W") {
+        turn = "B"
+    }else if(turn == "B"){
+        turn = "W"
+    }
+    const roomJSON = await redisClient.get(code)
+    const room = await JSON.parse(roomJSON)
+    room.mine = await mine
+    room.turn = await turn
+    redisClient.set(code, stringify(room), {
+        NX: false
+    })
+}
 
 async function setBoardRedis(code, board, turn) {
     if (turn == "W") {

@@ -31,9 +31,15 @@
     </script>
     <div class="room-code" id="room-code"></div>
     <main>
-        <div class="join-butt-con">
-            <button id="join_black" class="join_butt">join black</button>
-            <button id="join_white" class="join_butt">join white</button>
+        <div class="left-con">
+            <div class="join-butt-con" id="join-butt-con">
+                <button id="join_black" class="join_butt">join black</button>
+                <button id="join_white" class="join_butt">join white</button>
+            </div>
+            <div class="log-con" id="log-con"></div>
+            <div class="mine-con" id="mine-con">
+                <div class="mine" id="mine" style="display: none;"></div>
+            </div>
         </div>
         <div class="container-fuckin-all" id="board-white">
             <div class="row-text">
@@ -403,7 +409,9 @@
                 </div>
             </div>
         </div>
-        <div id="inhand" class="inhand"></div>
+        <div class="right-con">
+            <div id="inhand" class="inhand"></div>
+        </div>
     </main>
 
 </body>
@@ -412,6 +420,7 @@
     <div class="invt" id="invt"></div>
     <!-- <button type="submit" id="auctiontest">auction</button> -->
 </div>
+
 
 <div id="prom-pop" class="prom-pop" style="display: none;">
     <h1>Promoted</h1>

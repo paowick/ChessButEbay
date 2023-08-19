@@ -5,8 +5,8 @@ import { rook } from "./rook.js"
 import { knight } from "./knight.js"
 import { win } from "./socket.js"
 export class pawn extends pieces {
-    constructor(name, pos, team, isKing, board, firstmove) {
-        super(name, pos, team, isKing, board)
+    constructor(name, pos, team, isKing, board, timeInMine,firstmove) {
+        super(name, pos, team, isKing, board, timeInMine)
         this.firstmove = firstmove
         if (team == 'W') {
             this.promotedPos = ['00', '01', '02', '03', '04', '05', '06', '07']
