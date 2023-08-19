@@ -144,7 +144,7 @@ function temp() {
 
 export function mineSetUp() {
     const mine = document.querySelector("#mine")
-    mine.style.display = "block"
+    mine.style.display = "flex"
     mine.innerHTML = ''
     mineList.forEach((element, index) => {
         var doc = new DOMParser().parseFromString(element.html(), "text/xml").documentElement
