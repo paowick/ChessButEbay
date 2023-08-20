@@ -57,7 +57,6 @@ import('./board.js').then(({ socket }) => {
     })
 
     socket.on('drop_mine_server', async (arg) => {
-        chaangeMineDropAble(true)
         drop_mine_server(arg.piece)
         
     })

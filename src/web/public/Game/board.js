@@ -12,7 +12,7 @@ import { boardSetupUi, codePart, invt } from './script.js';
 import { dropEmit } from './socket.js';
 import { mineSetUp } from './script.js';
 import { drop_mine_server } from './socket.js';
-import { mineUpdate,} from './socket.js';
+import { mineUpdate, } from './socket.js';
 
 export var mineDropAble = true
 export var invtList = []
@@ -39,6 +39,9 @@ export var socket = io(window.location.origin, {
 export let myturn = false
 
 export function changeMyTurn(data) {
+    if (data == true) {
+        chaangeMineDropAble(true)
+    }
     myturn = data
 }
 export function chaangeMineDropAble(data) {
@@ -56,7 +59,8 @@ export function mineListCount() {
             invtPush(element)
         }
     }),
-    mineUpdate(mineList)
+
+        mineUpdate(mineList)
 }
 run()
 export async function run() {
@@ -267,6 +271,7 @@ export function mineListPop(obj) {
         invtList = []
     }
     mineSetUp()
+    // decrease coin
 }
 
 export function invtPush(obj) {

@@ -7,11 +7,11 @@ import { tranSlateToId } from "./board.js";
 import { drop } from "./board.js";
 import { clearAllHightLight } from "./board.js";
 import { myturn } from "./board.js";
-import { mineList,mineListPush } from "./board.js";
+import { mineList, mineListPush } from "./board.js";
 import { minelimt } from "./board.js";
 import { dropMineEmit } from "./socket.js";
 
-import { mineDropAble,chaangeMineDropAble } from "./board.js";
+import { mineDropAble, chaangeMineDropAble } from "./board.js";
 export function waitingForPlayer() {
     // document.querySelector("#waiting-pop").style.display = 'block'
     // setTimeout(() => {
@@ -120,7 +120,7 @@ export function invt() {
             hightLightDrop(invtList[this.id], this.id)
             removeAllEvent()
             temp()
-            if(mineList.length >= minelimt){
+            if (mineList.length >= minelimt) {
                 return
             }
             hightLightMine(invtList[this.id], this.id)
@@ -143,11 +143,18 @@ function temp() {
 
 
 export function mineSetUp() {
+    const currentGame = JSON.parse(localStorage.getItem("currentGame"))
     const mine = document.querySelector("#mine")
     mine.style.display = "flex"
     mine.innerHTML = ''
     mineList.forEach((element, index) => {
-        var doc = new DOMParser().parseFromString(element.html(), "text/xml").documentElement
+        var doc = null
+        if (element.team == currentGame.role) {
+            doc = new DOMParser().parseFromString(element.html(), "text/xml").documentElement
+        } else {
+            doc = new DOMParser().parseFromString(`<div class="blind"></div>`, "text/xml").documentElement
+        }
+        console.log(doc);
         doc.setAttribute('id', index)
         doc.classList.add('mine-box')
         mine.appendChild(doc)
@@ -157,13 +164,13 @@ export function mineSetUp() {
 export function hightLightMine(piece, id) {
     document.querySelectorAll('.mine').forEach(div => {
         div.addEventListener('click', function () {
-            if (!myturn) { 
-                clearAllHightLight() 
-                return 
+            if (!myturn) {
+                clearAllHightLight()
+                return
             }
-            if(!mineDropAble){
-                clearAllHightLight() 
-                return 
+            if (!mineDropAble) {
+                clearAllHightLight()
+                return
             }
             removeAllEvent()
             removeInvtList(id)
@@ -175,7 +182,7 @@ export function hightLightMine(piece, id) {
             dropMineEmit(piece, board, mineList)
         })
     })
-    
+
     function removeAllEvent() {
         document.querySelectorAll('.mine').forEach(div => {
             const newdiv = div.cloneNode(true)
@@ -192,9 +199,9 @@ export function hightLightMine(piece, id) {
 function hightLightDrop(piece, id) {
     document.querySelectorAll('.drop').forEach(div => {
         div.addEventListener('click', function () {
-            if (!myturn) { 
-                clearAllHightLight() 
-                return 
+            if (!myturn) {
+                clearAllHightLight()
+                return
             }
             drop(piece, this.id)
             removeAllEvent()
