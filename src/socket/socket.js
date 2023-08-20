@@ -159,6 +159,8 @@ io.sockets.on("connection", async (socket) => {
 
     socket.on("mineUpdate", (arg) => {
         const data = JSON.parse(arg);
+        console.log("update");
+        console.log(data);
         setMineRedis(socket.request._query.code, data.mine)
     })
 

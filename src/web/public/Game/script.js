@@ -170,7 +170,6 @@ export function hightLightMine(piece, id) {
             clearAllHightLight()
             piece.setCurrentTimeInMine()
             mineListPush(piece)
-            console.log(mineList);
             mineSetUp()
             chaangeMineDropAble(false)
             dropMineEmit(piece, board, mineList)

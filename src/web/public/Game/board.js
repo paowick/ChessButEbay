@@ -12,7 +12,7 @@ import { boardSetupUi, codePart, invt } from './script.js';
 import { dropEmit } from './socket.js';
 import { mineSetUp } from './script.js';
 import { drop_mine_server } from './socket.js';
-import { mineUpdate } from './socket.js';
+import { mineUpdate,} from './socket.js';
 
 export var mineDropAble = true
 export var invtList = []
@@ -48,8 +48,14 @@ export function chaangeMineDropAble(data) {
 export function mineListCount() {
     mineList.forEach(element => {
         element.countCurrentTimeInMine()
+        console.log(`${element.name} ${element.team} ${element.currentTimeInMine}`)
     });
-    console.log(mineList);
+    mineList.forEach(element => {
+        if (element.currentTimeInMine <= 0) {
+            mineListPop(element)
+            invtPush(element)
+        }
+    }),
     mineUpdate(mineList)
 }
 run()
@@ -254,6 +260,33 @@ export function mineListPush(obj) {
     mineSetUp()
 }
 
+export function mineListPop(obj) {
+    const index = mineList.indexOf(obj)
+    mineList.splice(index, 1)
+    if (invtList.length === 0) {
+        invtList = []
+    }
+    mineSetUp()
+}
+
+export function invtPush(obj) {
+    const currentGame = JSON.parse(localStorage.getItem("currentGame"))
+    if (obj.team != currentGame.role) {
+        invt()
+        return
+    }
+    invtList.push(obj)
+    invt()
+}
+export function removeInvtList(index) {
+    let intIndex = parseInt(index)
+    invtList.splice(intIndex, 1)
+    if (invtList.length === 0) {
+        invtList = []
+    }
+    invt()
+}
+
 export function drop(piece, destination) {
     const pos = tranSlateTopos(destination)
     piece.setpos(pos)
@@ -265,15 +298,6 @@ export function drop(piece, destination) {
     dropEmit(piece, destination, board)
 }
 
-export function removeInvtList(index) {
-    let intIndex = parseInt(index)
-    invtList.splice(intIndex, 1)
-    if (invtList.length === 0) {
-        invtList = []
-    }
-    console.log(invtList);
-    invt()
-}
 
 export async function moveClient(source, destination, promoted) {
 
