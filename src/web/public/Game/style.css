@@ -23,7 +23,8 @@
     justify-content: center;
     text-align: center;
 }
-.hight-light:hover{
+
+.hight-light:hover {
     cursor: pointer;
 }
 
@@ -33,9 +34,11 @@
     font-size: 60px;
     text-align: center;
 }
-.boxpiece:hover{
+
+.boxpiece:hover {
     cursor: pointer;
 }
+
 
 main {
     padding: 20px;
@@ -79,42 +82,53 @@ main {
     text-align: center;
 }
 
-.left-con{
+.left-con {
     display: flex;
     flex-direction: column;
     justify-content: center;
     width: 33%;
     /* background-color: aqua; */
 }
+
 .container-fuckin-all {
     display: flex;
     justify-content: center;
     flex-direction: column;
     width: fit-content;
 }
-.right-con{
+
+.right-con {
     display: flex;
     flex-direction: column;
     justify-content: center;
     width: 33%;
     /* background-color: aqua; */
 }
+
 .log-con {
     margin: 0 auto;
     width: 90%;
     height: 50%;
 
 }
-.mine-con{
+
+.mine-con {
     margin: 0 auto;
     width: 90%;
     height: 50%;
 }
+
 .mine {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    gap: 10px;
     width: 100%;
     height: 100%;
     background-color: #252525;
+    overflow-y: auto;
 }
+
 .row-text {
     display: flex;
     height: fit-content;
@@ -143,7 +157,7 @@ main {
     background-color: gray;
 }
 
-.inhand{
+.inhand {
     display: flex;
     width: 30%;
     height: auto;
@@ -151,14 +165,14 @@ main {
 }
 
 
-.join-butt-con{
+.join-butt-con {
     display: flex;
     flex-direction: column;
     justify-content: center;
     gap: 50%;
 }
 
-.prom-pop{
+.prom-pop {
     font-family: Courier New;
     font-weight: 650;
     font-size: 17px;
@@ -173,10 +187,10 @@ main {
     text-align: center;
     display: flex;
     flex-direction: column;
-    
+
 }
 
-.win-pop{
+.win-pop {
     padding: 10px;
     border-radius: 50px;
     display: none;
@@ -187,16 +201,18 @@ main {
     top: 20%;
     left: 40%;
     z-index: 10;
-    background-color: rgba(17,17,17,0.7);
+    background-color: rgba(17, 17, 17, 0.7);
     backdrop-filter: blur(10px);
     width: 400px;
     height: 400px;
 }
-.room-code{
+
+.room-code {
     margin: 0 auto;
     width: fit-content;
 }
-.room-code > h1{
+
+.room-code>h1 {
     color: black;
 }
 
@@ -206,7 +222,7 @@ main {
     bottom: 0;
 }
 
-.invt{
+.invt {
     margin: 0 auto;
     padding: 10px;
     margin-bottom: 10px;
@@ -215,7 +231,7 @@ main {
     height: 100px;
 }
 
-.invt > div{
+.invt>div {
     margin: 0px 10px;
     background-color: #ffffff;
     width: 80px;
@@ -223,11 +239,12 @@ main {
     font-size: 60px;
     text-align: center;
 }
-.invt>div:hover{
+
+.invt>div:hover {
     cursor: pointer;
 }
 
-.mine > div{
+.mine>div {
     margin: 0px 10px;
     background-color: #ffffff;
     width: 80px;
@@ -235,8 +252,18 @@ main {
     font-size: 60px;
     text-align: center;
 }
-.mine>div:hover{
+
+.mine>div:hover {
     cursor: pointer;
+}
+
+.blind {
+    margin: 0px 10px;
+    background-color: red;
+    width: 80px;
+    height: 80px;
+    font-size: 60px;
+    text-align: center;
 }
 
 /* .waiting-pop{
@@ -279,6 +306,6 @@ button:hover {
     caret-color: transparent;
 }
 
-body{
+body {
     overflow: hidden;
 }

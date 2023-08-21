@@ -85,7 +85,7 @@ io.sockets.on("connection", async (socket) => {
             playerW: null,
             playerWName: null,
             invtW: [],
-            mine: null,
+            mine: [],
             board: board,
             log: null
         }
@@ -98,18 +98,7 @@ io.sockets.on("connection", async (socket) => {
 
 
 
-    socket.on("move", (arg) => {
-        const data = JSON.parse(arg)
-        console.log(`move ${data.source} to ${data.destination}`)
-        setBoardRedis(socket.request._query.code, data.board, data.turn)
-        let move = {
-            promoted: data.promoted,
-            source: data.source,
-            destination: data.destination,
-        }
-        socket.broadcast.to(socket.request._query.code).emit(`move_server`, move)
-    })
-
+    
     socket.on("win", (arg) => {
         const value = {
             turn: null,
@@ -126,11 +115,25 @@ io.sockets.on("connection", async (socket) => {
         })
         socket.broadcast.to(socket.request._query.code).emit(`win_server`, arg.team)
     })
+    
+    socket.on("move", (arg) => {
+        const data = JSON.parse(arg)
+        console.log(`move ${data.source} to ${data.destination}`)
+        setBoardRedis(socket.request._query.code, data.board, data.turn)
+        setMineRedis(socket.request._query.code, data.mine)
+        let move = {
+            promoted: data.promoted,
+            source: data.source,
+            destination: data.destination,
+        }
+        socket.broadcast.to(socket.request._query.code).emit(`move_server`, move)
+    })
 
     socket.on("drop", (arg) => {
         const data = JSON.parse(arg);
         let turn = null
         setBoardRedis(socket.request._query.code, data.board, data.turn)
+        setMineRedis(socket.request._query.code, data.mine)
         if (data.turn == "W") {
             turn = "B"
         } else if (data.turn == "B") {
@@ -146,12 +149,7 @@ io.sockets.on("connection", async (socket) => {
     socket.on("drop_mine", (arg) => {
         const data = JSON.parse(arg);
         let turn = null
-        setMineRedis(socket.request._query.code, data.mine, data.turn)
-        if (data.turn == "W") {
-            turn = "B"
-        } else if (data.turn == "B") {
-            turn = "W"
-        }
+        setMineRedis(socket.request._query.code, data.mine)
         const drop = {
             piece: data.piece,
             turn: turn
@@ -159,21 +157,23 @@ io.sockets.on("connection", async (socket) => {
         socket.broadcast.to(socket.request._query.code).emit(`drop_mine_server`, drop)
     })
 
+    socket.on("mineUpdate", (arg) => {
+        const data = JSON.parse(arg);
+        console.log("update");
+        console.log(data);
+        setMineRedis(socket.request._query.code, data.mine)
+    })
+
     socket.on("disconnect", () => {
         console.log('dis')
     })
 });
 
-async function setMineRedis(code,mine,turn) {
-    if (turn == "W") {
-        turn = "B"
-    }else if(turn == "B"){
-        turn = "W"
-    }
+
+async function setMineRedis(code,mine) {
     const roomJSON = await redisClient.get(code)
     const room = await JSON.parse(roomJSON)
     room.mine = await mine
-    room.turn = await turn
     redisClient.set(code, stringify(room), {
         NX: false
     })
