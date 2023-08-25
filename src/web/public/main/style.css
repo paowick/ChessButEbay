@@ -6,7 +6,7 @@ body {
 }
 
 main {
-    padding: 50px;
+    padding: 35px;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -14,25 +14,25 @@ main {
 }
 
 .option-con {
-    background-color: #171717;
+    background-color: #404040;
     width: 30%;
     height: 700px; 
     padding: 2px;
-    background-color: #171717;
-    border-radius: 30px;
+    background-color: #404040;
+    /*border-radius: 30px;*/
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     gap: 20px;
 }
 
 .board-con{
-    width: 70%;
-    height: 700px;
-    padding: 2px;
-    background-color: #171717;
-    border-radius: 30px;
+    width: 1100px;
+    height: 450px;
+    background-color: #404040;
+
+    /*border-radius: 30px;*/
 }
 
 .board {
@@ -40,8 +40,9 @@ main {
     height: 97%;
     overflow: auto;
     border-radius: 30px;
-    background-color: #171717;
+    background-color: #404040;
     margin: 10px;
+    padding: 5px;
 }
 
 ::-webkit-scrollbar {
@@ -67,7 +68,7 @@ main {
     border-radius: 50px;
     margin: 10px auto;
     width: 100%;
-    height: 10%;
+    height: 15%;
     background-color: aliceblue;
 }
 .cre-but{
@@ -79,13 +80,14 @@ input {
     font-weight: 650;
     outline: none;
     border: 0;
-    background-color: #171717;
+    background-color: #404040;
     padding: 10px 13px;
     margin: 5px auto;
     font-size: 20px;
-    border-radius: 25px;
+    /*border-radius: 25px;*/
     box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
     color: white;
+   
 }
 button {
     font-family: Courier New;
@@ -113,3 +115,31 @@ p{
 
 }
 
+.chat-con{
+    background-color: #404040;
+    width: 1100px;
+    height: 75px; 
+    padding: 10px;
+    background-color: #404040;
+    /*border-radius: 20px;*/
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+
+    
+}
+
+.chatmessage{
+    background-color: #404040;
+    width: 990px;
+    height: 40px; 
+}
+
+.chat-room{
+    /*display: none;*/
+    background-color: #404040;
+    width: 1100px;
+    height: 180px; 
+}

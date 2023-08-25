@@ -8,6 +8,8 @@
 
     <title>Home</title>
     <script src="../main/main.js"></script>
+    <script src="../main/chat.js"></script>
+    <script src="socket.io.js"></script>
     <link rel="stylesheet" href="../main/style.css">
 </head>
 
@@ -24,6 +26,14 @@
     <main>
         <div class="board-con">
             <div class="board" id="board"></div>
+            <div class="chat-room"></div>
+            <div class="chat-con">
+                
+                    <ul id="chat-messages"></ul>
+                </div>
+                <input class="chatmessage" type="text" id="message-input">
+                <button class="send-button">Send</button>
+            </div>
         </div>
         <div class="option-con">
             <div class="test"></div>
@@ -31,8 +41,9 @@
             <input type="text" id="code-input" placeholder="Search Code">
             <button type="button" class="join-but" onclick="joingame(document.getElementById('code-input').value)">Join</button>
         </div>
-
+        
     </main>
+        
 </body>
 
 </html>

@@ -18,7 +18,7 @@ body {
     outline: 1px;
     border: 1px solid black;
     border-radius: 25px;
-    background-color: #171717;
+    background-color: #404040;
     box-shadow: 2px 2px gray;
     width: 360px;
     justify-content: left;
@@ -37,7 +37,7 @@ input {
     font-weight: 650;
     outline: none;
     border: 0;
-    background-color: #171717;
+    background-color: #404040;
     padding: 15px 25px;
     width: 300px;
     margin: 5px auto;
@@ -52,7 +52,7 @@ button {
     font-weight: 650;
     font-size: 20px;
     color: white;
-    background-color: #171717;
+    background-color: #404040;
     border-radius: 10px;
     width: 130px;
     height: 50px;
@@ -64,7 +64,7 @@ button {
 
 button:hover {
     border-radius: 10px;
-    border: 1px solid #171717;
+    border: 1px solid #404040;
     color: white;
     background-color: black;
     text-shadow: 0 0 5px #ffffff;
@@ -86,7 +86,7 @@ a {
     font-weight: 650;
     margin: 0px 0px;
     border-radius: 25px;
-    background-color: #171717;
+    background-color: #404040;
     color: white;
     width: 100px;
     height: 50px;
@@ -98,7 +98,7 @@ a {
     font-weight: 650;
     margin: 0px 10px;
     border-radius: 5px;
-    background-color: #171717;
+    background-color: #404040;
     color: white !important;
     width: 100px;
     height: 50px;
@@ -108,7 +108,7 @@ a {
 
 
 .send_btn_tog:hover {
-    background-color: #171717;
+    background-color: #404040;
     color: white;
     font-family: Courier New;
     font-weight: 650;
@@ -128,7 +128,7 @@ a {
     font-weight: 650;
     margin: 0 auto;
     margin-top: 130px;
-    background-color: #171717;
+    background-color: #404040;
     color: white;
     width: 300px;
     border-radius: 60px;
