@@ -90,11 +90,11 @@ export function boardSetupUi(arg, currentGame, info) {
     localStorage.setItem('currentGame', JSON.stringify(currentGame))
 }
 
-export function codePart(code) {
-    const para = document.createElement("h1");
-    para.innerText = code
-    document.querySelector(".room-code").appendChild(para)
-}
+// export function codePart(code) {
+//     const para = document.createElement("h1");
+//     para.innerText = code
+//     document.querySelector(".room-code").appendChild(para)
+// }
 
 
 

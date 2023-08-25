@@ -8,7 +8,7 @@ import { queen } from './queen.js';
 import { bishop } from './bishop.js';
 import { knight } from './knight.js';
 import { rook } from './rook.js';
-import { boardSetupUi, codePart, invt } from './script.js';
+import { boardSetupUi, invt } from './script.js';
 import { dropEmit } from './socket.js';
 import { mineSetUp } from './script.js';
 import { drop_mine_server } from './socket.js';
@@ -334,6 +334,7 @@ export async function moveClient(source, destination, promoted) {
     source = null
     localStorage.setItem("board", stringify(board))
     changeMyTurn(false)
+    clearAllHightLight()
 }
 export function moveClient_Server(source, destination, promoted) {
     const oldpos = tranSlateTopos(source)
@@ -354,6 +355,7 @@ export function moveClient_Server(source, destination, promoted) {
         source = null
         changeMyTurn(true)
     }
+    clearAllHightLight()
 }
 
 

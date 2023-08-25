@@ -29,20 +29,29 @@
             $("#nav-ph").load("../../assets/component/navbar/navbar.html")
         })
     </script>
-    <div class="room-code" id="room-code"></div>
+    <div class="top" id="top">
+        <div class="coin" id="coin"></div>
+        <div class="turn" id="turn"></div>
+        <div class="time" id="time"></div>
+    </div>
     <main>
         <div class="left-con">
             <div class="join-butt-con" id="join-butt-con">
                 <button id="join_black" class="join_butt">join black</button>
                 <button id="join_white" class="join_butt">join white</button>
             </div>
-            <div class="log-con" id="log-con"></div>
+            <div class="log-con" id="log-con">
+                <div class="log" id="log">
+                    <div class="round" id="round"></div>
+                    <div class="log-box" id="log-box"></div>
+                </div>
+            </div>
             <div class="mine-con" id="mine-con">
                 <div class="mine" id="mine" style="display: none;"></div>
             </div>
         </div>
         <div class="container-fuckin-all" id="board-white">
-            <div class="row-text">
+            <!-- <div class="row-text">
                 <div class="per-text-row">
                     <h2>a</h2>
                 </div>
@@ -67,9 +76,9 @@
                 <div class="per-text-row">
                     <h2>h</h2>
                 </div>
-            </div>
+            </div> -->
             <div class="container-col-text">
-                <div class="collumn-text">
+                <!-- <div class="collumn-text">
                     <div class="per-text-col">
                         <h2>8</h2>
                     </div>
@@ -94,7 +103,7 @@
                     <div class="per-text-col">
                         <h2>1</h2>
                     </div>
-                </div>
+                </div> -->
                 <div class="fake-board">
                     <div class="board-con">
                         <div id="a8" class="boxwhite box"></div>
@@ -170,7 +179,7 @@
                         <div id="h1" class="boxwhite box"></div>
                     </div>
                 </div>
-                <div class="collumn-text">
+                <!-- <div class="collumn-text">
                     <div class="per-text-col">
                         <h2>8</h2>
                     </div>
@@ -195,9 +204,9 @@
                     <div class="per-text-col">
                         <h2>1</h2>
                     </div>
-                </div>
+                </div> -->
             </div>
-            <div class="row-text">
+            <!-- <div class="row-text">
                 <div class="per-text-row">
                     <h2>a</h2>
                 </div>
@@ -222,11 +231,11 @@
                 <div class="per-text-row">
                     <h2>h</h2>
                 </div>
-            </div>
+            </div> -->
         </div>
 
         <div class="container-fuckin-all" id="board-black" style="display: none;">
-            <div class="row-text">
+            <!-- <div class="row-text">
                 <div class="per-text-row">
                     <h2>a</h2>
                 </div>
@@ -251,9 +260,9 @@
                 <div class="per-text-row">
                     <h2>h</h2>
                 </div>
-            </div>
+            </div> -->
             <div class="container-col-text">
-                <div class="collumn-text">
+                <!-- <div class="collumn-text">
                     <div class="per-text-col">
                         <h2>1</h2>
                     </div>
@@ -278,7 +287,7 @@
                     <div class="per-text-col">
                         <h2>8</h2>
                     </div>
-                </div>
+                </div> -->
                 <div class="fake-board">
                     <div class="board-con">
                         <div id="a1" class="boxblack box"></div>
@@ -355,7 +364,7 @@
 
                     </div>
                 </div>
-                <div class="collumn-text">
+                <!-- <div class="collumn-text">
                     <div class="per-text-col">
                         <h2>1</h2>
                     </div>
@@ -380,9 +389,9 @@
                     <div class="per-text-col">
                         <h2>8</h2>
                     </div>
-                </div>
+                </div> -->
             </div>
-            <div class="row-text">
+            <!-- <div class="row-text">
                 <div class="per-text-row">
                     <h2>a</h2>
                 </div>
@@ -407,10 +416,18 @@
                 <div class="per-text-row">
                     <h2>h</h2>
                 </div>
-            </div>
+            </div> -->
         </div>
         <div class="right-con">
             <div id="inhand" class="inhand"></div>
+            <div class="action" id="action">
+                <div class="time-action" id="time-action"></div>
+                <div class="ac-piece" id="ac-piece"></div>
+                <div class="cur-pi" id="cur-pi"></div>
+                <input type="text" placeholder="Enter a bid">
+                <button type="button">Accept</button>
+
+            </div>
         </div>
     </main>
 
@@ -420,6 +437,7 @@
     <div class="invt" id="invt"></div>
     <!-- <button type="submit" id="auctiontest">auction</button> -->
 </div>
+
 
 
 <div id="prom-pop" class="prom-pop" style="display: none;">
