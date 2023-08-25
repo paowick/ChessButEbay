@@ -57,9 +57,22 @@ app.post('/api/resetpassword', async (req, res) => {
 
 app.post('/api/editinfo', async (req, res) => {
     try {
-        console.log(req.body);
         const editinfo = db.editinfo(req.body.id, req.body.name, req.body.fname, req.body.lname)
         if (editinfo) {
+            res.sendStatus(200)
+        } else {
+            res.sendStatus(500)
+        }
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500)
+    }
+})
+
+app.post('/api/editpassword', async (req, res) => {
+    try {
+        const editpassword = db.editpassword(req.body.id,req.body.password)
+        if (editpassword) {
             res.sendStatus(200)
         } else {
             res.sendStatus(500)

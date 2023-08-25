@@ -1,32 +1,57 @@
+import { io } from "socket.io-client";
 
-
-
-export async function isUser(req){
-    try{
-        console.log(req.session);
-        if (req.session.user == null) {
-            return false
-        }
-        
-        const data = {
-            email: req.session.user.email,
-            id: req.session.user.id
-        }
-        const result = await fetch('http://api:8080/api/userCheckBackEnd', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        })
-        const JsonResult = await result.json()
-        console.log(JsonResult);
-        if (!JsonResult.Response) {
-            return false
-        }
-        return true
-
-    }catch(e){
-        console.log(e);
+const socket = io("ws://socket:8080", {
+    query: {
+        code: "admin",
+        name: "admin"
     }
+})
+
+import redis from "redis"
+const redisClient = redis.createClient({
+    socket: {
+        host: 'gameredis',
+        port: '6379'
+    }
+});
+
+await redisClient.connect()
+
+
+export async function createRoom() {
+    const room = generateString(5)
+    const data = {
+        room: room
+    }
+    socket.emit('createRoom', data);
+    return room
+}
+
+const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+let temp = []
+function generateString(length) {
+    let result = '';
+    const charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    if (temp.includes(result)) { generateString(5) }
+    temp.push(result)
+    return result
+}
+
+export async function getallRoom() {
+    const data = await redisClient.keys('*')
+    let result = []
+    for (let index = 0; index < data.length; index++) {
+        const element = data[index];
+        const res = await redisClient.get(`${element}`)
+        result.push(res)
+    }
+    return result
+}
+
+export async function getroom(code) {
+    const data = await redisClient.get(code)
+    return data
 }

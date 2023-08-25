@@ -3,11 +3,11 @@ body {
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
+    /* overflow: hidden; */
 }
 
 main {
     justify-content: center;
-    margin: 0 auto;
     width: 100%;
     display: flex;
 }
@@ -18,7 +18,7 @@ main {
     font-weight: 650;
     padding: 25px;
     /* backdrop-filter: blur(10px); */
-    background-color: rgba(23,23,23,0.5);
+    background-color: rgba(23, 23, 23, 0.5);
     border-radius: 50px;
     display: flex;
     width: 700px;
@@ -33,7 +33,7 @@ button {
     font-weight: 650;
     font-size: 20px;
     color: white;
-    background-color: #171717;
+    background-color: #404040;
     padding: 10px;
     width: auto;
     height: 50px;
@@ -56,7 +56,7 @@ button:hover {
     margin: 30px;
     width: 1000px;
     border-radius: 50px;
-    background-color: rgba(23,23,23,0.5);
+    background-color: rgba(23, 23, 23, 0.5);
 }
 
 .profile-main>img {
@@ -66,16 +66,16 @@ button:hover {
     border-radius: 100%;
 }
 
-.edit-icon{
+.edit-icon {
     width: 80px;
     height: 80px;
     object-fit: fill;
     border-radius: 100%;
     position: absolute;
-    transform: translate(240%,-80%);
+    transform: translate(100%, 360%);
 }
 
-.edit-icon > img{
+.edit-icon>img {
     width: 80px;
     height: 80px;
     object-fit: fill;
@@ -94,25 +94,25 @@ button:hover {
     font-weight: 650;
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
+    justify-content: space-between;
     align-items: center;
     visibility: hidden;
     margin: 0 auto;
     border: 1px solid black;
     border-radius: 25px;
-    background-color: #171717;
+    background-color: #404040;
     box-shadow: 2px 2px gray;
     width: 600px;
     height: 800px;
     position: absolute;
     left: 0;
     right: 0;
-    top: 15%;
+    top: 10%;
 }
 
-.edit-pop:hover{
+.edit-pop:hover {
     transform: scale(1.05);
-    transition: .4s ;
+    transition: .4s;
 }
 
 .profile-pop>img {
@@ -126,7 +126,7 @@ button:hover {
 
 h3 {
     color: white;
-    
+
 }
 
 .h3-con {
@@ -140,9 +140,9 @@ h3 {
     justify-content: space-between;
 }
 
-#name-pop{
+#name-pop {
     padding: 10px 20px;
-    background-color: #171717;
+    background-color: #404040;
     font-size: 17px;
     font-family: Courier New;
     font-weight: 650;
@@ -152,9 +152,9 @@ h3 {
 
 }
 
-#Fname-pop{
+#Fname-pop {
     padding: 10px 20px;
-    background-color: #171717;
+    background-color: #404040;
     font-size: 17px;
     font-family: Courier New;
     font-weight: 650;
@@ -163,9 +163,9 @@ h3 {
     color: white;
 }
 
-#Lname-pop{
+#Lname-pop {
     padding: 10px 20px;
-    background-color: #171717;
+    background-color: #404040;
     font-size: 17px;
     font-family: Courier New;
     font-weight: 650;
@@ -174,18 +174,18 @@ h3 {
     color: white;
 }
 
-.changePassword-pop{
+.changePassword-pop {
     font-family: Courier New;
     font-weight: 650;
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
+    justify-content: space-between;
     align-items: center;
     visibility: hidden;
     margin: 0 auto;
     border: 1px solid black;
     border-radius: 25px;
-    background-color: #171717;
+    background-color: #404040;
     box-shadow: 2px 2px gray;
     width: 500px;
     height: 600px;
@@ -195,14 +195,14 @@ h3 {
     top: 15%;
 }
 
-.changePassword-pop:hover{
+.changePassword-pop:hover {
     transform: scale(1.05);
-    transition: .4s ;
+    transition: .4s;
 }
 
-#oldPw-pop{
+#oldPw-pop {
     padding: 10px 20px;
-    background-color: #171717;
+    background-color: #404040;
     font-size: 17px;
     font-family: Courier New;
     font-weight: 650;
@@ -211,9 +211,9 @@ h3 {
     color: white;
 }
 
-#newPw-pop{
+#newPw-pop {
     padding: 10px 20px;
-    background-color: #171717;
+    background-color: #404040;
     font-size: 17px;
     font-family: Courier New;
     font-weight: 650;
@@ -222,13 +222,39 @@ h3 {
     color: white;
 }
 
-#conPw-pop{
+#conPw-pop {
     padding: 10px 20px;
-    background-color: #171717;
+    background-color: #404040;
     font-size: 17px;
     font-family: Courier New;
     font-weight: 650;
     border-radius: 25px;
     box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
     color: white;
+}
+
+.hide-butt {
+    display: none;
+}
+
+.close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    font-size: 45px;
+    font-weight: 600;
+    border-radius: 0% 25px 0% 0%/ 0% 25px 0% 0%;
+}
+
+.close-con {
+    cursor: pointer;
+    display: flex;
+    justify-content: end;
+    width: 100%;
+    height: 40px;
+}
+
+.close:hover {
+    background-color: red;
 }

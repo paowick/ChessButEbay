@@ -1,80 +1,47 @@
-window.onload = () => {
-    const roomlist = [
-        {
-            code: "N8O5",
-            player1: "Halla",
-            player2: null
-        },
-        {
-            code: "J8C5",
-            player1: "Charity",
-            player2: "Phoebe"
-        },
-        {
-            code: "Z8H5",
-            player1: "Adrian",
-            player2: null
-        },
-        {
-            code: "G5M2",
-            player1: "Rooney",
-            player2: null
-        },
-        {
-            code: "B3G4",
-            player1: "Ross",
-            player2: "Imani"
-        },
-        {
-            code: "Y7O5",
-            player1: "Ezekiel",
-            player2: "Kane"
-        },
-        {
-            code: "C2K4",
-            player1: "Daniel",
-            player2: null
-        },
-        {
-            code: "P1S4",
-            player1: "Allistair",
-            player2: null
-        },
-        {
-            code: "W3D5",
-            player1: "Kaseem",
-            player2: "Colleen"
-        },
-        {
-            code: "F4U9",
-            player1: "Preston",
-            player2: "Kimberley"
-        },
-    ]
+window.onload = async () => {
+    roomload()
+}
 
-    roomlist.forEach(element => {
-        if (element.player2 == null) {
+let roomList = []
 
-            document.getElementById("board").appendChild(roomtabview(element.code, element.player1))
-        }else{
+async function roomload() {
 
-            document.getElementById("board").appendChild(roomtab(element.code, element.player1, element.player2))
-        }
-
+    const room = await fetch('/getroom')
+    const roomlist = await room.json()
+    roomList = []
+    roomList = roomlist.datares
+    document.getElementById('board').innerHTML = ""
+    roomlist.datares.forEach(element => {
+        document.getElementById("board").appendChild(roomtabview(element))
     });
-
-
 }
 
-function roomtabview(code, player1) {
+setInterval(() => {
+    roomload()
+}, 5000)
+
+
+function roomtabview(room) {
+    let player = ''
+    if (room.playerB == null && room.playerW == null) {
+        player = "No one play"
+    }
+    if (room.playerB != null && room.playerW == null) {
+        player = `${room.playerBName} as Black`
+    }
+    if (room.playerB == null && room.playerW != null) {
+        player = `${room.playerWName} as white`
+    }
+    if (room.playerB != null && room.playerW != null) {
+        player = `${room.playerWName} VS ${room.playerBName}`
+    }
     const text = `
                     <div class="room-code">
-                        <p class="code">Room code: ${code}</p>
                     </div>
-                    <div class="player-info">
-                        <p class="player">${player1} vs     </p>
+                    <div class="info">
+                        <p class="player">${player}</p>
                     </div>
-                    <button class="join-butt" type="button" onclick="window.location = '/Game?code=${code}'">join</button>
+                    <button class="join-butt" type="button" value="${room.code}" onclick="joingame(this.value)">Enter</button>
     `
     const tag = document.createElement("div");
     tag.classList.add("room")
@@ -82,21 +49,56 @@ function roomtabview(code, player1) {
     return tag
 }
 
-function roomtab(code, player1, player2) {
-    const text = `
-                    <div class="room-code">
-                        <p class="code">Room code: ${code}</p>
-                    </div>
-                    <div class="player-info">
-                        <p class="player">${player1} vs ${player2}</p>
-                    </div>
-                    <button class="join-butt" type="button" onclick="window.location = '/Game?code=${code}'">view</button>
-    `
-    const tag = document.createElement("div");
-    tag.classList.add("room")
-    tag.innerHTML = text
-    return tag
+
+
+function joingame(code) {
+    const currentGame = localStorage.getItem('currentGame')
+    const currentGameJSON = JSON.parse(currentGame)
+    roomList.forEach(element => {
+        if (element.code == code) {
+            if (currentGame != null && currentGameJSON.code == code) { return window.location = '/Game' }
+            const userdata = {
+                code: code,
+                role: "viewer"
+            }
+            localStorage.setItem('currentGame', JSON.stringify(userdata))
+            window.location = '/Game'
+        }
+    });
+    console.log("dint have this room"); // <------
 }
+
+
+
+
+
+async function createRoom() {
+    const user = JSON.parse(localStorage.getItem('user'))
+    const data = {
+        user: user
+    }
+    const res = await fetch("/createRoom", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+    const resdata = await res.json()
+    const userdata = {
+        code: resdata.roomcode,
+        role: "viewer"
+    }
+    localStorage.setItem('currentGame', JSON.stringify(userdata))
+    window.location = `/Game`
+    if (res.status == 500) {
+        alert('server down')
+    }
+
+
+
+}
+
 
 
 

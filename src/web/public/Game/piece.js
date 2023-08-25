@@ -1,10 +1,45 @@
+
 export class pieces {
-    constructor(name, pos, team, board) {
+    constructor(name, pos, team, isKing, board, timeInMine) {
         this.name = name
         this.pos = pos
         this.board = board
         this.team = team
-        this.setPiece()
+        this.isKing = isKing
+        this.timeInMine = timeInMine
+        this.currentTimeInMine = 0
+        if(pos == null){
+            this.inInvt = true
+        }else{
+            this.inInvt = false
+            this.setPiece()
+        }
+    }
+    countCurrentTimeInMine(){
+        this.currentTimeInMine -= 1
+    }
+    setCurrentTimeInMine(){
+        this.currentTimeInMine = this.timeInMine
+    }
+    setpos(newpos){
+        this.pos = newpos
+    }
+    setInInvt(newvalue){
+        this.inInvt = newvalue
+    }
+    dropPieceAble(board){
+        let temp = []
+        if(this.team == "B"){
+            temp = ['00', '01', '02', '03', '04', '05', '06', '07','10', '11', '12', '13', '14', '15', '16', '17']
+        }else if(this.team == "W"){
+            temp = ['70', '71', '72', '73', '74', '75', '76', '77','60', '61', '62', '63', '64', '65', '66', '67']
+        }
+        temp.forEach((element,index) => {
+            if(board[element[0]][element[1]] != null){
+                temp.splice(index,1)
+            }
+        });
+        return temp
     }
     tranSlateToId() {
         var temp = ""
@@ -80,52 +115,87 @@ export class pieces {
     unset() {
         this.board[this.pos[0]][this.pos[1]] = null
         var id = this.tranSlateToId()
-        var box = document.querySelector(`#${id}`)
-        box.innerHTML = ""
+        var box = document.querySelectorAll(`#${id}`)
+        box.forEach(element => {
+            element.innerHTML = ""
+        });
     }
-}
 
-export class king extends pieces {
-    
-    setPiece() {
-        this.board[this.pos[0]][this.pos[1]] = this
-        var id = this.tranSlateToId()
-        var box = document.querySelector(`#${id}`)
-        box.innerHTML = `<div class="boxpiece kingWhite">&#9812;</div>`
-    }
-    
-    moveAblepos(board) {
-        const result = []
-        const filterResult = []
-        const row = parseInt(this.pos[1])
-        const col = parseInt(this.pos[0])
-        if (col + 1 < 8) { result.push(`${col + 1}${row}`) };
-        if (col - 1 > -1) { result.push(`${col - 1}${row}`) };
-        if (row + 1 < 8) { result.push(`${col}${row + 1}`) };
-        if (row - 1 > -1) { result.push(`${col}${row - 1}`) };
-        if (col + 1 < 8 && row + 1 < 8) { result.push(`${col + 1}${row + 1}`) };
-        if (col + 1 < 8 && row - 1 > -1) { result.push(`${col + 1}${row - 1}`) };
-        if (col - 1 > -1 && row + 1 < 8) { result.push(`${col - 1}${row + 1}`) };
-        if (col - 1 > -1 && row - 1 > -1) { result.push(`${col - 1}${row - 1}`) };
-
-        for (let index = 0; index < result.length; index++) {
-            const element = result[index];
-            if (board[element[0]][element[1]] != null && board[element[0]][element[1]].team == this.team) {continue}
-            filterResult.push(element)
+    recur_top(list, row, col, board) {
+        if (col - 1 > -1) {
+            if (board[col - 1][row] != null && board[col - 1][row].team == this.team) { return }
+            if (board[col - 1][row] != null && board[col - 1][row].team != this.team) { return list.push(`${col - 1}${row}`) }
+            list.push(`${col - 1}${row}`)
+            this.recur_top(list, row, col - 1, board)
         }
-
-        return filterResult
+        return
+    }
+    recur_buttom(list, row, col, board) {
+        if (col + 1 < 8) {
+            if (board[col + 1][row] != null && board[col + 1][row].team == this.team) { return }
+            if (board[col + 1][row] != null && board[col + 1][row].team != this.team) { return list.push(`${col + 1}${row}`) }
+            list.push(`${col + 1}${row}`)
+            this.recur_buttom(list, row, col + 1, board)
+        }
+        return
     }
 
-
-}
-export class queen extends pieces {
-
-    setPiece() {
-        this.board[this.pos[0]][this.pos[1]] = this
-        var id = this.tranSlateToId()
-        var box = document.querySelector(`#${id}`)
-        box.innerHTML = `<div class="boxpiece queenWhite">&#9813;</div>`
+    recur_right(list, row, col, board) {
+        if (row + 1 < 8) {
+            if (board[col][row + 1] != null && board[col][row + 1].team == this.team) { return }
+            if (board[col][row + 1] != null && board[col][row + 1].team != this.team) { return list.push(`${col}${row + 1}`) }
+            list.push(`${col}${row + 1}`)
+            this.recur_right(list, row + 1, col, board)
+        }
+        return
     }
+    recur_left(list, row, col, board) {
+        if (row - 1 > -1) {
+            if (board[col][row - 1] != null && board[col][row - 1].team == this.team) { return }
+            if (board[col][row - 1] != null && board[col][row - 1].team != this.team) { return list.push(`${col}${row - 1}`) }
+            list.push(`${col}${row - 1}`)
+            this.recur_left(list, row - 1, col, board)
+        }
+        return
+    }
+    recur_bottom_right(list, row, col, board) {
+        if (col + 1 < 8 && row + 1 < 8) {
+            if (board[col + 1][row + 1] != null && board[col + 1][row + 1].team == this.team) { return }
+            if (board[col + 1][row + 1] != null && board[col + 1][row + 1].team != this.team) { return list.push(`${col + 1}${row + 1}`) }
+            list.push(`${col + 1}${row + 1}`)
+            this.recur_bottom_right(list, row + 1, col + 1, board)
+        }
+        return
+    }
+    recur_bottom_left(list, row, col, board) {
+        if (col + 1 < 8 && row - 1 > -1) {
+            if (board[col + 1][row - 1] != null && board[col + 1][row - 1].team == this.team) { return }
+            if (board[col + 1][row - 1] != null && board[col + 1][row - 1].team != this.team) { return list.push(`${col + 1}${row - 1}`) }
+            list.push(`${col + 1}${row - 1}`)
+            this.recur_bottom_left(list, row - 1, col + 1, board)
+        }
+        return
+    }
+    recur_top_right(list, row, col, board) {
+        if (col - 1 > -1 && row + 1 < 8) {
+            if (board[col - 1][row + 1] != null && board[col - 1][row + 1].team == this.team) { return }
+            if (board[col - 1][row + 1] != null && board[col - 1][row + 1].team != this.team) { return list.push(`${col - 1}${row + 1}`) }
+            list.push(`${col - 1}${row + 1}`)
+            this.recur_top_right(list, row + 1, col - 1, board)
+        }
+        return
+    }
+    recur_top_left(list, row, col, board) {
+        if (col - 1 > -1 && row - 1 > -1) {
+            if (board[col - 1][row - 1] != null && board[col - 1][row - 1].team == this.team) { return }
+            if (board[col - 1][row - 1] != null && board[col - 1][row - 1].team != this.team) { return list.push(`${col - 1}${row - 1}`) }
+            list.push(`${col - 1}${row - 1}`)
+            this.recur_top_left(list, row - 1, col - 1, board)
+        }
+        return
+    }
+
 }
+
+
 
