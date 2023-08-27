@@ -7,11 +7,10 @@ import { tranSlateToId } from "./board.js";
 import { drop } from "./board.js";
 import { clearAllHightLight } from "./board.js";
 import { myturn } from "./board.js";
-import { mineList, mineListPush } from "./board.js";
-import { minelimt } from "./board.js";
 import { dropMineEmit } from "./socket.js";
 
-import { mineDropAble, chaangeMineDropAble } from "./board.js";
+import { mineobj } from "./board.js";
+
 export function waitingForPlayer() {
     // document.querySelector("#waiting-pop").style.display = 'block'
     // setTimeout(() => {
@@ -67,7 +66,7 @@ export function boardSetupUi(arg, currentGame, info) {
     if (arg.role != 'viewer') {
         document.querySelector("#invt").style.display = "block"
         const join_con = document.querySelector(".join-butt-con")
-        join_con.style.display = 'none'
+        join_con.style.display = 'none' 
         const inhand = document.querySelector(".inhand")
         inhand.style.display = 'none'
         if (arg.role == "B") {
@@ -83,6 +82,8 @@ export function boardSetupUi(arg, currentGame, info) {
         }
     } else if (arg.role == 'viewer') {
         document.querySelector("#invt").style.display = "none"
+        document.querySelector("#action").style.display = "none"
+        document.querySelector("#inhand").style.display = "flex"
         if (info.playerB != null) { document.querySelector('#join_black').style.display = 'none' }
         if (info.playerW != null) { document.querySelector('#join_white').style.display = 'none' }
     }
@@ -120,7 +121,7 @@ export function invt() {
             hightLightDrop(invtList[this.id], this.id)
             removeAllEvent()
             temp()
-            if (mineList.length >= minelimt) {
+            if (mineobj.mineList.length >= mineobj.minelimit) {
                 return
             }
             hightLightMine(invtList[this.id], this.id)
@@ -147,7 +148,7 @@ export function mineSetUp() {
     const mine = document.querySelector("#mine")
     mine.style.display = "flex"
     mine.innerHTML = ''
-    mineList.forEach((element, index) => {
+    mineobj.mineList.forEach((element, index) => {
         var doc = null
         if (element.team == currentGame.role) {
             doc = new DOMParser().parseFromString(element.html(), "text/xml").documentElement
@@ -168,7 +169,7 @@ export function hightLightMine(piece, id) {
                 clearAllHightLight()
                 return
             }
-            if (!mineDropAble) {
+            if (!mineobj.mineDropAble) {
                 clearAllHightLight()
                 return
             }
@@ -176,10 +177,10 @@ export function hightLightMine(piece, id) {
             removeInvtList(id)
             clearAllHightLight()
             piece.setCurrentTimeInMine()
-            mineListPush(piece)
+            mineobj.mineListPush(piece)
             mineSetUp()
-            chaangeMineDropAble(false)
-            dropMineEmit(piece, board, mineList)
+            mineobj.changeMineDropAble(false)
+            dropMineEmit(piece, board, mineobj.mineList)
         })
     })
 

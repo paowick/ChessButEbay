@@ -76,6 +76,8 @@ services:
     networks:
       - backend
       - dbNetwork
+    depends_on:
+      - db
 
    
 # =================================  Database  =======================================

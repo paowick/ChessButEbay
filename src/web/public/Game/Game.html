@@ -19,6 +19,7 @@
     <script type="module" src="../Game/bishop.js"></script>
     <script type="module" src="../Game/knight.js"></script>
     <script type="module" src="../Game/rook.js"></script>
+    <script type="module" src="../Game/mine.js"></script>
 </head>
 
 <body>
@@ -36,10 +37,6 @@
     </div>
     <main>
         <div class="left-con">
-            <div class="join-butt-con" id="join-butt-con">
-                <button id="join_black" class="join_butt">join black</button>
-                <button id="join_white" class="join_butt">join white</button>
-            </div>
             <div class="log-con" id="log-con">
                 <div class="log" id="log">
                     <div class="round" id="round"></div>
@@ -47,7 +44,7 @@
                 </div>
             </div>
             <div class="mine-con" id="mine-con">
-                <div class="mine" id="mine" style="display: none;"></div>
+                <div class="mine" id="mine"></div>
             </div>
         </div>
         <div class="container-fuckin-all" id="board-white">
@@ -419,7 +416,16 @@
             </div> -->
         </div>
         <div class="right-con">
-            <div id="inhand" class="inhand"></div>
+            <div id="inhand" class="inhand">
+                <div class="invt-B" id="invt-B"></div>
+                <div class="action-view" id="action-view">
+                    <div class="time-action" id="time-action"></div>
+                    <div class="ac-piece" id="ac-piece"></div>
+                    <div class="cur-hand" id="curhand"></div>
+                    <div class="cur-pi" id="cur-pi"></div>
+                </div>
+                <div class="invt-W" id="invt-W"></div>
+            </div>
             <div class="action" id="action">
                 <div class="time-action" id="time-action"></div>
                 <div class="ac-piece" id="ac-piece"></div>
@@ -436,6 +442,11 @@
 <div class="invt-con" id="invt-con">
     <div class="invt" id="invt"></div>
     <!-- <button type="submit" id="auctiontest">auction</button> -->
+</div>
+
+<div class="join-butt-con" id="join-butt-con">
+    <button id="join_black" class="join_butt">join black</button>
+    <button id="join_white" class="join_butt">join white</button>
 </div>
 
 
