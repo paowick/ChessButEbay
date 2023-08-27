@@ -5,23 +5,98 @@ body {
     background-attachment: fixed;
 }
 
-.top {
-    margin: 0 auto;
-    margin-bottom: 7px;
+.viewer-r {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-aroun;
+    gap: 20px;
     align-items: center;
-    height: 55px;
-    width: 640px;
+    flex-direction: row;
 }
 
-.top>div {
+.viewer-r>div {
     width: 178px;
     height: 35px;
     background-color: #ffffff;
     border-radius: 25px;
     border: 1px solid black;
 }
+
+.top {
+    margin: 0 auto;
+    margin-bottom: 7px;
+    margin-top: 10px;
+    height: 55px;
+    width: 640px;
+}
+
+.player {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+}
+
+.player>div {
+    width: 178px;
+    height: 35px;
+    background-color: #ffffff;
+    border-radius: 25px;
+    border: 1px solid black;
+}
+
+.view-top {
+    display: flex;
+    justify-content: flex-end;
+    gap: 20px;
+    align-items: center;
+    flex-direction: row;
+}
+
+.view-buttom {
+    margin-top: 10px;
+    display: flex;
+    justify-content: flex-start;
+    gap: 20px;
+    align-items: center;
+    flex-direction: row;
+}
+
+.black-team {
+    margin-bottom: 10px;
+    display: inline-flex;
+    width: 237px;
+    height: 57px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    background: #404040;
+}
+
+.white-team {
+    display: inline-flex;
+    width: 237px;
+    height: 57px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    background: #fff;
+}
+
+.white-team>h1 {
+    color: black;
+}
+
+.coin-black,
+.coin-white {
+    width: 178px;
+    height: 35px;
+    flex-shrink: 0;
+    border-radius: 20px;
+    border: 1px solid #171717;
+    background: #FFF;
+}
+
+
 
 .boxwhite {
     display: flex;
@@ -68,6 +143,7 @@ body {
 main {
     display: flex;
     width: 100%;
+    justify-content: center;
 }
 
 .fake-board {
@@ -106,12 +182,15 @@ main {
 }
 
 .left-con {
+    width: 375px;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: 33%;
-    padding-right: 47px;
-    /* background-color: aqua; */
+    padding-right: 20px;
+}
+
+.left-con>.viewer-r {
+    margin-bottom: 30px;
 }
 
 .container-fuckin-all {
@@ -126,10 +205,27 @@ main {
     flex-direction: column;
     justify-content: center;
     padding-left: 47px;
-    gap: 30px;
 }
 
-.action {
+.inhand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: end;
+    height: 835px;
+    gap: 20px;
+}
+
+
+.invt-view {
+    margin: 0 auto;
+    background-color: #A19C9C;
+    width: 517px;
+    height: 169px;
+    border: 15px solid #252525;
+}
+
+.auction {
     display: flex;
     flex-direction: column;
     justify-content: start;
@@ -141,6 +237,18 @@ main {
     padding-top: 30px;
 }
 
+
+
+.auction-view {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    width: 326px;
+    height: 441px;
+    background-color: #404040;
+}
+
 .ac-piece {
     width: 178px;
     height: 178px;
@@ -149,7 +257,8 @@ main {
     background-color: #fff;
 }
 
-.cur-pi {
+.cur-pi,
+.cur-hand {
     width: 273px;
     height: 48px;
     border-radius: 20px;
@@ -159,9 +268,9 @@ main {
 
 .log-con {
     display: flex;
-    justify-content: end;
+    justify-content: center;
     align-items: center;
-    height: 50%;
+    height: 334px;
 }
 
 .log {
@@ -192,9 +301,9 @@ main {
 
 .mine-con {
     display: flex;
-    justify-content: end;
+    justify-content: center;
     align-items: center;
-    height: 50%;
+    height: 334px;
 }
 
 .mine {
@@ -237,12 +346,7 @@ main {
     background-color: gray;
 }
 
-.inhand {
-    display: flex;
-    width: 30%;
-    height: auto;
-    background-color: #252525;
-}
+
 
 
 .join-butt-con {

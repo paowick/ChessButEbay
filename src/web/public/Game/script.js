@@ -69,6 +69,10 @@ export function boardSetupUi(arg, currentGame, info) {
         join_con.style.display = 'none' 
         const inhand = document.querySelector(".inhand")
         inhand.style.display = 'none'
+        document.querySelector("#player").style.display = "flex"
+        document.querySelectorAll("#viewer").forEach(element => {
+            element.style.display = "none"
+        })
         if (arg.role == "B") {
             const board_white = document.querySelector('#board-white')
             board_white.style.display = "none"
@@ -84,6 +88,10 @@ export function boardSetupUi(arg, currentGame, info) {
         document.querySelector("#invt").style.display = "none"
         document.querySelector("#action").style.display = "none"
         document.querySelector("#inhand").style.display = "flex"
+        document.querySelector("#player").style.display = "none"
+        document.querySelectorAll("#viewer").forEach(element => {
+            element.style.display = "flex"
+        })
         if (info.playerB != null) { document.querySelector('#join_black').style.display = 'none' }
         if (info.playerW != null) { document.querySelector('#join_white').style.display = 'none' }
     }
