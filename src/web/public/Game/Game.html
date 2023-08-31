@@ -19,6 +19,7 @@
     <script type="module" src="../Game/bishop.js"></script>
     <script type="module" src="../Game/knight.js"></script>
     <script type="module" src="../Game/rook.js"></script>
+    <script type="module" src="../Game/mine.js"></script>
 </head>
 
 <body>
@@ -29,20 +30,41 @@
             $("#nav-ph").load("../../assets/component/navbar/navbar.html")
         })
     </script>
-    <div class="room-code" id="room-code"></div>
     <main>
         <div class="left-con">
-            <div class="join-butt-con" id="join-butt-con">
-                <button id="join_black" class="join_butt">join black</button>
-                <button id="join_white" class="join_butt">join white</button>
+            <div class="viewer viewer-r" id="viewer">
+                    <div class="turn" id="turn"></div>
+                    <div class="time" id="time"></div>
+            </div>   
+            <div class="log-con" id="log-con">
+                <div class="log" id="log">
+                    <div class="round" id="round"></div>
+                    <div class="log-box" id="log-box"></div>
+                </div>
             </div>
-            <div class="log-con" id="log-con"></div>
             <div class="mine-con" id="mine-con">
-                <div class="mine" id="mine" style="display: none;"></div>
+                <div class="mine" id="mine"></div>
             </div>
         </div>
+
+
         <div class="container-fuckin-all" id="board-white">
-            <div class="row-text">
+
+            <div class="top" id="top">
+                <div class="player" id="player">
+                    <div class="coin" id="coin"></div>
+                    <div class="turn" id="turn"></div>
+                    <div class="time" id="time"></div>
+
+                </div>
+                <div class="viewer view-top" id="viewer">
+                    <div class="black-team" id="black-team">
+                        <h1>Black</h1>
+                    </div>
+                    <div class="coin-black" id="coin-black"></div>
+                </div>
+            </div>
+            <!-- <div class="row-text">
                 <div class="per-text-row">
                     <h2>a</h2>
                 </div>
@@ -67,9 +89,9 @@
                 <div class="per-text-row">
                     <h2>h</h2>
                 </div>
-            </div>
+            </div> -->
             <div class="container-col-text">
-                <div class="collumn-text">
+                <!-- <div class="collumn-text">
                     <div class="per-text-col">
                         <h2>8</h2>
                     </div>
@@ -94,7 +116,7 @@
                     <div class="per-text-col">
                         <h2>1</h2>
                     </div>
-                </div>
+                </div> -->
                 <div class="fake-board">
                     <div class="board-con">
                         <div id="a8" class="boxwhite box"></div>
@@ -170,7 +192,7 @@
                         <div id="h1" class="boxwhite box"></div>
                     </div>
                 </div>
-                <div class="collumn-text">
+                <!-- <div class="collumn-text">
                     <div class="per-text-col">
                         <h2>8</h2>
                     </div>
@@ -195,9 +217,9 @@
                     <div class="per-text-col">
                         <h2>1</h2>
                     </div>
-                </div>
+                </div> -->
             </div>
-            <div class="row-text">
+            <!-- <div class="row-text">
                 <div class="per-text-row">
                     <h2>a</h2>
                 </div>
@@ -221,12 +243,28 @@
                 </div>
                 <div class="per-text-row">
                     <h2>h</h2>
+                </div>
+            </div> -->
+
+            <div class="viewer view-buttom" id="viewer">
+                <div class="coin-white" id="coin-white"></div>
+                <div class="white-team" id="white-team">
+                    <h1>White</h1>
                 </div>
             </div>
         </div>
 
         <div class="container-fuckin-all" id="board-black" style="display: none;">
-            <div class="row-text">
+
+            <div class="top" id="top">
+                <div class="player" id="player">
+                    <div class="coin" id="coin"></div>
+                    <div class="turn" id="turn"></div>
+                    <div class="time" id="time"></div>
+                </div>
+                <div class="viewer" id="viewer"></div>
+            </div>
+            <!-- <div class="row-text">
                 <div class="per-text-row">
                     <h2>a</h2>
                 </div>
@@ -251,9 +289,9 @@
                 <div class="per-text-row">
                     <h2>h</h2>
                 </div>
-            </div>
+            </div> -->
             <div class="container-col-text">
-                <div class="collumn-text">
+                <!-- <div class="collumn-text">
                     <div class="per-text-col">
                         <h2>1</h2>
                     </div>
@@ -278,7 +316,7 @@
                     <div class="per-text-col">
                         <h2>8</h2>
                     </div>
-                </div>
+                </div> -->
                 <div class="fake-board">
                     <div class="board-con">
                         <div id="a1" class="boxblack box"></div>
@@ -355,7 +393,7 @@
 
                     </div>
                 </div>
-                <div class="collumn-text">
+                <!-- <div class="collumn-text">
                     <div class="per-text-col">
                         <h2>1</h2>
                     </div>
@@ -380,9 +418,9 @@
                     <div class="per-text-col">
                         <h2>8</h2>
                     </div>
-                </div>
+                </div> -->
             </div>
-            <div class="row-text">
+            <!-- <div class="row-text">
                 <div class="per-text-row">
                     <h2>a</h2>
                 </div>
@@ -407,10 +445,28 @@
                 <div class="per-text-row">
                     <h2>h</h2>
                 </div>
-            </div>
+            </div> -->
         </div>
+
         <div class="right-con">
-            <div id="inhand" class="inhand"></div>
+            <div id="inhand" class="inhand">
+                <div class="invt-view" id="invt-B"></div>
+                <div class="auction-view" id="action-view">
+                    <div class="time-action" id="time-action"></div>
+                    <div class="ac-piece" id="ac-piece"></div>
+                    <div class="cur-hand" id="curhand"></div>
+                    <div class="cur-pi" id="cur-pi"></div>
+                </div>
+                <div class="invt-view" id="invt-W"></div>
+            </div>
+            <div class="auction" id="action">
+                <div class="time-action" id="time-action"></div>
+                <div class="ac-piece" id="ac-piece"></div>
+                <div class="cur-pi" id="cur-pi"></div>
+                <input type="text" placeholder="Enter a bid">
+                <button type="button">Accept</button>
+
+            </div>
         </div>
     </main>
 
@@ -420,6 +476,12 @@
     <div class="invt" id="invt"></div>
     <!-- <button type="submit" id="auctiontest">auction</button> -->
 </div>
+
+<div class="join-butt-con" id="join-butt-con">
+    <button id="join_black" class="join_butt">join black</button>
+    <button id="join_white" class="join_butt">join white</button>
+</div>
+
 
 
 <div id="prom-pop" class="prom-pop" style="display: none;">

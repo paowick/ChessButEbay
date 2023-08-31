@@ -8,16 +8,18 @@ import { queen } from './queen.js';
 import { bishop } from './bishop.js';
 import { knight } from './knight.js';
 import { rook } from './rook.js';
-import { boardSetupUi, codePart, invt } from './script.js';
+import { boardSetupUi, invt } from './script.js';
 import { dropEmit } from './socket.js';
 import { mineSetUp } from './script.js';
 import { drop_mine_server } from './socket.js';
-import { mineUpdate, } from './socket.js';
+import { mine } from './mine.js';
 
-export var mineDropAble = true
 export var invtList = []
-export var mineList = []
-export var minelimt = 3
+var mineList = []
+var minelimt = 3
+
+export const mineobj = new mine(mineList, minelimt, 1000)  
+
 export var board = [
     [null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null, null],
@@ -40,28 +42,12 @@ export let myturn = false
 
 export function changeMyTurn(data) {
     if (data == true) {
-        chaangeMineDropAble(true)
+        mineobj.changeMineDropAble(true)
     }
     myturn = data
 }
-export function chaangeMineDropAble(data) {
-    mineDropAble = data
-}
 
-export function mineListCount() {
-    mineList.forEach(element => {
-        element.countCurrentTimeInMine()
-        console.log(`${element.name} ${element.team} ${element.currentTimeInMine}`)
-    });
-    mineList.forEach(element => {
-        if (element.currentTimeInMine <= 0) {
-            mineListPop(element)
-            invtPush(element)
-        }
-    }),
 
-        mineUpdate(mineList)
-}
 run()
 export async function run() {
     socket.on('board', async (arg) => {
@@ -117,7 +103,6 @@ export async function run() {
         }
 
         boardSetupUi(arg, currentGame, info)
-        codePart(info.code)
         if (arg.turn === arg.role) {
             myturn = true
         } else {
@@ -259,20 +244,7 @@ document.querySelectorAll('.box')
 
     })
 
-export function mineListPush(obj) {
-    mineList.push(obj)
-    mineSetUp()
-}
 
-export function mineListPop(obj) {
-    const index = mineList.indexOf(obj)
-    mineList.splice(index, 1)
-    if (invtList.length === 0) {
-        invtList = []
-    }
-    mineSetUp()
-    // decrease coin
-}
 
 export function invtPush(obj) {
     const currentGame = JSON.parse(localStorage.getItem("currentGame"))
@@ -334,6 +306,7 @@ export async function moveClient(source, destination, promoted) {
     source = null
     localStorage.setItem("board", stringify(board))
     changeMyTurn(false)
+    clearAllHightLight()
 }
 export function moveClient_Server(source, destination, promoted) {
     const oldpos = tranSlateTopos(source)
@@ -354,6 +327,7 @@ export function moveClient_Server(source, destination, promoted) {
         source = null
         changeMyTurn(true)
     }
+    clearAllHightLight()
 }
 
 
