@@ -1,35 +1,60 @@
 import { pieces } from "./piece.js";
 export class queen extends pieces {
 
-    html(){
+    html() {
         if (this.team == "B") {
-            return `<div class="boxpiece queenBlack">&#9819;</div>`
-        }else if(this.team == "W") {
-            return `<div class="boxpiece queenWhite">&#9813;</div>` 
+            const newDiv = document.createElement("div");
+            const newimg = document.createElement("img");
+            newDiv.classList.add("boxpiece");
+            newDiv.classList.add("queenBlack");
+            newimg.src = "../assets/component/svg/queen-black.svg"
+            newDiv.appendChild(newimg)
+            return newDiv
+        } else if (this.team == "W") {
+            const newDiv = document.createElement("div");
+            const newimg = document.createElement("img");
+            newDiv.classList.add("boxpiece");
+            newDiv.classList.add("queenWhite");
+            newimg.src = "../assets/component/svg/queen-white.svg"
+            newDiv.appendChild(newimg)
+            return newDiv
         }
     }
     setPiece() {
         if (this.team == "B") {
-            if(this.board[this.pos[0]][this.pos[1]] != null &&this.board[this.pos[0]][this.pos[1]].name == "king"){
+            if (this.board[this.pos[0]][this.pos[1]] != null && this.board[this.pos[0]][this.pos[1]].name == "king") {
                 win("B")
             }
             this.board[this.pos[0]][this.pos[1]] = this
             var id = this.tranSlateToId()
             var box = document.querySelectorAll(`#${id}`)
+            const newDiv = document.createElement("div");
+            const newimg = document.createElement("img");
+            newDiv.classList.add("boxpiece");
+            newDiv.classList.add("queenBlack");
+            newimg.src = "../assets/component/svg/queen-black.svg"
+            newDiv.appendChild(newimg)
             box.forEach(element => {
-                element.innerHTML = `<div class="boxpiece queenBlack">&#9819;</div>`
+                element.appendChild(newDiv)
             });
         }
         if (this.team == "W") {
-            if(this.board[this.pos[0]][this.pos[1]] != null && this.board[this.pos[0]][this.pos[1]].name == "king"){
+            if (this.board[this.pos[0]][this.pos[1]] != null && this.board[this.pos[0]][this.pos[1]].name == "king") {
                 win("W")
             }
             this.board[this.pos[0]][this.pos[1]] = this
             var id = this.tranSlateToId()
             var box = document.querySelectorAll(`#${id}`)
+            const newDiv = document.createElement("div");
+            const newimg = document.createElement("img");
+            newDiv.classList.add("boxpiece");
+            newDiv.classList.add("queenWhite");
+            newimg.src = "../assets/component/svg/queen-white.svg"
+            newDiv.appendChild(newimg)
             box.forEach(element => {
-                element.innerHTML = `<div class="boxpiece queenWhite">&#9813;</div>`
+                element.appendChild(newDiv)
             });
+
         }
     }
     moveAblepos(board) {

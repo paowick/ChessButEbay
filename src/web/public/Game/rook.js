@@ -2,9 +2,21 @@ import { pieces } from "./piece.js";
 export class rook extends pieces {
     html(){
         if (this.team == "B") {
-            return `<div class="boxpiece rookBlack">&#9820;</div>`
+            const newDiv = document.createElement("div");
+            const newimg = document.createElement("img");
+            newDiv.classList.add("boxpiece");
+            newDiv.classList.add("rookBlack");
+            newimg.src = "../assets/component/svg/rook-black.svg"
+            newDiv.appendChild(newimg)
+            return newDiv
         }else if(this.team == "W") {
-            return `<div class="boxpiece rookWhite">&#9814;</div>`
+            const newDiv = document.createElement("div");
+            const newimg = document.createElement("img");
+            newDiv.classList.add("boxpiece");
+            newDiv.classList.add("rookWhite");
+            newimg.src = "../assets/component/svg/rook-white.svg"
+            newDiv.appendChild(newimg)
+            return newDiv
         }
     }
     setPiece() {
@@ -15,8 +27,15 @@ export class rook extends pieces {
             this.board[this.pos[0]][this.pos[1]] = this
             var id = this.tranSlateToId()
             var box = document.querySelectorAll(`#${id}`)
+
+            const newDiv = document.createElement("div");
+            const newimg = document.createElement("img");
+            newDiv.classList.add("boxpiece");
+            newDiv.classList.add("rookBlack");
+            newimg.src = "../assets/component/svg/rook-black.svg"
+            newDiv.appendChild(newimg)
             box.forEach(element => {
-                element.innerHTML = `<div class="boxpiece rookBlack">&#9820;</div>`
+                element.appendChild(newDiv)
             });
         }
         if (this.team == "W") {
@@ -26,8 +45,14 @@ export class rook extends pieces {
             this.board[this.pos[0]][this.pos[1]] = this
             var id = this.tranSlateToId()
             var box = document.querySelectorAll(`#${id}`)
+            const newDiv = document.createElement("div");
+            const newimg = document.createElement("img");
+            newDiv.classList.add("boxpiece");
+            newDiv.classList.add("rookWhite");
+            newimg.src = "../assets/component/svg/rook-white.svg"
+            newDiv.appendChild(newimg)
             box.forEach(element => {
-                element.innerHTML = `<div class="boxpiece rookWhite">&#9814;</div>`
+                element.appendChild(newDiv)
             });
         }
     }

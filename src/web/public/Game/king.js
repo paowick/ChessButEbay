@@ -16,9 +16,21 @@ export class king extends pieces {
     }
     html() {
         if (this.team == "B") {
-            return `<div class="boxpiece kingBlack">&#9818;</div>`
+            const newDiv = document.createElement("div");
+            const newimg = document.createElement("img");
+            newDiv.classList.add("boxpiece");
+            newDiv.classList.add("kingBlack");
+            newimg.src = "../assets/component/svg/king-black.svg"
+            newDiv.appendChild(newimg)
+            return newDiv
         } else if (this.team == "W") {
-            return `<div class="boxpiece kingWhite">&#9812;</div>`
+            const newDiv = document.createElement("div");
+            const newimg = document.createElement("img");
+            newDiv.classList.add("boxpiece");
+            newDiv.classList.add("kingWhite");
+            newimg.src = "../assets/component/svg/king-white.svg"
+            newDiv.appendChild(newimg)
+            return newDiv
         }
     }
     setPiece() {
@@ -32,18 +44,30 @@ export class king extends pieces {
             this.board[this.pos[0]][this.pos[1]] = this
             var id = this.tranSlateToId()
             var box = document.querySelectorAll(`#${id}`)
+            const newDiv = document.createElement("div");
+            const newimg = document.createElement("img");
+            newDiv.classList.add("boxpiece");
+            newDiv.classList.add("kingBlack");
+            newimg.src = "../assets/component/svg/king-black.svg"
+            newDiv.appendChild(newimg)
             box.forEach(element => {
-                element.innerHTML = `<div class="boxpiece kingBlack">&#9818;</div>`
+                element.appendChild(newDiv)
             });
         }
         if (this.team == "W") {
             this.board[this.pos[0]][this.pos[1]] = this
             var id = this.tranSlateToId()
             var box = document.querySelectorAll(`#${id}`)
+            const newDiv = document.createElement("div");
+            const newimg = document.createElement("img");
+            newDiv.classList.add("boxpiece");
+            newDiv.classList.add("kingWhite");
+            newimg.src = "../assets/component/svg/king-white.svg"
+            newDiv.appendChild(newimg)
             box.forEach(element => {
-                element.innerHTML = `<div class="boxpiece kingWhite">&#9812;</div>`
-
+                element.appendChild(newDiv)
             });
+
         }
     }
     moveAblepos(board) {

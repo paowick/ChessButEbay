@@ -104,7 +104,7 @@ export function boardSetUpNoStart() {
     }
 export function boardSetupUi(arg, currentGame, info) {
     if (arg.role != 'viewer') {
-        document.querySelector("#invt").style.display = "block"
+        document.querySelector("#invt").style.display = "flex"
         const join_con = document.querySelector(".join-butt-con")
         join_con.style.display = 'none'
         const inhand = document.querySelector(".inhand")
@@ -150,10 +150,11 @@ export function boardSetupUi(arg, currentGame, info) {
 export let posListTemp = null
 export function invt() {
     const invt = document.querySelector("#invt")
-    invt.style.display = "block"
+    invt.style.display = "flex"
     invt.innerHTML = ''
     invtList.forEach((element, index) => {
-        var doc = new DOMParser().parseFromString(element.html(), "text/xml").documentElement
+        var doc = element.html()
+        console.log(doc);
         doc.setAttribute('id', index)
         doc.classList.add('invt-box')
         invt.appendChild(doc)
@@ -199,11 +200,10 @@ export function mineSetUp() {
     mineobj.mineList.forEach((element, index) => {
         var doc = null
         if (element.team == currentGame.role) {
-            doc = new DOMParser().parseFromString(element.html(), "text/xml").documentElement
+            doc = element.html()
         } else {
             doc = new DOMParser().parseFromString(`<div class="blind"></div>`, "text/xml").documentElement
         }
-        console.log(doc);
         doc.setAttribute('id', index)
         doc.classList.add('mine-box')
         mine.appendChild(doc)

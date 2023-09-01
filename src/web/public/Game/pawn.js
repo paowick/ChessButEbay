@@ -18,9 +18,21 @@ export class pawn extends pieces {
     };
     html(){
         if (this.team == "B") {
-            return `<div class="boxpiece rookBlack">&#9823;</div>` 
+            const newDiv = document.createElement("div");
+            const newimg = document.createElement("img");
+            newDiv.classList.add("boxpiece");
+            newDiv.classList.add("pawnBlack");
+            newimg.src = "../assets/component/svg/pawn-black.svg"
+            newDiv.appendChild(newimg)
+            return newDiv
         }else if(this.team == "W") {
-            return `<div class="boxpiece rookWhite">&#9817;</div>`
+            const newDiv = document.createElement("div");
+            const newimg = document.createElement("img");
+            newDiv.classList.add("boxpiece");
+            newDiv.classList.add("pawnWhite");
+            newimg.src = "../assets/component/svg/pawn-white.svg"
+            newDiv.appendChild(newimg)
+            return newDiv
         }
     }
     setPiece() {
@@ -31,9 +43,15 @@ export class pawn extends pieces {
             this.board[this.pos[0]][this.pos[1]] = this
             var id = this.tranSlateToId()
             var box = document.querySelectorAll(`#${id}`)
-            box.forEach(element => {
-                element.innerHTML = `<div class="boxpiece rookBlack">&#9823;</div>`
 
+            const newDiv = document.createElement("div");
+            const newimg = document.createElement("img");
+            newDiv.classList.add("boxpiece");
+            newDiv.classList.add("pawnBlack");
+            newimg.src = "../assets/component/svg/pawn-black.svg"
+            newDiv.appendChild(newimg)
+            box.forEach(element => {
+                element.appendChild(newDiv)
             });
         }
         if (this.team == "W") {
@@ -43,9 +61,14 @@ export class pawn extends pieces {
             this.board[this.pos[0]][this.pos[1]] = this
             var id = this.tranSlateToId()
             var box = document.querySelectorAll(`#${id}`)
+            const newDiv = document.createElement("div");
+            const newimg = document.createElement("img");
+            newDiv.classList.add("boxpiece");
+            newDiv.classList.add("pawnWhite");
+            newimg.src = "../assets/component/svg/pawn-white.svg"
+            newDiv.appendChild(newimg)
             box.forEach(element => {
-                element.innerHTML = `<div class="boxpiece rookWhite">&#9817;</div>`
-
+                element.appendChild(newDiv)
             });
         }
     }

@@ -425,6 +425,10 @@ main {
 
 .invt {
     margin: 0 auto;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+    align-items: center;
     margin-bottom: 10px;
     background-color: #A19C9C;
     width: 640px;
@@ -434,7 +438,7 @@ main {
 
 .invt>div {
     margin: 0px 10px;
-    background-color: #ffffff;
+    background-color: #A19C9C;
     width: 80px;
     height: 80px;
     font-size: 60px;

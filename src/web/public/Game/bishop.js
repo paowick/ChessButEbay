@@ -1,10 +1,22 @@
 import { pieces } from "./piece.js";
 export class bishop extends pieces {
     html(){
-        if (this.team == "B") {
-            return `<div class="boxpiece bishopBlack">&#9821;</div>`
+        if (this.team == "B") { 
+                       const newDiv = document.createElement("div");
+            const newimg = document.createElement("img");
+            newDiv.classList.add("boxpiece");
+            newDiv.classList.add("bishopBlack");
+            newimg.src = "../assets/component/svg/bishop-black.svg"
+            newDiv.appendChild(newimg)
+            return newDiv
         }else if(this.team == "W") {
-            return `<div class="boxpiece bishopWhite">&#9815;</div>`
+            const newDiv = document.createElement("div");
+            const newimg = document.createElement("img");
+            newDiv.classList.add("boxpiece");
+            newDiv.classList.add("bishopWhite");
+            newimg.src = "../assets/component/svg/bishop-white.svg"
+            newDiv.appendChild(newimg)
+            return newDiv
         }
     }
     setPiece() {
@@ -15,8 +27,14 @@ export class bishop extends pieces {
             this.board[this.pos[0]][this.pos[1]] = this
             var id = this.tranSlateToId()
             var box = document.querySelectorAll(`#${id}`)
+            const newDiv = document.createElement("div");
+            const newimg = document.createElement("img");
+            newDiv.classList.add("boxpiece");
+            newDiv.classList.add("bishopBlack");
+            newimg.src = "../assets/component/svg/bishop-black.svg"
+            newDiv.appendChild(newimg)
             box.forEach(element => {
-                element.innerHTML = `<div class="boxpiece bishopBlack">&#9821;</div>`
+                element.appendChild(newDiv)
             });
         }
         if (this.team == "W") {
@@ -26,8 +44,14 @@ export class bishop extends pieces {
             this.board[this.pos[0]][this.pos[1]] = this
             var id = this.tranSlateToId()
             var box = document.querySelectorAll(`#${id}`)
+            const newDiv = document.createElement("div");
+            const newimg = document.createElement("img");
+            newDiv.classList.add("boxpiece");
+            newDiv.classList.add("bishopWhite");
+            newimg.src = "../assets/component/svg/bishop-white.svg"
+            newDiv.appendChild(newimg)
             box.forEach(element => {
-                element.innerHTML = `<div class="boxpiece bishopWhite">&#9815;</div>`
+                element.appendChild(newDiv)
             });
         }
     }
