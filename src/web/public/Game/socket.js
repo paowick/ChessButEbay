@@ -21,7 +21,6 @@ import('./board.js').then(({ socket }) => {
     })
     
     socket.on('join_server', async (arg) => {
-        console.log(arg);
         const info = JSON.parse(arg.board)
         updateJoinPop(info.playerB, info.playerW, info.playerBName, info.playerWName)
     })

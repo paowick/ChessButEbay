@@ -44,13 +44,13 @@ export class king extends pieces {
             this.board[this.pos[0]][this.pos[1]] = this
             var id = this.tranSlateToId()
             var box = document.querySelectorAll(`#${id}`)
-            const newDiv = document.createElement("div");
-            const newimg = document.createElement("img");
-            newDiv.classList.add("boxpiece");
-            newDiv.classList.add("kingBlack");
-            newimg.src = "../assets/component/svg/king-black.svg"
-            newDiv.appendChild(newimg)
             box.forEach(element => {
+                const newDiv = document.createElement("div");
+                const newimg = document.createElement("img");
+                newDiv.classList.add("boxpiece");
+                newDiv.classList.add("kingBlack");
+                newimg.src = "../assets/component/svg/king-black.svg"
+                newDiv.appendChild(newimg)
                 element.appendChild(newDiv)
             });
         }
@@ -58,13 +58,13 @@ export class king extends pieces {
             this.board[this.pos[0]][this.pos[1]] = this
             var id = this.tranSlateToId()
             var box = document.querySelectorAll(`#${id}`)
-            const newDiv = document.createElement("div");
-            const newimg = document.createElement("img");
-            newDiv.classList.add("boxpiece");
-            newDiv.classList.add("kingWhite");
-            newimg.src = "../assets/component/svg/king-white.svg"
-            newDiv.appendChild(newimg)
             box.forEach(element => {
+                const newDiv = document.createElement("div");
+                const newimg = document.createElement("img");
+                newDiv.classList.add("boxpiece");
+                newDiv.classList.add("kingWhite");
+                newimg.src = "../assets/component/svg/king-white.svg"
+                newDiv.appendChild(newimg)
                 element.appendChild(newDiv)
             });
 

@@ -71,53 +71,62 @@ export async function run() {
         } else {
             invtList = []
         }
-        for (let index = 0; index < info.board.length; index++) {
-            const elements = info.board[index];
-            for (let index = 0; index < elements.length; index++) {
-                const element = elements[index];
-                if (element == null) { continue }
-                if (element.name == 'king') {
-                    new king("king", element.pos, element.team, true, board, 3)
-                    continue
-                }
-                if (element.name == 'queen') {
-                    new queen("queen", element.pos, element.team, false, board, 3)
-                    continue
-                }
-                if (element.name == 'bishop') {
-                    new bishop("bishop", element.pos, element.team, false, board, 3)
-                    continue
-                }
-                if (element.name == 'rook') {
-                    new rook("rook", element.pos, element.team, false, board, 3)
-                    continue
-                }
-                if (element.name == 'knight') {
-                    new knight("knight", element.pos, element.team, false, board, 3)
-                    continue
-                }
-                if (element.name == 'pawn') {
-                    new pawn("pawn", element.pos, element.team, false, board, 3, true)
-                    continue
-                }
+        chessBoardSetUp(info)
+        uiSetUpControll(info,arg,currentGame)
+    })
+}
+
+
+
+export function uiSetUpControll(info,arg,currentGame){
+    if(!info.gameStart){
+        boardSetUpNoStart()
+        updateJoinPop(info.playerB,info.playerW,info.playerBName,info.playerWName)
+        return
+    }
+    boardSetupUi(arg, currentGame, info)
+    if (arg.turn === arg.role) {
+        myturn = true
+    } else {
+        myturn = false
+    }
+}
+
+export function chessBoardSetUp(info) {
+    for (let index = 0; index < info.board.length; index++) {
+        const elements = info.board[index];
+        for (let index = 0; index < elements.length; index++) {
+            const element = elements[index];
+            if (element == null) { continue }
+            if (element.name == 'king') {
+                new king("king", element.pos, element.team, true, board, 3)
+                continue
+            }
+            if (element.name == 'queen') {
+                new queen("queen", element.pos, element.team, false, board, 3)
+                continue
+            }
+            if (element.name == 'bishop') {
+                new bishop("bishop", element.pos, element.team, false, board, 3)
+                continue
+            }
+            if (element.name == 'rook') {
+                new rook("rook", element.pos, element.team, false, board, 3)
+                continue
+            }
+            if (element.name == 'knight') {
+                new knight("knight", element.pos, element.team, false, board, 3)
+                continue
+            }
+            if (element.name == 'pawn') {
+                new pawn("pawn", element.pos, element.team, false, board, 3, true)
+                continue
             }
         }
-
-        if(!info.gameStart){
-            boardSetUpNoStart()
-            updateJoinPop(info.playerB,info.playerW,info.playerBName,info.playerWName)
-            return
-        }
-
-        boardSetupUi(arg, currentGame, info)
-        if (arg.turn === arg.role) {
-            myturn = true
-        } else {
-            myturn = false
-        }
-    })
-
+    }
+    
 }
+
 
 
 

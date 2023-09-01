@@ -5,7 +5,7 @@ import { rook } from "./rook.js"
 import { knight } from "./knight.js"
 import { win } from "./socket.js"
 export class pawn extends pieces {
-    constructor(name, pos, team, isKing, board, timeInMine,firstmove) {
+    constructor(name, pos, team, isKing, board, timeInMine, firstmove) {
         super(name, pos, team, isKing, board, timeInMine)
         this.firstmove = firstmove
         if (team == 'W') {
@@ -16,7 +16,7 @@ export class pawn extends pieces {
 
 
     };
-    html(){
+    html() {
         if (this.team == "B") {
             const newDiv = document.createElement("div");
             const newimg = document.createElement("img");
@@ -25,7 +25,7 @@ export class pawn extends pieces {
             newimg.src = "../assets/component/svg/pawn-black.svg"
             newDiv.appendChild(newimg)
             return newDiv
-        }else if(this.team == "W") {
+        } else if (this.team == "W") {
             const newDiv = document.createElement("div");
             const newimg = document.createElement("img");
             newDiv.classList.add("boxpiece");
@@ -37,37 +37,36 @@ export class pawn extends pieces {
     }
     setPiece() {
         if (this.team == "B") {
-            if(this.board[this.pos[0]][this.pos[1]] != null &&this.board[this.pos[0]][this.pos[1]].name == "king"){
+            if (this.board[this.pos[0]][this.pos[1]] != null && this.board[this.pos[0]][this.pos[1]].name == "king") {
                 win("B")
             }
             this.board[this.pos[0]][this.pos[1]] = this
             var id = this.tranSlateToId()
             var box = document.querySelectorAll(`#${id}`)
-
-            const newDiv = document.createElement("div");
-            const newimg = document.createElement("img");
-            newDiv.classList.add("boxpiece");
-            newDiv.classList.add("pawnBlack");
-            newimg.src = "../assets/component/svg/pawn-black.svg"
-            newDiv.appendChild(newimg)
             box.forEach(element => {
+                const newDiv = document.createElement("div");
+                const newimg = document.createElement("img");
+                newDiv.classList.add("boxpiece");
+                newDiv.classList.add("pawnBlack");
+                newimg.src = "../assets/component/svg/pawn-black.svg"
+                newDiv.appendChild(newimg)
                 element.appendChild(newDiv)
             });
         }
         if (this.team == "W") {
-            if(this.board[this.pos[0]][this.pos[1]] != null && this.board[this.pos[0]][this.pos[1]].name == "king"){
+            if (this.board[this.pos[0]][this.pos[1]] != null && this.board[this.pos[0]][this.pos[1]].name == "king") {
                 win("W")
             }
             this.board[this.pos[0]][this.pos[1]] = this
             var id = this.tranSlateToId()
             var box = document.querySelectorAll(`#${id}`)
-            const newDiv = document.createElement("div");
-            const newimg = document.createElement("img");
-            newDiv.classList.add("boxpiece");
-            newDiv.classList.add("pawnWhite");
-            newimg.src = "../assets/component/svg/pawn-white.svg"
-            newDiv.appendChild(newimg)
             box.forEach(element => {
+                const newDiv = document.createElement("div");
+                const newimg = document.createElement("img");
+                newDiv.classList.add("boxpiece");
+                newDiv.classList.add("pawnWhite");
+                newimg.src = "../assets/component/svg/pawn-white.svg"
+                newDiv.appendChild(newimg)
                 element.appendChild(newDiv)
             });
         }
@@ -155,7 +154,7 @@ export class pawn extends pieces {
     async promoted(board, promoted) {
         const currentGame = JSON.parse(localStorage.getItem("currentGame"))
         if (currentGame.role != this.team) { return 0 }
-       
+
         if (this.promotedPos.includes(`${this.pos}`)) {
             if (promoted == 'queen') {
                 this.unset

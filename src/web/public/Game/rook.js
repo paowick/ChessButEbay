@@ -1,6 +1,6 @@
 import { pieces } from "./piece.js";
 export class rook extends pieces {
-    html(){
+    html() {
         if (this.team == "B") {
             const newDiv = document.createElement("div");
             const newimg = document.createElement("img");
@@ -9,7 +9,7 @@ export class rook extends pieces {
             newimg.src = "../assets/component/svg/rook-black.svg"
             newDiv.appendChild(newimg)
             return newDiv
-        }else if(this.team == "W") {
+        } else if (this.team == "W") {
             const newDiv = document.createElement("div");
             const newimg = document.createElement("img");
             newDiv.classList.add("boxpiece");
@@ -21,37 +21,36 @@ export class rook extends pieces {
     }
     setPiece() {
         if (this.team == "B") {
-            if(this.board[this.pos[0]][this.pos[1]] != null &&this.board[this.pos[0]][this.pos[1]].name == "king"){
+            if (this.board[this.pos[0]][this.pos[1]] != null && this.board[this.pos[0]][this.pos[1]].name == "king") {
                 win("B")
             }
             this.board[this.pos[0]][this.pos[1]] = this
             var id = this.tranSlateToId()
             var box = document.querySelectorAll(`#${id}`)
-
-            const newDiv = document.createElement("div");
-            const newimg = document.createElement("img");
-            newDiv.classList.add("boxpiece");
-            newDiv.classList.add("rookBlack");
-            newimg.src = "../assets/component/svg/rook-black.svg"
-            newDiv.appendChild(newimg)
             box.forEach(element => {
+                const newDiv = document.createElement("div");
+                const newimg = document.createElement("img");
+                newDiv.classList.add("boxpiece");
+                newDiv.classList.add("rookBlack");
+                newimg.src = "../assets/component/svg/rook-black.svg"
+                newDiv.appendChild(newimg)
                 element.appendChild(newDiv)
             });
         }
         if (this.team == "W") {
-            if(this.board[this.pos[0]][this.pos[1]] != null && this.board[this.pos[0]][this.pos[1]].name == "king"){
+            if (this.board[this.pos[0]][this.pos[1]] != null && this.board[this.pos[0]][this.pos[1]].name == "king") {
                 win("W")
             }
             this.board[this.pos[0]][this.pos[1]] = this
             var id = this.tranSlateToId()
             var box = document.querySelectorAll(`#${id}`)
-            const newDiv = document.createElement("div");
-            const newimg = document.createElement("img");
-            newDiv.classList.add("boxpiece");
-            newDiv.classList.add("rookWhite");
-            newimg.src = "../assets/component/svg/rook-white.svg"
-            newDiv.appendChild(newimg)
             box.forEach(element => {
+                const newDiv = document.createElement("div");
+                const newimg = document.createElement("img");
+                newDiv.classList.add("boxpiece");
+                newDiv.classList.add("rookWhite");
+                newimg.src = "../assets/component/svg/rook-white.svg"
+                newDiv.appendChild(newimg)
                 element.appendChild(newDiv)
             });
         }

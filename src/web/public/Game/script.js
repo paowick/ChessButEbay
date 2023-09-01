@@ -13,7 +13,8 @@ import { join } from "./socket.js";
 import { mineobj } from "./board.js";
 
 export function updateJoinPop(playerB, playerW, playerBName, playerWName) {
-    console.log(playerB, playerW, playerBName, playerWName);
+    // console.log(playerB, playerW, playerBName, playerWName);
+    document.querySelector("#join-butt-con").style.display = 'flex'
     if (playerB === null  || playerB === undefined) {
         playerBName = 'Black'
     }

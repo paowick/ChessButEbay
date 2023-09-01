@@ -1,15 +1,15 @@
 import { pieces } from "./piece.js";
 export class bishop extends pieces {
-    html(){
-        if (this.team == "B") { 
-                       const newDiv = document.createElement("div");
+    html() {
+        if (this.team == "B") {
+            const newDiv = document.createElement("div");
             const newimg = document.createElement("img");
             newDiv.classList.add("boxpiece");
             newDiv.classList.add("bishopBlack");
             newimg.src = "../assets/component/svg/bishop-black.svg"
             newDiv.appendChild(newimg)
             return newDiv
-        }else if(this.team == "W") {
+        } else if (this.team == "W") {
             const newDiv = document.createElement("div");
             const newimg = document.createElement("img");
             newDiv.classList.add("boxpiece");
@@ -21,36 +21,36 @@ export class bishop extends pieces {
     }
     setPiece() {
         if (this.team == "B") {
-            if(this.board[this.pos[0]][this.pos[1]] != null &&this.board[this.pos[0]][this.pos[1]].name == "king"){
+            if (this.board[this.pos[0]][this.pos[1]] != null && this.board[this.pos[0]][this.pos[1]].name == "king") {
                 win("B")
             }
             this.board[this.pos[0]][this.pos[1]] = this
             var id = this.tranSlateToId()
             var box = document.querySelectorAll(`#${id}`)
-            const newDiv = document.createElement("div");
-            const newimg = document.createElement("img");
-            newDiv.classList.add("boxpiece");
-            newDiv.classList.add("bishopBlack");
-            newimg.src = "../assets/component/svg/bishop-black.svg"
-            newDiv.appendChild(newimg)
             box.forEach(element => {
+                const newDiv = document.createElement("div");
+                const newimg = document.createElement("img");
+                newDiv.classList.add("boxpiece");
+                newDiv.classList.add("bishopBlack");
+                newimg.src = "../assets/component/svg/bishop-black.svg"
+                newDiv.appendChild(newimg)
                 element.appendChild(newDiv)
             });
         }
         if (this.team == "W") {
-            if(this.board[this.pos[0]][this.pos[1]] != null && this.board[this.pos[0]][this.pos[1]].name == "king"){
+            if (this.board[this.pos[0]][this.pos[1]] != null && this.board[this.pos[0]][this.pos[1]].name == "king") {
                 win("W")
             }
             this.board[this.pos[0]][this.pos[1]] = this
             var id = this.tranSlateToId()
             var box = document.querySelectorAll(`#${id}`)
-            const newDiv = document.createElement("div");
-            const newimg = document.createElement("img");
-            newDiv.classList.add("boxpiece");
-            newDiv.classList.add("bishopWhite");
-            newimg.src = "../assets/component/svg/bishop-white.svg"
-            newDiv.appendChild(newimg)
             box.forEach(element => {
+                const newDiv = document.createElement("div");
+                const newimg = document.createElement("img");
+                newDiv.classList.add("boxpiece");
+                newDiv.classList.add("bishopWhite");
+                newimg.src = "../assets/component/svg/bishop-white.svg"
+                newDiv.appendChild(newimg)
                 element.appendChild(newDiv)
             });
         }
