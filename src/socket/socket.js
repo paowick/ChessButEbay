@@ -60,6 +60,7 @@ io.sockets.on("connection", async (socket) => {
             })
             if (boardRedis.playerB != null && boardRedis.playerW != null) {
                 boardRedis.turn = 'W'
+                boardRedis.gameStart = true
                 redisClient.set(socket.request._query.code, stringify(boardRedis), {
                     NX: false
                 })
@@ -204,11 +205,12 @@ async function storedata(arg, socket) {
         room.playerWName = null
         room.playerW = null
     }
-    if (arg.data.role == 'B') {
+
+    if (arg.data.role == 'B' && room.playerB == null) {
         room.playerB = socket.request._query.id
         room.playerBName = arg.username
     }
-    if (arg.data.role == 'W') {
+    if (arg.data.role == 'W' && room.playerW == null) {
         room.playerW = socket.request._query.id
         room.playerWName = arg.username
     }
