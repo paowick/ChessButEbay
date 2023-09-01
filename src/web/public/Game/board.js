@@ -1,7 +1,7 @@
 import { move } from './socket.js';
 import { io } from "https://cdn.socket.io/4.3.2/socket.io.esm.min.js";
 import { join } from './socket.js';
-import { waitingForPlayer, askPlayer } from './script.js';
+import { waitingForPlayer, askPlayer, updateJoinPop } from './script.js';
 import { king } from './king.js';
 import { pawn } from './pawn.js';
 import { queen } from './queen.js';
@@ -9,6 +9,7 @@ import { bishop } from './bishop.js';
 import { knight } from './knight.js';
 import { rook } from './rook.js';
 import { boardSetupUi, invt } from './script.js';
+import { boardSetUpNoStart } from './script.js';
 import { dropEmit } from './socket.js';
 import { mineSetUp } from './script.js';
 import { drop_mine_server } from './socket.js';
@@ -102,6 +103,12 @@ export async function run() {
             }
         }
 
+        if(!info.gameStart){
+            boardSetUpNoStart()
+            updateJoinPop(info.playerB,info.playerW,info.playerBName,info.playerWName)
+            return
+        }
+
         boardSetupUi(arg, currentGame, info)
         if (arg.turn === arg.role) {
             myturn = true
@@ -134,16 +141,11 @@ export function clearAllHightLight() {
     })
 }
 
+
+
+
 document.querySelector('#join_black')
     .addEventListener('click', () => {
-        const join_con = document.querySelector(".join-butt-con")
-        join_con.style.display = 'none'
-        const inhand = document.querySelector(".inhand")
-        inhand.style.display = 'none'
-        const board_white = document.querySelector('#board-white')
-        board_white.style.display = "none"
-        const board_black = document.querySelector('#board-black')
-        board_black.style.display = 'flex'
         const data = {
             code: currentGame.code,
             role: "B"
@@ -151,19 +153,9 @@ document.querySelector('#join_black')
         myturn = false
         localStorage.setItem('currentGame', JSON.stringify(data))
         join(data, user.name)
-        invt()
-        mineSetUp()
     })
 document.querySelector('#join_white')
     .addEventListener('click', () => {
-        const join_con = document.querySelector(".join-butt-con")
-        join_con.style.display = 'none'
-        const inhand = document.querySelector(".inhand")
-        inhand.style.display = 'none'
-        const board_white = document.querySelector('#board-white')
-        board_white.style.display = "flex"
-        const board_black = document.querySelector('#board-black')
-        board_black.style.display = 'none'
         const data = {
             code: currentGame.code,
             role: "W"
@@ -171,9 +163,12 @@ document.querySelector('#join_white')
         myturn = false
         localStorage.setItem('currentGame', JSON.stringify(data))
         join(data, user.name)
-        invt()
-        mineSetUp()
     })
+
+
+
+
+
 var source = null
 var destination = null
 document.querySelectorAll('.box')

@@ -8,8 +8,39 @@ import { drop } from "./board.js";
 import { clearAllHightLight } from "./board.js";
 import { myturn } from "./board.js";
 import { dropMineEmit } from "./socket.js";
+import { join } from "./socket.js";
 
 import { mineobj } from "./board.js";
+
+export function updateJoinPop(playerB, playerW, playerBName, playerWName) {
+    console.log(playerB, playerW, playerBName, playerWName);
+    if (playerB === null  || playerB === undefined) {
+        playerBName = 'Black'
+    }
+    if (playerW === null || playerW === undefined) {
+        playerWName = 'White'
+    }
+    document.querySelector("#join_black").innerHTML = `<h1>${playerBName}</h1>`
+    document.querySelector("#join_white").innerHTML = `<h1>${playerWName}</h1>`
+}
+
+export function startGame(role) {
+
+    document.querySelector(".join-butt-con").style.display = 'none'
+    document.querySelector(".inhand").style.display = 'none'
+
+    if (role == "W") {
+        document.querySelector('#board-white').style.display = "flex"
+        document.querySelector('#board-black').style.display = 'none'
+    }
+    if (role == "B") {
+        document.querySelector('#board-white').style.display = "none"
+        document.querySelector('#board-black').style.display = 'flex'
+    }
+
+    invt()
+    mineSetUp()
+}
 
 export function waitingForPlayer() {
     // document.querySelector("#waiting-pop").style.display = 'block'
@@ -62,11 +93,20 @@ export function winPop(arg) {
     })
 }
 
+export function boardSetUpNoStart() {
+        document.querySelector("#invt").style.display = "none"
+        document.querySelector("#action").style.display = "none"
+        document.querySelector("#inhand").style.display = "flex"
+        document.querySelector("#player").style.display = "none"
+        document.querySelectorAll("#viewer").forEach(element => {
+            element.style.display = "flex"
+        })
+    }
 export function boardSetupUi(arg, currentGame, info) {
     if (arg.role != 'viewer') {
         document.querySelector("#invt").style.display = "block"
         const join_con = document.querySelector(".join-butt-con")
-        join_con.style.display = 'none' 
+        join_con.style.display = 'none'
         const inhand = document.querySelector(".inhand")
         inhand.style.display = 'none'
         document.querySelector("#player").style.display = "flex"

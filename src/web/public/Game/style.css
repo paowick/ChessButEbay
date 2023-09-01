@@ -350,10 +350,28 @@ main {
 
 
 .join-butt-con {
+    position: fixed;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    gap: 50%;
+    justify-content: end;
+    align-items: center;
+    gap: 10px;
+    width: 400px;
+    height: 400px;
+    background-color: #404040;
+    top: 25%;
+    left: 40%;
+    padding: 20px;
+}
+
+.join-bar{
+    height: 20px;
+}
+
+.join_butt {
+    width: 90%;
+    height: 50%;
+    background: #A19C9C;
 }
 
 .prom-pop {
