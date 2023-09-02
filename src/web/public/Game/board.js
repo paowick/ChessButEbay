@@ -1,7 +1,7 @@
 import { move } from './socket.js';
 import { io } from "https://cdn.socket.io/4.3.2/socket.io.esm.min.js";
 import { join } from './socket.js';
-import { waitingForPlayer, askPlayer } from './script.js';
+import { waitingForPlayer, askPlayer, updateJoinPop } from './script.js';
 import { king } from './king.js';
 import { pawn } from './pawn.js';
 import { queen } from './queen.js';
@@ -9,6 +9,7 @@ import { bishop } from './bishop.js';
 import { knight } from './knight.js';
 import { rook } from './rook.js';
 import { boardSetupUi, invt } from './script.js';
+import { boardSetUpNoStart } from './script.js';
 import { dropEmit } from './socket.js';
 import { mineSetUp } from './script.js';
 import { drop_mine_server } from './socket.js';
@@ -70,47 +71,62 @@ export async function run() {
         } else {
             invtList = []
         }
-        for (let index = 0; index < info.board.length; index++) {
-            const elements = info.board[index];
-            for (let index = 0; index < elements.length; index++) {
-                const element = elements[index];
-                if (element == null) { continue }
-                if (element.name == 'king') {
-                    new king("king", element.pos, element.team, true, board, 3)
-                    continue
-                }
-                if (element.name == 'queen') {
-                    new queen("queen", element.pos, element.team, false, board, 3)
-                    continue
-                }
-                if (element.name == 'bishop') {
-                    new bishop("bishop", element.pos, element.team, false, board, 3)
-                    continue
-                }
-                if (element.name == 'rook') {
-                    new rook("rook", element.pos, element.team, false, board, 3)
-                    continue
-                }
-                if (element.name == 'knight') {
-                    new knight("knight", element.pos, element.team, false, board, 3)
-                    continue
-                }
-                if (element.name == 'pawn') {
-                    new pawn("pawn", element.pos, element.team, false, board, 3, true)
-                    continue
-                }
+        chessBoardSetUp(info)
+        uiSetUpControll(info,arg,currentGame)
+    })
+}
+
+
+
+export function uiSetUpControll(info,arg,currentGame){
+    if(!info.gameStart){
+        boardSetUpNoStart()
+        updateJoinPop(info.playerB,info.playerW,info.playerBName,info.playerWName)
+        return
+    }
+    boardSetupUi(arg, currentGame, info)
+    if (arg.turn === arg.role) {
+        myturn = true
+    } else {
+        myturn = false
+    }
+}
+
+export function chessBoardSetUp(info) {
+    for (let index = 0; index < info.board.length; index++) {
+        const elements = info.board[index];
+        for (let index = 0; index < elements.length; index++) {
+            const element = elements[index];
+            if (element == null) { continue }
+            if (element.name == 'king') {
+                new king("king", element.pos, element.team, true, board, 3)
+                continue
+            }
+            if (element.name == 'queen') {
+                new queen("queen", element.pos, element.team, false, board, 3)
+                continue
+            }
+            if (element.name == 'bishop') {
+                new bishop("bishop", element.pos, element.team, false, board, 3)
+                continue
+            }
+            if (element.name == 'rook') {
+                new rook("rook", element.pos, element.team, false, board, 3)
+                continue
+            }
+            if (element.name == 'knight') {
+                new knight("knight", element.pos, element.team, false, board, 3)
+                continue
+            }
+            if (element.name == 'pawn') {
+                new pawn("pawn", element.pos, element.team, false, board, 3, true)
+                continue
             }
         }
-
-        boardSetupUi(arg, currentGame, info)
-        if (arg.turn === arg.role) {
-            myturn = true
-        } else {
-            myturn = false
-        }
-    })
-
+    }
+    
 }
+
 
 
 
@@ -134,16 +150,11 @@ export function clearAllHightLight() {
     })
 }
 
+
+
+
 document.querySelector('#join_black')
     .addEventListener('click', () => {
-        const join_con = document.querySelector(".join-butt-con")
-        join_con.style.display = 'none'
-        const inhand = document.querySelector(".inhand")
-        inhand.style.display = 'none'
-        const board_white = document.querySelector('#board-white')
-        board_white.style.display = "none"
-        const board_black = document.querySelector('#board-black')
-        board_black.style.display = 'flex'
         const data = {
             code: currentGame.code,
             role: "B"
@@ -151,19 +162,9 @@ document.querySelector('#join_black')
         myturn = false
         localStorage.setItem('currentGame', JSON.stringify(data))
         join(data, user.name)
-        invt()
-        mineSetUp()
     })
 document.querySelector('#join_white')
     .addEventListener('click', () => {
-        const join_con = document.querySelector(".join-butt-con")
-        join_con.style.display = 'none'
-        const inhand = document.querySelector(".inhand")
-        inhand.style.display = 'none'
-        const board_white = document.querySelector('#board-white')
-        board_white.style.display = "flex"
-        const board_black = document.querySelector('#board-black')
-        board_black.style.display = 'none'
         const data = {
             code: currentGame.code,
             role: "W"
@@ -171,9 +172,12 @@ document.querySelector('#join_white')
         myturn = false
         localStorage.setItem('currentGame', JSON.stringify(data))
         join(data, user.name)
-        invt()
-        mineSetUp()
     })
+
+
+
+
+
 var source = null
 var destination = null
 document.querySelectorAll('.box')

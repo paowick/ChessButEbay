@@ -1,34 +1,57 @@
 import { pieces } from "./piece.js";
 export class knight extends pieces {
-    html(){
+    html() {
         if (this.team == "B") {
-            return `<div class="boxpiece rookBlack">&#9822;</div>`
-        }else if(this.team == "W") {
-            return `<div class="boxpiece rookWhite">&#9816;</div>`
+            const newDiv = document.createElement("div");
+            const newimg = document.createElement("img");
+            newDiv.classList.add("boxpiece");
+            newDiv.classList.add("knightBlack");
+            newimg.src = "../assets/component/svg/knight-black.svg"
+            newDiv.appendChild(newimg)
+            return newDiv
+        } else if (this.team == "W") {
+            const newDiv = document.createElement("div");
+            const newimg = document.createElement("img");
+            newDiv.classList.add("boxpiece");
+            newDiv.classList.add("knightWhite");
+            newimg.src = "../assets/component/svg/knight-white.svg"
+            newDiv.appendChild(newimg)
+            return newDiv
         }
     }
     setPiece() {
         if (this.team == "B") {
-            if(this.board[this.pos[0]][this.pos[1]] != null &&this.board[this.pos[0]][this.pos[1]].name == "king"){
+            if (this.board[this.pos[0]][this.pos[1]] != null && this.board[this.pos[0]][this.pos[1]].name == "king") {
                 win("B")
             }
             this.board[this.pos[0]][this.pos[1]] = this
             var id = this.tranSlateToId()
             var box = document.querySelectorAll(`#${id}`)
             box.forEach(element => {
-                element.innerHTML = `<div class="boxpiece rookBlack">&#9822;</div>`
+                const newDiv = document.createElement("div");
+                const newimg = document.createElement("img");
+                newDiv.classList.add("boxpiece");
+                newDiv.classList.add("knightBlack");
+                newimg.src = "../assets/component/svg/knight-black.svg"
+                newDiv.appendChild(newimg)
+                element.appendChild(newDiv)
             });
         }
         if (this.team == "W") {
-            if(this.board[this.pos[0]][this.pos[1]] != null && this.board[this.pos[0]][this.pos[1]].name == "king"){
+            if (this.board[this.pos[0]][this.pos[1]] != null && this.board[this.pos[0]][this.pos[1]].name == "king") {
                 win("W")
             }
             this.board[this.pos[0]][this.pos[1]] = this
             var id = this.tranSlateToId()
             var box = document.querySelectorAll(`#${id}`)
             box.forEach(element => {
-                element.innerHTML = `<div class="boxpiece rookWhite">&#9816;</div>`
-
+                const newDiv = document.createElement("div");
+                const newimg = document.createElement("img");
+                newDiv.classList.add("boxpiece");
+                newDiv.classList.add("knightWhite");
+                newimg.src = "../assets/component/svg/knight-white.svg"
+                newDiv.appendChild(newimg)
+                element.appendChild(newDiv)
             });
         }
     }

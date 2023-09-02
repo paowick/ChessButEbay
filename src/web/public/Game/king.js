@@ -16,24 +16,42 @@ export class king extends pieces {
     }
     html() {
         if (this.team == "B") {
-            return `<div class="boxpiece kingBlack">&#9818;</div>`
+            const newDiv = document.createElement("div");
+            const newimg = document.createElement("img");
+            newDiv.classList.add("boxpiece");
+            newDiv.classList.add("kingBlack");
+            newimg.src = "../assets/component/svg/king-black.svg"
+            newDiv.appendChild(newimg)
+            return newDiv
         } else if (this.team == "W") {
-            return `<div class="boxpiece kingWhite">&#9812;</div>`
+            const newDiv = document.createElement("div");
+            const newimg = document.createElement("img");
+            newDiv.classList.add("boxpiece");
+            newDiv.classList.add("kingWhite");
+            newimg.src = "../assets/component/svg/king-white.svg"
+            newDiv.appendChild(newimg)
+            return newDiv
         }
     }
     setPiece() {
         if (this.team == "B") {
             if (this.board[this.pos[0]][this.pos[1]] != null && this.board[this.pos[0]][this.pos[1]].name == "king") {
-                win("W")
+                // win("W")
             }
             if (this.board[this.pos[0]][this.pos[1]] != null && this.board[this.pos[0]][this.pos[1]].name == "king") {
-                win("B")
+                // win("B")
             }
             this.board[this.pos[0]][this.pos[1]] = this
             var id = this.tranSlateToId()
             var box = document.querySelectorAll(`#${id}`)
             box.forEach(element => {
-                element.innerHTML = `<div class="boxpiece kingBlack">&#9818;</div>`
+                const newDiv = document.createElement("div");
+                const newimg = document.createElement("img");
+                newDiv.classList.add("boxpiece");
+                newDiv.classList.add("kingBlack");
+                newimg.src = "../assets/component/svg/king-black.svg"
+                newDiv.appendChild(newimg)
+                element.appendChild(newDiv)
             });
         }
         if (this.team == "W") {
@@ -41,9 +59,15 @@ export class king extends pieces {
             var id = this.tranSlateToId()
             var box = document.querySelectorAll(`#${id}`)
             box.forEach(element => {
-                element.innerHTML = `<div class="boxpiece kingWhite">&#9812;</div>`
-
+                const newDiv = document.createElement("div");
+                const newimg = document.createElement("img");
+                newDiv.classList.add("boxpiece");
+                newDiv.classList.add("kingWhite");
+                newimg.src = "../assets/component/svg/king-white.svg"
+                newDiv.appendChild(newimg)
+                element.appendChild(newDiv)
             });
+
         }
     }
     moveAblepos(board) {

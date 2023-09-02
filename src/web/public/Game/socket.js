@@ -9,6 +9,8 @@ import { bishop } from './bishop.js';
 import { knight } from './knight.js';
 import { rook } from './rook.js';
 import { mineobj } from "./board.js";
+import { startGame } from "./script.js";
+import { updateJoinPop } from "./script.js";
 const user = JSON.parse(localStorage.getItem('user'))
 
 
@@ -20,8 +22,7 @@ import('./board.js').then(({ socket }) => {
     
     socket.on('join_server', async (arg) => {
         const info = JSON.parse(arg.board)
-        if (info.playerB != null) { document.querySelector('#join_black').style.display = 'none' }
-        if (info.playerW != null) { document.querySelector('#join_white').style.display = 'none' }
+        updateJoinPop(info.playerB, info.playerW, info.playerBName, info.playerWName)
     })
 
     socket.on('win_server', async (arg) => {
@@ -37,6 +38,7 @@ import('./board.js').then(({ socket }) => {
         } else {
             changeMyTurn(false)
         }
+        startGame(currentGame.role)
     })
 
     socket.on('drop_server', async (arg) => {
@@ -191,7 +193,7 @@ export function dropMineEmit(piece,board,mine) {
 export function join(game, username) {
     let data = {
         data: game,
-        username: username
+        username: username,
     }
     import('./board.js').then(({ socket }) => {
         socket.emit('join', data)

@@ -53,19 +53,18 @@ io.sockets.on("connection", async (socket) => {
 
 
     socket.on('join', async (arg) => {
-        await storedata(arg, socket).then(async () => {
-            const boardRedisJSON = await redisClient.get(socket.request._query.code)
-            const boardRedis = await JSON.parse(boardRedisJSON)
+        await storedata(arg, socket).then(async (boardRedis) => {
 
-            socket.broadcast.to(socket.request._query.code).emit(`join_server`, {
+            io.sockets.to(socket.request._query.code).emit(`join_server`, {
                 board: stringify(boardRedis)
             })
             if (boardRedis.playerB != null && boardRedis.playerW != null) {
                 boardRedis.turn = 'W'
+                boardRedis.gameStart = true
                 redisClient.set(socket.request._query.code, stringify(boardRedis), {
                     NX: false
                 })
-                socket.to(socket.request._query.code).emit(`start`, {
+                io.sockets.to(socket.request._query.code).emit(`start`, {
                     board: stringify(boardRedis)
                 })
             }
@@ -86,6 +85,7 @@ io.sockets.on("connection", async (socket) => {
             playerWName: null,
             invtW: [],
             mine: [],
+            gameStart: false,
             board: board,
             log: null
         }
@@ -98,7 +98,7 @@ io.sockets.on("connection", async (socket) => {
 
 
 
-    
+
     socket.on("win", (arg) => {
         const value = {
             turn: null,
@@ -115,7 +115,7 @@ io.sockets.on("connection", async (socket) => {
         })
         socket.broadcast.to(socket.request._query.code).emit(`win_server`, arg.team)
     })
-    
+
     socket.on("move", (arg) => {
         const data = JSON.parse(arg)
         console.log(`move ${data.source} to ${data.destination}`)
@@ -141,7 +141,7 @@ io.sockets.on("connection", async (socket) => {
         }
         const drop = {
             piece: data.piece,
-            turn:turn
+            turn: turn
         }
         socket.broadcast.to(socket.request._query.code).emit(`drop_server`, drop)
     })
@@ -170,7 +170,7 @@ io.sockets.on("connection", async (socket) => {
 });
 
 
-async function setMineRedis(code,mine) {
+async function setMineRedis(code, mine) {
     const roomJSON = await redisClient.get(code)
     const room = await JSON.parse(roomJSON)
     room.mine = await mine
@@ -197,11 +197,20 @@ async function setBoardRedis(code, board, turn) {
 async function storedata(arg, socket) {
     const roomJSON = await redisClient.get(arg.data.code)
     const room = await JSON.parse(roomJSON)
-    if (arg.data.role == 'B') {
+    if (socket.request._query.id == room.playerB) {
+        room.playerBName = null
+        room.playerB = null
+    }
+    if (socket.request._query.id == room.playerW) {
+        room.playerWName = null
+        room.playerW = null
+    }
+
+    if (arg.data.role == 'B' && room.playerB == null) {
         room.playerB = socket.request._query.id
         room.playerBName = arg.username
     }
-    if (arg.data.role == 'W') {
+    if (arg.data.role == 'W' && room.playerW == null) {
         room.playerW = socket.request._query.id
         room.playerWName = arg.username
     }
@@ -211,6 +220,7 @@ async function storedata(arg, socket) {
     redisClient.set(arg.data.code, stringify(room), {
         NX: false
     })
+    return room
 }
 
 
