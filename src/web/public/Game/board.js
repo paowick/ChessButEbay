@@ -19,7 +19,7 @@ export var invtList = []
 var mineList = []
 var minelimt = 3
 
-export const mineobj = new mine(mineList, minelimt, 1000)  
+export const mineobj = new mine(mineList, minelimt, 1000)
 
 export var board = [
     [null, null, null, null, null, null, null, null],
@@ -48,15 +48,14 @@ export function changeMyTurn(data) {
     myturn = data
 }
 
-
-run()
+// maybe it bug
+window.onload = run()
 export async function run() {
     socket.on('board', async (arg) => {
         invtList.push(new queen("queen", null, arg.role, false, board, 3))
         invtList.push(new rook("rook", null, arg.role, false, board, 3))
         invtList.push(new knight("knight", null, arg.role, false, board, 3))
         const info = await JSON.parse(arg.board)
-
         info.mine.forEach(element => {
             drop_mine_server(element);
         })
@@ -84,7 +83,7 @@ export function uiSetUpControll(info,arg,currentGame){
         updateJoinPop(info.playerB,info.playerW,info.playerBName,info.playerWName)
         return
     }
-    boardSetupUi(arg, currentGame, info)
+    boardSetupUi(currentGame, info)
     if (arg.turn === arg.role) {
         myturn = true
     } else {

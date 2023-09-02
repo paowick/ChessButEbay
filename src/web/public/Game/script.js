@@ -1,4 +1,4 @@
-import { moveClient } from "./board.js";
+import { moveClient, uiSetUpControll } from "./board.js";
 import { invtList } from "./board.js";
 import { removeInvtList } from "./board.js";
 import { bishop } from "./bishop.js";
@@ -12,10 +12,11 @@ import { join } from "./socket.js";
 
 import { mineobj } from "./board.js";
 
+const user = JSON.parse(localStorage.getItem("user"))
 export function updateJoinPop(playerB, playerW, playerBName, playerWName) {
     // console.log(playerB, playerW, playerBName, playerWName);
     document.querySelector("#join-butt-con").style.display = 'flex'
-    if (playerB === null  || playerB === undefined) {
+    if (playerB === null || playerB === undefined) {
         playerBName = 'Black'
     }
     if (playerW === null || playerW === undefined) {
@@ -25,20 +26,8 @@ export function updateJoinPop(playerB, playerW, playerBName, playerWName) {
     document.querySelector("#join_white").innerHTML = `<h1>${playerWName}</h1>`
 }
 
-export function startGame(role) {
-
-    document.querySelector(".join-butt-con").style.display = 'none'
-    document.querySelector(".inhand").style.display = 'none'
-
-    if (role == "W") {
-        document.querySelector('#board-white').style.display = "flex"
-        document.querySelector('#board-black').style.display = 'none'
-    }
-    if (role == "B") {
-        document.querySelector('#board-white').style.display = "none"
-        document.querySelector('#board-black').style.display = 'flex'
-    }
-
+export function startGame(info, arg, currentGame) {
+    uiSetUpControll(info, arg, currentGame)
     invt()
     mineSetUp()
 }
@@ -95,50 +84,50 @@ export function winPop(arg) {
 }
 
 export function boardSetUpNoStart() {
-        document.querySelector("#invt").style.display = "none"
-        document.querySelector("#action").style.display = "none"
-        document.querySelector("#inhand").style.display = "flex"
-        document.querySelector("#player").style.display = "none"
-        document.querySelectorAll("#viewer").forEach(element => {
-            element.style.display = "flex"
-        })
-    }
-export function boardSetupUi(arg, currentGame, info) {
-    if (arg.role != 'viewer') {
+    document.querySelector("#invt").style.display = "none"
+    document.querySelector("#action").style.display = "none"
+    document.querySelector("#inhand").style.display = "flex"
+    document.querySelector("#player").style.display = "none"
+    document.querySelectorAll("#viewer").forEach(element => {
+        element.style.display = "flex"
+    })
+}
+export function boardSetupUi(currentGame, info) {
+    const playerIdList = [parseInt(info.playerB), parseInt(info.playerW)]
+    if (playerIdList.includes(user.id)) {
         document.querySelector("#invt").style.display = "flex"
-        const join_con = document.querySelector(".join-butt-con")
-        join_con.style.display = 'none'
-        const inhand = document.querySelector(".inhand")
-        inhand.style.display = 'none'
+        document.querySelector(".join-butt-con").style.display = 'none'
+        document.querySelector(".inhand").style.display = 'none'
         document.querySelector("#player").style.display = "flex"
+        document.querySelector("#action").style.display = "flex"
         document.querySelectorAll("#viewer").forEach(element => {
             element.style.display = "none"
         })
-        if (arg.role == "B") {
-            const board_white = document.querySelector('#board-white')
-            board_white.style.display = "none"
-            const board_black = document.querySelector('#board-black')
-            board_black.style.display = 'flex'
-        } else {
-            const board_white = document.querySelector('#board-white')
-            board_white.style.display = "flex"
-            const board_black = document.querySelector('#board-black')
-            board_black.style.display = 'none'
+        if (user.id == parseInt(info.playerB)) {
+            document.querySelector('#board-white').style.display = "none"
+            document.querySelector('#board-black').style.display = 'flex'
+            currentGame.role = "B"
         }
-    } else if (arg.role == 'viewer') {
+        if (user.id == parseInt(info.playerW)) {
+            document.querySelector('#board-white').style.display = "flex"
+            document.querySelector('#board-black').style.display = 'none'
+            currentGame.role = "W"
+        }
+    } else {
         document.querySelector("#invt").style.display = "none"
         document.querySelector("#action").style.display = "none"
         document.querySelector("#inhand").style.display = "flex"
         document.querySelector("#player").style.display = "none"
+        document.querySelector("#join-butt-con").style.display = 'none'
+        document.querySelector("#invt-con").style.display = 'none'
         document.querySelectorAll("#viewer").forEach(element => {
             element.style.display = "flex"
         })
-        if (info.playerB != null) { document.querySelector('#join_black').style.display = 'none' }
-        if (info.playerW != null) { document.querySelector('#join_white').style.display = 'none' }
+        currentGame.role = "viewer"
     }
-    currentGame.role = arg.role
     localStorage.setItem('currentGame', JSON.stringify(currentGame))
 }
+
 
 // export function codePart(code) {
 //     const para = document.createElement("h1");

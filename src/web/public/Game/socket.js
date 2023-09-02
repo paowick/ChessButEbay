@@ -38,7 +38,7 @@ import('./board.js').then(({ socket }) => {
         } else {
             changeMyTurn(false)
         }
-        startGame(currentGame.role)
+        startGame(info,arg,currentGame)
     })
 
     socket.on('drop_server', async (arg) => {
