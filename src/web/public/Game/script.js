@@ -189,7 +189,7 @@ export function mineSetUp() {
     mine.innerHTML = ''
     mineobj.mineList.forEach((element, index) => {
         var doc = null
-        if (element.team == currentGame.role) {
+        if (element.team == currentGame.role || currentGame.role == 'viewer') {
             doc = element.html()
         } else {
             doc = new DOMParser().parseFromString(`<div class="blind"></div>`, "text/xml").documentElement
