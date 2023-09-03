@@ -29,7 +29,7 @@ export function setCoin(data) {
 
 export const invtobj = new inventory(invtList)
 export const mineobj = new mine(mineList, minelimt, 1000)
-export const auctionobj = new auction(null, null,null,null)
+export const auctionobj = new auction(null, null, null, null, null)
 
 export var board = [
     [null, null, null, null, null, null, null, null],
@@ -200,7 +200,10 @@ document.querySelectorAll('.box')
                 if (source == null && destination == null) {
                     // console.log(new DOMParser().parseFromString(this.innerHTML, "text/xml").documentElement);
                     // source position ====================================================================
+
+                    if (auctionobj.auctionStage == true) { return }
                     const piece = havePiece(this.id)
+
                     clearAllHightLight()
                     if (piece == null) { return source = null; }
                     source = this.id;
@@ -304,6 +307,8 @@ export async function moveClient(source, destination, promoted) {
     destination = null
     source = null
     localStorage.setItem("board", stringify(board))
+    auctionobj.setAuctionStage(true)
+    console.log(auctionobj.auctionStage);
     changeMyTurn(false)
     clearAllHightLight()
 }
@@ -326,6 +331,8 @@ export function moveClient_Server(source, destination, promoted) {
         source = null
         changeMyTurn(true)
     }
+
+    auctionobj.setAuctionStage(true)
     clearAllHightLight()
 }
 export function clearAllHightLight() {

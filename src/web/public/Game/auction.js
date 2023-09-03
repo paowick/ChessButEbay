@@ -7,11 +7,12 @@ import { knight } from './knight.js';
 import { rook } from './rook.js';
 import { board } from './board.js';
 export class auction {
-    constructor(slot1, slot2,currentBid,currentBidder) {
+    constructor(slot1, slot2,currentBid,currentBidder,auctionStage) {
         this.slot1 = slot1
         this.slot2 = slot2
         this.currentBid = currentBid
         this.currentBidder = currentBidder
+        this.auctionStage = auctionStage
     }
 
     setSlot1(obj) {
@@ -26,12 +27,16 @@ export class auction {
     setCurrentBid(amout) {
         this.currentBid = amout
     }
+    setAuctionStage(stage) {
+        this.auctionStage = stage
+    }
 
     auctionSetUp(info) {
         if (info.auctionslot1 == null) { return }
         if (info.auctionslot2 == null) { return }
         this.slot1 = this.pieceToObj(info.auctionslot1)
         this.slot2 = this.pieceToObj(info.auctionslot2)
+        this.auctionStage = info.auctionStage
         document.querySelectorAll("#ac-piece").forEach(element => {
             element.innerHTML = ""
             element.appendChild(this.slot1.html())

@@ -85,6 +85,7 @@ io.sockets.on("connection", async (socket) => {
             auctionslot2: null,
             currentBid: 0,
             currentBidder: null,
+            auctionStage: true,
             turn: null,
             code: data.room,
             playerB: null,
@@ -112,6 +113,7 @@ io.sockets.on("connection", async (socket) => {
 
     socket.on("win", (arg) => {
         const value = {
+        
             auctionslot1: null,
             auctionslot2: null,
             currentBid: 0,
@@ -137,11 +139,19 @@ io.sockets.on("connection", async (socket) => {
         socket.broadcast.to(socket.request._query.code).emit(`win_server`, arg.team)
     })
 
-    socket.on("move", (arg) => {
+    socket.on("move", async (arg) => {
         const data = JSON.parse(arg)
         console.log(`move ${data.source} to ${data.destination}`)
         setBoardRedis(socket.request._query.code, data.board, data.turn)
         setMineRedis(socket.request._query.code, data.mine)
+        
+
+        const roomJSON = await redisClient.get(socket.request._query.code)
+        const room = await JSON.parse(roomJSON)
+        room.auctionStage = true
+        redisClient.set(socket.request._query.code, stringify(room), {
+            NX: false
+        })
         let move = {
             promoted: data.promoted,
             source: data.source,
@@ -203,7 +213,7 @@ io.sockets.on("connection", async (socket) => {
     })
 
     socket.on("test-auction", async (arg) => {
-        testAuction(socket) 
+        getAuction(socket) 
         
     })
 
@@ -213,7 +223,7 @@ io.sockets.on("connection", async (socket) => {
     })
 });
 
-async function testAuction(socket) {
+async function getAuction(socket) {
     const roomJSON = await redisClient.get(socket.request._query.code)
     const room = await JSON.parse(roomJSON)
     const slotTemp = room.auctionslot1
@@ -222,6 +232,7 @@ async function testAuction(socket) {
     room.auctionslot2 = getRandomChessPiece()
     room.currentBid = 0
     room.currentBidder = null
+    room.auctionStage = false
     const data = {
         id: bidderTemp,
         newPiece: slotTemp,

@@ -19,7 +19,9 @@ import { invtobj } from "./board.js";
 const user = JSON.parse(localStorage.getItem('user'))
 
 document.querySelector("#test").addEventListener("click", () => {
-    socket.emit('test-auction', "test")
+    if(auctionobj.auctionStage){ 
+        socket.emit('test-auction', "test")
+    }
 })
 
 
@@ -37,6 +39,8 @@ import('./board.js').then(({ socket }) => {
             invtUpdate()
             invtobj.invtSetUp()
         }
+        console.log(arg);
+        auctionobj.setAuctionStage(arg.room.auctionStage)
         auctionobj.auctionSetUp(arg.room)
         currentBidUpdate(arg.room)
         coinUpdate_Server(arg.room)
@@ -97,6 +101,7 @@ export function invtUpdate(){
 }
 
 export function bid(amout) {
+    if(auctionobj.auctionStage == false){ return }
     if (amout == "") { return }
     amout = parseInt(amout)
     if (amout == 0) { return }
