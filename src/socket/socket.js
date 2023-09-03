@@ -44,7 +44,6 @@ io.sockets.on("connection", async (socket) => {
         if (socket.request._query.id == boardRedis?.playerB) { socketRole = 'B' }
         else if (socket.request._query.id == boardRedis?.playerW) { socketRole = 'W' }
         else { socketRole = 'viewer' }
-        console.log(socketRole, socket.id, boardRedisJSON);
         io.sockets.to(socket.id).emit("board", {
             boardRedis,
             role: socketRole,
@@ -84,14 +83,18 @@ io.sockets.on("connection", async (socket) => {
         const value = {
             auctionslot1: null,
             auctionslot2: null,
+            currentBid: 0,
+            currentBidder: null,
             turn: null,
             code: data.room,
             playerB: null,
             playerBName: null,
             invtB: [],
+            coinB: 1000,
             playerW: null,
             playerWName: null,
             invtW: [],
+            coinW: 1000,
             mine: [],
             gameStart: false,
             board: board,
@@ -111,14 +114,18 @@ io.sockets.on("connection", async (socket) => {
         const value = {
             auctionslot1: null,
             auctionslot2: null,
+            currentBid: 0,
+            currentBidder: null,
             turn: null,
             code: data.room,
             playerB: null,
             playerBName: null,
             invtB: [],
+            coinB: 1000,
             playerW: null,
             playerWName: null,
             invtW: [],
+            coinW: 1000,
             mine: [],
             gameStart: false,
             board: board,
@@ -173,15 +180,39 @@ io.sockets.on("connection", async (socket) => {
 
     socket.on("mineUpdate", (arg) => {
         const data = JSON.parse(arg);
-        console.log("update");
-        console.log(data);
         setMineRedis(socket.request._query.code, data.mine)
+    })
+
+    socket.on("bid", async (arg) => {
+        bid(arg, socket.request._query.code, socket)
     })
 
     socket.on("disconnect", () => {
         console.log('dis')
     })
 });
+
+async function bid(arg, code, socket) {
+    const roomJSON = await redisClient.get(code)
+    const room = await JSON.parse(roomJSON)
+    if( arg.id == room.playerB){
+        if (arg.amout > room.coinB) { return }
+        room.coinB -= arg.amout
+    }
+    if( arg.id == room.playerW){
+        if (arg.amout > room.coinW) { return }
+        room.coinW -= arg.amout
+    }
+    if (room.currentBidder == arg.id) { return }
+    if (room.currentBid < arg.amout) {
+        room.currentBid = arg.amout
+        room.currentBidder = arg.id
+        redisClient.set(code, stringify(room), {
+            NX: false
+        })
+        io.sockets.to(socket.request._query.code).emit(`bid_server`, stringify(room))
+    }
+}
 
 
 function getRandomChessPiece() {
@@ -210,9 +241,7 @@ function getRandomChessPiece() {
     return 'No piece selected'; // In case something goes wrong
 }
 
-// Example usage:
-const randomChessPiece = getRandomChessPiece();
-console.log('Random Chess Piece:', randomChessPiece);
+// Example 
 
 
 

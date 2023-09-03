@@ -251,8 +251,6 @@ main {
     padding-top: 30px;
 }
 
-
-
 .auction-view {
     display: flex;
     flex-direction: column;
@@ -274,6 +272,19 @@ main {
 .auctionPiece > img{
     width: 178px;
     height: 178px;
+}
+
+.cur-pi{
+    text-align: center;
+}
+.cur-pi > h2{
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    font-weight: 650;
+    color: #171717;
+    text-shadow: 0 0 5px #ffffff;
+    line-height: 48px;
 }
 
 .cur-pi,

@@ -1,4 +1,4 @@
-import { auctionobj, moveClient, uiSetUpControll } from "./board.js";
+import { auctionobj, coin, moveClient, uiSetUpControll } from "./board.js";
 import { board } from "./board.js";
 import { tranSlateToId } from "./board.js";
 import { drop } from "./board.js";
@@ -7,7 +7,7 @@ import { myturn } from "./board.js";
 import { dropMineEmit } from "./socket.js";
 import { mineobj } from "./board.js";
 import { invtobj } from "./board.js";
-
+import { setCoin } from "./board.js";
 
 const user = JSON.parse(localStorage.getItem("user"))
 export function updateJoinPop(playerB, playerW, playerBName, playerWName) {
@@ -25,7 +25,7 @@ export function updateJoinPop(playerB, playerW, playerBName, playerWName) {
 
 export function startGame(info, arg, currentGame) {
     uiSetUpControll(info, arg, currentGame)
-// auction here
+    // auction here
     auctionobj.auctionSetUp(info)
     invtobj.invtSetUp()
     mineSetUp()
@@ -62,6 +62,54 @@ export function askPlayer(source, destination) {
             removeAllEventListeners();
         });
     });
+}
+
+
+
+export function currentBidUpdate(info) {
+    auctionobj.setCurrentBid(info.currentBid)
+    auctionobj.setCurrentBidder(info.currentBidder)
+    const user = JSON.parse(localStorage.getItem('user'))
+    document.querySelectorAll("#cur-pi").forEach(element => {
+        document.querySelectorAll("#ac-piece").forEach(element => {
+            if (user.id == info.currentBidder) {
+                element.style.backgroundColor = 'green'
+            } else if (user.id != info.currentBidder) {
+                element.style.backgroundColor = 'red'
+            }else{
+                element.style.backgroundColor = 'white'
+            }
+        })
+        const doc = document.createElement("h2")
+        if (info.currentBidder == info.playerB) {
+            doc.style.color = 'white'
+            element.style.backgroundColor = 'black'
+        } else if (info.currentBidder == info.playerW) {
+            doc.style.color = 'black'
+            element.style.backgroundColor = 'white'
+        }
+        doc.innerHTML = `${auctionobj.currentBid}`
+        element.innerHTML = ''
+        element.appendChild(doc)
+    })
+}
+export function coinUpdate_Server(info) {
+    if (user.id == info.playerB) {
+        setCoin(info.coinB)
+        coinUpdate(info.coinB)
+    } else if (user.id == info.playerW) {
+        setCoin(info.coinW)
+        coinUpdate(info.coinW)
+    }
+    document.querySelector('#coin-black').innerHTML = `coin : ${info.coinB}`
+    document.querySelector('#coin-white').innerHTML = `coin : ${info.coinW}`
+}
+
+export function coinUpdate(coin) {
+    document.querySelectorAll('#coin').forEach(element => {
+        element.innerHTML = ''
+        element.innerHTML = `coin : ${coin}`
+    })
 }
 
 export function winPop(arg) {

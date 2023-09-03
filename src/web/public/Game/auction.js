@@ -7,9 +7,11 @@ import { knight } from './knight.js';
 import { rook } from './rook.js';
 import { board } from './board.js';
 export class auction {
-    constructor(slot1, slot2) {
+    constructor(slot1, slot2,currentBid,currentBidder) {
         this.slot1 = slot1
         this.slot2 = slot2
+        this.currentBid = currentBid
+        this.currentBidder = currentBidder
     }
 
     setSlot1(obj) {
@@ -17,6 +19,12 @@ export class auction {
     }
     setSlot2(obj) {
         this.slot2 = obj
+    }
+    setCurrentBidder(id) {
+        this.currentBidder = id
+    }
+    setCurrentBid(amout) {
+        this.currentBid = amout
     }
 
     auctionSetUp(info) {

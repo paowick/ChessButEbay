@@ -8,21 +8,28 @@ import { queen } from './queen.js';
 import { bishop } from './bishop.js';
 import { knight } from './knight.js';
 import { rook } from './rook.js';
-import { boardSetupUi} from './script.js';
+import { boardSetupUi } from './script.js';
 import { boardSetUpNoStart } from './script.js';
 import { dropEmit } from './socket.js';
 import { mineSetUp } from './script.js';
 import { mine } from './mine.js';
 import { inventory } from './inventory.js';
 import { auction } from './auction.js';
+import { bid } from './socket.js'
+import { coinUpdate, coinUpdate_Server } from './script.js';
+import { currentBidUpdate } from './script.js';
 
 var invtList = []
 var mineList = []
 var minelimt = 3
+export let coin = 0
+export function setCoin(data) {
+    coin = data
+}
 
 export const invtobj = new inventory(invtList)
 export const mineobj = new mine(mineList, minelimt, 1000)
-export const auctionobj = new auction(null,null)
+export const auctionobj = new auction(null, null,null,null)
 
 export var board = [
     [null, null, null, null, null, null, null, null],
@@ -73,17 +80,18 @@ export async function run() {
         } else {
             // invtobj.invtList = []
         }
+        currentBidUpdate(info)
         auctionobj.auctionSetUp(info)
         chessBoardSetUp(info)
-        uiSetUpControll(info,arg,currentGame)
+        uiSetUpControll(info, arg, currentGame)
     })
 }
 
 
-export function uiSetUpControll(info,arg,currentGame){
-    if(!info.gameStart){
+export function uiSetUpControll(info, arg, currentGame) {
+    if (!info.gameStart) {
         boardSetUpNoStart()
-        updateJoinPop(info.playerB,info.playerW,info.playerBName,info.playerWName)
+        updateJoinPop(info.playerB, info.playerW, info.playerBName, info.playerWName)
         return
     }
     boardSetupUi(currentGame, info)
@@ -92,7 +100,11 @@ export function uiSetUpControll(info,arg,currentGame){
     } else {
         myturn = false
     }
+    coinUpdate_Server(info)
 }
+
+
+
 
 export function chessBoardSetUp(info) {
     for (let index = 0; index < info.board.length; index++) {
@@ -126,7 +138,7 @@ export function chessBoardSetUp(info) {
             }
         }
     }
-    
+
 }
 
 
@@ -148,19 +160,24 @@ export function chessBoardSetUp(info) {
 
 
 
-
+document.querySelector('#bid-butt')
+    .addEventListener('click', () => {
+        const amout = document.querySelector('#bid-input').value
+        bid(amout)
+        document.querySelector('#bid-input').value = ''
+    })
 
 document.querySelector('#join_black')
-.addEventListener('click', () => {
-    const data = {
-        code: currentGame.code,
+    .addEventListener('click', () => {
+        const data = {
+            code: currentGame.code,
             role: "B"
         }
         myturn = false
         localStorage.setItem('currentGame', JSON.stringify(data))
         join(data, user.name)
     })
-    document.querySelector('#join_white')
+document.querySelector('#join_white')
     .addEventListener('click', () => {
         const data = {
             code: currentGame.code,
@@ -170,14 +187,13 @@ document.querySelector('#join_black')
         localStorage.setItem('currentGame', JSON.stringify(data))
         join(data, user.name)
     })
-    
-    
-    
-    
-    
-    var source = null
-    var destination = null
-    document.querySelectorAll('.box')
+
+
+
+
+var source = null
+var destination = null
+document.querySelectorAll('.box')
     .forEach(div => {
         div.addEventListener('click', function () {
             const currentGame = JSON.parse(localStorage.getItem("currentGame"))
@@ -194,9 +210,9 @@ document.querySelector('#join_black')
 
                 } else if (source != null && destination == null) {
                     // destination position ===============================================================
-                    
+
                     clearAllHightLight()
-                    
+
                     if (!myturn) {
                         waitingForPlayer()
                         clearAllHightLight()
@@ -232,17 +248,17 @@ document.querySelector('#join_black')
                     moveClient(source, destination, null)
                     source = null
                     destination = null
-                    
-                    
-                    
+
+
+
                     // end here ===========================================================================
                 }
 
 
             }
         })
-        
-        
+
+
     })
 
 
@@ -261,7 +277,7 @@ export function drop(piece, destination) {
 
 
 export async function moveClient(source, destination, promoted) {
-    
+
     const oldpos = tranSlateTopos(source)
     const newpos = tranSlateTopos(destination)
     const piece = board[oldpos[0]][oldpos[1]];
