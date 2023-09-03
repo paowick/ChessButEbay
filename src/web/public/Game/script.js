@@ -72,12 +72,17 @@ export function currentBidUpdate(info) {
     const user = JSON.parse(localStorage.getItem('user'))
     document.querySelectorAll("#cur-pi").forEach(element => {
         document.querySelectorAll("#ac-piece").forEach(element => {
+            console.log(info.currentBidder)
             if (user.id == info.currentBidder) {
                 element.style.backgroundColor = 'green'
             } else if (user.id != info.currentBidder) {
                 element.style.backgroundColor = 'red'
                 document.querySelector("#bid-input").value = info.currentBid + 1
-            }else{
+            }
+            if(user.id != info.playerB && user.id != info.playerW){
+                element.style.backgroundColor = 'white'
+            }
+            if (info.currentBidder == null) {
                 element.style.backgroundColor = 'white'
             }
         })
