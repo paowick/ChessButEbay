@@ -64,12 +64,11 @@ io.sockets.on("connection", async (socket) => {
             if (boardRedis.playerB != null && boardRedis.playerW != null) {
                 boardRedis.turn = 'W'
                 boardRedis.gameStart = true
-                let piece = getRandomChessPiece()
-                console.log(piece);
-                if (piece == 'No piece selected') {
-                    piece = 'pawn'
-                }
-                boardRedis.auctionpiece = piece
+                let piece1 = getRandomChessPiece()
+                let piece2 = getRandomChessPiece()
+
+                boardRedis.auctionslot1 = piece1
+                boardRedis.auctionslot2 = piece2
                 redisClient.set(socket.request._query.code, stringify(boardRedis), {
                     NX: false
                 })
@@ -83,7 +82,8 @@ io.sockets.on("connection", async (socket) => {
 
     socket.on('createRoom', (data) => {
         const value = {
-            auctionpiece: null,
+            auctionslot1: null,
+            auctionslot2: null,
             turn: null,
             code: data.room,
             playerB: null,
@@ -109,7 +109,8 @@ io.sockets.on("connection", async (socket) => {
 
     socket.on("win", (arg) => {
         const value = {
-            auctionpiece: null,
+            auctionslot1: null,
+            auctionslot2: null,
             turn: null,
             code: data.room,
             playerB: null,

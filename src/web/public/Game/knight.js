@@ -17,6 +17,15 @@ export class knight extends pieces {
             newimg.src = "../assets/component/svg/knight-white.svg"
             newDiv.appendChild(newimg)
             return newDiv
+        }else{
+            const newDiv = document.createElement("div");
+            const newimg = document.createElement("img");
+            newDiv.classList.add("boxpiece");
+            newDiv.classList.add("knightGray");
+            newDiv.classList.add("auctionPiece");
+            newimg.src = "../assets/component/svg/knight-gray.svg"
+            newDiv.appendChild(newimg)
+            return newDiv
         }
     }
     setPiece() {

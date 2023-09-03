@@ -1,4 +1,4 @@
-import { moveClient, uiSetUpControll } from "./board.js";
+import { auctionobj, moveClient, uiSetUpControll } from "./board.js";
 import { board } from "./board.js";
 import { tranSlateToId } from "./board.js";
 import { drop } from "./board.js";
@@ -7,7 +7,7 @@ import { myturn } from "./board.js";
 import { dropMineEmit } from "./socket.js";
 import { mineobj } from "./board.js";
 import { invtobj } from "./board.js";
-import { auctionSetUp } from "./board.js";
+
 
 const user = JSON.parse(localStorage.getItem("user"))
 export function updateJoinPop(playerB, playerW, playerBName, playerWName) {
@@ -25,7 +25,8 @@ export function updateJoinPop(playerB, playerW, playerBName, playerWName) {
 
 export function startGame(info, arg, currentGame) {
     uiSetUpControll(info, arg, currentGame)
-    auctionSetUp(info.auctionpiece)
+// auction here
+    auctionobj.auctionSetUp(info)
     invtobj.invtSetUp()
     mineSetUp()
 }

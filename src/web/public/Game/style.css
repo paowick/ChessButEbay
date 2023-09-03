@@ -271,6 +271,11 @@ main {
     background-color: #fff;
 }
 
+.auctionPiece > img{
+    width: 178px;
+    height: 178px;
+}
+
 .cur-pi,
 .cur-hand {
     width: 273px;

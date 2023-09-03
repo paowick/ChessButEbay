@@ -14,13 +14,15 @@ import { dropEmit } from './socket.js';
 import { mineSetUp } from './script.js';
 import { mine } from './mine.js';
 import { inventory } from './inventory.js';
+import { auction } from './auction.js';
 
 var invtList = []
 var mineList = []
 var minelimt = 3
 
-export var invtobj = new inventory(invtList)
+export const invtobj = new inventory(invtList)
 export const mineobj = new mine(mineList, minelimt, 1000)
+export const auctionobj = new auction(null,null)
 
 export var board = [
     [null, null, null, null, null, null, null, null],
@@ -71,7 +73,7 @@ export async function run() {
         } else {
             // invtobj.invtList = []
         }
-        auctionSetUp(info.auctionpiece)
+        auctionobj.auctionSetUp(info)
         chessBoardSetUp(info)
         uiSetUpControll(info,arg,currentGame)
     })

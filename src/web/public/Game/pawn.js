@@ -33,6 +33,15 @@ export class pawn extends pieces {
             newimg.src = "../assets/component/svg/pawn-white.svg"
             newDiv.appendChild(newimg)
             return newDiv
+        }else{
+            const newDiv = document.createElement("div");
+            const newimg = document.createElement("img");
+            newDiv.classList.add("boxpiece");
+            newDiv.classList.add("pawnGray");
+            newDiv.classList.add("auctionPiece");
+            newimg.src = "../assets/component/svg/pawn-gray.svg"
+            newDiv.appendChild(newimg)
+            return newDiv
         }
     }
     setPiece() {

@@ -31,6 +31,15 @@ export class king extends pieces {
             newimg.src = "../assets/component/svg/king-white.svg"
             newDiv.appendChild(newimg)
             return newDiv
+        }else{
+            const newDiv = document.createElement("div");
+            const newimg = document.createElement("img");
+            newDiv.classList.add("boxpiece");
+            newDiv.classList.add("kingGray");
+            newDiv.classList.add("auctionPiece");
+            newimg.src = "../assets/component/svg/king-gray.svg"
+            newDiv.appendChild(newimg)
+            return newDiv
         }
     }
     setPiece() {

@@ -17,6 +17,15 @@ export class rook extends pieces {
             newimg.src = "../assets/component/svg/rook-white.svg"
             newDiv.appendChild(newimg)
             return newDiv
+        }else{
+            const newDiv = document.createElement("div");
+            const newimg = document.createElement("img");
+            newDiv.classList.add("boxpiece");
+            newDiv.classList.add("rookGray");
+            newDiv.classList.add("auctionPiece");
+            newimg.src = "../assets/component/svg/rook-gray.svg"
+            newDiv.appendChild(newimg)
+            return newDiv
         }
     }
     setPiece() {
