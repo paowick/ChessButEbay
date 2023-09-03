@@ -1,16 +1,14 @@
 import { moveClient, uiSetUpControll } from "./board.js";
-import { invtList } from "./board.js";
-import { removeInvtList } from "./board.js";
-import { bishop } from "./bishop.js";
 import { board } from "./board.js";
 import { tranSlateToId } from "./board.js";
 import { drop } from "./board.js";
 import { clearAllHightLight } from "./board.js";
 import { myturn } from "./board.js";
 import { dropMineEmit } from "./socket.js";
-import { join } from "./socket.js";
 
 import { mineobj } from "./board.js";
+
+import { invtobj } from "./board.js";
 
 const user = JSON.parse(localStorage.getItem("user"))
 export function updateJoinPop(playerB, playerW, playerBName, playerWName) {
@@ -28,7 +26,7 @@ export function updateJoinPop(playerB, playerW, playerBName, playerWName) {
 
 export function startGame(info, arg, currentGame) {
     uiSetUpControll(info, arg, currentGame)
-    invt()
+    invtSetUp()
     mineSetUp()
 }
 
@@ -138,47 +136,6 @@ export function boardSetupUi(currentGame, info) {
 
 
 export let posListTemp = null
-export function invt() {
-    const invt = document.querySelector("#invt")
-    invt.style.display = "flex"
-    invt.innerHTML = ''
-    invtList.forEach((element, index) => {
-        var doc = element.html()
-        console.log(doc);
-        doc.setAttribute('id', index)
-        doc.classList.add('invt-box')
-        invt.appendChild(doc)
-    })
-
-
-
-    document.querySelectorAll('.invt-box').forEach(div => {
-        div.addEventListener('click', function () {
-            // when click on invt-box in second time ti will be clear all hightlight
-            clearAllHightLight()
-            showDropAble(invtList[this.id].dropPieceAble(board))
-            hightLightDrop(invtList[this.id], this.id)
-            removeAllEvent()
-            temp()
-            if (mineobj.mineList.length >= mineobj.minelimit) {
-                return
-            }
-            hightLightMine(invtList[this.id], this.id)
-        })
-    })
-
-    function removeAllEvent() {
-        document.querySelectorAll('.invt-box').forEach(div => {
-            const newdiv = div.cloneNode(true)
-            div.parentNode.replaceChild(newdiv, div)
-        })
-    }
-
-}
-
-function temp() {
-    invt()
-}
 
 
 
@@ -212,7 +169,7 @@ export function hightLightMine(piece, id) {
                 return
             }
             removeAllEvent()
-            removeInvtList(id)
+            invtobj.removeInvtList(id)
             clearAllHightLight()
             piece.setCurrentTimeInMine()
             mineobj.mineListPush(piece)
@@ -235,7 +192,7 @@ export function hightLightMine(piece, id) {
 
 
 
-function hightLightDrop(piece, id) {
+export function hightLightDrop(piece, id) {
     document.querySelectorAll('.drop').forEach(div => {
         div.addEventListener('click', function () {
             if (!myturn) {
@@ -244,7 +201,7 @@ function hightLightDrop(piece, id) {
             }
             drop(piece, this.id)
             removeAllEvent()
-            removeInvtList(id)
+            invtobj.removeInvtList(id)
             clearAllHightLight()
         })
     })
@@ -271,7 +228,7 @@ function hightLightDrop(piece, id) {
 //     // invtList.push(new queen("queen", null, "W", true, board))
 //     invt()
 // })
-function showDropAble(posList) {
+export function showDropAble(posList) {
     posList.forEach(element => {
         const id = tranSlateToId(element)
 
@@ -279,7 +236,7 @@ function showDropAble(posList) {
             if (element.childNodes.length > 0) {
 
                 element.style.backgroundColor = `rgba(255, 0, 0,0.5)`
-                element.innerHTML += `<div></div>`
+                element.innerHTML += `<div id="hight-light" class="hight-light"></div>`
                 return 0
             }
             element.innerHTML += `<div class="hight-light drop" id="${id}" value="drop" >&#9900</div>`
