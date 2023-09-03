@@ -56,7 +56,7 @@ export async function run() {
         // invtobj.invtList.push(new queen("queen", null, arg.role, false, board, 3))
         // invtobj.invtList.push(new rook("rook", null, arg.role, false, board, 3))
         // invtobj.invtList.push(new knight("knight", null, arg.role, false, board, 3))
-        const info = await JSON.parse(arg.board)
+        const info = arg.boardRedis
         info.mine.forEach(element => {
             mineobj.drop_mine_server(element);
         })
@@ -71,11 +71,11 @@ export async function run() {
         } else {
             // invtobj.invtList = []
         }
+        auctionSetUp(info.auctionpiece)
         chessBoardSetUp(info)
         uiSetUpControll(info,arg,currentGame)
     })
 }
-
 
 
 export function uiSetUpControll(info,arg,currentGame){

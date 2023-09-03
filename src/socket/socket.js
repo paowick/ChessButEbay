@@ -38,16 +38,19 @@ io.sockets.on("connection", async (socket) => {
     console.log(`connnect ${socket.id}`)
     socket.join(socket.request._query.code)
     if (socket.request._query.code != "admin") {
-        let socketRole = 'viewer'
+        let socketRole = null
         const boardRedisJSON = await redisClient.get(socket.request._query.code)
         const boardRedis = await JSON.parse(boardRedisJSON)
         if (socket.request._query.id == boardRedis?.playerB) { socketRole = 'B' }
-        if (socket.request._query.id == boardRedis?.playerW) { socketRole = 'W' }
+        else if (socket.request._query.id == boardRedis?.playerW) { socketRole = 'W' }
+        else { socketRole = 'viewer' }
+        console.log(socketRole, socket.id, boardRedisJSON);
         io.sockets.to(socket.id).emit("board", {
-            board: stringify(boardRedis),
+            boardRedis,
             role: socketRole,
             turn: boardRedis?.turn
         });
+
 
     }
 
@@ -61,6 +64,12 @@ io.sockets.on("connection", async (socket) => {
             if (boardRedis.playerB != null && boardRedis.playerW != null) {
                 boardRedis.turn = 'W'
                 boardRedis.gameStart = true
+                let piece = getRandomChessPiece()
+                console.log(piece);
+                if (piece == 'No piece selected') {
+                    piece = 'pawn'
+                }
+                boardRedis.auctionpiece = piece
                 redisClient.set(socket.request._query.code, stringify(boardRedis), {
                     NX: false
                 })
@@ -68,14 +77,13 @@ io.sockets.on("connection", async (socket) => {
                     board: stringify(boardRedis)
                 })
             }
-
-
         })
     })
 
 
     socket.on('createRoom', (data) => {
         const value = {
+            auctionpiece: null,
             turn: null,
             code: data.room,
             playerB: null,
@@ -101,12 +109,17 @@ io.sockets.on("connection", async (socket) => {
 
     socket.on("win", (arg) => {
         const value = {
+            auctionpiece: null,
             turn: null,
-            code: socket.request._query.code,
+            code: data.room,
             playerB: null,
             playerBName: null,
+            invtB: [],
             playerW: null,
             playerWName: null,
+            invtW: [],
+            mine: [],
+            gameStart: false,
             board: board,
             log: null
         }
@@ -168,6 +181,38 @@ io.sockets.on("connection", async (socket) => {
         console.log('dis')
     })
 });
+
+
+function getRandomChessPiece() {
+    const randomNum = Math.random() * 100; // Generate a random number between 0 and 100
+
+    // Define the percentages for each chess piece
+    const percentages = {
+        'pawn': 60,
+        'rook': 10,
+        'knight': 10,
+        'bishop': 10,
+        'queen': 5,
+        'king': 5
+    };
+
+    let cumulativePercentage = 0;
+
+    // Loop through the percentages and check which piece corresponds to the random number
+    for (const piece in percentages) {
+        cumulativePercentage += percentages[piece];
+        if (randomNum <= cumulativePercentage) {
+            return piece; // Return the selected chess piece
+        }
+    }
+
+    return 'No piece selected'; // In case something goes wrong
+}
+
+// Example usage:
+const randomChessPiece = getRandomChessPiece();
+console.log('Random Chess Piece:', randomChessPiece);
+
 
 
 async function setMineRedis(code, mine) {
