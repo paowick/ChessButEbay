@@ -54,9 +54,9 @@ export function changeMyTurn(data) {
 window.onload = run()
 export async function run() {
     socket.on('board', async (arg) => {
-        invtobj.invtList.push(new queen("queen", null, arg.role, false, board, 3))
-        invtobj.invtList.push(new rook("rook", null, arg.role, false, board, 3))
-        invtobj.invtList.push(new knight("knight", null, arg.role, false, board, 3))
+        // invtobj.invtList.push(new queen("queen", null, arg.role, false, board, 3))
+        // invtobj.invtList.push(new rook("rook", null, arg.role, false, board, 3))
+        // invtobj.invtList.push(new knight("knight", null, arg.role, false, board, 3))
         const info = await JSON.parse(arg.board)
         info.mine.forEach(element => {
             drop_mine_server(element);

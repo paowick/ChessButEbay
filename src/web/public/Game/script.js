@@ -5,9 +5,7 @@ import { drop } from "./board.js";
 import { clearAllHightLight } from "./board.js";
 import { myturn } from "./board.js";
 import { dropMineEmit } from "./socket.js";
-
 import { mineobj } from "./board.js";
-
 import { invtobj } from "./board.js";
 
 const user = JSON.parse(localStorage.getItem("user"))
@@ -26,7 +24,7 @@ export function updateJoinPop(playerB, playerW, playerBName, playerWName) {
 
 export function startGame(info, arg, currentGame) {
     uiSetUpControll(info, arg, currentGame)
-    invtSetUp()
+    invtobj.invtSetUp()
     mineSetUp()
 }
 
