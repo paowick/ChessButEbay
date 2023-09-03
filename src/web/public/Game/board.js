@@ -12,7 +12,6 @@ import { boardSetupUi} from './script.js';
 import { boardSetUpNoStart } from './script.js';
 import { dropEmit } from './socket.js';
 import { mineSetUp } from './script.js';
-import { drop_mine_server } from './socket.js';
 import { mine } from './mine.js';
 import { inventory } from './inventory.js';
 
@@ -59,7 +58,7 @@ export async function run() {
         // invtobj.invtList.push(new knight("knight", null, arg.role, false, board, 3))
         const info = await JSON.parse(arg.board)
         info.mine.forEach(element => {
-            drop_mine_server(element);
+            mineobj.drop_mine_server(element);
         })
         if (arg.role == "W") {
             // invtobj.invtList = info.invtW

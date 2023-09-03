@@ -41,4 +41,44 @@ export class mine {
             mineUpdate(this.mineList)
     }
 
+
+    drop_mine_server(element) {
+        if (element.name == 'king') {
+            const obj = new king("king", element.pos, element.team, true, board, 3)
+            obj.currentTimeInMine = element.currentTimeInMine
+            this.mineListPush(obj)
+            return
+        }
+        if (element.name == 'queen') {
+            const obj = new queen("queen", element.pos, element.team, false, board, 3)
+            obj.currentTimeInMine = element.currentTimeInMine
+            this.mineListPush(obj)
+            return
+        }
+        if (element.name == 'bishop') {
+            const obj = new bishop("bishop", element.pos, element.team, false, board, 3)
+            obj.currentTimeInMine = element.currentTimeInMine
+            this.mineListPush(obj)
+            return
+        }
+        if (element.name == 'rook') {
+            const obj = new rook("rook", element.pos, element.team, false, board, 3)
+            obj.currentTimeInMine = element.currentTimeInMine
+            this.mineListPush(obj)
+            return
+        }
+        if (element.name == 'knight') {
+            const obj = new knight("knight", element.pos, element.team, false, board, 3)
+            obj.currentTimeInMine = element.currentTimeInMine
+            this.mineListPush(obj)
+            return
+        }
+        if (element.name == 'pawn') {
+            const obj = new pawn("pawn", element.pos, element.team, false, board, 3, true)
+            obj.currentTimeInMine = element.currentTimeInMine
+            this.mineListPush(obj)
+            return
+        }
+    }
+
 }

@@ -54,7 +54,7 @@ import('./board.js').then(({ socket }) => {
     })
 
     socket.on('drop_mine_server', async (arg) => {
-        drop_mine_server(arg.piece)
+        mineobj.drop_mine_server(arg.piece)
         
     })
 }).catch((error) => {
@@ -82,44 +82,6 @@ export function move(source, destination, promoted) {
     }
     if (destination != source) {
         socket.emit("move", stringify(data))
-    }
-}
-export function drop_mine_server(element) {
-    if (element.name == 'king') {
-        const obj = new king("king", element.pos, element.team, true, board, 3)
-        obj.currentTimeInMine = element.currentTimeInMine
-        mineobj.mineListPush(obj)
-        return
-    }
-    if (element.name == 'queen') {
-        const obj = new queen("queen", element.pos, element.team, false, board, 3)
-        obj.currentTimeInMine = element.currentTimeInMine
-        mineobj.mineListPush(obj)
-        return
-    }
-    if (element.name == 'bishop') {
-        const obj = new bishop("bishop", element.pos, element.team, false, board, 3)
-        obj.currentTimeInMine = element.currentTimeInMine
-        mineobj.mineListPush(obj)
-        return
-    }
-    if (element.name == 'rook') {
-        const obj = new rook("rook", element.pos, element.team, false, board, 3)
-        obj.currentTimeInMine = element.currentTimeInMine
-        mineobj.mineListPush(obj)
-        return
-    }
-    if (element.name == 'knight') {
-        const obj = new knight("knight", element.pos, element.team, false, board, 3)
-        obj.currentTimeInMine = element.currentTimeInMine
-        mineobj.mineListPush(obj)
-        return
-    }
-    if (element.name == 'pawn') {
-        const obj = new pawn("pawn", element.pos, element.team, false, board, 3, true)
-        obj.currentTimeInMine = element.currentTimeInMine
-        mineobj.mineListPush(obj)
-        return
     }
 }
 
