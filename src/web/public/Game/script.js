@@ -76,6 +76,7 @@ export function currentBidUpdate(info) {
                 element.style.backgroundColor = 'green'
             } else if (user.id != info.currentBidder) {
                 element.style.backgroundColor = 'red'
+                document.querySelector("#bid-input").value = info.currentBid + 1
             }else{
                 element.style.backgroundColor = 'white'
             }
