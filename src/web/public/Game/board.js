@@ -62,23 +62,22 @@ export function changeMyTurn(data) {
 window.onload = run()
 export async function run() {
     socket.on('board', async (arg) => {
-        // invtobj.invtList.push(new queen("queen", null, arg.role, false, board, 3))
-        // invtobj.invtList.push(new rook("rook", null, arg.role, false, board, 3))
-        // invtobj.invtList.push(new knight("knight", null, arg.role, false, board, 3))
         const info = arg.boardRedis
         info.mine.forEach(element => {
             mineobj.drop_mine_server(element);
         })
         if (arg.role == "W") {
-            // invtobj.invtList = info.invtW
+            info.invtW.forEach(element => {
+                invtobj.invtPush(invtobj.pieceToObj(element.name))
+            })
             invtobj.invtSetUp()
             mineSetUp()
         } else if (arg.role == "B") {
-            // invtobj.invtList = info.invtB
+            info.invtB.forEach(element => {
+                invtobj.invtPush(invtobj.pieceToObj(element.name))
+            })
             invtobj.invtSetUp()
             mineSetUp()
-        } else {
-            // invtobj.invtList = []
         }
         currentBidUpdate(info)
         auctionobj.auctionSetUp(info)

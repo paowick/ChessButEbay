@@ -14,13 +14,32 @@ import { updateJoinPop } from "./script.js";
 import { coin } from "./board.js";
 import { coinUpdate,coinUpdate_Server } from "./script.js";
 import { currentBidUpdate } from "./script.js";
+import { auctionobj } from "./board.js";
+import { invtobj } from "./board.js";
 const user = JSON.parse(localStorage.getItem('user'))
+
+document.querySelector("#test").addEventListener("click", () => {
+    socket.emit('test-auction', "test")
+})
 
 
 import('./board.js').then(({ socket }) => {
     socket.on('move_server', (arg) => {
         mineobj.mineListCount()
         moveClient_Server(arg.source, arg.destination, arg.promoted)
+    })
+    
+    socket.on('get-piece_auction_server', async (arg) => {
+        const user = JSON.parse(localStorage.getItem('user'))
+        console.log(arg);
+        if(user.id == arg.id){
+            invtobj.invtPush(invtobj.pieceToObj(arg.newPiece))
+            invtUpdate()
+            invtobj.invtSetUp()
+        }
+        auctionobj.auctionSetUp(arg.room)
+        currentBidUpdate(arg.room)
+        coinUpdate_Server(arg.room)
     })
 
     socket.on('join_server', async (arg) => {
@@ -69,6 +88,13 @@ import('./board.js').then(({ socket }) => {
 }).catch((error) => {
     console.error('Error loading socket:', error);
 });
+
+export function invtUpdate(){
+    let data = {
+        invt: invtobj.invtList,
+    }
+    socket.emit('invtUpdate', stringify(data))
+}
 
 export function bid(amout) {
     if (amout == "") { return }

@@ -72,7 +72,6 @@ export function currentBidUpdate(info) {
     const user = JSON.parse(localStorage.getItem('user'))
     document.querySelectorAll("#cur-pi").forEach(element => {
         document.querySelectorAll("#ac-piece").forEach(element => {
-            console.log(info.currentBidder)
             if (user.id == info.currentBidder) {
                 element.style.backgroundColor = 'green'
             } else if (user.id != info.currentBidder) {

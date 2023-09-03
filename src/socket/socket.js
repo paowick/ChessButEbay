@@ -1,4 +1,4 @@
-import { createServer } from 'http'
+import { createServer, get } from 'http'
 import { Server } from "socket.io"
 import { board } from "./board.js"
 
@@ -187,19 +187,60 @@ io.sockets.on("connection", async (socket) => {
         bid(arg, socket.request._query.code, socket)
     })
 
+    socket.on("invtUpdate", async (arg) => {
+        const data = JSON.parse(arg)
+        const roomJSON = await redisClient.get(socket.request._query.code)
+        const room = await JSON.parse(roomJSON)
+        if (socket.request._query.id == room.playerB) {
+            room.invtB = data.invt
+        }
+        if (socket.request._query.id == room.playerW) {
+            room.invtW = data.invt
+        }
+        redisClient.set(socket.request._query.code, stringify(room), {
+            NX: false
+        })
+    })
+
+    socket.on("test-auction", async (arg) => {
+        testAuction(socket) 
+        
+    })
+
+    
     socket.on("disconnect", () => {
         console.log('dis')
     })
 });
 
+async function testAuction(socket) {
+    const roomJSON = await redisClient.get(socket.request._query.code)
+    const room = await JSON.parse(roomJSON)
+    const slotTemp = room.auctionslot1
+    const bidderTemp = room.currentBidder
+    room.auctionslot1 = room.auctionslot2
+    room.auctionslot2 = getRandomChessPiece()
+    room.currentBid = 0
+    room.currentBidder = null
+    const data = {
+        id: bidderTemp,
+        newPiece: slotTemp,
+        room: room
+    }
+    io.sockets.to(socket.request._query.code).emit(`get-piece_auction_server`, data)
+    redisClient.set(socket.request._query.code, stringify(room), {
+        NX: false
+    })
+}
+
 async function bid(arg, code, socket) {
     const roomJSON = await redisClient.get(code)
     const room = await JSON.parse(roomJSON)
-    if( arg.id == room.playerB){
+    if (arg.id == room.playerB) {
         if (arg.amout > room.coinB) { return }
         room.coinB -= arg.amout
     }
-    if( arg.id == room.playerW){
+    if (arg.id == room.playerW) {
         if (arg.amout > room.coinW) { return }
         room.coinW -= arg.amout
     }

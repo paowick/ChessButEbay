@@ -1,6 +1,15 @@
 import { mineSetUp } from "./script.js"
 import { mineUpdate } from "./socket.js"
 import { invtobj } from "./board.js"
+
+import { king } from './king.js';
+import { pawn } from './pawn.js';
+import { queen } from './queen.js';
+import { bishop } from './bishop.js';
+import { knight } from './knight.js';
+import { rook } from './rook.js';
+import { board } from "./board.js";
+import { invtUpdate } from "./socket.js";
 export class mine {
     constructor(mineList, minelimit, mineresource) {
         this.mineList = mineList
@@ -35,6 +44,8 @@ export class mine {
             if (element.currentTimeInMine <= 0) {
                 this.mineListPop(element)
                 invtobj.invtPush(element)
+                invtUpdate()
+
             }
         }),
 
@@ -43,6 +54,7 @@ export class mine {
 
 
     drop_mine_server(element) {
+        console.log(element);
         if (element.name == 'king') {
             const obj = new king("king", element.pos, element.team, true, board, 3)
             obj.currentTimeInMine = element.currentTimeInMine

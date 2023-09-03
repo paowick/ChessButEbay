@@ -3,6 +3,14 @@ import { clearAllHightLight } from "./board.js"
 import { hightLightDrop, showDropAble, hightLightMine } from "./script.js"
 import { mineobj } from "./board.js"
 
+
+import { king } from './king.js';
+import { pawn } from './pawn.js';
+import { queen } from './queen.js';
+import { bishop } from './bishop.js';
+import { knight } from './knight.js';
+import { rook } from './rook.js';
+
 export class inventory {
     constructor(invtList) {
         this.invtList = invtList
@@ -32,6 +40,7 @@ export class inventory {
         const invt = document.querySelector("#invt")
         invt.style.display = "flex"
         invt.innerHTML = ''
+        console.log(this.invtList);
         this.invtList.forEach((element, index) => {
             var doc = element.html()
             console.log(doc);
@@ -55,7 +64,7 @@ export class inventory {
                 hightLightMine(invtListTemp[this.id], this.id)
             })
         })
-        
+
         const removeAllEvent = () => {
             this.temp()
             document.querySelectorAll('.invt-box').forEach(div => {
@@ -68,5 +77,32 @@ export class inventory {
 
     temp() {
         this.invtSetUp()
+    }
+
+
+    pieceToObj(piece) {
+        const currentGame = JSON.parse(localStorage.getItem("currentGame"))
+        if (piece == 'king') {
+            return new king("king", null, currentGame.role, true, board, 3)
+        }
+        if (piece == 'queen') {
+            return new queen("queen", null, currentGame.role, false, board, 3)
+
+        }
+        if (piece == 'bishop') {
+            return new bishop("bishop", null, currentGame.role, false, board, 3)
+
+        }
+        if (piece == 'rook') {
+            return new rook("rook", null, currentGame.role, false, board, 3)
+
+        }
+        if (piece == 'knight') {
+            return new knight("knight", null, currentGame.role, false, board, 3)
+
+        }
+        if (piece == 'pawn') {
+            return new pawn("pawn", null, currentGame.role, false, board, 3, true)
+        }
     }
 }
