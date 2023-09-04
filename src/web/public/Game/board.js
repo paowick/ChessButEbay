@@ -8,18 +8,28 @@ import { queen } from './queen.js';
 import { bishop } from './bishop.js';
 import { knight } from './knight.js';
 import { rook } from './rook.js';
-import { boardSetupUi, invt } from './script.js';
+import { boardSetupUi } from './script.js';
 import { boardSetUpNoStart } from './script.js';
 import { dropEmit } from './socket.js';
 import { mineSetUp } from './script.js';
-import { drop_mine_server } from './socket.js';
 import { mine } from './mine.js';
+import { inventory } from './inventory.js';
+import { auction } from './auction.js';
+import { bid } from './socket.js'
+import { coinUpdate, coinUpdate_Server } from './script.js';
+import { currentBidUpdate } from './script.js';
 
-export var invtList = []
+var invtList = []
 var mineList = []
 var minelimt = 3
+export let coin = 0
+export function setCoin(data) {
+    coin = data
+}
 
-export const mineobj = new mine(mineList, minelimt, 1000)  
+export const invtobj = new inventory(invtList)
+export const mineobj = new mine(mineList, minelimt, 1000)
+export const auctionobj = new auction(null, null, null, null, null)
 
 export var board = [
     [null, null, null, null, null, null, null, null],
@@ -48,49 +58,52 @@ export function changeMyTurn(data) {
     myturn = data
 }
 
-
-run()
+// maybe it bug
+window.onload = run()
 export async function run() {
     socket.on('board', async (arg) => {
-        invtList.push(new queen("queen", null, arg.role, false, board, 3))
-        invtList.push(new rook("rook", null, arg.role, false, board, 3))
-        invtList.push(new knight("knight", null, arg.role, false, board, 3))
-        const info = await JSON.parse(arg.board)
-
+        const info = arg.boardRedis
         info.mine.forEach(element => {
-            drop_mine_server(element);
+            mineobj.drop_mine_server(element);
         })
         if (arg.role == "W") {
-            // invtList = info.invtW
-            invt()
+            info.invtW.forEach(element => {
+                invtobj.invtPush(invtobj.pieceToObj(element.name))
+            })
+            invtobj.invtSetUp()
             mineSetUp()
         } else if (arg.role == "B") {
-            // invtList = info.invtB
-            invt()
+            info.invtB.forEach(element => {
+                invtobj.invtPush(invtobj.pieceToObj(element.name))
+            })
+            invtobj.invtSetUp()
             mineSetUp()
-        } else {
-            invtList = []
         }
+        currentBidUpdate(info)
+        auctionobj.auctionSetUp(info)
         chessBoardSetUp(info)
-        uiSetUpControll(info,arg,currentGame)
+        uiSetUpControll(info, arg, currentGame)
     })
 }
 
 
-
-export function uiSetUpControll(info,arg,currentGame){
-    if(!info.gameStart){
+export function uiSetUpControll(info, arg, currentGame) {
+    if (!info.gameStart) {
         boardSetUpNoStart()
-        updateJoinPop(info.playerB,info.playerW,info.playerBName,info.playerWName)
+        updateJoinPop(info.playerB, info.playerW, info.playerBName, info.playerWName)
         return
     }
-    boardSetupUi(arg, currentGame, info)
+    boardSetupUi(currentGame, info)
     if (arg.turn === arg.role) {
         myturn = true
     } else {
         myturn = false
     }
+    coinUpdate_Server(info)
 }
+
+
+
 
 export function chessBoardSetUp(info) {
     for (let index = 0; index < info.board.length; index++) {
@@ -124,7 +137,7 @@ export function chessBoardSetUp(info) {
             }
         }
     }
-    
+
 }
 
 
@@ -144,14 +157,14 @@ export function chessBoardSetUp(info) {
 // Black_KnightU = "&#9822"
 // Black_Pawn	  = "&#9823"
 
-export function clearAllHightLight() {
-    document.querySelectorAll(".hight-light").forEach(div => {
-        div.parentNode.removeChild(div)
+
+
+document.querySelector('#bid-butt')
+    .addEventListener('click', () => {
+        const amout = document.querySelector('#bid-input').value
+        bid(amout)
+        document.querySelector('#bid-input').value = ''
     })
-}
-
-
-
 
 document.querySelector('#join_black')
     .addEventListener('click', () => {
@@ -177,7 +190,6 @@ document.querySelector('#join_white')
 
 
 
-
 var source = null
 var destination = null
 document.querySelectorAll('.box')
@@ -188,7 +200,10 @@ document.querySelectorAll('.box')
                 if (source == null && destination == null) {
                     // console.log(new DOMParser().parseFromString(this.innerHTML, "text/xml").documentElement);
                     // source position ====================================================================
+
+                    if (auctionobj.auctionStage == true) { return }
                     const piece = havePiece(this.id)
+
                     clearAllHightLight()
                     if (piece == null) { return source = null; }
                     source = this.id;
@@ -250,23 +265,6 @@ document.querySelectorAll('.box')
 
 
 
-export function invtPush(obj) {
-    const currentGame = JSON.parse(localStorage.getItem("currentGame"))
-    if (obj.team != currentGame.role) {
-        invt()
-        return
-    }
-    invtList.push(obj)
-    invt()
-}
-export function removeInvtList(index) {
-    let intIndex = parseInt(index)
-    invtList.splice(intIndex, 1)
-    if (invtList.length === 0) {
-        invtList = []
-    }
-    invt()
-}
 
 export function drop(piece, destination) {
     const pos = tranSlateTopos(destination)
@@ -309,6 +307,8 @@ export async function moveClient(source, destination, promoted) {
     destination = null
     source = null
     localStorage.setItem("board", stringify(board))
+    auctionobj.setAuctionStage(true)
+    console.log(auctionobj.auctionStage);
     changeMyTurn(false)
     clearAllHightLight()
 }
@@ -331,7 +331,15 @@ export function moveClient_Server(source, destination, promoted) {
         source = null
         changeMyTurn(true)
     }
+
+    auctionobj.setAuctionStage(true)
     clearAllHightLight()
+}
+export function clearAllHightLight() {
+
+    document.querySelectorAll(".hight-light").forEach(div => {
+        div.parentNode.removeChild(div)
+    })
 }
 
 
@@ -344,8 +352,7 @@ export function showMoveAble(piece) {
 
             if (element.childNodes.length > 0) {
 
-                element.style.backgroundColor = `rgba(255, 0, 0,0.5)`
-                element.innerHTML += `<div></div>`
+                element.innerHTML += `<div id="hight-light" class="hight-light hight-light-red" ></div>`
                 return 0
             }
             element.innerHTML += `<div class="hight-light">&#9900</div>`

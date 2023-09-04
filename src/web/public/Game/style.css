@@ -116,6 +116,20 @@ body {
     background-color: rgb(75, 149, 75);
 }
 
+.hight-light-red {
+    position: absolute;
+    width: 80px !important;
+    height: 80px !important;
+    font-size: 60px;
+    justify-content: center;
+    text-align: center;
+    background-color: rgba(255, 0, 0, 0.5);
+}
+
+.hight-light-red:hover {
+    cursor: pointer;
+}
+
 .hight-light {
     width: 80px;
     height: 90px;
@@ -219,10 +233,15 @@ main {
 
 .invt-view {
     margin: 0 auto;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+    align-items: center;
     background-color: #A19C9C;
     width: 517px;
     height: 169px;
     border: 15px solid #252525;
+    overflow-x: auto;
 }
 
 .auction {
@@ -236,8 +255,6 @@ main {
     background-color: #252525;
     padding-top: 30px;
 }
-
-
 
 .auction-view {
     display: flex;
@@ -255,6 +272,25 @@ main {
     border-radius: 50%;
     border: 1px solid #171717;
     background-color: #fff;
+}
+
+.auctionPiece>img {
+    width: 178px;
+    height: 178px;
+}
+
+.cur-pi {
+    text-align: center;
+}
+
+.cur-pi>h2 {
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    font-weight: 650;
+    color: #171717;
+    text-shadow: 0 0 5px #ffffff;
+    line-height: 48px;
 }
 
 .cur-pi,
@@ -364,7 +400,7 @@ main {
     padding: 20px;
 }
 
-.join-bar{
+.join-bar {
     height: 20px;
 }
 
@@ -434,6 +470,8 @@ main {
     width: 640px;
     height: 120px;
     border: 15px solid #252525;
+    overflow-x: auto;
+    overflow-y: hidden;
 }
 
 .invt>div {

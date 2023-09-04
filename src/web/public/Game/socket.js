@@ -11,7 +11,18 @@ import { rook } from './rook.js';
 import { mineobj } from "./board.js";
 import { startGame } from "./script.js";
 import { updateJoinPop } from "./script.js";
+import { coin } from "./board.js";
+import { coinUpdate,coinUpdate_Server } from "./script.js";
+import { currentBidUpdate } from "./script.js";
+import { auctionobj } from "./board.js";
+import { invtobj } from "./board.js";
 const user = JSON.parse(localStorage.getItem('user'))
+
+document.querySelector("#test").addEventListener("click", () => {
+    if(auctionobj.auctionStage){ 
+        socket.emit('test-auction', "test")
+    }
+})
 
 
 import('./board.js').then(({ socket }) => {
@@ -20,6 +31,21 @@ import('./board.js').then(({ socket }) => {
         moveClient_Server(arg.source, arg.destination, arg.promoted)
     })
     
+    socket.on('get-piece_auction_server', async (arg) => {
+        const user = JSON.parse(localStorage.getItem('user'))
+        console.log(arg);
+        if(user.id == arg.id){
+            invtobj.invtPush(invtobj.pieceToObj(arg.newPiece))
+            invtUpdate()
+            invtobj.invtSetUp()
+        }
+        console.log(arg);
+        auctionobj.setAuctionStage(arg.room.auctionStage)
+        auctionobj.auctionSetUp(arg.room)
+        currentBidUpdate(arg.room)
+        coinUpdate_Server(arg.room)
+    })
+
     socket.on('join_server', async (arg) => {
         const info = JSON.parse(arg.board)
         updateJoinPop(info.playerB, info.playerW, info.playerBName, info.playerWName)
@@ -38,7 +64,7 @@ import('./board.js').then(({ socket }) => {
         } else {
             changeMyTurn(false)
         }
-        startGame(currentGame.role)
+        startGame(info, arg, currentGame)
     })
 
     socket.on('drop_server', async (arg) => {
@@ -54,13 +80,41 @@ import('./board.js').then(({ socket }) => {
     })
 
     socket.on('drop_mine_server', async (arg) => {
-        drop_mine_server(arg.piece)
-        
+        mineobj.drop_mine_server(arg.piece)
+
     })
+
+    socket.on('bid_server', async (arg) => {
+        const info = await JSON.parse(arg)
+        currentBidUpdate(info)
+        coinUpdate_Server(info)
+    }) 
 }).catch((error) => {
     console.error('Error loading socket:', error);
 });
 
+export function invtUpdate(){
+    let data = {
+        invt: invtobj.invtList,
+    }
+    socket.emit('invtUpdate', stringify(data))
+}
+
+export function bid(amout) {
+    if(auctionobj.auctionStage == false){ return }
+    if (amout == "") { return }
+    amout = parseInt(amout)
+    if (amout == 0) { return }
+    if (isNaN(amout)) { return }
+    console.log(amout,coin);
+    if (amout > coin) { return }
+    const user = JSON.parse(localStorage.getItem('user'))
+    const data = {
+        id: user.id,
+        amout: amout
+    }
+    socket.emit('bid', data)
+}
 
 export function mineUpdate(mine) {
     let data = {
@@ -70,7 +124,7 @@ export function mineUpdate(mine) {
 }
 
 export function move(source, destination, promoted) {
-        mineobj.mineListCount()
+    mineobj.mineListCount()
     const currentGame = JSON.parse(localStorage.getItem("currentGame"))
     let data = {
         promoted: promoted,
@@ -78,48 +132,10 @@ export function move(source, destination, promoted) {
         source: source,
         destination: destination,
         board: board,
-        mine : mineobj.mineList
+        mine: mineobj.mineList
     }
     if (destination != source) {
         socket.emit("move", stringify(data))
-    }
-}
-export function drop_mine_server(element) {
-    if (element.name == 'king') {
-        const obj = new king("king", element.pos, element.team, true, board, 3)
-        obj.currentTimeInMine = element.currentTimeInMine
-        mineobj.mineListPush(obj)
-        return
-    }
-    if (element.name == 'queen') {
-        const obj = new queen("queen", element.pos, element.team, false, board, 3)
-        obj.currentTimeInMine = element.currentTimeInMine
-        mineobj.mineListPush(obj)
-        return
-    }
-    if (element.name == 'bishop') {
-        const obj = new bishop("bishop", element.pos, element.team, false, board, 3)
-        obj.currentTimeInMine = element.currentTimeInMine
-        mineobj.mineListPush(obj)
-        return
-    }
-    if (element.name == 'rook') {
-        const obj = new rook("rook", element.pos, element.team, false, board, 3)
-        obj.currentTimeInMine = element.currentTimeInMine
-        mineobj.mineListPush(obj)
-        return
-    }
-    if (element.name == 'knight') {
-        const obj = new knight("knight", element.pos, element.team, false, board, 3)
-        obj.currentTimeInMine = element.currentTimeInMine
-        mineobj.mineListPush(obj)
-        return
-    }
-    if (element.name == 'pawn') {
-        const obj = new pawn("pawn", element.pos, element.team, false, board, 3, true)
-        obj.currentTimeInMine = element.currentTimeInMine
-        mineobj.mineListPush(obj)
-        return
     }
 }
 
@@ -152,7 +168,7 @@ function drop_server(element) {
 }
 
 export function dropEmit(piece, des, board) {
-        mineobj.mineListCount()
+    mineobj.mineListCount()
     const currentGame = JSON.parse(localStorage.getItem("currentGame"))
     let data = {
         turn: currentGame.role,
@@ -164,13 +180,13 @@ export function dropEmit(piece, des, board) {
             inInvt: piece.inInvt,
             timeInMine: piece.timeInMine,
         },
-        mine : mineobj.mineList,
+        mine: mineobj.mineList,
         board: board
     }
     socket.emit('drop', stringify(data))
 }
 
-export function dropMineEmit(piece,board,mine) {
+export function dropMineEmit(piece, board, mine) {
     const currentGame = JSON.parse(localStorage.getItem("currentGame"))
     piece.setCurrentTimeInMine()
     let data = {
@@ -182,9 +198,9 @@ export function dropMineEmit(piece,board,mine) {
             isKing: piece.isKing,
             inInvt: piece.inInvt,
             timeInMine: piece.timeInMine,
-            currentTimeInMine : piece.currentTimeInMine
+            currentTimeInMine: piece.currentTimeInMine
         },
-        mine : mine,
+        mine: mine,
         board: board
     }
     socket.emit('drop_mine', stringify(data))

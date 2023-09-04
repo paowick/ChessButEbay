@@ -17,6 +17,15 @@ export class bishop extends pieces {
             newimg.src = "../assets/component/svg/bishop-white.svg"
             newDiv.appendChild(newimg)
             return newDiv
+        }else{
+            const newDiv = document.createElement("div");
+            const newimg = document.createElement("img");
+            newDiv.classList.add("boxpiece");
+            newDiv.classList.add("bishopGray");
+            newDiv.classList.add("auctionPiece");
+            newimg.src = "../assets/component/svg/bishop-gray.svg"
+            newDiv.appendChild(newimg)
+            return newDiv
         }
     }
     setPiece() {
