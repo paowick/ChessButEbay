@@ -35,15 +35,37 @@ export class inventory {
         this.invtSetUp()
     }
 
+    invtSetUpViewer(info) {
+        const invtB = info.invtB
+        const invtBLIst = []
+        const invtW = info.invtW
+        const invtWLIst = []
+        invtB.forEach(element => {
+            invtBLIst.push(this.pieceToObjViewer(element.name,"B"))
+        });
+        invtW.forEach(element => {
+            invtWLIst.push(this.pieceToObjViewer(element.name,"W"))
+        });
+        const invtBdoc = document.querySelector("#invt-B")
+        invtBLIst.forEach(element => {
+            var doc = element.html()
+            doc.classList.add('invt-box')
+            invtBdoc.appendChild(doc)
+        })
+        const invtWdoc = document.querySelector("#invt-W")
+        invtWLIst.forEach(element => {
+            var doc = element.html()
+            doc.classList.add('invt-box')
+            invtWdoc.appendChild(doc)
+        })
+    }
 
     invtSetUp() {
         const invt = document.querySelector("#invt")
         invt.style.display = "flex"
         invt.innerHTML = ''
-        console.log(this.invtList);
         this.invtList.forEach((element, index) => {
             var doc = element.html()
-            console.log(doc);
             doc.setAttribute('id', index)
             doc.classList.add('invt-box')
             invt.appendChild(doc)
@@ -79,6 +101,31 @@ export class inventory {
         this.invtSetUp()
     }
 
+    pieceToObjViewer(piece,team) {
+        const currentGame = JSON.parse(localStorage.getItem("currentGame"))
+        if (piece == 'king') {
+            return new king("king", null, team, true, board, 3)
+        }
+        if (piece == 'queen') {
+            return new queen("queen", null, team, false, board, 3)
+
+        }
+        if (piece == 'bishop') {
+            return new bishop("bishop", null, team, false, board, 3)
+
+        }
+        if (piece == 'rook') {
+            return new rook("rook", null, team, false, board, 3)
+
+        }
+        if (piece == 'knight') {
+            return new knight("knight", null, team, false, board, 3)
+
+        }
+        if (piece == 'pawn') {
+            return new pawn("pawn", null, team, false, board, 3, true)
+        }
+    }
 
     pieceToObj(piece) {
         const currentGame = JSON.parse(localStorage.getItem("currentGame"))

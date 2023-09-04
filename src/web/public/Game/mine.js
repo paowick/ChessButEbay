@@ -46,6 +46,7 @@ export class mine {
                 invtobj.invtPush(element)
                 invtUpdate()
 
+
             }
         }),
 

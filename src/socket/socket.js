@@ -188,6 +188,12 @@ io.sockets.on("connection", async (socket) => {
         socket.broadcast.to(socket.request._query.code).emit(`drop_mine_server`, drop)
     })
 
+    socket.on("getInfo", async (arg) => {
+        const roomJSON = await redisClient.get(socket.request._query.code)
+        const room = await JSON.parse(roomJSON)
+        io.sockets.to(socket.id).emit(`getInfo_server`, room)
+    })
+
     socket.on("mineUpdate", (arg) => {
         const data = JSON.parse(arg);
         setMineRedis(socket.request._query.code, data.mine)
