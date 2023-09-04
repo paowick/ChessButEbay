@@ -111,9 +111,8 @@ io.sockets.on("connection", async (socket) => {
 
 
 
-    socket.on("win", (arg) => {
+    socket.on("win", (data) => {
         const value = {
-        
             auctionslot1: null,
             auctionslot2: null,
             currentBid: 0,
