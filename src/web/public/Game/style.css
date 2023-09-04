@@ -5,6 +5,10 @@ body {
     background-attachment: fixed;
 }
 
+#viewer{
+    color: #000;
+}
+
 .viewer-r {
     display: flex;
     justify-content: space-aroun;
@@ -34,6 +38,11 @@ body {
     justify-content: space-between;
     align-items: center;
     flex-direction: row;
+    color: #000;
+    font-family: Courier New;
+    font-weight: 650;
+    
+   
 }
 
 .player>div {
@@ -42,6 +51,8 @@ body {
     background-color: #ffffff;
     border-radius: 25px;
     border: 1px solid black;
+    padding-top: 8px;
+    padding-left: 5px;
 }
 
 .view-top {
@@ -167,6 +178,7 @@ main {
     background-color: blue;
     width: 654px;
     height: 654px;
+    
 }
 
 .container-col-text {
@@ -254,6 +266,8 @@ main {
     height: 640px;
     background-color: #252525;
     padding-top: 30px;
+    border: 1px solid black;
+    border-radius: 35px;
 }
 
 .auction-view {
@@ -264,6 +278,7 @@ main {
     width: 326px;
     height: 441px;
     background-color: #404040;
+    border: 1px solid black;
 }
 
 .ac-piece {
@@ -307,6 +322,7 @@ main {
     justify-content: center;
     align-items: center;
     height: 334px;
+    
 }
 
 .log {
@@ -319,6 +335,7 @@ main {
     height: 311px;
     background-color: #252525;
     padding: 23px 16px;
+    border-radius: 25px;
 }
 
 .round,
@@ -340,6 +357,7 @@ main {
     justify-content: center;
     align-items: center;
     height: 334px;
+    
 }
 
 .mine {
@@ -347,7 +365,7 @@ main {
     flex-direction: column;
     justify-content: start;
     gap: 10px;
-
+    border-radius: 25px;
     width: 330px;
     height: 311px;
     background-color: #252525;
@@ -389,25 +407,74 @@ main {
     position: fixed;
     display: flex;
     flex-direction: column;
-    justify-content: end;
+    justify-content: space-evenly;
     align-items: center;
     gap: 10px;
     width: 400px;
-    height: 400px;
+    height: 250px;
     background-color: #404040;
-    top: 25%;
+    top: 35%;
     left: 40%;
     padding: 20px;
+    border-radius: 35px;
+    font-family: Courier New;
+    font-weight: 650;
+    font-size: 17px;
+    color: #eee;
+    border: 1px solid black;
+}
+
+.join-butt-con > :hover{
+    transform: scale(1.05);
+    transition: .4s ease-in-out;
+    
 }
 
 .join-bar {
     height: 20px;
+    font-family: Courier New;
+    font-weight: 650;
+    font-size: 30px;
+    margin: 5px;
 }
 
 .join_butt {
     width: 90%;
-    height: 50%;
+    height: 30%;
     background: #A19C9C;
+    border-radius: 25px;
+    color: #000000;
+    
+    
+}
+
+
+
+#join_black{
+    background-color: #050505;
+    padding: 10px;
+}
+
+#join_black> :hover{
+    
+    transform: scale(1.02);
+    transition: .4s ease-in-out;
+}
+
+#join_white{
+    background-color: #ffffff;
+    color: black;
+    padding: 10px;
+}
+
+#join_white > :hover{
+    background-color: #ffffff;
+    transform: scale(1.02);
+    transition: .4s ease-in-out;
+}
+
+#join_white>h1{
+    color: #000;
 }
 
 .prom-pop {
@@ -457,6 +524,7 @@ main {
 .invt-con {
     width: 100%;
     padding-top: 8px;
+    
 }
 
 .invt {
@@ -472,6 +540,7 @@ main {
     border: 15px solid #252525;
     overflow-x: auto;
     overflow-y: hidden;
+    border-radius: 10px;
 }
 
 .invt>div {
