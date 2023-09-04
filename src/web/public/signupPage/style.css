@@ -8,7 +8,7 @@ body {
 
 .card {
     font-family: Courier New;
-    font-weight: 650;
+    font-weight: 250;
     position: absolute;
     left: 0;
     right: 0;
@@ -151,3 +151,4 @@ a {
     display: flex;
     justify-content: space-around;
 }
+

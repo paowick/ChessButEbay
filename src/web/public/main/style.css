@@ -14,25 +14,24 @@ main {
 }
 
 .option-con {
-    background-color: #404040;
     width: 30%;
     height: 700px; 
     padding: 2px;
     background-color: #404040;
-    /*border-radius: 30px;*/
+    border-radius: 30px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
     gap: 20px;
+    border: 1px solid #252525;
 }
 
 .board-con{
     width: 1100px;
     height: 450px;
     background-color: #404040;
-
-    /*border-radius: 30px;*/
+    /*border-radius: 25px*/
 }
 
 .board {
@@ -43,6 +42,7 @@ main {
     background-color: #404040;
     margin: 10px;
     padding: 5px;
+    
 }
 
 ::-webkit-scrollbar {
@@ -127,7 +127,7 @@ p{
     align-items: center;
     justify-content: center;
     gap: 20px;
-
+    
     
 }
 
@@ -142,4 +142,9 @@ p{
     background-color: #404040;
     width: 1100px;
     height: 180px; 
+}
+
+.logo{
+    width: 480;
+    height: 180;
 }
