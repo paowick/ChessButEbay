@@ -14,6 +14,12 @@ services:
     networks:
       - fontend
       - backend
+    depends_on:
+      - socket
+      - web
+      - auth
+      - userimg
+      - api
 
 # =================================  Node Js  =======================================
   socket:
@@ -78,6 +84,7 @@ services:
       - dbNetwork
     depends_on:
       - db
+      - phpmyadmin
 
    
 # =================================  Database  =======================================
