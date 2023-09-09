@@ -140,10 +140,9 @@ io.sockets.on("connection", async (socket) => {
 
     socket.on("move", async (arg) => {
         const data = JSON.parse(arg)
-        console.log(`move ${data.source} to ${data.destination}`)
         setBoardRedis(socket.request._query.code, data.board, data.turn)
         setMineRedis(socket.request._query.code, data.mine)
-        
+
 
         const roomJSON = await redisClient.get(socket.request._query.code)
         const room = await JSON.parse(roomJSON)
@@ -161,7 +160,7 @@ io.sockets.on("connection", async (socket) => {
 
     socket.on("drop", (arg) => {
         const data = JSON.parse(arg);
-        let turn = null
+        let turn = nullmineUpdate
         setBoardRedis(socket.request._query.code, data.board, data.turn)
         setMineRedis(socket.request._query.code, data.mine)
         if (data.turn == "W") {
@@ -174,12 +173,13 @@ io.sockets.on("connection", async (socket) => {
             turn: turn
         }
         socket.broadcast.to(socket.request._query.code).emit(`drop_server`, drop)
+        dropmineInvtRedis(socket,data)
     })
 
     socket.on("drop_mine", (arg) => {
         const data = JSON.parse(arg);
         let turn = null
-        setMineRedis(socket.request._query.code, data.mine)
+        dropmineInvtRedis(socket,data)
         const drop = {
             piece: data.piece,
             turn: turn
@@ -195,7 +195,7 @@ io.sockets.on("connection", async (socket) => {
 
     socket.on("mineUpdate", (arg) => {
         const data = JSON.parse(arg);
-        setMineRedis(socket.request._query.code, data.mine)
+        console.log(data);
     })
 
     socket.on("bid", async (arg) => {
@@ -203,30 +203,46 @@ io.sockets.on("connection", async (socket) => {
     })
 
     socket.on("invtUpdate", async (arg) => {
-        const data = JSON.parse(arg)
-        const roomJSON = await redisClient.get(socket.request._query.code)
-        const room = await JSON.parse(roomJSON)
-        if (socket.request._query.id == room.playerB) {
-            room.invtB = data.invt
-        }
-        if (socket.request._query.id == room.playerW) {
-            room.invtW = data.invt
-        }
-        redisClient.set(socket.request._query.code, stringify(room), {
-            NX: false
-        })
+        invtUpdate(socket, arg)
     })
-
+    
     socket.on("test-auction", async (arg) => {
-        getAuction(socket) 
+        getAuction(socket)
         
     })
-
+    
     
     socket.on("disconnect", () => {
         console.log('dis')
     })
 });
+
+async function invtUpdate(socket,arg) {
+    const data = JSON.parse(arg)
+    const roomJSON = await redisClient.get(socket.request._query.code)
+    const room = await JSON.parse(roomJSON)
+    if (socket.request._query.id == room.playerB) {
+        room.invtB = await data.invt
+    }
+    if (socket.request._query.id == room.playerW) {
+        room.invtW = await data.invt
+    }
+    //it not update but return OK wat???????
+    await redisClient.set(socket.request._query.code, stringify(room), {
+        NX: false
+    })
+    invtViewerUpdate(socket, room)
+}
+
+async function invtViewerUpdate(socket, room) {
+    const data = {
+        playerB: room.playerB,
+        playerW: room.playerW,
+        invtB: room.invtB,
+        invtW: room.invtW,
+    }
+    io.sockets.to(socket.request._query.code).emit(`invtViewerUpdate`, data)
+}
 
 async function getAuction(socket) {
     const roomJSON = await redisClient.get(socket.request._query.code)
@@ -300,7 +316,21 @@ function getRandomChessPiece() {
 
 // Example 
 
-
+async function dropmineInvtRedis(socket,data){
+    const roomJSON = await redisClient.get(socket.request._query.code)
+    const room = await JSON.parse(roomJSON)
+    room.mine = await data.mine
+    if (socket.request._query.id == room.playerB) {
+        room.invtB = await data.invt
+    }
+    if (socket.request._query.id == room.playerW) {
+        room.invtW = await data.invt
+    }
+    redisClient.set(socket.request._query.code, stringify(room), {
+        NX: false
+    })
+    invtViewerUpdate(socket, room)
+}
 
 async function setMineRedis(code, mine) {
     const roomJSON = await redisClient.get(code)

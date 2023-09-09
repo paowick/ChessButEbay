@@ -30,6 +30,8 @@ export function setCoin(data) {
 export const invtobj = new inventory(invtList)
 export const mineobj = new mine(mineList, minelimt, 1000)
 export const auctionobj = new auction(null, null, null, null, null)
+export const invtBlack = new inventory([])
+export const invtWhite = new inventory([])
 
 export var board = [
     [null, null, null, null, null, null, null, null],
@@ -63,6 +65,8 @@ window.onload = run()
 export async function run() {
     socket.on('board', async (arg) => {
         const info = arg.boardRedis
+        invtBlack.invtSetUpViewer(info.invtB)
+        invtWhite.invtSetUpViewer(info.invtW)
         info.mine.forEach(element => {
             mineobj.drop_mine_server(element);
         })

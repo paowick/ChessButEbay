@@ -45,12 +45,10 @@ export class mine {
                 this.mineListPop(element)
                 invtobj.invtPush(element)
                 invtUpdate()
-
-
+                
             }
-        }),
-
-            mineUpdate(this.mineList)
+        })
+        mineUpdate(this.mineList)
     }
 
 

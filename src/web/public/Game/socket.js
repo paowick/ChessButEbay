@@ -93,12 +93,6 @@ import('./board.js').then(({ socket }) => {
     console.error('Error loading socket:', error);
 });
 
-export function invtUpdate(){
-    let data = {
-        invt: invtobj.invtList,
-    }
-    socket.emit('invtUpdate', stringify(data))
-}
 
 export function bid(amout) {
     if(auctionobj.auctionStage == false){ return }
@@ -116,9 +110,25 @@ export function bid(amout) {
     socket.emit('bid', data)
 }
 
-export function mineUpdate(mine) {
+export function invtUpdate(){
+    const invtValidate = [] 
+    invtobj.invtList.forEach(element => {
+        element.board = null
+        invtValidate.push(element)
+    });
     let data = {
-        mine: mine
+        invt: invtValidate,
+    }
+    socket.emit('invtUpdate', stringify(data))
+}
+export function mineUpdate(mine) {
+    const mineValidate = []
+    mine.forEach(element => {
+        element.board = null
+        mineValidate.push(element)
+    });
+    let data = {
+        mine: mineValidate
     }
     socket.emit('mineUpdate', stringify(data))
 }
@@ -167,9 +177,22 @@ function drop_server(element) {
     }
 }
 
+export function returnPieceFromMine(){
+}
+
 export function dropEmit(piece, des, board) {
     mineobj.mineListCount()
     const currentGame = JSON.parse(localStorage.getItem("currentGame"))
+    const invtValidate = [] 
+    invtobj.invtList.forEach(element => {
+        element.board = null
+        invtValidate.push(element)
+    });
+    const mineValidate = []
+    mineobj.mineList.forEach(element => {
+        element.board = null
+        mineValidate.push(element)
+    });
     let data = {
         turn: currentGame.role,
         piece: {
@@ -180,7 +203,8 @@ export function dropEmit(piece, des, board) {
             inInvt: piece.inInvt,
             timeInMine: piece.timeInMine,
         },
-        mine: mineobj.mineList,
+        mine: mineValidate,
+        invt: invtValidate,
         board: board
     }
     socket.emit('drop', stringify(data))
@@ -189,6 +213,16 @@ export function dropEmit(piece, des, board) {
 export function dropMineEmit(piece, board, mine) {
     const currentGame = JSON.parse(localStorage.getItem("currentGame"))
     piece.setCurrentTimeInMine()
+    const invtValidate = [] 
+    invtobj.invtList.forEach(element => {
+        element.board = null
+        invtValidate.push(element)
+    });
+    const mineValidate = []
+    mine.forEach(element => {
+        element.board = null
+        mineValidate.push(element)
+    });
     let data = {
         turn: currentGame.role,
         piece: {
@@ -200,7 +234,8 @@ export function dropMineEmit(piece, board, mine) {
             timeInMine: piece.timeInMine,
             currentTimeInMine: piece.currentTimeInMine
         },
-        mine: mine,
+        mine: mineValidate,
+        invt: invtValidate,
         board: board
     }
     socket.emit('drop_mine', stringify(data))
