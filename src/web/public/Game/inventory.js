@@ -23,7 +23,11 @@ export class inventory {
             return
         }
         this.invtList.push(obj)
-        this.invtSetUp()
+        this.invtSetUp();
+    }
+
+    invtPushViewer(obj) {
+        this.invtList.push(obj)
     }
 
     removeInvtList(index) {
@@ -35,28 +39,29 @@ export class inventory {
         this.invtSetUp()
     }
 
-    invtSetUpViewer(info) {
-        const invtB = info.invtB
-        const invtBLIst = []
-        const invtW = info.invtW
-        const invtWLIst = []
-        invtB.forEach(element => {
-            invtBLIst.push(this.pieceToObjViewer(element.name,"B"))
-        });
-        invtW.forEach(element => {
-            invtWLIst.push(this.pieceToObjViewer(element.name,"W"))
-        });
+    clearInvtList() {
+        this.invtList = []
+    }
+
+    invtSetUpViewer(list) {
+        console.log(list);
         const invtBdoc = document.querySelector("#invt-B")
-        invtBLIst.forEach(element => {
-            var doc = element.html()
-            doc.classList.add('invt-box')
-            invtBdoc.appendChild(doc)
-        })
         const invtWdoc = document.querySelector("#invt-W")
-        invtWLIst.forEach(element => {
-            var doc = element.html()
-            doc.classList.add('invt-box')
-            invtWdoc.appendChild(doc)
+        this.invtList = []
+        list.forEach(ele => {
+            this.invtPushViewer(this.pieceToObjViewer(ele.name, ele.team))
+        })
+        this.invtList.forEach(element => {
+            if (element.team == 'W') {
+                var doc = element.html()
+                doc.classList.add('invt-box')
+                invtWdoc.appendChild(doc)
+            }
+            if (element.team == 'B') {
+                var doc = element.html()
+                doc.classList.add('invt-box')
+                invtBdoc.appendChild(doc)
+            }
         })
     }
 
@@ -101,8 +106,7 @@ export class inventory {
         this.invtSetUp()
     }
 
-    pieceToObjViewer(piece,team) {
-        const currentGame = JSON.parse(localStorage.getItem("currentGame"))
+    pieceToObjViewer(piece, team) {
         if (piece == 'king') {
             return new king("king", null, team, true, board, 3)
         }
