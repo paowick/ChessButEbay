@@ -118,15 +118,30 @@ export function invtUpdate(){
     });
     let data = {
         invt: invtValidate,
-    }
+}
     socket.emit('invtUpdate', stringify(data))
 }
-export function mineUpdate(mine) {
+
+export function mineUpdate(mine,isReturn) {
     const mineValidate = []
     mine.forEach(element => {
         element.board = null
         mineValidate.push(element)
     });
+    const invtValidate = []
+    invtobj.invtList.forEach(element => {
+        element.board = null
+        invtValidate.push(element)
+    });
+    if(isReturn == true){
+        let data = {
+            invt: invtValidate,
+            mine: mineValidate
+        }
+        console.log("asl;idkfbgovwasidfhvbowaidasdgerhwerthwrtsdfbstsffhybuvf");
+        socket.emit('mineUpdateReturn', stringify(data))
+        return
+    }
     let data = {
         mine: mineValidate
     }

@@ -44,11 +44,10 @@ export class mine {
             if (element.currentTimeInMine <= 0) {
                 this.mineListPop(element)
                 invtobj.invtPush(element)
-                invtUpdate()
-                
+                mineUpdate(this.mineList, true)
             }
         })
-        mineUpdate(this.mineList)
+        mineUpdate(this.mineList, false)
     }
 
 

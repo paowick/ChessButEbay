@@ -173,7 +173,6 @@ io.sockets.on("connection", async (socket) => {
             turn: turn
         }
         socket.broadcast.to(socket.request._query.code).emit(`drop_server`, drop)
-        dropmineInvtRedis(socket,data)
     })
 
     socket.on("drop_mine", (arg) => {
@@ -195,7 +194,14 @@ io.sockets.on("connection", async (socket) => {
 
     socket.on("mineUpdate", (arg) => {
         const data = JSON.parse(arg);
-        console.log(data);
+        setMineRedis(socket.request._query.code, data.mine)
+    })
+
+    socket.on("mineUpdateReturn", (arg) => {
+        const data = JSON.parse(arg);
+        console.log('return',data);
+        // its work but where are u form another 2
+        dropmineInvtRedis(socket,data)
     })
 
     socket.on("bid", async (arg) => {
@@ -227,7 +233,6 @@ async function invtUpdate(socket,arg) {
     if (socket.request._query.id == room.playerW) {
         room.invtW = await data.invt
     }
-    //it not update but return OK wat???????
     await redisClient.set(socket.request._query.code, stringify(room), {
         NX: false
     })
