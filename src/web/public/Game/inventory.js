@@ -44,7 +44,6 @@ export class inventory {
     }
 
     invtSetUpViewer(list) {
-        console.log(list);
         const invtBdoc = document.querySelector("#invt-B")
         const invtWdoc = document.querySelector("#invt-W")
         this.invtList = []

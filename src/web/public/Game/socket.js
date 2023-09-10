@@ -34,13 +34,11 @@ import('./board.js').then(({ socket }) => {
     
     socket.on('get-piece_auction_server', async (arg) => {
         const user = JSON.parse(localStorage.getItem('user'))
-        console.log(arg);
         if(user.id == arg.id){
             invtobj.invtPush(invtobj.pieceToObj(arg.newPiece))
             invtUpdate()
             invtobj.invtSetUp()
         }
-        console.log(arg);
         auctionobj.setAuctionStage(arg.room.auctionStage)
         auctionobj.auctionSetUp(arg.room)
         currentBidUpdate(arg.room)
@@ -70,7 +68,6 @@ import('./board.js').then(({ socket }) => {
 
     socket.on('drop_server', async (arg) => {
         const currentGame = JSON.parse(localStorage.getItem("currentGame"))
-        console.log(arg);
         mineobj.mineListCount()
         if (arg.turn === currentGame.role) {
             changeMyTurn(true)
@@ -101,7 +98,6 @@ export function bid(amout) {
     amout = parseInt(amout)
     if (amout == 0) { return }
     if (isNaN(amout)) { return }
-    console.log(amout,coin);
     if (amout > coin) { return }
     const user = JSON.parse(localStorage.getItem('user'))
     const data = {

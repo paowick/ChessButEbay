@@ -312,7 +312,6 @@ export async function moveClient(source, destination, promoted) {
     source = null
     localStorage.setItem("board", stringify(board))
     auctionobj.setAuctionStage(true)
-    console.log(auctionobj.auctionStage);
     changeMyTurn(false)
     clearAllHightLight()
 }

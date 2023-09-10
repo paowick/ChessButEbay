@@ -38,7 +38,6 @@ export class mine {
     mineListCount() {
         this.mineList.forEach(element => {
             element.countCurrentTimeInMine()
-            console.log(`${element.name} ${element.team} ${element.currentTimeInMine}`)
         });
         this.mineList.forEach(element => {
             if (element.currentTimeInMine <= 0) {
@@ -53,7 +52,6 @@ export class mine {
 
 
     drop_mine_server(element) {
-        console.log(element);
         if (element.name == 'king') {
             const obj = new king("king", element.pos, element.team, true, board, 3)
             obj.currentTimeInMine = element.currentTimeInMine
