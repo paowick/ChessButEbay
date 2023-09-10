@@ -150,12 +150,13 @@ io.sockets.on("connection", async (socket) => {
         room.mine = await data.mine
         room.auctionStage = true
         if (socket.request._query.id == room.playerB) {
+            room.coinB = await data.coin
             room.invtB = await data.invt
         }
         if (socket.request._query.id == room.playerW) {
+            room.coinW = await data.coin
             room.invtW = await data.invt
         }
-        console.log(turn);
         invtViewerUpdate(socket, room)
         redisClient.set(socket.request._query.code, stringify(room), {
             NX: false
@@ -257,6 +258,8 @@ async function invtViewerUpdate(socket, room) {
         playerW: room.playerW,
         invtB: room.invtB,
         invtW: room.invtW,
+        coinB: room.coinB,
+        coinW: room.coinW,
     }
     io.sockets.to(socket.request._query.code).emit(`invtViewerUpdate`, data)
 }

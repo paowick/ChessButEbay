@@ -12,7 +12,7 @@ import { mineobj } from "./board.js";
 import { startGame } from "./script.js";
 import { updateJoinPop } from "./script.js";
 import { coin } from "./board.js";
-import { coinUpdate,coinUpdate_Server } from "./script.js";
+import { coinUpdateViewer,coinUpdate_Server } from "./script.js";
 import { currentBidUpdate } from "./script.js";
 import { auctionobj } from "./board.js";
 import { invtobj,invtBlack,invtWhite } from "./board.js";
@@ -94,10 +94,13 @@ import('./board.js').then(({ socket }) => {
         if(user.id == arg.playerW){return}
         invtBlack.invtSetUpViewer(arg.invtB,"B")
         invtWhite.invtSetUpViewer(arg.invtW,"W")
+        coinUpdateViewer(arg)
     })
 }).catch((error) => {
     console.error('Error loading socket:', error);
 });
+
+
 
 
 export function bid(amout) {
@@ -166,6 +169,7 @@ export function move(source, destination, promoted) {
         board: board,
         mine: mineValidate,
         invt: invtValidate,
+        coin: coin
     }
     if (destination != source) {
         socket.emit("move", stringify(data))

@@ -23,6 +23,7 @@ var invtList = []
 var mineList = []
 var minelimt = 3
 export let coin = 0
+export let minereturnRate = 50
 export function setCoin(data) {
     coin = data
 }

@@ -110,6 +110,11 @@ export function coinUpdate_Server(info) {
     document.querySelector('#coin-white').innerHTML = `coin : ${info.coinW}`
 }
 
+export function coinUpdateViewer(info) {
+    document.querySelector('#coin-black').innerHTML = `coin : ${info.coinB}`
+    document.querySelector('#coin-white').innerHTML = `coin : ${info.coinW}`
+}
+
 export function coinUpdate(coin) {
     document.querySelectorAll('#coin').forEach(element => {
         element.innerHTML = ''
