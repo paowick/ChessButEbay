@@ -15,7 +15,7 @@ import { coin } from "./board.js";
 import { coinUpdate,coinUpdate_Server } from "./script.js";
 import { currentBidUpdate } from "./script.js";
 import { auctionobj } from "./board.js";
-import { invtobj } from "./board.js";
+import { invtobj,invtBlack,invtWhite } from "./board.js";
 import { mine } from "./mine.js";
 const user = JSON.parse(localStorage.getItem('user'))
 
@@ -87,6 +87,14 @@ import('./board.js').then(({ socket }) => {
         currentBidUpdate(info)
         coinUpdate_Server(info)
     }) 
+
+    socket.on('invtViewerUpdate', async (arg) => {
+        const user = JSON.parse(localStorage.getItem('user'))
+        if(user.id == arg.playerB){return}
+        if(user.id == arg.playerW){return}
+        invtBlack.invtSetUpViewer(arg.invtB,"B")
+        invtWhite.invtSetUpViewer(arg.invtW,"W")
+    })
 }).catch((error) => {
     console.error('Error loading socket:', error);
 });

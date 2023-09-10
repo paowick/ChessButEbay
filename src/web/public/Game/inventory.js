@@ -43,13 +43,15 @@ export class inventory {
         this.invtList = []
     }
 
-    invtSetUpViewer(list) {
+    invtSetUpViewer(list,team) {
         const invtBdoc = document.querySelector("#invt-B")
         const invtWdoc = document.querySelector("#invt-W")
         this.invtList = []
         list.forEach(ele => {
             this.invtPushViewer(this.pieceToObjViewer(ele.name, ele.team))
         })
+        if (team == 'W') {invtWdoc.innerHTML = ''}
+        if (team == 'B') {invtBdoc.innerHTML = ''}
         this.invtList.forEach(element => {
             if (element.team == 'W') {
                 var doc = element.html()

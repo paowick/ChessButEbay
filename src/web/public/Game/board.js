@@ -65,8 +65,8 @@ window.onload = run()
 export async function run() {
     socket.on('board', async (arg) => {
         const info = arg.boardRedis
-        invtBlack.invtSetUpViewer(info.invtB)
-        invtWhite.invtSetUpViewer(info.invtW)
+        invtBlack.invtSetUpViewer(info.invtB,"B")
+        invtWhite.invtSetUpViewer(info.invtW,"W")
         info.mine.forEach(element => {
             mineobj.drop_mine_server(element);
         })
