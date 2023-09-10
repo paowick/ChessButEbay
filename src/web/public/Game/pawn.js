@@ -4,6 +4,7 @@ import { bishop } from "./bishop.js"
 import { rook } from "./rook.js"
 import { knight } from "./knight.js"
 import { win } from "./socket.js"
+import { board } from "./board.js"
 export class pawn extends pieces {
     constructor(name, pos, team, isKing, board, timeInMine, firstmove) {
         super(name, pos, team, isKing, board, timeInMine)
@@ -45,6 +46,7 @@ export class pawn extends pieces {
         }
     }
     setPiece() {
+        if(this.board == null){this.board = board}
         if (this.team == "B") {
             if (this.board[this.pos[0]][this.pos[1]] != null && this.board[this.pos[0]][this.pos[1]].name == "king") {
                 win("B")
