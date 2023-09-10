@@ -4,6 +4,7 @@ import { board } from "./board.js"
 
 import redis from "redis"
 import { log } from 'console';
+import { loadavg } from 'os';
 const redisClient = redis.createClient({
     socket: {
         host: 'gameredis',
@@ -141,7 +142,6 @@ io.sockets.on("connection", async (socket) => {
     socket.on("move", async (arg) => {
         const data = JSON.parse(arg)
         let turn = await data.turn
-        console.log(turn);
         if (turn == "W") { turn = "B" } else if (turn == "B") { turn = "W" }
         const roomJSON = await redisClient.get(socket.request._query.code)
         const room = await JSON.parse(roomJSON)
@@ -169,31 +169,29 @@ io.sockets.on("connection", async (socket) => {
     })
 
     socket.on("drop", async (arg) => {
-        // const data = JSON.parse(arg)
-        // let turn = await data.turn
-        // console.log(turn);
-        // if (turn == "W") { turn = "B" } else if (turn == "B") { turn = "W" }
-        // const roomJSON = await redisClient.get(socket.request._query.code)
-        // const room = await JSON.parse(roomJSON)
-        // room.board = await data.board
-        // room.turn = await data.turn
-        // room.mine = await data.mine
-        // room.auctionStage = true
-        // if (socket.request._query.id == room.playerB) {
-        //     room.invtB = await data.invt
-        // }
-        // if (socket.request._query.id == room.playerW) {
-        //     room.invtW = await data.invt
-        // }
-        // invtViewerUpdate(socket, room)
-        // redisClient.set(socket.request._query.code, stringify(room), {
-        //     NX: false
-        // })
-        // const drop = {
-        //     piece: data.piece,
-        //     turn: turn
-        // }
-        // socket.broadcast.to(socket.request._query.code).emit(`drop_server`, drop)
+        const roomJSON = await redisClient.get(socket.request._query.code)
+        const room = await JSON.parse(roomJSON)
+        const data = JSON.parse(arg)
+        let turn = await data.turn
+        if (turn == "W") { turn = "B" } else if (turn == "B") { turn = "W" }
+        room.board = await data.board
+        room.turn = await data.turn
+        room.auctionStage = true
+        if (socket.request._query.id == room.playerB) {
+            room.invtB = await data.invt
+        }
+        if (socket.request._query.id == room.playerW) {
+            room.invtW = await data.invt
+        }
+        redisClient.set(socket.request._query.code, stringify(room), {
+            NX: false
+        })
+        invtViewerUpdate(socket, room)
+        const drop = {
+            piece: data.piece,
+            turn: turn
+        }
+        socket.broadcast.to(socket.request._query.code).emit(`drop_server`, drop)
     })
 
     socket.on("drop_mine", (arg) => {
@@ -215,7 +213,7 @@ io.sockets.on("connection", async (socket) => {
 
     socket.on("mineUpdate", (arg) => {
         const data = JSON.parse(arg);
-        setMineRedis(socket.request._query.code, data.mine)
+        // setMineRedis(socket.request._query.code, data.mine)
     })
 
     socket.on("bid", async (arg) => {

@@ -195,7 +195,7 @@ function drop_server(element) {
 export function returnPieceFromMine(){
 }
 
-export function dropEmit(piece, des, board) {
+export function dropEmit(piece,board) {
     mineobj.mineListCount()
     const currentGame = JSON.parse(localStorage.getItem("currentGame"))
     const invtValidate = [] 
@@ -222,6 +222,7 @@ export function dropEmit(piece, des, board) {
         invt: invtValidate,
         board: board
     }
+    console.log(invtValidate);
     socket.emit('drop', stringify(data))
 }
 

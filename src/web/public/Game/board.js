@@ -270,15 +270,17 @@ document.querySelectorAll('.box')
 
 
 
-export function drop(piece, destination) {
+export function drop(piece, destination,invtId) {
+
     const pos = tranSlateTopos(destination)
     piece.setpos(pos)
     piece.setInInvt(false)
     piece.setPiece()
-    clearAllHightLight()
+    invtobj.removeInvtList(invtId)
     source = null
     changeMyTurn(false)
-    dropEmit(piece, destination, board)
+    clearAllHightLight()
+    dropEmit(piece, board)
 }
 
 
@@ -339,7 +341,7 @@ export function moveClient_Server(source, destination, promoted) {
     clearAllHightLight()
 }
 export function clearAllHightLight() {
-
+    source = null
     document.querySelectorAll(".hight-light").forEach(div => {
         div.parentNode.removeChild(div)
     })

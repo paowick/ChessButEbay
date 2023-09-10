@@ -247,13 +247,14 @@ export function hightLightMine(piece, id) {
 
 
 export function hightLightDrop(piece, id) {
+    console.log(id);
     document.querySelectorAll('.drop').forEach(div => {
         div.addEventListener('click', function () {
             if (!myturn) {
                 clearAllHightLight()
                 return
             }
-            drop(piece, this.id)
+            drop(piece, this.id, id)
             removeAllEvent()
             invtobj.removeInvtList(id)
             clearAllHightLight()
