@@ -16,6 +16,7 @@ import { coinUpdate,coinUpdate_Server } from "./script.js";
 import { currentBidUpdate } from "./script.js";
 import { auctionobj } from "./board.js";
 import { invtobj } from "./board.js";
+import { mine } from "./mine.js";
 const user = JSON.parse(localStorage.getItem('user'))
 
 document.querySelector("#test").addEventListener("click", () => {
@@ -133,23 +134,25 @@ export function mineUpdate(mine,isReturn) {
         element.board = null
         invtValidate.push(element)
     });
-    if(isReturn == true){
-        let data = {
-            invt: invtValidate,
-            mine: mineValidate
-        }
-        console.log("asl;idkfbgovwasidfhvbowaidasdgerhwerthwrtsdfbstsffhybuvf");
-        socket.emit('mineUpdateReturn', stringify(data))
-        return
-    }
     let data = {
         mine: mineValidate
     }
+    if(isReturn){return}
     socket.emit('mineUpdate', stringify(data))
 }
 
 export function move(source, destination, promoted) {
     mineobj.mineListCount()
+    const mineValidate = []
+    mineobj.mineList.forEach(element => {
+        element.board = null
+        mineValidate.push(element)
+    });
+    const invtValidate = []
+    invtobj.invtList.forEach(element => {
+        element.board = null
+        invtValidate.push(element)
+    });
     const currentGame = JSON.parse(localStorage.getItem("currentGame"))
     let data = {
         promoted: promoted,
@@ -157,7 +160,8 @@ export function move(source, destination, promoted) {
         source: source,
         destination: destination,
         board: board,
-        mine: mineobj.mineList
+        mine: mineValidate,
+        invt: invtValidate,
     }
     if (destination != source) {
         socket.emit("move", stringify(data))

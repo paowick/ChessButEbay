@@ -140,13 +140,23 @@ io.sockets.on("connection", async (socket) => {
 
     socket.on("move", async (arg) => {
         const data = JSON.parse(arg)
-        setBoardRedis(socket.request._query.code, data.board, data.turn)
-        setMineRedis(socket.request._query.code, data.mine)
-
-
+        let turn = await data.turn
+        console.log(turn);
+        if (turn == "W") { turn = "B" } else if (turn == "B") { turn = "W" }
         const roomJSON = await redisClient.get(socket.request._query.code)
         const room = await JSON.parse(roomJSON)
+        room.board = await data.board
+        room.turn = await data.turn
+        room.mine = await data.mine
         room.auctionStage = true
+        if (socket.request._query.id == room.playerB) {
+            room.invtB = await data.invt
+        }
+        if (socket.request._query.id == room.playerW) {
+            room.invtW = await data.invt
+        }
+        console.log(turn);
+        invtViewerUpdate(socket, room)
         redisClient.set(socket.request._query.code, stringify(room), {
             NX: false
         })
@@ -178,7 +188,7 @@ io.sockets.on("connection", async (socket) => {
     socket.on("drop_mine", (arg) => {
         const data = JSON.parse(arg);
         let turn = null
-        dropmineInvtRedis(socket,data)
+        dropmineInvtRedis(socket, data)
         const drop = {
             piece: data.piece,
             turn: turn
@@ -196,14 +206,7 @@ io.sockets.on("connection", async (socket) => {
         const data = JSON.parse(arg);
         setMineRedis(socket.request._query.code, data.mine)
     })
-
-    socket.on("mineUpdateReturn", (arg) => {
-        const data = JSON.parse(arg);
-        console.log('return',data);
-        // its work but where are u form another 2
-        dropmineInvtRedis(socket,data)
-    })
-
+    
     socket.on("bid", async (arg) => {
         bid(arg, socket.request._query.code, socket)
     })
@@ -211,19 +214,19 @@ io.sockets.on("connection", async (socket) => {
     socket.on("invtUpdate", async (arg) => {
         invtUpdate(socket, arg)
     })
-    
+
     socket.on("test-auction", async (arg) => {
         getAuction(socket)
-        
+
     })
-    
-    
+
+
     socket.on("disconnect", () => {
         console.log('dis')
     })
 });
 
-async function invtUpdate(socket,arg) {
+async function invtUpdate(socket, arg) {
     const data = JSON.parse(arg)
     const roomJSON = await redisClient.get(socket.request._query.code)
     const room = await JSON.parse(roomJSON)
@@ -321,7 +324,7 @@ function getRandomChessPiece() {
 
 // Example 
 
-async function dropmineInvtRedis(socket,data){
+async function dropmineInvtRedis(socket, data) {
     const roomJSON = await redisClient.get(socket.request._query.code)
     const room = await JSON.parse(roomJSON)
     room.mine = await data.mine
