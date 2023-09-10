@@ -341,7 +341,6 @@ export function moveClient_Server(source, destination, promoted) {
     clearAllHightLight()
 }
 export function clearAllHightLight() {
-    source = null
     document.querySelectorAll(".hight-light").forEach(div => {
         div.parentNode.removeChild(div)
     })
