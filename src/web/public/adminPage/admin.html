@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About</title>
+    <link rel="stylesheet" href="../../public/adminPage/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="../../public/adminPage/admin.js"></script>
+</head>
+<body>
+        <script src="https://code.jquery.com/jquery.min.js"></script>
+    <div id="nav-ph"></div>
+    <script>
+        $(function () {
+            $("#nav-ph").load("../../assets/component/navbar/navbar.html")
+        })
+    </script>
+    <main>
+        
+        <div class="user-con">
+            <div class="profile-main" id="profile-main">
+                <img id="profile-pic" alt="">
+            </div>
+            <div id="name-main" align="left"></div>
+            <div id="FLname" align="left"></div>
+            <div id="email" align="left"></div>
+            <div id="score" align="left"></div>
+            <div id="status" align="left"></div>
+            <div class="button-con">
+                <button onclick="Ban()">Ban</button>
+                <button onclick="UnBan()">Unban</button>
+                <button onclick="Edit()">Edit</button>
+                <button onclick="Delete()">Delete</button>
+
+            </div>
+
+        </div>
+        <div class="userlist-info">
+            <h1>User</h1>
+            <div class="user-con"></div>
+        </div>
+
+    </main>
+</body>
+</html>

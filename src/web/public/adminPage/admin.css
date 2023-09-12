@@ -1,0 +1,158 @@
+body {
+    background-image: url("../../assets/image/bg02.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    /* overflow: hidden; */
+}
+
+main {
+    justify-content: center;
+    width: 100%;
+    display: flex;
+}
+
+.user-con {
+    margin: 30px;
+    font-family: Courier New;
+    font-weight: 650;
+    padding: 25px;
+    /* backdrop-filter: blur(10px); */
+    background-color: rgba(23, 23, 23, 0.5);
+    border-radius: 50px;
+    display: flex;
+    width: 700px;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    gap: 50px;
+}
+
+button {
+    font-family: Courier New;
+    font-weight: 650;
+    font-size: 20px;
+    color: white;
+    background-color: #404040;
+    padding: 10px;
+    width: auto;
+    height: 50px;
+    border-radius: 25px;
+    box-shadow: 0 0 20px #000000;
+    margin-bottom: 10px;
+}
+
+button:hover {
+    scale: 1.05;
+    border-radius: 25px;
+    color: white;
+    background-color: black;
+    text-shadow: 0 0 5px #ffffff;
+
+
+}
+
+.user-game-info {
+    font-family: Courier New;
+    font-weight: 650;
+    font-size: 20px;
+
+    margin: 30px;
+    width: 1000px;
+    border-radius: 50px;
+    background-color: rgba(23, 23, 23, 0.5);
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.history-con{
+    width: 90%;
+    height: 80%;
+    background-color: #404040;
+    border: 1px solid #252525;
+    box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
+}
+
+.profile-main>img {
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 100%;
+}
+
+.edit-icon {
+    width: 80px;
+    height: 80px;
+    object-fit: fill;
+    border-radius: 100%;
+    position: absolute;
+    transform: translate(100%, 360%);
+}
+
+.edit-icon>img {
+    width: 80px;
+    height: 80px;
+    object-fit: fill;
+    border-radius: 100%;
+}
+
+.edit-icon:hover {
+    background-color: #EDBA00;
+
+}
+
+
+
+.edit-pop {
+    font-family: Courier New;
+    font-weight: 650;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    visibility: hidden;
+    margin: 0 auto;
+    border: 1px solid black;
+    border-radius: 25px;
+    background-color: #404040;
+    box-shadow: 2px 2px gray;
+    width: 600px;
+    height: 800px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 10%;
+}
+
+.edit-pop:hover {
+    transform: scale(1.05);
+    transition: .4s;
+}
+
+.profile-pop>img {
+    width: 250px;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 100%;
+}
+
+
+
+h3 {
+    color: white;
+
+}
+
+.h3-con {
+    width: 400px;
+    height: 40px;
+    margin: 0 auto;
+    font-size: 17px;
+    font-family: Courier New;
+    font-weight: 650;
+    display: flex;
+    justify-content: space-between;
+}
