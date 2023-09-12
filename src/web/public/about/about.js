@@ -2,7 +2,7 @@ function clickFacebook() {
     location.href = 'https://www.facebook.com/sarunya.ploy.7';
 }
 function clickTwitter() {
-    location.href = 'https://www.facebook.com/sarunya.ploy.7';
+    location.href = '/adminPage';
 }
 function clickInstagram() {
     location.href = 'https://www.instagram.com/p.plxy/';

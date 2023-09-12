@@ -3,7 +3,6 @@ body {
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
-    /* overflow: hidden; */
 }
 
 main {
@@ -17,7 +16,6 @@ main {
     font-family: Courier New;
     font-weight: 650;
     padding: 25px;
-    /* backdrop-filter: blur(10px); */
     background-color: rgba(23, 23, 23, 0.5);
     border-radius: 50px;
     display: flex;
@@ -52,7 +50,7 @@ button:hover {
 
 }
 
-.user-game-info {
+.userlist-info {
     font-family: Courier New;
     font-weight: 650;
     font-size: 20px;
