@@ -23,6 +23,7 @@ var invtList = []
 var mineList = []
 var minelimt = 3
 export let coin = 0
+export let minereturnRate = 50
 export function setCoin(data) {
     coin = data
 }
@@ -30,6 +31,8 @@ export function setCoin(data) {
 export const invtobj = new inventory(invtList)
 export const mineobj = new mine(mineList, minelimt, 1000)
 export const auctionobj = new auction(null, null, null, null, null)
+export const invtBlack = new inventory([])
+export const invtWhite = new inventory([])
 
 export var board = [
     [null, null, null, null, null, null, null, null],
@@ -63,6 +66,8 @@ window.onload = run()
 export async function run() {
     socket.on('board', async (arg) => {
         const info = arg.boardRedis
+        invtBlack.invtSetUpViewer(info.invtB,"B")
+        invtWhite.invtSetUpViewer(info.invtW,"W")
         info.mine.forEach(element => {
             mineobj.drop_mine_server(element);
         })
@@ -266,15 +271,17 @@ document.querySelectorAll('.box')
 
 
 
-export function drop(piece, destination) {
+export function drop(piece, destination,invtId) {
+
     const pos = tranSlateTopos(destination)
     piece.setpos(pos)
     piece.setInInvt(false)
     piece.setPiece()
-    clearAllHightLight()
+    invtobj.removeInvtList(invtId)
     source = null
     changeMyTurn(false)
-    dropEmit(piece, destination, board)
+    clearAllHightLight()
+    dropEmit(piece, board)
 }
 
 
@@ -308,7 +315,6 @@ export async function moveClient(source, destination, promoted) {
     source = null
     localStorage.setItem("board", stringify(board))
     auctionobj.setAuctionStage(true)
-    console.log(auctionobj.auctionStage);
     changeMyTurn(false)
     clearAllHightLight()
 }
@@ -336,7 +342,6 @@ export function moveClient_Server(source, destination, promoted) {
     clearAllHightLight()
 }
 export function clearAllHightLight() {
-
     document.querySelectorAll(".hight-light").forEach(div => {
         div.parentNode.removeChild(div)
     })

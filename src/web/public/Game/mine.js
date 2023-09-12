@@ -1,7 +1,7 @@
-import { mineSetUp } from "./script.js"
+import { coinUpdate, mineSetUp } from "./script.js"
 import { mineUpdate } from "./socket.js"
 import { invtobj } from "./board.js"
-
+import { coin,setCoin } from "./board.js";
 import { king } from './king.js';
 import { pawn } from './pawn.js';
 import { queen } from './queen.js';
@@ -9,7 +9,7 @@ import { bishop } from './bishop.js';
 import { knight } from './knight.js';
 import { rook } from './rook.js';
 import { board } from "./board.js";
-import { invtUpdate } from "./socket.js";
+import { minereturnRate } from "./board.js";
 export class mine {
     constructor(mineList, minelimit, mineresource) {
         this.mineList = mineList
@@ -32,30 +32,30 @@ export class mine {
             invtobj.invtList = []
         }
         mineSetUp()
-        // decrease coin
     }
 
     mineListCount() {
+        const currentGame = JSON.parse(localStorage.getItem("currentGame"))
         this.mineList.forEach(element => {
             element.countCurrentTimeInMine()
-            console.log(`${element.name} ${element.team} ${element.currentTimeInMine}`)
         });
         this.mineList.forEach(element => {
             if (element.currentTimeInMine <= 0) {
+                if(currentGame.role == element.team){
+                    setCoin(coin + minereturnRate)
+                    coinUpdate(coin)
+                }
                 this.mineListPop(element)
                 invtobj.invtPush(element)
-                invtUpdate()
-
-
+                mineUpdate(this.mineList,true)
+                return
             }
-        }),
-
-            mineUpdate(this.mineList)
+        })
+        mineUpdate(this.mineList,false)
     }
 
 
     drop_mine_server(element) {
-        console.log(element);
         if (element.name == 'king') {
             const obj = new king("king", element.pos, element.team, true, board, 3)
             obj.currentTimeInMine = element.currentTimeInMine
