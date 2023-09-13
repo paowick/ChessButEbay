@@ -18,6 +18,6 @@
     "mariadb": "^3.0.2",
     "nodemailer": "^6.9.1",
     "nodemon": "^2.0.20",
-    "redis": "^4.6.4"
+    "redis": "^4.6.8"
   }
 }
