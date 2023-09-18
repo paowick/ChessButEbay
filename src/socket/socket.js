@@ -82,6 +82,9 @@ io.sockets.on("connection", async (socket) => {
 
     socket.on('createRoom', (data) => {
         const value = {
+            roomname:data.req.roomName,
+            auctiontime:data.req.aucTime,
+            confcoins:parseInt(data.req.coins),
             auctionslot1: null,
             auctionslot2: null,
             currentBid: 0,
@@ -92,11 +95,11 @@ io.sockets.on("connection", async (socket) => {
             playerB: null,
             playerBName: null,
             invtB: [],
-            coinB: 1000,
+            coinB: parseInt(data.req.coins),
             playerW: null,
             playerWName: null,
             invtW: [],
-            coinW: 1000,
+            coinW: parseInt(data.req.coins),
             mine: [],
             gameStart: false,
             board: board,
@@ -112,8 +115,13 @@ io.sockets.on("connection", async (socket) => {
 
 
 
-    socket.on("win", (data) => {
+    socket.on("win", async (data) => {
+        const roomJSON = await redisClient.get(socket.request._query.code)
+        const room = await JSON.parse(roomJSON)
         const value = {
+            roomname:room.roomName,
+            auctiontime:room.aucTime,
+            confcoins:room.confcoins,
             auctionslot1: null,
             auctionslot2: null,
             currentBid: 0,
@@ -123,11 +131,11 @@ io.sockets.on("connection", async (socket) => {
             playerB: null,
             playerBName: null,
             invtB: [],
-            coinB: 1000,
+            coinB: room.confcoins,
             playerW: null,
             playerWName: null,
             invtW: [],
-            coinW: 1000,
+            coinW: room.confcoins,
             mine: [],
             gameStart: false,
             board: board,

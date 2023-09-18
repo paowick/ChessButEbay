@@ -192,11 +192,12 @@ app.post(`/editpassword`, async (req, res) => {
 
 app.post(`/createRoom`, async (req,res)=>{
     try {
-        const roomcode = await sc.createRoom()
+        const roomcode = await sc.createRoom(req.body)
         res.json({
-            roomcode:roomcode
+            roomcode:roomcode,
         })
     } catch (error) {
+        console.log(error);
         res.sendStatus(500)
     }
 })
@@ -212,7 +213,8 @@ app.get(`/getroom`, async (req,res)=>{
                 playerB:dataconvert.playerB,
                 playerBName:dataconvert.playerBName,
                 playerW:dataconvert.playerW,
-                playerWName:dataconvert.playerWName
+                playerWName:dataconvert.playerWName,
+                name:dataconvert.roomname
             }
             datares.push(data)
         });

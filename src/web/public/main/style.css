@@ -3,6 +3,8 @@ body {
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
+    height: 950px;
+    overflow: hidden;
 }
 
 main {
@@ -15,7 +17,7 @@ main {
 
 .option-con {
     width: 30%;
-    height: 700px; 
+    height: 700px;
     padding: 2px;
     background-color: #404040;
     border-radius: 30px;
@@ -27,7 +29,7 @@ main {
     border: 1px solid #252525;
 }
 
-.board-con{
+.board-con {
     width: 1100px;
     height: 450px;
     background-color: #404040;
@@ -42,7 +44,7 @@ main {
     background-color: #404040;
     margin: 10px;
     padding: 5px;
-    
+
 }
 
 ::-webkit-scrollbar {
@@ -71,7 +73,8 @@ main {
     height: 15%;
     background-color: aliceblue;
 }
-.cre-but{
+
+.cre-but {
     width: 274px;
 }
 
@@ -87,8 +90,9 @@ input {
     /*border-radius: 25px;*/
     box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
     color: white;
-   
+
 }
+
 button {
     font-family: Courier New;
     font-weight: 650;
@@ -99,26 +103,26 @@ button {
     width: 100px;
     height: 40px;
     transition: .4s ease-in-out;
-    
+
 }
 
 
-p{
+p {
     font-family: Courier New;
     font-size: 40px;
     color: #000000;
 }
 
-.test{
+.test {
     background-color: #000000;
     height: 70%;
 
 }
 
-.chat-con{
+.chat-con {
     background-color: #404040;
     width: 1100px;
-    height: 75px; 
+    height: 75px;
     padding: 10px;
     background-color: #404040;
     /*border-radius: 20px;*/
@@ -127,19 +131,79 @@ p{
     align-items: center;
     justify-content: center;
     gap: 20px;
-    
-    
+
+
 }
 
-.chatmessage{
+.chatmessage {
     background-color: #404040;
     width: 990px;
-    height: 40px; 
+    height: 40px;
 }
 
-.chat-room{
+.chat-room {
     /*display: none;*/
     background-color: #404040;
     width: 1100px;
-    height: 180px; 
+    height: 180px;
+}
+
+.roomconfPOP {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 900px;
+    height: 350px;
+    margin: 0 auto;
+    transform: translateY(-680px);
+    border-radius: 20px;
+    border: 4px solid#171717;
+    background: #404040;
+}
+
+.roomconfPOP>div>h1 {
+    color: #FFF;
+    text-align: center;
+    font-family: Courier Prime;
+    font-size: 48px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.roomconfPOP>button {
+    width: 274px;
+}
+.close {
+    position: absolute;
+    width: 52px;
+    height: 52px;
+    top: 18px;
+    right: 20px;
+}
+.close:hover{
+    cursor: pointer;
+}
+.conFfrom {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    width: 750px;
+    height: 200px;
+}
+
+.conFfrom>div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.conFfrom>div>input {
+    width: 473px;
+    height: 43px;
+    margin: 0 !important;
+    border-radius: 20px;
+    background: #404040;
+    box-shadow: 2px 5px 10px 0px #050505 inset;
 }

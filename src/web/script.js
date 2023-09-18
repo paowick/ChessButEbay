@@ -18,10 +18,11 @@ const redisClient = redis.createClient({
 await redisClient.connect()
 
 
-export async function createRoom() {
+export async function createRoom(req) {
     const room = generateString(5)
     const data = {
-        room: room
+        room: room,
+        req:req
     }
     socket.emit('createRoom', data);
     return room

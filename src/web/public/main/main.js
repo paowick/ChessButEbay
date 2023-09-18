@@ -22,24 +22,11 @@ setInterval(() => {
 
 
 function roomtabview(room) {
-    let player = ''
-    if (room.playerB == null && room.playerW == null) {
-        player = "No one play"
-    }
-    if (room.playerB != null && room.playerW == null) {
-        player = `${room.playerBName} as Black`
-    }
-    if (room.playerB == null && room.playerW != null) {
-        player = `${room.playerWName} as white`
-    }
-    if (room.playerB != null && room.playerW != null) {
-        player = `${room.playerWName} VS ${room.playerBName}`
-    }
     const text = `
                     <div class="room-code">
                     </div>
                     <div class="info">
-                        <p class="player">${player}</p>
+                        <p class="player">${room.name}</p>
                     </div>
                     <button class="join-butt" type="button" value="${room.code}" onclick="joingame(this.value)">Enter</button>
     `
@@ -74,8 +61,17 @@ function joingame(code) {
 
 async function createRoom() {
     const user = JSON.parse(localStorage.getItem('user'))
+    let roomName = user.name
+    if (document.querySelector("#roomName").value != "") {
+        roomName = document.querySelector("#roomName").value
+    }
+    let coins = document.querySelector('#coins').value
+    let aucTime = document.querySelector("#auc-time").value
+    console.log(roomName, coins, aucTime);
     const data = {
-        user: user
+        roomName:roomName,
+        coins:coins,
+        aucTime:aucTime
     }
     const res = await fetch("/createRoom", {
         method: 'POST',
@@ -94,13 +90,19 @@ async function createRoom() {
     if (res.status == 500) {
         alert('server down')
     }
-
-
-
 }
 
 
 
+async function roomconfig() {
+    document.querySelector(".roomconfPOP").style.display = "flex"
+    const user = JSON.parse(localStorage.getItem('user'))
+    const inRoomName = document.querySelector('#roomName')
+    inRoomName.placeholder = `default: ${user.name}`
+    document.querySelector('.close').addEventListener("click", () => {
+        document.querySelector(".roomconfPOP").style.display = "none"
+    })
+}
 
 
 
