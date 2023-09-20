@@ -110,6 +110,13 @@ services:
     networks:
       - backend
       
+  chatredis:
+    container_name: chatredis
+    restart: always
+    image: redis
+    networks:
+      - backend
+      
   db:
     container_name: db
     image: mariadb
