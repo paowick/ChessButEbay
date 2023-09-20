@@ -50,6 +50,20 @@ app.use(sessions({
 }));
 
 
+app.get('/admin',(req,res)=>{
+    console.log(typeof(req.session.user.admin.data[0]));
+    try {
+        if(req.session.user.admin.data[0] == 0){
+            return res.redirect("/")
+        }
+        if (!req.session.user) {
+            return res.redirect("/login")
+        }
+        res.sendFile(`${__dirname}/public/adminPage/admin.html`)
+    } catch (e) {
+        res.status(500)
+    }
+})
 
 
 
