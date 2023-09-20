@@ -32,9 +32,10 @@ io.use(function (socket, next) {
 io.sockets.on("connection", async (socket) => {
     const chat = await redisClientChat.lrange("chat", -50, -1);
     io.sockets.to(socket.id).emit("chatInit", {
-        chat:chat
+        chat: chat
     });
     socket.on("msgGlobal", async (arg) => {
+        arg.timestamp = now()
         io.emit("msgGlobal", arg)
         redisClientChat.rpush("chat", stringify(arg))
         const data = await redisClientChat.lrange("chat", 0, -1);
@@ -46,6 +47,20 @@ io.sockets.on("connection", async (socket) => {
     console.log(`connnect ${socket.id}`)
 })
 
+function now(){
+    var date = new Date();
+    let now = new Date(date.valueOf()+25200000)
+    return ((now.getMonth() + 1) + '/' +
+        (now.getDate()) + '/' +
+        now.getFullYear() + " " +
+        now.getHours() + ':' +
+        ((now.getMinutes() < 10)
+            ? ("0" + now.getMinutes())
+            : (now.getMinutes())) + ':' +
+        ((now.getSeconds() < 10)
+            ? ("0" + now.getSeconds())
+            : (now.getSeconds())));
+}
 
 
 function stringify(obj) {
