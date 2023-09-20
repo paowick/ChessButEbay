@@ -30,7 +30,7 @@ io.use(function (socket, next) {
 });
 
 io.sockets.on("connection", async (socket) => {
-    const chat = await redisClientChat.lrange("chat", 0, 49);
+    const chat = await redisClientChat.lrange("chat", -50, -1);
     io.sockets.to(socket.id).emit("chatInit", {
         chat:chat
     });
