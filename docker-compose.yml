@@ -31,6 +31,14 @@ services:
     networks:
       - backend
       
+  chat:
+    container_name: chat
+    restart: always
+    build: src/chat
+    volumes:
+      - ./src/chat:/usr/src/app
+    networks:
+      - backend
 
   web:
     container_name: web

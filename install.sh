@@ -4,7 +4,7 @@
 cd src
 
 # Step 2: Install dependencies in each subfolder
-subfolders=("apiCRUD" "authen" "socket" "userImage" "web")
+subfolders=("apiCRUD" "authen" "socket" "userImage" "web" "chat")
 
 for subfolder in "${subfolders[@]}"; do
     echo "Installing dependencies in $subfolder..."
