@@ -22,6 +22,9 @@ io.use(function (socket, next) {
 });
 
 io.sockets.on("connection",async(socket)=>{
+    socket.on("msgGlobal", async (arg)=>{
+        io.emit("msgGlobal",arg)
+    })
     console.log(`connnect ${socket.id}`)
 })
 

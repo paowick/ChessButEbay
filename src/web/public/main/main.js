@@ -17,7 +17,7 @@ async function roomload() {
 }
 
 setInterval(() => {
-    // roomload()
+    roomload()
 }, 5000)
 
 

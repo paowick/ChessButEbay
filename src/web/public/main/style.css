@@ -142,10 +142,37 @@ p {
 }
 
 .chat-room {
-    /*display: none;*/
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background-color: #404040;
     width: 1100px;
     height: 180px;
+}
+
+.chat-room-con {
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    background-color: #404040;
+    box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
+    width: 98%;
+    height: 90%;
+    padding: 10px;
+}
+
+.chat-room-con>div {
+    font-family: Courier Prime;
+    color: #FFF;
+    font-size: 20px;
+}
+
+#msg {
+    padding: 5px;
+}
+#My-msg {
+    padding: 5px;
+    background-color: #252525;
 }
 
 .roomconfPOP {
@@ -175,6 +202,7 @@ p {
 .roomconfPOP>button {
     width: 274px;
 }
+
 .close {
     position: absolute;
     width: 52px;
@@ -182,9 +210,11 @@ p {
     top: 18px;
     right: 20px;
 }
-.close:hover{
+
+.close:hover {
     cursor: pointer;
 }
+
 .conFfrom {
     display: flex;
     flex-direction: column;
