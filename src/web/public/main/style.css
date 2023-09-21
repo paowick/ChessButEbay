@@ -159,9 +159,10 @@ p {
     padding: 10px;
     height: 200px;
     overflow-y: auto;
+    overflow-x: hidden;
 }
 
-.chat-content>div{
+.chat-content>div {
     color: #FFF;
     font-family: 'Courier New', Courier, monospace;
     font-size: 20px;
@@ -192,8 +193,9 @@ p {
 }
 
 #My-msg {
+    overflow-wrap: break-word;
     padding: 5px;
-    background-color: rgba(25,25,25,0.4);
+    background-color: rgba(25, 25, 25, 0.4);
 }
 
 .roomconfPOP {

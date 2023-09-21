@@ -5,7 +5,7 @@ body {
     background-attachment: fixed;
 }
 
-#viewer{
+#viewer {
     color: #000;
 }
 
@@ -41,8 +41,8 @@ body {
     color: #000;
     font-family: Courier New;
     font-weight: 650;
-    
-   
+
+
 }
 
 .player>div {
@@ -178,7 +178,7 @@ main {
     background-color: blue;
     width: 654px;
     height: 654px;
-    
+
 }
 
 .container-col-text {
@@ -322,7 +322,7 @@ main {
     justify-content: center;
     align-items: center;
     height: 334px;
-    
+
 }
 
 .log {
@@ -357,7 +357,7 @@ main {
     justify-content: center;
     align-items: center;
     height: 334px;
-    
+
 }
 
 .mine {
@@ -424,10 +424,10 @@ main {
     border: 1px solid black;
 }
 
-.join-butt-con > :hover{
+.join-butt-con> :hover {
     transform: scale(1.05);
     transition: .4s ease-in-out;
-    
+
 }
 
 .join-bar {
@@ -444,36 +444,36 @@ main {
     background: #A19C9C;
     border-radius: 25px;
     color: #000000;
-    
-    
+
+
 }
 
 
 
-#join_black{
+#join_black {
     background-color: #050505;
     padding: 10px;
 }
 
-#join_black> :hover{
-    
+#join_black> :hover {
+
     transform: scale(1.02);
     transition: .4s ease-in-out;
 }
 
-#join_white{
+#join_white {
     background-color: #ffffff;
     color: black;
     padding: 10px;
 }
 
-#join_white > :hover{
+#join_white> :hover {
     background-color: #ffffff;
     transform: scale(1.02);
     transition: .4s ease-in-out;
 }
 
-#join_white>h1{
+#join_white>h1 {
     color: #000;
 }
 
@@ -559,7 +559,7 @@ main {
     overflow-y: auto;
 }
 
-.chat-content>div{
+.chat-content>div {
     color: #FFF;
     font-family: 'Courier New', Courier, monospace;
     font-size: 20px;
@@ -585,13 +585,15 @@ main {
     border: none;
     cursor: pointer;
 }
+
 #msg {
     padding: 5px;
 }
 
 #My-msg {
+    overflow-wrap: break-word;
     padding: 5px;
-    background-color: rgba(25,25,25,0.4);
+    background-color: rgba(25, 25, 25, 0.4);
 }
 
 .room-code {
@@ -606,7 +608,7 @@ main {
 .invt-con {
     width: 100%;
     padding-top: 8px;
-    
+
 }
 
 .invt {
