@@ -548,6 +548,8 @@ main {
 }
 
 .chat-content {
+    display: flex;
+    flex-direction: column;
     padding: 10px;
     height: 200px;
     overflow-y: auto;
