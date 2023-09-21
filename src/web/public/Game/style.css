@@ -513,6 +513,10 @@ main {
 }
 
 .chat-icon {
+    width: 85px;
+    height: 85px;
+    background-color: #252525;
+    border-radius: 50%;
     position: fixed;
     bottom: 20px;
     left: 20px;
@@ -555,6 +559,13 @@ main {
     overflow-y: auto;
 }
 
+.chat-content>div{
+    color: #FFF;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 20px;
+}
+
+
 .chat-input {
     display: flex;
     padding: 10px;
@@ -573,6 +584,14 @@ main {
     color: #fff;
     border: none;
     cursor: pointer;
+}
+#msg {
+    padding: 5px;
+}
+
+#My-msg {
+    padding: 5px;
+    background-color: rgba(25,25,25,0.4);
 }
 
 .room-code {

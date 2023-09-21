@@ -27,10 +27,12 @@ const closeChatButton = document.getElementById('close-chat');
 
 openChatButton.addEventListener('click', () => {
     chatPopup.style.display = 'block';
+    openChatButton.style.display = 'none'
 });
 
 closeChatButton.addEventListener('click', () => {
     chatPopup.style.display = 'none';
+    openChatButton.style.display = 'block'
 });
 
 document.querySelector("#send-button")
