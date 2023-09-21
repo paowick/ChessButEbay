@@ -49,7 +49,7 @@ export function msgGlobal() {
 export function msgUpdate(arg) {
     const user = JSON.parse(localStorage.getItem('user'))
     let html = `
-            <div id="msg">${arg.timestamp}: ${arg.sender}: ${arg.msg}</div>
+            <div id="msg">${arg.timestamp} => ${arg.sender}: ${arg.msg}</div>
     `
     if (user.id == arg.senderID) {
         html = `
