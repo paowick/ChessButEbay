@@ -512,6 +512,67 @@ main {
     height: 400px;
 }
 
+.chat-icon {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    cursor: pointer;
+}
+
+.chat-popup {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    width: 639px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.chat-header {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chat-header h2 {
+    margin: 0;
+}
+
+.close {
+    cursor: pointer;
+}
+
+.chat-content {
+    padding: 10px;
+    height: 200px;
+    overflow-y: auto;
+}
+
+.chat-input {
+    display: flex;
+    padding: 10px;
+    border-top: 1px solid #ccc;
+}
+
+#message-input {
+    flex: 1;
+    padding: 5px;
+    border: none;
+}
+
+#send-button {
+    padding: 5px 10px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
 .room-code {
     margin: 0 auto;
     width: fit-content;

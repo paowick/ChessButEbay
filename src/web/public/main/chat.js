@@ -21,6 +21,17 @@ function load() {
 socket.on('msgGlobal', async (arg) => {
     msgUpdate(arg)
 })
+const openChatButton = document.getElementById('open-chat');
+const chatPopup = document.getElementById('chat-popup');
+const closeChatButton = document.getElementById('close-chat');
+
+openChatButton.addEventListener('click', () => {
+    chatPopup.style.display = 'block';
+});
+
+closeChatButton.addEventListener('click', () => {
+    chatPopup.style.display = 'none';
+});
 
 document.querySelector("#send-button")
     .addEventListener("click", () => {
@@ -57,7 +68,7 @@ export function msgUpdate(arg) {
         `
     }
     const htmldom = new DOMParser().parseFromString(html, 'text/xml').documentElement
-    let doc = document.querySelector("#chat-room-con")
+    let doc = document.querySelector(".chat-content")
     doc.appendChild(htmldom)
     doc.scrollTop = doc.scrollHeight
 }
