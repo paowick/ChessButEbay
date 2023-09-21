@@ -543,8 +543,17 @@ main {
     align-items: center;
 }
 
-.chat-header h2 {
-    margin: 0;
+.chat-header div h2 {
+    color: #FFF;
+}
+.chat-header div h2 {
+    cursor: pointer;
+}
+
+.chat-header div {
+    display: inherit;
+    width: 500px;
+    gap: 50px;
 }
 
 .close {
@@ -571,6 +580,7 @@ main {
     padding: 10px;
     border-top: 1px solid #ccc;
 }
+
 
 #message-input {
     flex: 1;

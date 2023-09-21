@@ -31,25 +31,44 @@ io.use(function (socket, next) {
 
 io.sockets.on("connection", async (socket) => {
     const chat = await redisClientChat.lrange("chat", -50, -1);
-    io.sockets.to(socket.id).emit("chatInit", {
-        chat: chat
-    });
+    if (socket.request._query.code == null) {
+        io.sockets.to(socket.id).emit("chatInit", {
+            chat: chat
+        });
+    } else {
+        const chatcode = await redisClientChat.lrange(socket.request._query.code, -50, -1)
+        socket.join(socket.request._query.code)
+        io.sockets.to(socket.id).emit("chatInit", {
+            inGameChat: chatcode,
+            chat: chat
+        });
+    }
+
     socket.on("msgGlobal", async (arg) => {
         arg.timestamp = now()
         io.emit("msgGlobal", arg)
         redisClientChat.rpush("chat", stringify(arg))
         const data = await redisClientChat.lrange("chat", 0, -1);
-        console.log(data.length);
         if (data.length > 10000) {
             await redisClientChat.lpop("chat");
+        }
+    })
+
+    socket.on("msgInGame", async (arg) => {
+        arg.timestamp = now()
+        io.sockets.to(socket.request._query.code).emit("msgInGame", arg)
+        redisClientChat.rpush(socket.request._query.code, stringify(arg))
+        const data = await redisClientChat.lrange(socket.request._query.code, 0, -1);
+        if (data.length > 10000) {
+            await redisClientChat.lpop(socket.request._query.code);
         }
     })
     console.log(`connnect ${socket.id}`)
 })
 
-function now(){
+function now() {
     var date = new Date();
-    let now = new Date(date.valueOf()+25200000)
+    let now = new Date(date.valueOf() + 25200000)
     return ((now.getMonth() + 1) + '/' +
         (now.getDate()) + '/' +
         now.getFullYear() + " " +
