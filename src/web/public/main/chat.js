@@ -51,6 +51,7 @@ export function msgGlobal() {
     const msg = document.querySelector("#message-input").value
     if (msg == "") { return }
     const data = {
+        isGlobal:true,
         senderID: user.id,
         sender: user.name,
         msg: msg

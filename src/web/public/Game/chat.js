@@ -1,9 +1,10 @@
 import { io } from "https://cdn.socket.io/4.3.2/socket.io.esm.min.js";
 const user = JSON.parse(localStorage.getItem('user'))
+const currentGame = JSON.parse(localStorage.getItem('currentGame'))
 export var socket = io(window.location.origin, {
     path: "/chat/",
     query: {
-        code: null,
+        code: currentGame.code,
         id: user.id
     }
 });
@@ -51,6 +52,7 @@ export function msgGlobal() {
     const msg = document.querySelector("#message-input").value
     if (msg == "") { return }
     const data = {
+        isGlobal:true,
         senderID: user.id,
         sender: user.name,
         msg: msg
