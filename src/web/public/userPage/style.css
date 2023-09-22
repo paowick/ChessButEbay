@@ -138,6 +138,9 @@ button:hover {
     border-radius: 100%;
 }
 
+.editclose {
+    transform: translateX(275px);
+}
 
 
 h3 {
