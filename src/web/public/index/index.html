@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lobby</title>
+    <link rel="stylesheet" href="../index/style.css">
+    <script type="module" src="../index/chat.js"></script>
 </head>
 <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
 <script>
@@ -20,3 +22,19 @@
 </body>
 
 </html>
+<div class="chat-icon" id="open-chat">
+    <img src="../assets/component/svg/message-1.svg" alt="ChatIcon">
+</div>
+<div class="chat-popup" id="chat-popup" style="display: none;" >
+    <div class="chat-header">
+        <h2>Chat</h2>
+        <span class="close-chat" id="close-chat">x</span>
+    </div>
+    <div class="chat-content">
+        <!-- Chat messages will go here -->
+    </div>
+    <div class="chat-input">
+        <input type="text" id="message-input" placeholder="Type your message...">
+        <button id="send-button">Send</button>
+    </div>
+</div>

@@ -21,18 +21,15 @@ function load() {
 socket.on('msgGlobal', async (arg) => {
     msgUpdate(arg)
 })
-const openChatButton = document.getElementById('open-chat');
-const chatPopup = document.getElementById('chat-popup');
-const closeChatButton = document.getElementById('close-chat');
 
-openChatButton.addEventListener('click', () => {
-    chatPopup.style.display = 'block';
-    openChatButton.style.display = 'none'
+document.getElementById('open-chat').addEventListener('click', () => {
+    document.getElementById('chat-popup').style.display = 'block';
+    document.getElementById('open-chat').style.display = 'none'
 });
 
-closeChatButton.addEventListener('click', () => {
-    chatPopup.style.display = 'none';
-    openChatButton.style.display = 'block'
+document.getElementById('close-chat').addEventListener('click', () => {
+    document.getElementById('chat-popup').style.display = 'none';
+    document.getElementById('open-chat').style.display = 'block'
 });
 
 document.querySelector("#send-button")
