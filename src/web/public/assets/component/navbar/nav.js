@@ -27,3 +27,9 @@ document.querySelector('#user').addEventListener('click',()=>{
             $("main").load("../../../userPage/user.html")
         })
 })
+
+document.querySelector('#about').addEventListener('click',()=>{
+        $(function () {
+            $("main").load("../../../about/about.html")
+        })
+})
