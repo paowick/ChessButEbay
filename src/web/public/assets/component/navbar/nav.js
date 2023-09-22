@@ -21,3 +21,9 @@ async function profile() {
     h1_name.innerText = user.name
     name.appendChild(h1_name)
 }
+
+document.querySelector('#user').addEventListener('click',()=>{
+        $(function () {
+            $("main").load("../../../userPage/user.html")
+        })
+})

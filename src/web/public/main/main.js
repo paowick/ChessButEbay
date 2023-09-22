@@ -5,11 +5,11 @@ window.onload = async () => {
 let roomList = []
 
 async function roomload() {
-
     const room = await fetch('/getroom')
     const roomlist = await room.json()
     roomList = []
     roomList = roomlist.datares
+    if(!document.body.contains(document.getElementById('board'))){return}
     document.getElementById('board').innerHTML = ""
     roomlist.datares.forEach(element => {
         document.getElementById("board").appendChild(roomtabview(element))

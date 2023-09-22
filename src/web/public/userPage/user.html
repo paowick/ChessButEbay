@@ -1,25 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
+
+
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../userPage/style.css">
-    <script src="../../userPage/user.js"></script>
     <title>User</title>
     <link rel="icon" type="image/x-icon" href="../assets/image/icon.ico">
+    <script src="../../userPage/user.js"></script>
 </head>
 
-<body>
-    <script src="https://code.jquery.com/jquery.min.js"></script>
-    <div id="nav-ph"></div>
-    <script>
-        $(function () {
-            $("#nav-ph").load("../../assets/component/navbar/navbar.html")
-        })
-    </script>
-    <main>
         <div class="user-con">
             <div class="profile-main" id="profile-main">
                 <img id="profile-pic" alt="">
@@ -29,8 +20,8 @@
             <div id="email" align="left"></div>
             <div id="score" align="left"></div>
             <div class="button-con">
-                <button onclick="ChangePassword()">Change Password</button>
-                <button onclick="Edit()">Edit</button>
+                <button id="ChangePassword">Change Password</button>
+                <button id="Edit">Edit</button>
             </div>
 
         </div>
@@ -38,10 +29,10 @@
             <h1>Game History</h1>
             <div class="history-con"></div>
         </div>
-    </main>
 
-    <div class="edit-pop" id="edit-pop"> 
-        <div class="close-con" onclick="document.getElementById('editclose').click();">
+
+    <div class="edit-pop" id="edit-pop" style="display: none;" >
+        <div class="editclose" id="editclose" >
             <span class="close">&times;</span>
         </div>
         <form id="edit-form" method="post" enctype="multipart/form-data">
@@ -67,13 +58,13 @@
             <input id="Lname-pop" type="text">
         </div>
         <div class="button-con">
-            <button onclick="save()">Save</button>
+            <button id="save">Save</button>
         </div>
     </div>
 
 
-    <div class="changePassword-pop" id="changePassword-pop">
-        <div class="close-con" onclick="document.getElementById('changepassclose').click();">
+    <div class="changePassword-pop" id="changePassword-pop" style="display: none;" >
+        <div class="close-con" id="changepassclose">
             <span class="close">&times;</span>
         </div>
         <div class="h3-con">
@@ -89,13 +80,13 @@
             <input id="conPw-pop" type="password">
         </div>
         <div class="button-pw">
-            <button onclick="changePw()">Change Password</button>
+            <button id="changePw">Change Password</button>
         </div>
         <div class="err" id="err"></div>
-        
+
 
     </div>
-</body>
+
 
 <script>
     // Get the input element and the preview element
@@ -122,6 +113,4 @@
         }
     });
 </script>
-<button type="button" id="changepassclose" class="hide-butt" onclick="ChangePassword()"></button>
-<button type="button" id="editclose" class="hide-butt" onclick="Edit()"></button>
-</html>
+
