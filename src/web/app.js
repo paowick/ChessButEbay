@@ -104,29 +104,21 @@ app.get('/forgotPassword', (req, res) => {
     }
 })
 
-app.get('/user', (req, res) => {
+
+
+app.get('/', async (req, res) => {
     try {
+        console.log(req)
         if (!req.session.user) {
             return res.redirect("/login")
         }
-        res.sendFile(`${__dirname}/public/userPage/user.html`)
+        res.sendFile(`${__dirname}/public/index/index.html`)
     } catch (e) {
         console.log(e);
         res.status(500)
     }
 })
 
-app.get('/', async (req, res) => {
-    try {
-        if (!req.session.user) {
-            return res.redirect("/login")
-        }
-        res.sendFile(`${__dirname}/public/main/index.html`)
-    } catch (e) {
-        console.log(e);
-        res.status(500)
-    }
-})
 app.post(`/logInVerify`, async (req, res) => {
     try {
         const data = {
@@ -145,7 +137,6 @@ app.post(`/logInVerify`, async (req, res) => {
         res.json({
             Response: resdata.Response
         })
-        console.log(req.session.user);
     } catch (e) {
         console.log(e);
         res.sendStatus(500)
@@ -154,7 +145,6 @@ app.post(`/logInVerify`, async (req, res) => {
 
 app.post(`/editinfo`, async (req, res) => {
     try {
-        console.log(req.session.user.name);
         req.session.user.name = req.body.Username
         req.session.user.fname = req.body.Fname
         req.session.user.lname = req.body.Lname
@@ -182,7 +172,6 @@ app.post(`/editinfo`, async (req, res) => {
 
 app.post(`/editpassword`, async (req, res) => {
     try {
-        console.log(req.session.user);
         req.session.user.password = req.body.password
         const data = {
             id: req.session.user.id,
@@ -251,17 +240,10 @@ app.get(`/getsession`, (req, res) => {
     }
 })
 
-app.get(`/about`, (req, res) => {
-    try {
-        res.sendFile(`${__dirname}/public/about/about.html`)
-    } catch (e) {
-        res.status(500)
-    }
-})
 
 app.get(`/clear`, (req, res) => {
     req.session.destroy((err) => {
-        res.redirect('/') // will always fire after session is destroyed
+        res.redirect('/login') // will always fire after session is destroyed
     })
 })
 app.listen(port, () => {

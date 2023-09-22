@@ -9,7 +9,7 @@ async function roomload() {
     const roomlist = await room.json()
     roomList = []
     roomList = roomlist.datares
-    if(!document.body.contains(document.getElementById('board'))){return}
+    if (!document.body.contains(document.getElementById('board'))) { return }
     document.getElementById('board').innerHTML = ""
     roomlist.datares.forEach(element => {
         document.getElementById("board").appendChild(roomtabview(element))
@@ -28,7 +28,7 @@ function roomtabview(room) {
                     <div class="info">
                         <p class="player">${room.name}</p>
                     </div>
-                    <button class="join-butt" type="button" value="${room.code}" onclick="joingame(this.value)">Enter</button>
+                    <button class="join-butt" type="button" value="${room.code}" onclick="enter(this.value)">Enter</button>
     `
     const tag = document.createElement("div");
     tag.classList.add("room")
@@ -36,9 +36,24 @@ function roomtabview(room) {
     return tag
 }
 
+function enter(code){
+    const currentGame = localStorage.getItem('currentGame')
+    const currentGameJSON = JSON.parse(currentGame)
+    roomList.forEach(element => {
+        if (element.code == code) {
+            if (currentGame != null && currentGameJSON.code == code) { return window.location = '/Game' }
+            const userdata = {
+                code: code,
+                role: "viewer"
+            }
+            localStorage.setItem('currentGame', JSON.stringify(userdata))
+            window.location = '/Game'
+        }
+    });
+}
 
-
-function joingame(code) {
+document.querySelector("#joingame").addEventListener("click", () => {
+    const code = document.querySelector("#code-input").value
     const currentGame = localStorage.getItem('currentGame')
     const currentGameJSON = JSON.parse(currentGame)
     roomList.forEach(element => {
@@ -53,13 +68,13 @@ function joingame(code) {
         }
     });
     console.log("dint have this room"); // <------
-}
+})
 
 
 
 
 
-async function createRoom() {
+document.querySelector("#createroom").addEventListener("click", async() => {
     const user = JSON.parse(localStorage.getItem('user'))
     let roomName = user.name
     if (document.querySelector("#roomName").value != "") {
@@ -69,9 +84,9 @@ async function createRoom() {
     let aucTime = document.querySelector("#auc-time").value
     console.log(roomName, coins, aucTime);
     const data = {
-        roomName:roomName,
-        coins:coins,
-        aucTime:aucTime
+        roomName: roomName,
+        coins: coins,
+        aucTime: aucTime
     }
     const res = await fetch("/createRoom", {
         method: 'POST',
@@ -90,19 +105,18 @@ async function createRoom() {
     if (res.status == 500) {
         alert('server down')
     }
-}
+})
 
 
-
-async function roomconfig() {
-    document.querySelector(".roomconfPOP").style.display = "flex"
+document.querySelector("#roomconfig").addEventListener('click', () => {
+    document.querySelector("#roomconfPOP").style.display = "flex"
     const user = JSON.parse(localStorage.getItem('user'))
     const inRoomName = document.querySelector('#roomName')
     inRoomName.placeholder = `default: ${user.name}`
-    document.querySelector('.close').addEventListener("click", () => {
-        document.querySelector(".roomconfPOP").style.display = "none"
-    })
-}
+})
+document.querySelector('.close').addEventListener("click", () => {
+    document.querySelector(".roomconfPOP").style.display = "none"
+})
 
 
 

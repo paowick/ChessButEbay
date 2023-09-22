@@ -7,6 +7,7 @@ if (path.includes(window.location.pathname)) {
     profile()
     document.getElementById("login-bar").style.display = "none"
 }
+
 function logo() {
     window.location.href = "/"
 }
@@ -20,16 +21,38 @@ async function profile() {
     const h1_name = document.createElement("h1");
     h1_name.innerText = user.name
     name.appendChild(h1_name)
+    console.log(window.location.pathname);
+    if(window.location.pathname == "/Game/"){
+        return
+    }
+    navigator()
 }
 
-document.querySelector('#user').addEventListener('click',()=>{
-        $(function () {
-            $("main").load("../../../userPage/user.html")
-        })
+function navigator() {
+    $("main").load("../../../lobby/lobby.html")
+    
+}
+document.querySelector('#user').addEventListener('click', () => {
+    if(window.location.pathname == "/Game/"){
+        window.location = "/"
+    }
+    $(function () {
+        $("main").load("../../../userPage/user.html")
+    })
 })
-
-document.querySelector('#about').addEventListener('click',()=>{
-        $(function () {
-            $("main").load("../../../about/about.html")
-        })
+document.querySelector('#about').addEventListener('click', () => {
+    if(window.location.pathname == "/Game/"){
+        window.location = "/"
+    }
+    $(function () {
+        $("main").load("../../../about/about.html")
+    })
+})
+document.querySelector('#home').addEventListener('click', () => {
+    if(window.location.pathname == "/Game/"){
+        window.location = "/"
+    }
+    $(function () {
+        $("main").load("../../../lobby/lobby.html")
+    })
 })

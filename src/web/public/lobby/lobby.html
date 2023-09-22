@@ -6,38 +6,24 @@
     <meta http-equiv="X-UA-Compatible" content="chrome">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Home</title>
+    <title>Lobby</title>
     <link rel="icon" type="image/x-icon" href="../assets/image/icon.ico">
-    <script src="../main/main.js"></script>
-    <script type="module" src="../main/chat.js"></script>
-    <link rel="stylesheet" href="../main/style.css">
+    <script src="../lobby/main.js"></script>
+    <script type="module" src="../lobby/chat.js"></script>
+    <link rel="stylesheet" href="../lobby/style.css">
 </head>
 
-<body>
-
-
-    <script src="https://code.jquery.com/jquery.min.js"></script>
-    <div id="nav-ph"></div>
-    <script>
-        $(function () {
-            $("#nav-ph").load("../../assets/component/navbar/navbar.html")
-        })
-    </script>
-    <main>
         <div class="board-con">
             <div class="board" id="board"></div>
         </div>
         <div class="option-con">
             <div class="test"></div>
-            <button type="button" class="cre-but" onclick="roomconfig()">Create Room</button>
+            <button type="button" class="cre-but" id="roomconfig">Create Room</button>
             <input type="text" id="code-input" placeholder="Search Code">
-            <button type="button" class="join-but"
-                onclick="joingame(document.getElementById('code-input').value)">Join</button>
+            <button type="button" class="join-but" id="joingame">Join</button>
         </div>
 
-    </main>
 
-</body>
 
 <div class="roomconfPOP" id="roomconfPOP" style="display: none;">
     <div>
@@ -68,13 +54,13 @@
             <input id="auc-time" type="number" value="5">
         </div>
     </div>
-    <button class="createRoom" id="createroom" onclick="createRoom()">Create Room</button>
+    <button class="createRoom" id="createroom">Create Room</button>
 </div>
 
 <div class="chat-icon" id="open-chat">
     <img src="../assets/component/svg/message-1.svg" alt="ChatIcon">
 </div>
-<div class="chat-popup" id="chat-popup">
+<div class="chat-popup" id="chat-popup" style="display: none;" >
     <div class="chat-header">
         <h2>Chat</h2>
         <span class="close-chat" id="close-chat">x</span>
