@@ -1,6 +1,4 @@
-window.onload = async () => {
-    roomload()
-}
+roomload()
 if (typeof roomList === 'undefined' || roomList === null) {
     let roomList = []
     // variable is undefined or null
@@ -17,12 +15,6 @@ async function roomload() {
         document.getElementById("board").appendChild(roomtabview(element))
     });
 }
-
-setInterval(() => {
-    roomload()
-}, 5000)
-
-
 function roomtabview(room) {
     const text = `
                     <div class="room-code">
