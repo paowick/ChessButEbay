@@ -1,8 +1,10 @@
 window.onload = async () => {
     roomload()
 }
-
-let roomList = []
+if (typeof roomList === 'undefined' || roomList === null) {
+    let roomList = []
+    // variable is undefined or null
+}
 
 async function roomload() {
     const room = await fetch('/getroom')

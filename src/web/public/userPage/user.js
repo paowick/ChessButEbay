@@ -8,7 +8,7 @@ function profileMain() {
     const flname = document.getElementById("FLname")
     const email = document.getElementById("email")
     const score = document.getElementById("score")
-    
+
     const h1_name = document.createElement("h1");
     const h1_flname = document.createElement("h1");
     const h1_email = document.createElement("h1");
@@ -26,7 +26,7 @@ function profileMain() {
     flname.appendChild(h1_flname)
 }
 
-document.querySelector("#changePw").addEventListener("click",()=>{
+document.querySelector("#changePw").addEventListener("click", () => {
     const oldPw = document.getElementById("oldPw-pop")
     const newPw = document.getElementById("newPw-pop")
     const conPw = document.getElementById("conPw-pop")
@@ -54,6 +54,24 @@ async function changePasswordFetch(password) {
         errText(`Server error please try again later`)
     }
 }
+
+// Listen for changes to the input element
+document.getElementById('up-but').addEventListener('change', function () {
+    Array.from(this.files).splice(1, 1)
+    // If a file is selected
+    if (this.files && this.files[0]) {
+        // Create a FileReader object
+        const reader = new FileReader();
+
+        // When the file is loaded
+        reader.addEventListener('load', function () {
+            // Set the preview image source to the loaded data URL
+            document.getElementById('profile-pic-pop').src = reader.result;
+        });
+        // Read the file as a data URL
+        reader.readAsDataURL(this.files[0]);
+    }
+});
 document.querySelector('#editclose').addEventListener('click', () => {
     const popup = document.querySelector(".edit-pop")
     popup.style.display = 'none'
@@ -88,7 +106,7 @@ document.querySelector("#ChangePassword").addEventListener('click', () => {
     popupPw.style.display = 'flex'
 
 })
-document.querySelector("#save").addEventListener("click",()=>{
+document.querySelector("#save").addEventListener("click", () => {
     upload()
     const form = document.getElementById("edit-form")
     const popup = document.querySelector(".edit-pop")
