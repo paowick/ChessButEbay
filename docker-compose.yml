@@ -31,6 +31,14 @@ services:
     networks:
       - backend
       
+  chat:
+    container_name: chat
+    restart: always
+    build: src/chat
+    volumes:
+      - ./src/chat:/usr/src/app
+    networks:
+      - backend
 
   web:
     container_name: web
@@ -97,6 +105,13 @@ services:
 
   gameredis:
     container_name: gameredis
+    restart: always
+    image: redis
+    networks:
+      - backend
+      
+  chatredis:
+    container_name: chatredis
     restart: always
     image: redis
     networks:

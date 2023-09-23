@@ -1,4 +1,5 @@
-window.onload = async function profileMain() {
+profileMain()
+function profileMain() {
     const profile = document.getElementById('profile-pic')
     const user = JSON.parse(localStorage.getItem('user'))
     profile.src = `/userimg/getimg?id=${user.id}`
@@ -23,38 +24,89 @@ window.onload = async function profileMain() {
     email.appendChild(h1_email)
     score.appendChild(h1_score)
     flname.appendChild(h1_flname)
-
 }
 
+document.querySelector("#changePw").addEventListener("click", () => {
+    const oldPw = document.getElementById("oldPw-pop")
+    const newPw = document.getElementById("newPw-pop")
+    const conPw = document.getElementById("conPw-pop")
+    if (!fillup(oldPw, newPw, conPw)) return errText('Plase fill all of info')
+    if (!ValidatePassword(newPw.value)) return errText('Password must containat least one letter and must be at least 8 characters')
+    if (!checkPassword(oldPw, newPw, conPw)) return 0
+    changePasswordFetch(newPw.value)
+})
+async function changePasswordFetch(password) {
+    const data = {
+        password: password
+    }
+    const raw = await fetch(`/editpassword`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+    })
+    if (raw.status == 200) {
+        getSession()
+        window.location.reload()
+    }
+    if (raw.status == 500) {
+        errText(`Server error please try again later`)
+    }
+}
 
-function Edit() {
+// Listen for changes to the input element
+document.getElementById('up-but').addEventListener('change', function () {
+    Array.from(this.files).splice(1, 1)
+    // If a file is selected
+    if (this.files && this.files[0]) {
+        // Create a FileReader object
+        const reader = new FileReader();
+
+        // When the file is loaded
+        reader.addEventListener('load', function () {
+            // Set the preview image source to the loaded data URL
+            document.getElementById('profile-pic-pop').src = reader.result;
+        });
+        // Read the file as a data URL
+        reader.readAsDataURL(this.files[0]);
+    }
+});
+document.querySelector('#editclose').addEventListener('click', () => {
+    const popup = document.querySelector(".edit-pop")
+    popup.style.display = 'none'
+})
+document.querySelector("#Edit").addEventListener("click", () => {
     const popup = document.querySelector(".edit-pop")
     const user = JSON.parse(localStorage.getItem('user'))
     const profile = document.getElementById('profile-pic-pop')
     const form = document.getElementById("edit-form")
     const popupPw = document.querySelector(".changePassword-pop")
-    if (popup.style.visibility == 'visible') {
-        popup.style.visibility = 'hidden'
-        form.reset()
-    } else {
-        popup.style.visibility = 'visible'
+    popup.style.display = 'flex'
+    popupPw.style.display = 'none'
+    profile.src = `/userimg/getimg?id=${user.id}`
+    form.reset()
+    const name = document.getElementById("name-pop")
+    const Fname = document.getElementById("Fname-pop")
+    const Lname = document.getElementById("Lname-pop")
+    if (user.fname == null) { user.fname = "" }
+    if (user.lname == null) { user.lname = "" }
+    name.value = `${user.name}`
+    Fname.value = `${user.fname}`
+    Lname.value = `${user.lname}`
+})
+document.querySelector("#changepassclose").addEventListener('click', () => {
+    const popupPw = document.querySelector(".changePassword-pop")
+    popupPw.style.display = 'none'
+})
+document.querySelector("#ChangePassword").addEventListener('click', () => {
+    const popupPw = document.querySelector(".changePassword-pop")
+    const popup = document.querySelector(".edit-pop")
+    popup.style.display = 'none'
+    popupPw.style.display = 'flex'
 
-        popupPw.style.visibility = 'hidden'
-
-        profile.src = `/userimg/getimg?id=${user.id}`
-
-        const name = document.getElementById("name-pop")
-        const Fname = document.getElementById("Fname-pop")
-        const Lname = document.getElementById("Lname-pop")
-        if (user.fname == null) { user.fname = "" }
-        if (user.lname == null) { user.lname = "" }
-        name.value = `${user.name}`
-        Fname.value = `${user.fname}`
-        Lname.value = `${user.lname}`
-    }
-}
-
-function save() {
+})
+document.querySelector("#save").addEventListener("click", () => {
     upload()
     const form = document.getElementById("edit-form")
     const popup = document.querySelector(".edit-pop")
@@ -62,18 +114,10 @@ function save() {
     popup.style.visibility = 'hidden'
     popupPw.style.visibility = 'hidden'
     form.reset()
-}
+})
 
-function ChangePassword() {
-    const popup = document.querySelector(".edit-pop")
-    const popupPw = document.querySelector(".changePassword-pop")
-    if (popupPw.style.visibility == 'visible') {
-        popupPw.style.visibility = 'hidden'
-    } else {
-        popupPw.style.visibility = 'visible'
-        popup.style.visibility = 'hidden'
-    }
-}
+
+
 async function upload() {
     const user = JSON.parse(localStorage.getItem('user'))
     const fileInput = document.querySelector('#up-but');
@@ -162,37 +206,7 @@ function checkPassword(oldPw, newPw, conPw) {
 
 }
 
-async function changePw() {
-    const oldPw = document.getElementById("oldPw-pop")
-    const newPw = document.getElementById("newPw-pop")
-    const conPw = document.getElementById("conPw-pop")
-    if (!fillup(oldPw, newPw, conPw)) return errText('Plase fill all of info')
-    if (!ValidatePassword(newPw.value)) return errText('Password must containat least one letter and must be at least 8 characters')
-    if (!checkPassword(oldPw, newPw, conPw)) return 0
 
-    changePasswordFetch(newPw.value)
-
-}
-
-async function changePasswordFetch(password) {
-    const data = {
-        password: password
-    }
-    const raw = await fetch(`/editpassword`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data)
-    })
-    if (raw.status == 200) {
-        getSession()
-        window.location.reload()
-    }
-    if (raw.status == 500) {
-        errText(`Server error please try again later`)
-    }
-}
 
 function errText(Text) {
     const form = document.getElementById('err')

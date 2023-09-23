@@ -14,6 +14,7 @@
     <script type="module" src="../Game/socket.js"></script>
     <script type="module" src="../Game/mine.js"></script>
     <script type="module" src="../Game/script.js"></script>
+    <script type="module" src="../Game//chat.js"></script>
     <script type="module" src="../Game/inventory.js"></script>
     <script type="module" src="../Game/king.js"></script>
     <script type="module" src="../Game/pawn.js"></script>
@@ -34,9 +35,9 @@
     <main>
         <div class="left-con">
             <div class="viewer viewer-r" id="viewer">
-                    <div class="turn" id="turn"></div>
-                    <div class="time" id="time"></div>
-            </div>   
+                <div class="turn" id="turn"></div>
+                <div class="time" id="time"></div>
+            </div>
             <div class="log-con" id="log-con">
                 <div class="log" id="log">
                     <div class="round" id="round"></div>
@@ -499,6 +500,27 @@
 <div id="win-pop" class="win-pop">
     <div id="win-pop-text" class="win-pop-text"></div>
     <button id="win-pop-butt" class="win-pop-butt">OK</button>
+</div>
+
+
+<div class="chat-icon" id="open-chat">
+    <img src="../assets/component/svg/message-1.svg" alt="Chat Icon">
+</div>
+<div class="chat-popup" id="chat-popup">
+    <div class="chat-header">
+        <div>
+            <h2 id="ch-gl">Chatglobal</h2>
+            <h2 id="ch-in" >In game</h2>
+        </div>
+        <span class="close" id="close-chat">x</span>
+    </div>
+    <div class="chat-content">
+        <!-- Chat messages will go here -->
+    </div>
+    <div class="chat-input">
+        <input type="text" id="message-input" placeholder="Type your message...">
+        <button id="send-button">Send</button>
+    </div>
 </div>
 
 </html>

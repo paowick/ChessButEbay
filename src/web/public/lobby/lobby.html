@@ -1,0 +1,55 @@
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Lobby</title>
+    <link rel="icon" type="image/x-icon" href="../assets/image/icon.ico">
+    <script src="../lobby/main.js"></script>
+    <script type="module" src="../lobby/chat.js"></script>
+    <link rel="stylesheet" href="../lobby/style.css">
+</head>
+
+<div class="board-con">
+    <div class="board" id="board"></div>
+</div>
+<div class="option-con">
+    <div class="test"></div>
+    <button type="button" class="cre-but" id="roomconfig">Create Room</button>
+    <input type="text" id="code-input" placeholder="Search Code">
+    <button type="button" class="join-but" id="joingame">Join</button>
+</div>
+
+
+
+<div class="roomconfPOP" id="roomconfPOP" style="display: none;">
+    <div>
+        <h1>Create Room</h1>
+        <div class="close" id="close">
+            <svg xmlns="http://www.w3.org/2000/svg" width="52" height="52" viewBox="0 0 52 52" fill="none">
+                <circle cx="26" cy="26" r="26" fill="#D9D9D9" />
+                <line x1="13.576" y1="13.4191" x2="39.0809" y2="38.924" stroke="#FF0000" stroke-width="8" />
+                <line x1="13.576" y1="13.4191" x2="39.0809" y2="38.924" stroke="black" stroke-opacity="0.2"
+                    stroke-width="8" />
+                <line x1="39.0076" y1="13.8284" x2="13.8283" y2="39.0078" stroke="#FF0000" stroke-width="8" />
+                <line x1="39.0076" y1="13.8284" x2="13.8283" y2="39.0078" stroke="black" stroke-opacity="0.2"
+                    stroke-width="8" />
+            </svg>
+        </div>
+    </div>
+    <div class="conFfrom" id="conFfrom">
+        <div>
+            <h1>Room Name</h1>
+            <input id='roomName' type="text">
+        </div>
+        <div>
+            <h1>Coins</h1>
+            <input id="coins" type="number" value="1000">
+        </div>
+        <div>
+            <h1>Auction Time</h1>
+            <input id="auc-time" type="number" value="5">
+        </div>
+    </div>
+    <button class="createRoom" id="createroom">Create Room</button>
+</div>
