@@ -48,7 +48,6 @@ button:hover {
     background: var(--bg, #404040);
     padding: 15px;
     margin: 30px;
-    display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     align-items: self-start;
@@ -106,7 +105,8 @@ button:hover {
     padding: 16px;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: flex-start;
+    gap: 10px;
 }
 
 .user-list>div {
@@ -119,7 +119,7 @@ button:hover {
     border-radius: 50px;
     background: #F0F8FF;
     padding: 14px 14px 14px 40px;
-    
+
 
 }
 
@@ -135,4 +135,13 @@ button:hover {
 .user-list>div>button {
     width: 100px;
     height: 40px;
+}
+
+.button-con>button {
+    width: 95px;
+    height: 50px;
+    flex-shrink: 0;
+    border-radius: 25px;
+    background: var(--stroke, #171717);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }
