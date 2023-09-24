@@ -3,6 +3,7 @@ body {
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
+    /* overflow: hidden; */
 }
 
 main {
@@ -11,33 +12,21 @@ main {
     display: flex;
 }
 
-.user-con {
-    margin: 30px;
-    font-family: Courier New;
-    font-weight: 650;
-    padding: 25px;
-    background-color: rgba(23, 23, 23, 0.5);
-    border-radius: 50px;
-    display: flex;
-    width: 700px;
-    justify-content: center;
-    flex-direction: column;
-    text-align: center;
-    gap: 50px;
-}
-
 button {
     font-family: Courier New;
     font-weight: 650;
     font-size: 20px;
     color: white;
-    background-color: #404040;
+    /* background-color: #404040; */
     padding: 10px;
-    width: auto;
-    height: 50px;
+    /* width: auto; */
+    /* height: 50px; */
+    /* border-radius: 25px; */
+    /* box-shadow: 0 0 20px #000000; */
     border-radius: 25px;
-    box-shadow: 0 0 20px #000000;
-    margin-bottom: 10px;
+    background: var(--stroke, #171717);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    text-align: center;
 }
 
 button:hover {
@@ -46,111 +35,104 @@ button:hover {
     color: white;
     background-color: black;
     text-shadow: 0 0 5px #ffffff;
-
-
+    cursor: pointer;
 }
 
-.userlist-info {
+.user-con {
+    width: 700px;
+    height: 813px;
     font-family: Courier New;
     font-weight: 650;
     font-size: 20px;
-
-    margin: 30px;
-    width: 1000px;
-    border-radius: 50px;
-    background-color: rgba(23, 23, 23, 0.5);
+    border: 1px solid var(--stroke, #171717);
+    background: var(--bg, #404040);
     padding: 15px;
+    margin: 30px;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    align-items: center;
+    align-items: self-start;
 }
 
-.history-con{
-    width: 90%;
-    height: 80%;
-    background-color: #404040;
-    border: 1px solid #252525;
-    box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
+.profile-main {
+    display: flex;
+    justify-content: center;
+    width: 100%;
 }
 
-.profile-main>img {
+.profile-main img {
     width: 300px;
     height: 300px;
     object-fit: cover;
     border-radius: 100%;
 }
 
-.edit-icon {
-    width: 80px;
-    height: 80px;
-    object-fit: fill;
-    border-radius: 100%;
-    position: absolute;
-    transform: translate(100%, 360%);
-}
-
-.edit-icon>img {
-    width: 80px;
-    height: 80px;
-    object-fit: fill;
-    border-radius: 100%;
-}
-
-.edit-icon:hover {
-    background-color: #EDBA00;
-
-}
-
-
-
-.edit-pop {
-    font-family: Courier New;
-    font-weight: 650;
+.button-con {
+    width: 100%;
     display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.userlist-info {
+    display: flex;
+    height: 813px;
+    width: 1000px;
+    margin: 30px;
+    padding: 25px 30px;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    visibility: hidden;
-    margin: 0 auto;
-    border: 1px solid black;
-    border-radius: 25px;
-    background-color: #404040;
-    box-shadow: 2px 2px gray;
-    width: 600px;
-    height: 800px;
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 10%;
+    border: 1px solid var(--stroke, #171717);
+    background: var(--bg, #404040);
 }
 
-.edit-pop:hover {
-    transform: scale(1.05);
-    transition: .4s;
+.userlist-info>h1 {
+    color: #FFF;
+    text-align: center;
+    font-family: Courier Prime;
+    font-size: 60px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
 }
 
-.profile-pop>img {
-    width: 250px;
-    height: 250px;
-    object-fit: cover;
-    border-radius: 100%;
-}
-
-
-
-h3 {
-    color: white;
-
-}
-
-.h3-con {
-    width: 400px;
-    height: 40px;
-    margin: 0 auto;
-    font-size: 17px;
-    font-family: Courier New;
-    font-weight: 650;
+.user-list {
+    width: 932px;
+    height: 657px;
+    flex-shrink: 0;
+    background: var(--bg, #404040);
+    box-shadow: 2px 5px 10px 0px #050505 inset;
+    padding: 16px;
     display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.user-list>div {
+    display: inline-flex;
     justify-content: space-between;
+    align-items: center;
+    gap: 238px;
+    width: 900px;
+    height: 67px;
+    border-radius: 50px;
+    background: #F0F8FF;
+    padding: 14px 14px 14px 40px;
+    
+
+}
+
+.user-list>div>div {
+    color: #000;
+    font-family: Courier Prime;
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.user-list>div>button {
+    width: 100px;
+    height: 40px;
 }

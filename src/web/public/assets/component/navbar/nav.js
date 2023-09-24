@@ -25,15 +25,18 @@ async function profile() {
     if(window.location.pathname == "/Game/"){
         return
     }
+    if(window.location.pathname == "/admin"){
+        return
+    }
     navigator()
 }
 
 function navigator() {
-    $("main").load("../../../lobby/lobby.html")
-    
+    $("main").load("../../../lobby/lobby.html") 
 }
 document.querySelector('#user').addEventListener('click', () => {
-    if(window.location.pathname == "/Game/"){
+    if(window.location.pathname == "/Game/" ||
+        window.location.pathname == "/admin"){
         window.location = "/"
     }
     $(function () {
@@ -41,7 +44,8 @@ document.querySelector('#user').addEventListener('click', () => {
     })
 })
 document.querySelector('#about').addEventListener('click', () => {
-    if(window.location.pathname == "/Game/"){
+    if(window.location.pathname == "/Game/" ||
+        window.location.pathname == "/admin"){
         window.location = "/"
     }
     $(function () {
@@ -49,7 +53,8 @@ document.querySelector('#about').addEventListener('click', () => {
     })
 })
 document.querySelector('#home').addEventListener('click', () => {
-    if(window.location.pathname == "/Game/"){
+    if(window.location.pathname == "/Game/"||
+        window.location.pathname == "/admin"){
         window.location = "/"
     }
     $(function () {

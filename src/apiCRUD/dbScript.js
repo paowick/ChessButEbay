@@ -10,7 +10,7 @@ const pool = new mariadb.createPool({
     acquireTimeout: 5000,
 })
 
-export async function connect() {
+export async function getAllUser() {
     let conn;
     try {
         conn = await pool.getConnection();

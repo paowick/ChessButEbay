@@ -5,12 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin</title>
     <link rel="icon" type="image/x-icon" href="../assets/image/icon.ico">
-    <link rel="stylesheet" href="../../public/adminPage/admin.css">
+    <link rel="stylesheet" href="../adminPage/admin.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="../../public/adminPage/admin.js"></script>
 </head>
 <body>
-        <script src="https://code.jquery.com/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery.min.js"></script>
     <div id="nav-ph"></div>
     <script>
         $(function () {
@@ -18,7 +17,6 @@
         })
     </script>
     <main>
-        
         <div class="user-con">
             <div class="profile-main" id="profile-main">
                 <img id="profile-pic" alt="">
@@ -33,15 +31,15 @@
                 <button onclick="UnBan()">Unban</button>
                 <button onclick="Edit()">Edit</button>
                 <button onclick="Delete()">Delete</button>
-
             </div>
-
         </div>
+        
         <div class="userlist-info">
             <h1>User</h1>
-            <div class="user-con"></div>
+            <div class="user-list" id="user-list">
+            </div>
         </div>
-
     </main>
 </body>
 </html>
+<script src="../adminPage/admin.js"></script>
