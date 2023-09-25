@@ -64,6 +64,8 @@ document.querySelector('#home').addEventListener('click', () => {
         $("main").load("../../../lobby/lobby.html")
         navlight("home")
     })
+    console.log(performance.getEntries() .filter(e => e.entryType === 'resource').map(e => e.name));
+    // try this
 })
 document.querySelector('#logout').addEventListener('click', () => {
     window.location = "/clear"
