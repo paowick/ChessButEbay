@@ -33,7 +33,7 @@ async function profile() {
 
 function navigator() {
     $("main").load("../../../lobby/lobby.html")
-        navlight("home")
+    navlight("home")
 }
 document.querySelector('#user').addEventListener('click', () => {
     if (window.location.pathname == "/Game/" ||
@@ -64,8 +64,6 @@ document.querySelector('#home').addEventListener('click', () => {
         $("main").load("../../../lobby/lobby.html")
         navlight("home")
     })
-    console.log(performance.getEntries() .filter(e => e.entryType === 'resource').map(e => e.name));
-    // try this
 })
 document.querySelector('#logout').addEventListener('click', () => {
     window.location = "/clear"
@@ -81,3 +79,12 @@ function navlight(id) {
         }
     });
 }
+// function is_script_already_included(src) {
+//     let resources = performance.getEntries()
+//         .filter(e => e.entryType === 'resource')
+//         .map(e => e.name);
+//     if (resources.indexOf(`http://${window.location.hostname}${src}`) === -1) {
+//         return false
+//     }
+//     return true
+// }
