@@ -16,7 +16,7 @@ main {
 .about-con{
     font-family: Courier New;
     font-weight: 650;
-    text-align: center;
+    /*text-align: center;*/
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -124,6 +124,8 @@ main {
   }
 
   .title{
+    display: flex;
+    justify-content: center;
     font-family: Courier New;
     font-weight: 650;
     margin: 0 auto;
@@ -147,4 +149,6 @@ main {
     color: white;
     font-size: 18px;
     flex-direction: column;
+    max-height: 500px; 
+    overflow-y: scroll;
   }
