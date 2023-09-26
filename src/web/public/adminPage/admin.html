@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+    <link rel="icon" type="image/x-icon" href="../assets/image/icon.ico">
+    <link rel="stylesheet" href="../adminPage/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    <script src="https://code.jquery.com/jquery.min.js"></script>
+    <div id="nav-ph"></div>
+    <script>
+        $(function () {
+            $("#nav-ph").load("../../assets/component/navbar/navbar.html")
+        })
+    </script>
+    <main>
+        <div class="user-con" id="user-con" style="display: none;">
+            <div class="profile-main" id="profile-main">
+                <img id="profile-pic" alt="">
+            </div>
+            <div id="name-main" align="left"></div>
+            <div id="FLname" align="left"></div>
+            <div id="email" align="left"></div>
+            <div id="score" align="left"></div>
+            <div id="status" align="left"></div>
+            <div class="button-con">
+                <button>Ban</button>
+                <button>Unban</button>
+                <button id="edit-butt" >Edit</button>
+                <button id="del-butt">Delete</button>
+            </div>
+        </div>
+
+        <div class="userlist-info">
+            <h1>User</h1>
+            <div class="user-list" id="user-list">
+            </div>
+        </div>
+    </main>
+</body>
+<div class="del-pop" id="del-pop" style="display: none;" >
+    <div class="close" id="close">
+        <svg xmlns="http://www.w3.org/2000/svg" width="52" height="52" viewBox="0 0 52 52" fill="none">
+            <circle cx="26" cy="26" r="26" fill="#D9D9D9" />
+            <line x1="13.576" y1="13.4191" x2="39.0809" y2="38.924" stroke="#FF0000" stroke-width="8" />
+            <line x1="13.576" y1="13.4191" x2="39.0809" y2="38.924" stroke="black" stroke-opacity="0.2"
+                stroke-width="8" />
+            <line x1="39.0076" y1="13.8284" x2="13.8283" y2="39.0078" stroke="#FF0000" stroke-width="8" />
+            <line x1="39.0076" y1="13.8284" x2="13.8283" y2="39.0078" stroke="black" stroke-opacity="0.2"
+                stroke-width="8" />
+        </svg>
+    </div>
+    <div class="del-ti" id="del-ti"></div>
+    <div class="del-te" id="del-te"></div>
+    <input class="del-in" id="del-in" type="text">
+    <button class="del-butt-conf" id="del-butt-conf" >Delete this user</button>
+</div>
+
+<div class="edit-pop" id="edit-pop" style="display: none;" >
+    <div class="close" id="close">
+        <svg xmlns="http://www.w3.org/2000/svg" width="52" height="52" viewBox="0 0 52 52" fill="none">
+            <circle cx="26" cy="26" r="26" fill="#D9D9D9" />
+            <line x1="13.576" y1="13.4191" x2="39.0809" y2="38.924" stroke="#FF0000" stroke-width="8" />
+            <line x1="13.576" y1="13.4191" x2="39.0809" y2="38.924" stroke="black" stroke-opacity="0.2"
+                stroke-width="8" />
+            <line x1="39.0076" y1="13.8284" x2="13.8283" y2="39.0078" stroke="#FF0000" stroke-width="8" />
+            <line x1="39.0076" y1="13.8284" x2="13.8283" y2="39.0078" stroke="black" stroke-opacity="0.2"
+                stroke-width="8" />
+        </svg>
+    </div>
+    <form id="edit-form" method="post" enctype="multipart/form-data">
+        <div class="profile-pop" id="profile-pop">
+            <img id="profile-pic-pop" alt="">
+        </div>
+    </form>
+    <div class="edit-icon" onclick="document.getElementById('up-but').click();">
+        <img src="../assets/image/edit-profile-icon.png" alt="">
+        <input type="file" name="file" id="up-but" hidden action="/">
+    </div>
+
+    <div class="h3-con">
+        <h3>User Name: </h3>
+        <input id="name-pop" type="text">
+    </div>
+    <div class="h3-con">
+        <h3>First Name: </h3>
+        <input id="Fname-pop" type="text">
+    </div>
+    <div class="h3-con">
+        <h3>Last Name: </h3>
+        <input id="Lname-pop" type="text">
+    </div>
+    <div class="button-con">
+        <button id="save">Save</button>
+    </div>
+</div>
+</html>
+<script src="../adminPage/admin.js"></script>

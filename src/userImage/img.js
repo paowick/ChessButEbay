@@ -16,7 +16,7 @@ const storage = multer.diskStorage({
         const dir = `${__dirname}/image_user/${req.query.id}`
         if (!fs.existsSync(dir)) {
             fs.mkdirSync(dir)
-            fs.writeFile(`${dir}/img.txt`, '', function (err) {
+            fs.writeFile(`${dir}/img.jpg`, '', function (err) {
                 if (err) throw err; console.log('Results Received');
             })
         }

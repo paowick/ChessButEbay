@@ -14,6 +14,12 @@ services:
     networks:
       - fontend
       - backend
+    depends_on:
+      - socket
+      - web
+      - auth
+      - userimg
+      - api
 
 # =================================  Node Js  =======================================
   socket:
@@ -25,6 +31,14 @@ services:
     networks:
       - backend
       
+  chat:
+    container_name: chat
+    restart: always
+    build: src/chat
+    volumes:
+      - ./src/chat:/usr/src/app
+    networks:
+      - backend
 
   web:
     container_name: web
@@ -76,6 +90,9 @@ services:
     networks:
       - backend
       - dbNetwork
+    depends_on:
+      - db
+      - phpmyadmin
 
    
 # =================================  Database  =======================================
@@ -88,6 +105,13 @@ services:
 
   gameredis:
     container_name: gameredis
+    restart: always
+    image: redis
+    networks:
+      - backend
+      
+  chatredis:
+    container_name: chatredis
     restart: always
     image: redis
     networks:

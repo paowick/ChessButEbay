@@ -18,10 +18,11 @@ const redisClient = redis.createClient({
 await redisClient.connect()
 
 
-export async function createRoom() {
+export async function createRoom(req) {
     const room = generateString(5)
     const data = {
-        room: room
+        room: room,
+        req:req
     }
     socket.emit('createRoom', data);
     return room
@@ -30,7 +31,7 @@ export async function createRoom() {
 const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 let temp = []
 function generateString(length) {
-    let result = ' ';
+    let result = '';
     const charactersLength = characters.length;
     for (let i = 0; i < length; i++) {
         result += characters.charAt(Math.floor(Math.random() * charactersLength));

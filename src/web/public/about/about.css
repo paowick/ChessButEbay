@@ -16,14 +16,14 @@ main {
 .about-con{
     font-family: Courier New;
     font-weight: 650;
-    text-align: center;
+    /*text-align: center;*/
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     width: 55%;
     height: 700px;
     padding: 2px;
-    background-color: #171717;
+    background-color: #404040;
     border-radius: 30px;
     align-items: center;
 }
@@ -124,11 +124,13 @@ main {
   }
 
   .title{
+    display: flex;
+    justify-content: center;
     font-family: Courier New;
     font-weight: 650;
     margin: 0 auto;
     margin-top: 20px;
-    background-color: #171717;
+    background-color: #404040;
     color: white;
     width: 300px;
     font-size: 60px;
@@ -143,8 +145,16 @@ main {
     margin: 0 auto;
     padding: 5px;
     margin: 10px;
-    background-color: #171717;
+    background-color: #404040;
     color: white;
     font-size: 18px;
     flex-direction: column;
+    max-height: 500px; 
+    overflow-y: scroll;
+  }
+
+  img{
+    max-width: 600px;
+    max-height: auto;
+    
   }

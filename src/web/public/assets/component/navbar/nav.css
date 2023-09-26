@@ -9,7 +9,7 @@
 }
 nav{
     padding: 0px;
-    background-color: #171717;
+    background-color: #404040;
 }
 .nav-con{
     display: flex;
@@ -22,20 +22,16 @@ nav{
     font-size: 17px;
     display: flex;
 }
-
-ul, li {
-    list-style: none outside none;
-}
-
 .manu li{
     font-family: Courier New;
     font-weight: 650;
     font-size: 20px;
     list-style: none;
     margin: 1rem;
+    cursor: pointer;
 }
 
-.manu >li :hover{
+.manu li :hover{
     border-radius: 50%;
     background-color: gray;
     box-shadow:  
@@ -98,5 +94,7 @@ a{
     background-size: cover;
     background-repeat: no-repeat;
 }
+
+
 
 

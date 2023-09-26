@@ -1,22 +1,71 @@
 import { pieces } from "./piece.js";
+import { board } from "./board.js"
 export class queen extends pieces {
 
-    setPiece() {
+    html() {
         if (this.team == "B") {
+            const newDiv = document.createElement("div");
+            const newimg = document.createElement("img");
+            newDiv.classList.add("boxpiece");
+            newDiv.classList.add("queenBlack");
+            newimg.src = "../assets/component/svg/queen-black.svg"
+            newDiv.appendChild(newimg)
+            return newDiv
+        } else if (this.team == "W") {
+            const newDiv = document.createElement("div");
+            const newimg = document.createElement("img");
+            newDiv.classList.add("boxpiece");
+            newDiv.classList.add("queenWhite");
+            newimg.src = "../assets/component/svg/queen-white.svg"
+            newDiv.appendChild(newimg)
+            return newDiv
+        }else{
+            const newDiv = document.createElement("div");
+            const newimg = document.createElement("img");
+            newDiv.classList.add("boxpiece");
+            newDiv.classList.add("queenGray");
+            newDiv.classList.add("auctionPiece");
+            newimg.src = "../assets/component/svg/queen-gray.svg"
+            newDiv.appendChild(newimg)
+            return newDiv
+        }
+    }
+    setPiece() {
+        if(this.board == null){this.board = board}
+        if (this.team == "B") {
+            if (this.board[this.pos[0]][this.pos[1]] != null && this.board[this.pos[0]][this.pos[1]].name == "king") {
+                win("B")
+            }
             this.board[this.pos[0]][this.pos[1]] = this
             var id = this.tranSlateToId()
             var box = document.querySelectorAll(`#${id}`)
             box.forEach(element => {
-                element.innerHTML = `<div class="boxpiece queenBlack">&#9819;</div>`
+                const newDiv = document.createElement("div");
+                const newimg = document.createElement("img");
+                newDiv.classList.add("boxpiece");
+                newDiv.classList.add("queenBlack");
+                newimg.src = "../assets/component/svg/queen-black.svg"
+                newDiv.appendChild(newimg)
+                element.appendChild(newDiv)
             });
         }
         if (this.team == "W") {
+            if (this.board[this.pos[0]][this.pos[1]] != null && this.board[this.pos[0]][this.pos[1]].name == "king") {
+                win("W")
+            }
             this.board[this.pos[0]][this.pos[1]] = this
             var id = this.tranSlateToId()
             var box = document.querySelectorAll(`#${id}`)
             box.forEach(element => {
-                element.innerHTML = `<div class="boxpiece queenWhite">&#9813;</div>`
+                const newDiv = document.createElement("div");
+                const newimg = document.createElement("img");
+                newDiv.classList.add("boxpiece");
+                newDiv.classList.add("queenWhite");
+                newimg.src = "../assets/component/svg/queen-white.svg"
+                newDiv.appendChild(newimg)
+                element.appendChild(newDiv)
             });
+
         }
     }
     moveAblepos(board) {

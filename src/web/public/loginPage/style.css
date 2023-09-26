@@ -42,22 +42,22 @@ body {
 
 .forgot {
     width: max-content;
-    background-color: #171717;
+    background-color: #404040;
 }
 
 #err {
-    background-color: #171717;
+    background-color: #404040;
 }
 
 .err-text {
-    background-color: #171717;
+    background-color: #404040;
 }
 
 .login-con {
     display: flex;
     justify-content: center;
 
-    background-color: #171717;
+    background-color: #404040;
 
 }
 
@@ -93,13 +93,13 @@ body {
 
 .card {
     margin: 0 auto;
-    padding: 15px;
-    margin-top: 15px;
+    padding: 20px;
+    margin-top: 10px;
     outline: 1px;
     border: 1px solid black;
     border-radius: 20px;
-    background-color: #171717;
-    width: 300px;
+    background-color: #404040;
+    width: 320px;
     justify-content: left;
     height: 380px;
 }
@@ -135,7 +135,7 @@ input {
     font-weight: 650;
     outline: none;
     border: 0;
-    background-color: #171717;
+    background-color: #404040;
     padding: 10px 13px;
     margin: 5px auto;
     font-size: 20px;
@@ -146,7 +146,7 @@ input {
 
 
 input:focus {
-    outline-color:#171717;
+    outline-color:#404040;
 }
 
 button {

@@ -1,13 +1,38 @@
 import { move } from './socket.js';
 import { io } from "https://cdn.socket.io/4.3.2/socket.io.esm.min.js";
 import { join } from './socket.js';
-import { waitingForPlayer,askPlayer } from './script.js';
+import { waitingForPlayer, askPlayer, updateJoinPop } from './script.js';
 import { king } from './king.js';
 import { pawn } from './pawn.js';
 import { queen } from './queen.js';
 import { bishop } from './bishop.js';
 import { knight } from './knight.js';
 import { rook } from './rook.js';
+import { boardSetupUi } from './script.js';
+import { boardSetUpNoStart } from './script.js';
+import { dropEmit } from './socket.js';
+import { mineSetUp } from './script.js';
+import { mine } from './mine.js';
+import { inventory } from './inventory.js';
+import { auction } from './auction.js';
+import { bid } from './socket.js'
+import { coinUpdate, coinUpdate_Server } from './script.js';
+import { currentBidUpdate } from './script.js';
+
+var invtList = []
+var mineList = []
+var minelimt = 3
+export let coin = 0
+export let minereturnRate = 50
+export function setCoin(data) {
+    coin = data
+}
+
+export const invtobj = new inventory(invtList)
+export const mineobj = new mine(mineList, minelimt, 1000)
+export const auctionobj = new auction(null, null, null, null, null)
+export const invtBlack = new inventory([])
+export const invtWhite = new inventory([])
 
 export var board = [
     [null, null, null, null, null, null, null, null],
@@ -27,77 +52,100 @@ export var socket = io(window.location.origin, {
         id: user.id
     }
 });
-let myturn = false
+export let myturn = false
 
 export function changeMyTurn(data) {
+    if (data == true) {
+        mineobj.changeMineDropAble(true)
+    }
     myturn = data
 }
-run()
+
+// maybe it bug
+window.onload = run()
 export async function run() {
     socket.on('board', async (arg) => {
-        const info = await JSON.parse(arg.board)
-        console.log(arg);
-        for (let index = 0; index < info.board.length; index++) {
-            const elements = info.board[index];
-            for (let index = 0; index < elements.length; index++) {
-                const element = elements[index];
-                if (element == null) { continue }
-                if (element.name == 'king') {
-                    new king("king", element.pos, element.team, true, board)
-                    continue
-                }
-                if (element.name == 'queen') {
-                    new queen("queen", element.pos, element.team, false, board)
-                    continue
-                }
-                if (element.name == 'bishop') {
-                    new bishop("bishop", element.pos, element.team, false, board)
-                    continue
-                }
-                if (element.name == 'rook') {
-                    new rook("rook", element.pos, element.team, false, board)
-                    continue
-                }
-                if (element.name == 'knight') {
-                    new knight("knight", element.pos, element.team, false, board)
-                    continue
-                }
-                if (element.name == 'pawn') {
-                    new pawn("pawn", element.pos, element.team, false, board, true)
-                    continue
-                }
-            }
+        const info = arg.boardRedis
+        invtBlack.invtSetUpViewer(info.invtB,"B")
+        invtWhite.invtSetUpViewer(info.invtW,"W")
+        info.mine.forEach(element => {
+            mineobj.drop_mine_server(element);
+        })
+        if (arg.role == "W") {
+            info.invtW.forEach(element => {
+                invtobj.invtPush(invtobj.pieceToObj(element.name))
+            })
+            invtobj.invtSetUp()
+            mineSetUp()
+        } else if (arg.role == "B") {
+            info.invtB.forEach(element => {
+                invtobj.invtPush(invtobj.pieceToObj(element.name))
+            })
+            invtobj.invtSetUp()
+            mineSetUp()
         }
-        if (arg.role != 'viewer') {
-            const join_con = document.querySelector(".join-butt-con")
-            join_con.style.display = 'none'
-            const inhand = document.querySelector(".inhand")
-            inhand.style.display = 'none'
-            if (arg.role == "B") {
-                const board_white = document.querySelector('#board-white')
-                board_white.style.display = "none"
-                const board_black = document.querySelector('#board-black')
-                board_black.style.display = 'flex'
-            } else {
-                const board_white = document.querySelector('#board-white')
-                board_white.style.display = "flex"
-                const board_black = document.querySelector('#board-black')
-                board_black.style.display = 'none'
-            }
-        } else if (arg.role == 'viewer') {
-            if (info.playerB != null) { document.querySelector('#join_black').style.display = 'none' }
-            if (info.playerW != null) { document.querySelector('#join_white').style.display = 'none' }
-        }
-        currentGame.role = arg.role
-        localStorage.setItem('currentGame', JSON.stringify(currentGame))
-        if (arg.turn === arg.role) {
-            myturn = true
-        } else {
-            myturn = false
-        }
+        currentBidUpdate(info)
+        auctionobj.auctionSetUp(info)
+        chessBoardSetUp(info)
+        uiSetUpControll(info, arg, currentGame)
     })
+}
+
+
+export function uiSetUpControll(info, arg, currentGame) {
+    if (!info.gameStart) {
+        boardSetUpNoStart()
+        updateJoinPop(info.playerB, info.playerW, info.playerBName, info.playerWName)
+        return
+    }
+    boardSetupUi(currentGame, info)
+    if (arg.turn === arg.role) {
+        myturn = true
+    } else {
+        myturn = false
+    }
+    coinUpdate_Server(info)
+}
+
+
+
+
+export function chessBoardSetUp(info) {
+    for (let index = 0; index < info.board.length; index++) {
+        const elements = info.board[index];
+        for (let index = 0; index < elements.length; index++) {
+            const element = elements[index];
+            if (element == null) { continue }
+            if (element.name == 'king') {
+                new king("king", element.pos, element.team, true, board, 3)
+                continue
+            }
+            if (element.name == 'queen') {
+                new queen("queen", element.pos, element.team, false, board, 3)
+                continue
+            }
+            if (element.name == 'bishop') {
+                new bishop("bishop", element.pos, element.team, false, board, 3)
+                continue
+            }
+            if (element.name == 'rook') {
+                new rook("rook", element.pos, element.team, false, board, 3)
+                continue
+            }
+            if (element.name == 'knight') {
+                new knight("knight", element.pos, element.team, false, board, 3)
+                continue
+            }
+            if (element.name == 'pawn') {
+                new pawn("pawn", element.pos, element.team, false, board, 3, true)
+                continue
+            }
+        }
+    }
 
 }
+
+
 
 
 
@@ -114,16 +162,17 @@ export async function run() {
 // Black_KnightU = "&#9822"
 // Black_Pawn	  = "&#9823"
 
+
+
+document.querySelector('#bid-butt')
+    .addEventListener('click', () => {
+        const amout = document.querySelector('#bid-input').value
+        bid(amout)
+        document.querySelector('#bid-input').value = ''
+    })
+
 document.querySelector('#join_black')
     .addEventListener('click', () => {
-        const join_con = document.querySelector(".join-butt-con")
-        join_con.style.display = 'none'
-        const inhand = document.querySelector(".inhand")
-        inhand.style.display = 'none'
-        const board_white = document.querySelector('#board-white')
-        board_white.style.display = "none"
-        const board_black = document.querySelector('#board-black')
-        board_black.style.display = 'flex'
         const data = {
             code: currentGame.code,
             role: "B"
@@ -134,14 +183,6 @@ document.querySelector('#join_black')
     })
 document.querySelector('#join_white')
     .addEventListener('click', () => {
-        const join_con = document.querySelector(".join-butt-con")
-        join_con.style.display = 'none'
-        const inhand = document.querySelector(".inhand")
-        inhand.style.display = 'none'
-        const board_white = document.querySelector('#board-white')
-        board_white.style.display = "flex"
-        const board_black = document.querySelector('#board-black')
-        board_black.style.display = 'none'
         const data = {
             code: currentGame.code,
             role: "W"
@@ -150,6 +191,10 @@ document.querySelector('#join_white')
         localStorage.setItem('currentGame', JSON.stringify(data))
         join(data, user.name)
     })
+
+
+
+
 var source = null
 var destination = null
 document.querySelectorAll('.box')
@@ -158,8 +203,13 @@ document.querySelectorAll('.box')
             const currentGame = JSON.parse(localStorage.getItem("currentGame"))
             if (currentGame.role != 'viewer') {
                 if (source == null && destination == null) {
+                    // console.log(new DOMParser().parseFromString(this.innerHTML, "text/xml").documentElement);
                     // source position ====================================================================
+
+                    if (auctionobj.auctionStage == true) { return }
                     const piece = havePiece(this.id)
+
+                    clearAllHightLight()
                     if (piece == null) { return source = null; }
                     source = this.id;
                     showMoveAble(piece)
@@ -168,22 +218,23 @@ document.querySelectorAll('.box')
                 } else if (source != null && destination == null) {
                     // destination position ===============================================================
 
+                    clearAllHightLight()
 
                     if (!myturn) {
                         waitingForPlayer()
-                        clearHightLight(havePiece(source))
+                        clearAllHightLight()
                         source = null;
                         destination = null;
                         return
                     }
                     const piece = havePiece(source)
                     if (currentGame.role != piece.team) {
-                        clearHightLight(havePiece(source))
+                        clearAllHightLight()
                         source = null
                         return
                     }
                     if (!pieceMoveable(piece, this.id)) {
-                        clearHightLight(piece)
+                        clearAllHightLight()
                         source = null
                         return destination = null
                     }
@@ -193,14 +244,14 @@ document.querySelectorAll('.box')
                         if (thispiece.promotedPos.includes(tranSlateTopos(this.id))) {
                             destination = this.id;
                             askPlayer(source, destination)
-                            clearHightLight(havePiece(source))
+                            clearAllHightLight()
                             source = null
                             destination = null
                             return
                         }
                     }
                     destination = this.id;
-                    clearHightLight(havePiece(source))
+                    clearAllHightLight()
                     moveClient(source, destination, null)
                     source = null
                     destination = null
@@ -220,7 +271,18 @@ document.querySelectorAll('.box')
 
 
 
+export function drop(piece, destination,invtId) {
 
+    const pos = tranSlateTopos(destination)
+    piece.setpos(pos)
+    piece.setInInvt(false)
+    piece.setPiece()
+    invtobj.removeInvtList(invtId)
+    source = null
+    changeMyTurn(false)
+    clearAllHightLight()
+    dropEmit(piece, board)
+}
 
 
 export async function moveClient(source, destination, promoted) {
@@ -245,15 +307,16 @@ export async function moveClient(source, destination, promoted) {
             destination = null
             source = null
             localStorage.setItem("board", stringify(board))
-            myturn = false
+            changeMyTurn(false)
         }
     }
     move(source, destination, null)
     destination = null
     source = null
     localStorage.setItem("board", stringify(board))
-    myturn = false
-
+    auctionobj.setAuctionStage(true)
+    changeMyTurn(false)
+    clearAllHightLight()
 }
 export function moveClient_Server(source, destination, promoted) {
     const oldpos = tranSlateTopos(source)
@@ -268,28 +331,24 @@ export function moveClient_Server(source, destination, promoted) {
         destination = null
         source = null
         localStorage.setItem("board", stringify(board))
-        myturn = true
+        changeMyTurn(true)
     } else {
         destination = null
         source = null
-        localStorage.setItem("board", stringify(board))
-        myturn = true
+        changeMyTurn(true)
     }
+
+    auctionobj.setAuctionStage(true)
+    clearAllHightLight()
 }
-function clearHightLight(piece) {
-    const posList = piece.moveAblepos(board)
-    posList.forEach(element => {
-        const id = tranSlateToId(element)
-        document.querySelectorAll(`#${id}`).forEach(element => {
-            element.removeChild(element.lastChild)
-            element.style.backgroundColor = ``
-
-        })
-
-    });
+export function clearAllHightLight() {
+    document.querySelectorAll(".hight-light").forEach(div => {
+        div.parentNode.removeChild(div)
+    })
 }
 
-function showMoveAble(piece) {
+
+export function showMoveAble(piece) {
     const posList = piece.moveAblepos(board)
     posList.forEach(element => {
         const id = tranSlateToId(element)
@@ -298,8 +357,7 @@ function showMoveAble(piece) {
 
             if (element.childNodes.length > 0) {
 
-                element.style.backgroundColor = `rgba(255, 0, 0,0.5)`
-                element.innerHTML += `<div></div>`
+                element.innerHTML += `<div id="hight-light" class="hight-light hight-light-red" ></div>`
                 return 0
             }
             element.innerHTML += `<div class="hight-light">&#9900</div>`
@@ -337,7 +395,7 @@ function stringify(obj) {
     cache = null; // reset the cache
     return str;
 }
-function tranSlateTopos(id) {
+export function tranSlateTopos(id) {
     var temp = ""
     switch (`${id[1]}`) {
         case "8":
@@ -409,7 +467,7 @@ function tranSlateTopos(id) {
 }
 
 
-function tranSlateToId(pos) {
+export function tranSlateToId(pos) {
     var temp = ""
     switch (`${pos[1]}`) {
         case "0":

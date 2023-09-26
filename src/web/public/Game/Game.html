@@ -12,7 +12,10 @@
     <script type="module" src="../Game/board.js"></script>
     <script type="module" src="../Game/piece.js"></script>
     <script type="module" src="../Game/socket.js"></script>
+    <script type="module" src="../Game/mine.js"></script>
     <script type="module" src="../Game/script.js"></script>
+    <script type="module" src="../Game//chat.js"></script>
+    <script type="module" src="../Game/inventory.js"></script>
     <script type="module" src="../Game/king.js"></script>
     <script type="module" src="../Game/pawn.js"></script>
     <script type="module" src="../Game/queen.js"></script>
@@ -29,22 +32,41 @@
             $("#nav-ph").load("../../assets/component/navbar/navbar.html")
         })
     </script>
-    <!-- <button onclick="test()">test</button>
-        <script>
-            function test() {
-                socket.emit("hi", "test")
-            }
-        </script> -->
-
-
-
     <main>
-        <div class="join-butt-con">
-            <button id="join_black" class="join_butt">join black</button>
-            <button id="join_white" class="join_butt">join white</button>
+        <div class="left-con">
+            <div class="viewer viewer-r" id="viewer">
+                <div class="turn" id="turn"></div>
+                <div class="time" id="time"></div>
+            </div>
+            <div class="log-con" id="log-con">
+                <div class="log" id="log">
+                    <div class="round" id="round"></div>
+                    <div class="log-box" id="log-box"></div>
+                </div>
+            </div>
+            <div class="mine-con" id="mine-con">
+                <div class="mine" id="mine"></div>
+            </div>
         </div>
+
+
         <div class="container-fuckin-all" id="board-white">
-            <div class="row-text">
+
+            <div class="top" id="top">
+                <div class="player" id="player">
+                    <div class="coin" id="coin"></div>
+                    <div class="turn" id="turn"></div>
+                    <div class="time" id="time"></div>
+
+                </div>
+                <div class="viewer view-top" id="viewer">
+                    <div class="black-team" id="black-team">
+                        <h1>Black</h1>
+                    </div>
+                    <div class="coin-black" id="coin-black"></div>
+                </div>
+            </div>
+            <!-- <div class="row-text">
                 <div class="per-text-row">
                     <h2>a</h2>
                 </div>
@@ -69,9 +91,9 @@
                 <div class="per-text-row">
                     <h2>h</h2>
                 </div>
-            </div>
+            </div> -->
             <div class="container-col-text">
-                <div class="collumn-text">
+                <!-- <div class="collumn-text">
                     <div class="per-text-col">
                         <h2>8</h2>
                     </div>
@@ -96,7 +118,7 @@
                     <div class="per-text-col">
                         <h2>1</h2>
                     </div>
-                </div>
+                </div> -->
                 <div class="fake-board">
                     <div class="board-con">
                         <div id="a8" class="boxwhite box"></div>
@@ -172,7 +194,7 @@
                         <div id="h1" class="boxwhite box"></div>
                     </div>
                 </div>
-                <div class="collumn-text">
+                <!-- <div class="collumn-text">
                     <div class="per-text-col">
                         <h2>8</h2>
                     </div>
@@ -197,9 +219,9 @@
                     <div class="per-text-col">
                         <h2>1</h2>
                     </div>
-                </div>
+                </div> -->
             </div>
-            <div class="row-text">
+            <!-- <div class="row-text">
                 <div class="per-text-row">
                     <h2>a</h2>
                 </div>
@@ -223,12 +245,28 @@
                 </div>
                 <div class="per-text-row">
                     <h2>h</h2>
+                </div>
+            </div> -->
+
+            <div class="viewer view-buttom" id="viewer">
+                <div class="coin-white" id="coin-white"></div>
+                <div class="white-team" id="white-team">
+                    <h1>White</h1>
                 </div>
             </div>
         </div>
 
         <div class="container-fuckin-all" id="board-black" style="display: none;">
-            <div class="row-text">
+
+            <div class="top" id="top">
+                <div class="player" id="player">
+                    <div class="coin" id="coin"></div>
+                    <div class="turn" id="turn"></div>
+                    <div class="time" id="time"></div>
+                </div>
+                <div class="viewer" id="viewer"></div>
+            </div>
+            <!-- <div class="row-text">
                 <div class="per-text-row">
                     <h2>a</h2>
                 </div>
@@ -253,9 +291,9 @@
                 <div class="per-text-row">
                     <h2>h</h2>
                 </div>
-            </div>
+            </div> -->
             <div class="container-col-text">
-                <div class="collumn-text">
+                <!-- <div class="collumn-text">
                     <div class="per-text-col">
                         <h2>1</h2>
                     </div>
@@ -280,7 +318,7 @@
                     <div class="per-text-col">
                         <h2>8</h2>
                     </div>
-                </div>
+                </div> -->
                 <div class="fake-board">
                     <div class="board-con">
                         <div id="a1" class="boxblack box"></div>
@@ -357,7 +395,7 @@
 
                     </div>
                 </div>
-                <div class="collumn-text">
+                <!-- <div class="collumn-text">
                     <div class="per-text-col">
                         <h2>1</h2>
                     </div>
@@ -382,9 +420,9 @@
                     <div class="per-text-col">
                         <h2>8</h2>
                     </div>
-                </div>
+                </div> -->
             </div>
-            <div class="row-text">
+            <!-- <div class="row-text">
                 <div class="per-text-row">
                     <h2>a</h2>
                 </div>
@@ -409,12 +447,46 @@
                 <div class="per-text-row">
                     <h2>h</h2>
                 </div>
+            </div> -->
+        </div>
+
+        <div class="right-con">
+            <div id="inhand" class="inhand">
+                <div class="invt-view" id="invt-B"></div>
+                <div class="auction-view" id="action-view">
+                    <div class="time-action" id="time-action"></div>
+                    <div class="ac-piece" id="ac-piece"></div>
+                    <div class="cur-pi" id="cur-pi"></div>
+                </div>
+                <div class="invt-view" id="invt-W"></div>
+            </div>
+            <div class="auction" id="action">
+                <div class="time-action" id="time-action"></div>
+                <div class="ac-piece" id="ac-piece"></div>
+                <div class="cur-pi" id="cur-pi"></div>
+                <input type="text" id="bid-input" placeholder="Enter a bid">
+                <button type="button" id="bid-butt">Accept</button>
+                <button type="button" id="test">test</button>
+
             </div>
         </div>
-        <div id="inhand" class="inhand"></div>
     </main>
 
 </body>
+
+<div class="invt-con" id="invt-con">
+    <div class="invt" id="invt"></div>
+    <!-- <button type="submit" id="auctiontest">auction</button> -->
+</div>
+
+<div class="join-butt-con" id="join-butt-con" style="display: none;">
+    <div id="join-bar" class="join-bar">Choose your side</div>
+    <div id="join_black" class="join_butt">#Black</div>
+    <div id="join_white" class="join_butt">#White</div>
+</div>
+
+
+
 <div id="prom-pop" class="prom-pop" style="display: none;">
     <h1>Promoted</h1>
     <button id="choi" value="queen">queen</button>
@@ -425,5 +497,30 @@
 <div class="prom-pop waiting-pop" id="waiting-pop" style="display: none;">
     <h1>Waiting for player...</h1>
 </div>
+<div id="win-pop" class="win-pop">
+    <div id="win-pop-text" class="win-pop-text"></div>
+    <button id="win-pop-butt" class="win-pop-butt">OK</button>
+</div>
 
-</html
+
+<div class="chat-icon" id="open-chat">
+    <img src="../assets/component/svg/message-1.svg" alt="Chat Icon">
+</div>
+<div class="chat-popup" id="chat-popup">
+    <div class="chat-header">
+        <div>
+            <h2 id="ch-gl">Chatglobal</h2>
+            <h2 id="ch-in" >In game</h2>
+        </div>
+        <span class="close" id="close-chat">x</span>
+    </div>
+    <div class="chat-content">
+        <!-- Chat messages will go here -->
+    </div>
+    <div class="chat-input">
+        <input type="text" id="message-input" placeholder="Type your message...">
+        <button id="send-button">Send</button>
+    </div>
+</div>
+
+</html>

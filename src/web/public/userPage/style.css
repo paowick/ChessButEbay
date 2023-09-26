@@ -33,7 +33,7 @@ button {
     font-weight: 650;
     font-size: 20px;
     color: white;
-    background-color: #171717;
+    background-color: #404040;
     padding: 10px;
     width: auto;
     height: 50px;
@@ -53,10 +53,27 @@ button:hover {
 }
 
 .user-game-info {
+    font-family: Courier New;
+    font-weight: 650;
+    font-size: 20px;
+
     margin: 30px;
     width: 1000px;
     border-radius: 50px;
     background-color: rgba(23, 23, 23, 0.5);
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.history-con{
+    width: 90%;
+    height: 80%;
+    background-color: #404040;
+    border: 1px solid #252525;
+    box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
 }
 
 .profile-main>img {
@@ -96,11 +113,10 @@ button:hover {
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    visibility: hidden;
     margin: 0 auto;
     border: 1px solid black;
     border-radius: 25px;
-    background-color: #171717;
+    background-color: #404040;
     box-shadow: 2px 2px gray;
     width: 600px;
     height: 800px;
@@ -122,6 +138,9 @@ button:hover {
     border-radius: 100%;
 }
 
+.editclose {
+    transform: translateX(275px);
+}
 
 
 h3 {
@@ -142,7 +161,7 @@ h3 {
 
 #name-pop {
     padding: 10px 20px;
-    background-color: #171717;
+    background-color: #404040;
     font-size: 17px;
     font-family: Courier New;
     font-weight: 650;
@@ -154,7 +173,7 @@ h3 {
 
 #Fname-pop {
     padding: 10px 20px;
-    background-color: #171717;
+    background-color: #404040;
     font-size: 17px;
     font-family: Courier New;
     font-weight: 650;
@@ -165,7 +184,7 @@ h3 {
 
 #Lname-pop {
     padding: 10px 20px;
-    background-color: #171717;
+    background-color: #404040;
     font-size: 17px;
     font-family: Courier New;
     font-weight: 650;
@@ -177,15 +196,13 @@ h3 {
 .changePassword-pop {
     font-family: Courier New;
     font-weight: 650;
-    display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    visibility: hidden;
     margin: 0 auto;
     border: 1px solid black;
     border-radius: 25px;
-    background-color: #171717;
+    background-color: #404040;
     box-shadow: 2px 2px gray;
     width: 500px;
     height: 600px;
@@ -202,7 +219,7 @@ h3 {
 
 #oldPw-pop {
     padding: 10px 20px;
-    background-color: #171717;
+    background-color: #404040;
     font-size: 17px;
     font-family: Courier New;
     font-weight: 650;
@@ -213,7 +230,7 @@ h3 {
 
 #newPw-pop {
     padding: 10px 20px;
-    background-color: #171717;
+    background-color: #404040;
     font-size: 17px;
     font-family: Courier New;
     font-weight: 650;
@@ -224,7 +241,7 @@ h3 {
 
 #conPw-pop {
     padding: 10px 20px;
-    background-color: #171717;
+    background-color: #404040;
     font-size: 17px;
     font-family: Courier New;
     font-weight: 650;
@@ -258,3 +275,4 @@ h3 {
 .close:hover {
     background-color: red;
 }
+

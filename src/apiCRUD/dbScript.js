@@ -1,24 +1,24 @@
 import * as dotenv from 'dotenv'
 dotenv.config()
 import mariadb from 'mariadb';
-const pool = mariadb.createPool({
+const pool = new mariadb.createPool({
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
     user: process.env.DB_USER,
     password: process.env.DB_ROOT_PASSWORD,
-    database: process.env.DB_NAME
-
+    database: process.env.DB_NAME,
+    acquireTimeout: 5000,
 })
 
-export async function connect() {
+export async function getAllUser() {
     let conn;
     try {
         conn = await pool.getConnection();
-        const rows = await conn.query("SELECT * FROM `User`");
+        const rows = await conn.query("SELECT * FROM `User` WHERE Admin = 0x00");
         return rows
     }
     finally {
-        if (conn) conn.end();
+        if (conn) conn.destroy();
     }
 }
 
@@ -32,7 +32,7 @@ export async function userCheckBackEnd(email, id) {
         }
         return true
     } finally {
-        if (conn) conn.end();
+        if (conn) conn.destroy();
     }
 }
 export async function userCheckBackEndPass(email, password) {
@@ -50,7 +50,7 @@ export async function userCheckBackEndPass(email, password) {
             data: rows[0]
         }
     } finally {
-        if (conn) conn.end();
+        if (conn) conn.destroy();
     }
 }
 export async function userQurey(email) {
@@ -67,22 +67,22 @@ export async function userQurey(email) {
             Response: true,
         }
     } finally {
-        if (conn) conn.end();
+        if (conn) conn.destroy();
     }
 }
 
-export async function InsertUser(Email, Password, Name, Score, Admin) {
+export async function InsertUser(Email, Password, Name, Score) {
     let conn;
     try {
         conn = await pool.getConnection();
-        const rows = await conn.query("INSERT INTO `User` (`Email`, `Password`, `Name`, `Score`, `Admin`) VALUES (?, ?, ?, ?, ?);", [Email, Password, Name, Score, Admin]);
+        const rows = await conn.query("INSERT INTO `User` (`Email`, `Password`, `Name`, `Score`, `Admin`) VALUES (?, ?, ?, ?, 0x00);", [Email, Password, Name, Score]);
         console.log(rows.affectedRows);
         if(rows.affectedRows == 1){
             return true
         }
         return false
     } finally {
-        if (conn) conn.end();
+        if (conn) conn.destroy();
     }
 
 }
@@ -97,7 +97,7 @@ export async function resetPassword(email,newPassword) {
         console.log(rows);
         return rows.affectedRows == 1 ? true : false
     } finally {
-        if (conn) conn.end();
+        if (conn) conn.destroy();
     }
 }
 
@@ -109,7 +109,7 @@ export async function editinfo(id,name,fname,lname) {
         console.log(rows);
         return rows.affectedRows == 1 ? true : false
     } finally {
-        if (conn) conn.end();
+        if (conn) conn.destroy();
     }
 }
 export async function editpassword(id,password) {
@@ -120,6 +120,6 @@ export async function editpassword(id,password) {
         console.log(rows);
         return rows.affectedRows == 1 ? true : false
     } finally {
-        if (conn) conn.end();
+        if (conn) conn.destroy();
     }
 }
