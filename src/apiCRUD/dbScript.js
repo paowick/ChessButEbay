@@ -10,11 +10,11 @@ const pool = new mariadb.createPool({
     acquireTimeout: 5000,
 })
 
-export async function connect() {
+export async function getAllUser() {
     let conn;
     try {
         conn = await pool.getConnection();
-        const rows = await conn.query("SELECT * FROM `User`");
+        const rows = await conn.query("SELECT * FROM `User` WHERE Admin = 0x00");
         return rows
     }
     finally {
@@ -71,11 +71,11 @@ export async function userQurey(email) {
     }
 }
 
-export async function InsertUser(Email, Password, Name, Score, Admin) {
+export async function InsertUser(Email, Password, Name, Score) {
     let conn;
     try {
         conn = await pool.getConnection();
-        const rows = await conn.query("INSERT INTO `User` (`Email`, `Password`, `Name`, `Score`, `Admin`) VALUES (?, ?, ?, ?, ?);", [Email, Password, Name, Score, Admin]);
+        const rows = await conn.query("INSERT INTO `User` (`Email`, `Password`, `Name`, `Score`, `Admin`) VALUES (?, ?, ?, ?, 0x00);", [Email, Password, Name, Score]);
         console.log(rows.affectedRows);
         if(rows.affectedRows == 1){
             return true

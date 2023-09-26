@@ -83,6 +83,15 @@ app.post('/api/editpassword', async (req, res) => {
     }
 })
 
+app.get('/api/getalluser',async (req,res)=>{
+    try {
+        const allUser = await db.getAllUser()
+        res.send(allUser)
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500)
+    }
+})
 app.listen(port, () => {
     console.log(`listen on port ${port}`);
 })

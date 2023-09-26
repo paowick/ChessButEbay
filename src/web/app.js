@@ -65,6 +65,22 @@ app.get('/admin',(req,res)=>{
     }
 })
 
+app.get("/admin/getalluser", async (req,res)=>{
+    try {
+        if(req.session.user.admin.data[0] == 0){
+            return res.status(404)
+        }
+        if (!req.session.user) {
+            return res.redirect("/login")
+        }
+
+        const alluser = await fetch(`http://api:8080/api/getalluser`)
+        res.send(await alluser.json())
+    } catch (e) {
+        res.status(500)
+    }
+})
+
 
 
 app.get('/login', (req, res) => {
