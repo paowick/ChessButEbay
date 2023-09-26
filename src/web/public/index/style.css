@@ -1,12 +1,13 @@
 .chat-icon {
-    width: 85px;
-    height: 85px;
+    width: 90px;
+    height: 90px;
     background-color: #252525;
     border-radius: 50%;
     position: fixed;
     bottom: 20px;
     left: 20px;
     cursor: pointer;
+    padding: 5px;
 }
 
 .chat-popup {
@@ -104,5 +105,14 @@ button {
     width: 100px;
     height: 40px;
     transition: .4s ease-in-out;
+    margin: 5px;
 
+
+}
+
+h2 {
+    font-family: Courier New;
+    font-weight: 650;
+    font-size: 20px;
+    color: white;
 }
