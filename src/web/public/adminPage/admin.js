@@ -29,6 +29,7 @@ document.querySelector("#del-in").addEventListener("input", (e) => {
 document.querySelectorAll("#close").forEach(close =>{
     close.addEventListener("click",()=>{
         document.querySelector("#del-pop").style.display = 'none'
+        document.querySelector("#edit-pop").style.display = 'none'
     })
 })
 
@@ -36,6 +37,79 @@ document.querySelector("#del-butt-conf").addEventListener('click',()=>{
     // const res = fetch('/deleteuser')
 } )
 
+document.querySelector("#save").addEventListener("click", () => {
+    upload()
+    const form = document.getElementById("edit-form")
+    const popup = document.querySelector("#edit-pop")
+    popup.style.display = 'none'
+    form.reset()
+})
+
+async function upload() {
+    const fileInput = document.querySelector('#up-but');
+    const formData = new FormData();
+    formData.append('file', fileInput.files[0]);
+    const options = {
+        method: 'POST',
+        body: formData,
+    };
+    const img = await fetch(`/userimg/chageimg?id=${currenView.Id}`, options);
+
+    const data = {
+        id:currenView.Id,
+        Username: document.getElementById('name-pop').value,
+        Fname: document.getElementById('Fname-pop').value,
+        Lname: document.getElementById('Lname-pop').value
+    }
+    const editinfo = await fetch(`/editinfo`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+    })
+    if (img.status == 200 && editinfo.status == 200) {
+        getSession()
+        window.location.reload()
+    }
+    if (img.status == 500 || editinfo.status == 500) {
+        alert(`Server error please try again later`)
+    }
+}
+document.querySelector('#edit-butt').addEventListener('click',()=>{
+    const popup = document.querySelector("#edit-pop")
+    const profile = document.getElementById('profile-pic-pop')
+    const form = document.getElementById("edit-form")
+    popup.style.display = 'flex'
+    profile.src = `/userimg/getimg?id=${currenView.Id}`
+    form.reset()
+    const name = document.getElementById("name-pop")
+    const Fname = document.getElementById("Fname-pop")
+    const Lname = document.getElementById("Lname-pop")
+    if (currenView.Fname == null) { currenView.Fname = "" }
+    if (currenView.Lname == null) { currenView.Lname = "" }
+    name.value = `${currenView.Name}`
+    Fname.value = `${currenView.Fname}`
+    Lname.value = `${currenView.Lname}`
+})
+
+// Listen for changes to the input element
+document.getElementById('up-but').addEventListener('change', function () {
+    Array.from(this.files).splice(1, 1)
+    // If a file is selected
+    if (this.files && this.files[0]) {
+        // Create a FileReader object
+        const reader = new FileReader();
+
+        // When the file is loaded
+        reader.addEventListener('load', function () {
+            // Set the preview image source to the loaded data URL
+            document.getElementById('profile-pic-pop').src = reader.result;
+        });
+        // Read the file as a data URL
+        reader.readAsDataURL(this.files[0]);
+    }
+});
 function fillUser(allUser) {
     document.querySelector("#user-list").innerHTML = ''
     allUser.forEach((element, index) => {

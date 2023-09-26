@@ -165,7 +165,7 @@ app.post(`/editinfo`, async (req, res) => {
         req.session.user.fname = req.body.Fname
         req.session.user.lname = req.body.Lname
         const data = {
-            id: req.session.user.id,
+            id: req.body.id,
             name: req.body.Username,
             fname: req.body.Fname,
             lname: req.body.Lname

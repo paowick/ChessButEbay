@@ -36,6 +36,7 @@ button:hover {
     text-shadow: 0 0 5px #ffffff;
     cursor: pointer;
 }
+
 button:disabled {
     border-radius: 25px;
     color: white;
@@ -43,6 +44,7 @@ button:disabled {
     text-shadow: 0 0 5px #ffffff;
     cursor: pointer;
 }
+
 input {
     font-family: Courier New;
     font-weight: 650;
@@ -173,7 +175,9 @@ input {
     top: 7px;
     right: 7px;
 }
-
+.close:hover{
+    cursor: pointer;
+}
 .del-pop {
     width: 500px;
     height: 200px;
@@ -194,15 +198,123 @@ input {
     color: white;
     font-family: Courier New;
 }
+
 .del-te {
-    font-size:13px;
+    font-size: 13px;
     text-align: center;
     color: white;
     font-family: Courier New;
 }
+
 .del-in {
     width: 100% !important;
 }
+
 .del-butt-conf {
     height: 50px;
+}
+
+.edit-icon {
+    width: 80px;
+    height: 80px;
+    object-fit: fill;
+    border-radius: 100%;
+    position: absolute;
+    transform: translate(100%, 325%);
+}
+
+.edit-icon>img {
+    width: 80px;
+    height: 80px;
+    object-fit: fill;
+    border-radius: 100%;
+}
+
+.edit-icon:hover {
+    background-color: #EDBA00;
+
+}
+
+.edit-pop {
+    font-family: Courier New;
+    font-weight: 650;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 auto;
+    border: 1px solid black;
+    border-radius: 25px;
+    background-color: #404040;
+    box-shadow: 2px 2px gray;
+    width: 600px;
+    height: 800px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 10%;
+}
+
+.edit-pop:hover {
+    transform: scale(1.05);
+    transition: .4s;
+}
+
+.profile-pop>img {
+    width: 250px;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 100%;
+    margin: 70px 0px -20px 0px;
+
+}
+
+h3 {
+    color: white;
+
+}
+
+.h3-con {
+    width: 400px;
+    height: 40px;
+    margin: 0 auto;
+    font-size: 17px;
+    font-family: Courier New;
+    font-weight: 650;
+    display: flex;
+    justify-content: space-between;
+}
+
+#name-pop {
+    padding: 10px 20px;
+    background-color: #404040;
+    font-size: 17px;
+    font-family: Courier New;
+    font-weight: 650;
+    border-radius: 25px;
+    box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
+    color: white;
+
+}
+
+#Fname-pop {
+    padding: 10px 20px;
+    background-color: #404040;
+    font-size: 17px;
+    font-family: Courier New;
+    font-weight: 650;
+    border-radius: 25px;
+    box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
+    color: white;
+}
+
+#Lname-pop {
+    padding: 10px 20px;
+    background-color: #404040;
+    font-size: 17px;
+    font-family: Courier New;
+    font-weight: 650;
+    border-radius: 25px;
+    box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
+    color: white;
 }
