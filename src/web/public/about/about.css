@@ -152,3 +152,9 @@ main {
     max-height: 500px; 
     overflow-y: scroll;
   }
+
+  img{
+    max-width: 600px;
+    max-height: auto;
+    
+  }
