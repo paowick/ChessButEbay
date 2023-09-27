@@ -180,11 +180,6 @@ p {
     gap: 20px;
     width: 473px;
 }
-.conFfrom>div>div>div {
-    color: #fff;
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 40px;
-}
 .conFfrom>div>div>input {
     width: 66%;
     height: 43px;
