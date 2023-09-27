@@ -186,6 +186,24 @@ app.post(`/editinfo`, async (req, res) => {
     }
 })
 
+app.post(`/deleteuser`,async (req,res)=>{
+    try {
+        const delRES = await fetch(`http://api:8080/api/deleteuser`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(req.body)
+        })
+
+        if (delRES.status == 500) { res.sendStatus(500) }
+        res.sendStatus(200)
+    } catch (error) {
+        console.log(e);
+        res.sendStatus(500)
+    }
+})
+
 app.post(`/editpassword`, async (req, res) => {
     try {
         req.session.user.password = req.body.password

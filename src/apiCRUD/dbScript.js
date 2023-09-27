@@ -117,9 +117,21 @@ export async function editpassword(id,password) {
     try {
         conn = await pool.getConnection();
         const rows = await conn.query("UPDATE User SET User.Password = ? WHERE Id = ?;",[password,id]);
+        return rows.affectedRows == 1 ? true : false
+    } finally {
+        if (conn) conn.destroy();
+    }
+}
+
+export async function deleteuser(user) {
+    let conn;
+    try {
+        conn = await pool.getConnection();
+        const rows = await conn.query("DELETE FROM `User` WHERE Id = ?;",[user.Id]);
         console.log(rows);
         return rows.affectedRows == 1 ? true : false
     } finally {
         if (conn) conn.destroy();
     }
+    
 }

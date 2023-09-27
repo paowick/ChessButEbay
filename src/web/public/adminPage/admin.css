@@ -129,6 +129,8 @@ input {
     flex-direction: column;
     justify-content: flex-start;
     gap: 10px;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .user-list>div {

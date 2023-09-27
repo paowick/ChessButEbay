@@ -21,21 +21,34 @@ document.querySelector("#del-in").addEventListener("input", (e) => {
     console.log("a;ksdm");
     if (e.target.value == currenView.Email) {
         document.querySelector("#del-butt-conf").disabled = false;
-    }else{
-    document.querySelector("#del-butt-conf").disabled = true;
+    } else {
+        document.querySelector("#del-butt-conf").disabled = true;
     }
 })
 
-document.querySelectorAll("#close").forEach(close =>{
-    close.addEventListener("click",()=>{
+document.querySelectorAll("#close").forEach(close => {
+    close.addEventListener("click", () => {
         document.querySelector("#del-pop").style.display = 'none'
         document.querySelector("#edit-pop").style.display = 'none'
     })
 })
 
-document.querySelector("#del-butt-conf").addEventListener('click',()=>{
-    // const res = fetch('/deleteuser')
-} )
+document.querySelector("#del-butt-conf").addEventListener('click',async () => {
+    // INSERT INTO `User` (`Id`, `Email`, `Password`, `Name`, `Fname`, `Lname`, `Score`, `Admin`) VALUES (NULL, 'uti1@mail.com', 'qwe123', 'uti', NULL, NULL, '1000', 0x00);
+    const res = await fetch('/deleteuser', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(currenView)
+    })
+    if (res.status == 200) {
+        window.location.reload()
+    }
+    if (res.status == 500) {
+        errText(`Server error please try again later`)
+    }
+})
 
 document.querySelector("#save").addEventListener("click", () => {
     upload()
@@ -56,7 +69,7 @@ async function upload() {
     const img = await fetch(`/userimg/chageimg?id=${currenView.Id}`, options);
 
     const data = {
-        id:currenView.Id,
+        id: currenView.Id,
         Username: document.getElementById('name-pop').value,
         Fname: document.getElementById('Fname-pop').value,
         Lname: document.getElementById('Lname-pop').value
@@ -76,7 +89,7 @@ async function upload() {
         alert(`Server error please try again later`)
     }
 }
-document.querySelector('#edit-butt').addEventListener('click',()=>{
+document.querySelector('#edit-butt').addEventListener('click', () => {
     const popup = document.querySelector("#edit-pop")
     const profile = document.getElementById('profile-pic-pop')
     const form = document.getElementById("edit-form")
@@ -134,7 +147,6 @@ function fillUser(allUser) {
 function profileView(index) {
     document.querySelector("#user-con").style.display = "flex"
     currenView = userList[index]
-    console.log(currenView);
     const user = userList[index]
 
     const profile = document.getElementById('profile-pic')

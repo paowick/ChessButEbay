@@ -83,6 +83,16 @@ app.post('/api/editpassword', async (req, res) => {
     }
 })
 
+app.post('/api/deleteuser',(req,res)=>{
+    try {
+        db.deleteuser(req.body)
+        res.sendStatus(200)
+    } catch (error) {
+        console.log(e);
+        res.sendStatus(500)
+    }
+})
+
 app.get('/api/getalluser',async (req,res)=>{
     try {
         const allUser = await db.getAllUser()
