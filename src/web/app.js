@@ -51,9 +51,9 @@ app.use(sessions({
 
 
 app.get('/admin',(req,res)=>{
-    console.log(typeof(req.session.user.admin.data[0]));
+    // console.log(req.session.user.admin);
     try {
-        if(req.session.user.admin.data[0] == 0){
+        if(req.session.user.admin == 0){
             return res.redirect("/")
         }
         if (!req.session.user) {
@@ -67,7 +67,7 @@ app.get('/admin',(req,res)=>{
 
 app.get("/admin/getalluser", async (req,res)=>{
     try {
-        if(req.session.user.admin.data[0] == 0){
+        if(req.session.user.admin == 0){
             return res.status(404)
         }
         if (!req.session.user) {
@@ -124,7 +124,6 @@ app.get('/forgotPassword', (req, res) => {
 
 app.get('/', async (req, res) => {
     try {
-        console.log(req)
         if (!req.session.user) {
             return res.redirect("/login")
         }
