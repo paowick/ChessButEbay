@@ -66,7 +66,13 @@ document.querySelector("#joingame").addEventListener("click", () => {
 
 
 
-
+document.querySelector('#auc-time').addEventListener('input',(e)=>{
+    if(e.target.value > 60){e.target.value = 60}
+    if(e.target.value <= 0){e.target.value = 5}
+})
+document.querySelector('#coins').addEventListener('input',(e)=>{
+    if(e.target.value <= 0){e.target.value = 1000}
+})
 
 document.querySelector("#createroom").addEventListener("click", async() => {
     const user = JSON.parse(localStorage.getItem('user'))
@@ -76,7 +82,6 @@ document.querySelector("#createroom").addEventListener("click", async() => {
     }
     let coins = document.querySelector('#coins').value
     let aucTime = document.querySelector("#auc-time").value
-    console.log(roomName, coins, aucTime);
     const data = {
         roomName: roomName,
         coins: coins,
