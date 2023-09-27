@@ -156,13 +156,22 @@ function profileView(index) {
     const flname = document.getElementById("FLname")
     const email = document.getElementById("email")
     const score = document.getElementById("score")
+    const status = document.getElementById('status')
 
     const h1_name = document.createElement("h1");
     const h1_flname = document.createElement("h1");
     const h1_email = document.createElement("h1");
     const h1_score = document.createElement("h1");
+    const h1_status = document.createElement('h1')
     if (user.Fname == null) { user.Fname = "" }
     if (user.Lname == null) { user.Lname = "" }
+    if (user.Ban_Status == 1) { 
+        h1_status.innerHTML = `Status : Ban`
+        h1_status.style.color = "red"
+    }else{
+        h1_status.innerHTML = `Status : Normal`
+        h1_status.style.color = "white"
+    }
     h1_name.innerText = `User Name: ${user.Name}`
     h1_flname.innerText = `name: ${user.Fname}  ${user.Lname}`
     h1_email.innerText = `Email: ${user.Email}`
@@ -172,8 +181,10 @@ function profileView(index) {
     email.innerHTML = ""
     score.innerHTML = ""
     flname.innerHTML = ""
+    status.innerHTML = ""
     name.appendChild(h1_name)
     email.appendChild(h1_email)
     score.appendChild(h1_score)
     flname.appendChild(h1_flname)
+    status.appendChild(h1_status)
 }
