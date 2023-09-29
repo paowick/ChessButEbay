@@ -2,7 +2,7 @@ import express from 'express';
 import cookieParser from 'cookie-parser';
 import sessions from 'express-session';
 import RedisStore from "connect-redis"
-import {createClient} from "redis"
+import { createClient } from "redis"
 import bodyParser from 'body-parser'
 import * as sc from './script.js'
 
@@ -31,8 +31,8 @@ let redisClient = createClient({
 redisClient.connect().catch(console.error)
 
 let redisStore = new RedisStore({
-  client: redisClient,
-  prefix: "myapp:",
+    client: redisClient,
+    prefix: "myapp:",
 })
 
 
@@ -50,14 +50,14 @@ app.use(sessions({
 }));
 
 
-app.get('/admin',(req,res)=>{
+app.get('/admin', (req, res) => {
     // console.log(req.session.user.admin);
     try {
-        if(req.session.user.admin == 0){
-            return res.redirect("/")
+        if (req.session.user.admin == 0) {
+            return res.sendStatus(404)
         }
         if (!req.session.user) {
-            return res.redirect("/login")
+            return res.sendStatus(404)
         }
         res.sendFile(`${__dirname}/public/adminPage/admin.html`)
     } catch (e) {
@@ -65,13 +65,13 @@ app.get('/admin',(req,res)=>{
     }
 })
 
-app.get("/admin/getalluser", async (req,res)=>{
+app.get("/admin/getalluser", async (req, res) => {
     try {
-        if(req.session.user.admin == 0){
-            return res.status(404)
+        if (req.session.user.admin == 0) {
+            return res.sendStatus(404)
         }
         if (!req.session.user) {
-            return res.redirect("/login")
+            return res.sendStatus(404)
         }
 
         const alluser = await fetch(`http://api:8080/api/getalluser`)
@@ -81,7 +81,26 @@ app.get("/admin/getalluser", async (req,res)=>{
     }
 })
 
-
+app.post("/admin/banstatus", async (req, res) => {
+    try {
+        if (req.session.user.admin == 0) {
+            return res.sendStatus(404)
+        }
+        if (!req.session.user) {
+            return res.sendStatus(404)
+        }
+        fetch(`http://api:8080/api/banstatus`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(req.body)
+        })
+        res.sendStatus(200)
+    } catch (e) {
+        res.status(500)
+    }
+})
 
 app.get('/login', (req, res) => {
     try {
@@ -185,7 +204,7 @@ app.post(`/editinfo`, async (req, res) => {
     }
 })
 
-app.post(`/deleteuser`,async (req,res)=>{
+app.post(`/deleteuser`, async (req, res) => {
     try {
         const delRES = await fetch(`http://api:8080/api/deleteuser`, {
             method: 'POST',
@@ -208,7 +227,7 @@ app.post(`/editpassword`, async (req, res) => {
         req.session.user.password = req.body.password
         const data = {
             id: req.session.user.id,
-            password:req.body.password
+            password: req.body.password
         }
         const editinfoRES = await fetch(`http://api:8080/api/editpassword`, {
             method: 'POST',
@@ -226,11 +245,11 @@ app.post(`/editpassword`, async (req, res) => {
     }
 })
 
-app.post(`/createRoom`, async (req,res)=>{
+app.post(`/createRoom`, async (req, res) => {
     try {
         const roomcode = await sc.createRoom(req.body)
         res.json({
-            roomcode:roomcode,
+            roomcode: roomcode,
         })
     } catch (error) {
         console.log(error);
@@ -238,24 +257,24 @@ app.post(`/createRoom`, async (req,res)=>{
     }
 })
 
-app.get(`/getroom`, async (req,res)=>{
-    try{
+app.get(`/getroom`, async (req, res) => {
+    try {
         let datares = []
         const data = await sc.getallRoom()
         data.forEach(element => {
             const dataconvert = JSON.parse(element)
             let data = {
-                code:dataconvert.code,
-                playerB:dataconvert.playerB,
-                playerBName:dataconvert.playerBName,
-                playerW:dataconvert.playerW,
-                playerWName:dataconvert.playerWName,
-                name:dataconvert.roomname
+                code: dataconvert.code,
+                playerB: dataconvert.playerB,
+                playerBName: dataconvert.playerBName,
+                playerW: dataconvert.playerW,
+                playerWName: dataconvert.playerWName,
+                name: dataconvert.roomname
             }
             datares.push(data)
         });
-        res.json({datares})
-    }catch(e){
+        res.json({ datares })
+    } catch (e) {
 
     }
 })

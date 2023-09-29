@@ -33,7 +33,7 @@ document.querySelectorAll("#close").forEach(close => {
     })
 })
 
-document.querySelector("#del-butt-conf").addEventListener('click',async () => {
+document.querySelector("#del-butt-conf").addEventListener('click', async () => {
     // INSERT INTO `User` (`Id`, `Email`, `Password`, `Name`, `Fname`, `Lname`, `Score`, `Admin`) VALUES (NULL, 'uti1@mail.com', 'qwe123', 'uti', NULL, NULL, '1000', 0x00);
     const res = await fetch('/deleteuser', {
         method: 'POST',
@@ -57,6 +57,45 @@ document.querySelector("#save").addEventListener("click", () => {
     popup.style.display = 'none'
     form.reset()
 })
+
+document.querySelector('#ban-butt').addEventListener('click', () => {
+    if (currenView.Ban_Status == 1) { return }
+    check_pop(true)
+})
+
+document.querySelector('#unban-butt').addEventListener('click', () => {
+    if (currenView.Ban_Status == 0) { return }
+    check_pop(false)
+})
+
+async function check_pop(isBan) {
+    let data = null
+    if(isBan){
+        data = {
+            id:currenView.Id,
+            isBan:true
+        }
+    }else{
+        data = {
+            id:currenView.Id,
+            isBan:false
+        }
+    }
+    const banststus = await fetch(`/admin/banstatus`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+    })
+    if (banststus.status == 200) {
+        window.location.reload()
+    }
+    if (banststus.status == 500) {
+        alert(`Server error please try again later`)
+    }
+    
+}
 
 async function upload() {
     const fileInput = document.querySelector('#up-but');
@@ -127,7 +166,7 @@ function fillUser(allUser) {
     document.querySelector("#user-list").innerHTML = ''
     allUser.forEach((element, index) => {
         const html = `
-        <div>
+        <div id="${index}">
         <div>USERNAME : ${element.Name}</div>
         <button id="view" value="${index}">View</button>
         </div>
@@ -165,10 +204,10 @@ function profileView(index) {
     const h1_status = document.createElement('h1')
     if (user.Fname == null) { user.Fname = "" }
     if (user.Lname == null) { user.Lname = "" }
-    if (user.Ban_Status == 1) { 
+    if (user.Ban_Status == 1) {
         h1_status.innerHTML = `Status : Ban`
         h1_status.style.color = "red"
-    }else{
+    } else {
         h1_status.innerHTML = `Status : Normal`
         h1_status.style.color = "white"
     }

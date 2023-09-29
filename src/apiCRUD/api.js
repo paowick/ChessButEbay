@@ -102,6 +102,20 @@ app.get('/api/getalluser',async (req,res)=>{
         res.sendStatus(500)
     }
 })
+
+app.post('/api/banstatus',async (req,res)=>{
+    try {
+        const banstatus = db.banstatus(req.body.id, req.body.isBan)
+        if (banstatus) {
+            res.sendStatus(200)
+        } else {
+            res.sendStatus(500)
+        }
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500)
+    }
+})
 app.listen(port, () => {
     console.log(`listen on port ${port}`);
 })
