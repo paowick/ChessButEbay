@@ -67,6 +67,11 @@ document.querySelector('#unban-butt').addEventListener('click', () => {
     check_pop(false)
 })
 
+document.querySelector("#search").addEventListener('input',(e)=>{
+    let searchByName = str => userList.filter(item => item.Name.toLowerCase().includes(str.toLowerCase()))
+    fillUser(searchByName(e.target.value))
+})
+
 async function check_pop(isBan) {
     let data = null
     if (isBan) {
@@ -177,7 +182,7 @@ function fillUser(allUser) {
         divCHI.innerHTML = `${element.Name}`
         butt.innerHTML = `View`
         butt.setAttribute('id',"view")
-        butt.setAttribute("value",index)
+        butt.setAttribute("value",element.Id)
         if(element.Ban_Status == 1){
             divPER.style.backgroundColor = "#c54545"
         }
@@ -196,11 +201,12 @@ function fillUser(allUser) {
 
 function profileView(index) {
     document.querySelector("#user-con").style.display = "flex"
-    currenView = userList[index]
-    const user = userList[index]
+    const View = userList.filter(item => item.Id == index)
+    currenView = View[0]
+    console.table(currenView);
 
     const profile = document.getElementById('profile-pic')
-    profile.src = `/userimg/getimg?id=${user.Id}`
+    profile.src = `/userimg/getimg?id=${currenView.Id}`
 
     const name = document.getElementById("name-main")
     const flname = document.getElementById("FLname")
@@ -213,19 +219,19 @@ function profileView(index) {
     const h1_email = document.createElement("h1");
     const h1_score = document.createElement("h1");
     const h1_status = document.createElement('h1')
-    if (user.Fname == null) { user.Fname = "" }
-    if (user.Lname == null) { user.Lname = "" }
-    if (user.Ban_Status == 1) {
+    if (currenView.Fname == null) { currenView.Fname = "" }
+    if (currenView.Lname == null) { currenView.Lname = "" }
+    if (currenView.Ban_Status == 1) {
         h1_status.innerHTML = `Status : Ban`
         h1_status.style.color = "red"
     } else {
         h1_status.innerHTML = `Status : Normal`
         h1_status.style.color = "white"
     }
-    h1_name.innerText = `User Name: ${user.Name}`
-    h1_flname.innerText = `name: ${user.Fname}  ${user.Lname}`
-    h1_email.innerText = `Email: ${user.Email}`
-    h1_score.innerText = `Score: ${user.Score}`
+    h1_name.innerText = `User Name: ${currenView.Name}`
+    h1_flname.innerText = `name: ${currenView.Fname}  ${currenView.Lname}`
+    h1_email.innerText = `Email: ${currenView.Email}`
+    h1_score.innerText = `Score: ${currenView.Score}`
 
     name.innerHTML = ""
     email.innerHTML = ""
@@ -238,3 +244,5 @@ function profileView(index) {
     flname.appendChild(h1_flname)
     status.appendChild(h1_status)
 }
+
+
