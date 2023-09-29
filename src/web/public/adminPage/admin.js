@@ -18,7 +18,6 @@ document.querySelector('#del-butt').addEventListener('click', () => {
 })
 
 document.querySelector("#del-in").addEventListener("input", (e) => {
-    console.log("a;ksdm");
     if (e.target.value == currenView.Email) {
         document.querySelector("#del-butt-conf").disabled = false;
     } else {
