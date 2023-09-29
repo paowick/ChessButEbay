@@ -69,15 +69,15 @@ document.querySelector('#unban-butt').addEventListener('click', () => {
 
 async function check_pop(isBan) {
     let data = null
-    if(isBan){
+    if (isBan) {
         data = {
-            id:currenView.Id,
-            isBan:true
+            id: currenView.Id,
+            isBan: true
         }
-    }else{
+    } else {
         data = {
-            id:currenView.Id,
-            isBan:false
+            id: currenView.Id,
+            isBan: false
         }
     }
     const banststus = await fetch(`/admin/banstatus`, {
@@ -93,7 +93,7 @@ async function check_pop(isBan) {
     if (banststus.status == 500) {
         alert(`Server error please try again later`)
     }
-    
+
 }
 
 async function upload() {
@@ -164,14 +164,26 @@ document.getElementById('up-but').addEventListener('change', function () {
 function fillUser(allUser) {
     document.querySelector("#user-list").innerHTML = ''
     allUser.forEach((element, index) => {
-        const html = `
+        let html = ''
+        html = `
         <div id="${index}">
         <div>USERNAME : ${element.Name}</div>
         <button id="view" value="${index}">View</button>
         </div>
         `
-        const doc = new DOMParser().parseFromString(html, "text/xml").documentElement
-        document.querySelector("#user-list").appendChild(doc)
+        const divPER = document.createElement("div")
+        const divCHI= document.createElement("div")
+        const butt = document.createElement('button')
+        divCHI.innerHTML = `${element.Name}`
+        butt.innerHTML = `View`
+        butt.setAttribute('id',"view")
+        butt.setAttribute("value",index)
+        if(element.Ban_Status == 1){
+            divPER.style.backgroundColor = "#c54545"
+        }
+        divPER.appendChild(divCHI)
+        divPER.appendChild(butt)
+        document.querySelector("#user-list").appendChild(divPER)
     });
     document.querySelectorAll("#view").forEach(button => {
         button.addEventListener("click", (e) => {
