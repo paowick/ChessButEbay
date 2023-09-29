@@ -83,10 +83,34 @@ app.post('/api/editpassword', async (req, res) => {
     }
 })
 
+app.post('/api/deleteuser',(req,res)=>{
+    try {
+        db.deleteuser(req.body)
+        res.sendStatus(200)
+    } catch (error) {
+        console.log(e);
+        res.sendStatus(500)
+    }
+})
+
 app.get('/api/getalluser',async (req,res)=>{
     try {
         const allUser = await db.getAllUser()
         res.send(allUser)
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500)
+    }
+})
+
+app.post('/api/banstatus',async (req,res)=>{
+    try {
+        const banstatus = db.banstatus(req.body.id, req.body.isBan)
+        if (banstatus) {
+            res.sendStatus(200)
+        } else {
+            res.sendStatus(500)
+        }
     } catch (e) {
         console.log(e);
         res.sendStatus(500)

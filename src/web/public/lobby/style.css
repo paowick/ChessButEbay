@@ -175,3 +175,16 @@ p {
     background: #404040;
     box-shadow: 2px 5px 10px 0px #050505 inset;
 }
+.conFfrom>div>div {
+    display: flex;
+    gap: 20px;
+    width: 473px;
+}
+.conFfrom>div>div>input {
+    width: 66%;
+    height: 43px;
+    margin: 0 !important;
+    border-radius: 20px;
+    background: #404040;
+    box-shadow: 2px 5px 10px 0px #050505 inset;
+}

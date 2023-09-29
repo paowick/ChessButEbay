@@ -111,8 +111,8 @@ document.querySelector("#save").addEventListener("click", () => {
     const form = document.getElementById("edit-form")
     const popup = document.querySelector(".edit-pop")
     const popupPw = document.querySelector(".changePassword-pop")
-    popup.style.visibility = 'hidden'
-    popupPw.style.visibility = 'hidden'
+    popup.style.display = 'none'
+    popupPw.style.display = 'none'
     form.reset()
 })
 
@@ -130,6 +130,7 @@ async function upload() {
     const img = await fetch(`/userimg/chageimg?id=${user.id}`, options);
 
     const data = {
+        id:user.id,
         Username: document.getElementById('name-pop').value,
         Fname: document.getElementById('Fname-pop').value,
         Lname: document.getElementById('Lname-pop').value

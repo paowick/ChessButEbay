@@ -14,7 +14,7 @@ export async function getAllUser() {
     let conn;
     try {
         conn = await pool.getConnection();
-        const rows = await conn.query("SELECT * FROM `User` WHERE Admin = 0x00");
+        const rows = await conn.query("SELECT * FROM `User` WHERE Admin = 0");
         return rows
     }
     finally {
@@ -75,7 +75,7 @@ export async function InsertUser(Email, Password, Name, Score) {
     let conn;
     try {
         conn = await pool.getConnection();
-        const rows = await conn.query("INSERT INTO `User` (`Email`, `Password`, `Name`, `Score`, `Admin`) VALUES (?, ?, ?, ?, 0x00);", [Email, Password, Name, Score]);
+        const rows = await conn.query("INSERT INTO `User` (`Email`, `Password`, `Name`, `Score`, `Ban_Status` ,`Admin`) VALUES (?, ?, ?, ?, 0, 0);", [Email, Password, Name, Score]);
         console.log(rows.affectedRows);
         if(rows.affectedRows == 1){
             return true
@@ -117,6 +117,29 @@ export async function editpassword(id,password) {
     try {
         conn = await pool.getConnection();
         const rows = await conn.query("UPDATE User SET User.Password = ? WHERE Id = ?;",[password,id]);
+        return rows.affectedRows == 1 ? true : false
+    } finally {
+        if (conn) conn.destroy();
+    }
+}
+
+export async function deleteuser(user) {
+    let conn;
+    try {
+        conn = await pool.getConnection();
+        const rows = await conn.query("DELETE FROM `User` WHERE Id = ?;",[user.Id]);
+        console.log(rows);
+        return rows.affectedRows == 1 ? true : false
+    } finally {
+        if (conn) conn.destroy();
+    }
+    
+}
+export async function banstatus(id,newStatus) {
+    let conn;
+    try {
+        conn = await pool.getConnection();
+        const rows = await conn.query("UPDATE User SET User.Ban_Status = ? WHERE Id = ?;",[newStatus,id]);
         console.log(rows);
         return rows.affectedRows == 1 ? true : false
     } finally {
