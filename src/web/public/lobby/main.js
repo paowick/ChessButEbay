@@ -30,6 +30,16 @@ function roomtabview(room) {
     return tag
 }
 
+document.querySelector("#code-input").addEventListener("input", (e) => {
+    let searchByName = str => roomList.filter(item => item.name.toLowerCase().includes(str.toLowerCase()))
+    const newroomlist = searchByName(e.target.value);
+    if (!document.body.contains(document.getElementById('board'))) { return }
+    document.getElementById('board').innerHTML = ""
+    newroomlist.forEach(element =>{
+        document.getElementById("board").appendChild(roomtabview(element))
+    })
+
+})
 function enter(code){
     const currentGame = localStorage.getItem('currentGame')
     const currentGameJSON = JSON.parse(currentGame)
@@ -46,23 +56,6 @@ function enter(code){
     });
 }
 
-document.querySelector("#joingame").addEventListener("click", () => {
-    const code = document.querySelector("#code-input").value
-    const currentGame = localStorage.getItem('currentGame')
-    const currentGameJSON = JSON.parse(currentGame)
-    roomList.forEach(element => {
-        if (element.code == code) {
-            if (currentGame != null && currentGameJSON.code == code) { return window.location = '/Game' }
-            const userdata = {
-                code: code,
-                role: "viewer"
-            }
-            localStorage.setItem('currentGame', JSON.stringify(userdata))
-            window.location = '/Game'
-        }
-    });
-    console.log("dint have this room"); // <------
-})
 
 
 
