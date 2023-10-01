@@ -317,8 +317,32 @@ export async function moveClient(source, destination, promoted) {
     auctionobj.setAuctionStage(true)
     changeMyTurn(false)
     clearAllHightLight()
+    const turndoc = document.querySelectorAll("#turn")
+    turndoc.forEach(ele => {
+        if(currentGame.role == "B"){
+            ele.style.backgroundColor = "white"
+            if(currentGame.role == "W"){
+                ele.innerHTML = "Your Turn!"
+                ele.style.color = "black"
+            }else{
+                ele.innerHTML = "White Turn"
+                ele.style.color = "black"
+            }
+        }
+        if(currentGame.role == "W"){
+            ele.style.backgroundColor = "black"
+            if(currentGame.role == "B"){
+                ele.innerHTML = "Your Turn!"
+                ele.style.color = "white"
+            }else{
+                ele.innerHTML = "Balck Turn"
+                ele.style.color = "white"
+            }
+
+        }
+    })
 }
-export function moveClient_Server(source, destination, promoted) {
+export function moveClient_Server(turn ,source, destination, promoted) {
     const oldpos = tranSlateTopos(source)
     const newpos = tranSlateTopos(destination)
     const piece = board[oldpos[0]][oldpos[1]];
@@ -340,6 +364,31 @@ export function moveClient_Server(source, destination, promoted) {
 
     auctionobj.setAuctionStage(true)
     clearAllHightLight()
+
+    const turndoc = document.querySelectorAll("#turn")
+    turndoc.forEach(ele => {
+        if(turn == "W"){
+            ele.style.backgroundColor = "white"
+            if(currentGame.role == "W"){
+                ele.innerHTML = "Your Turn!"
+                ele.style.color = "black"
+            }else{
+                ele.innerHTML = "White Turn"
+                ele.style.color = "black"
+            }
+        }
+        if(turn == "B"){
+            ele.style.backgroundColor = "black"
+            if(currentGame.role == "B"){
+                ele.innerHTML = "Your Turn!"
+                ele.style.color = "white"
+            }else{
+                ele.innerHTML = "Balck Turn"
+                ele.style.color = "white"
+            }
+
+        }
+    })
 }
 export function clearAllHightLight() {
     document.querySelectorAll(".hight-light").forEach(div => {

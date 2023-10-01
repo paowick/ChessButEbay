@@ -12,15 +12,15 @@ import { mineobj } from "./board.js";
 import { startGame } from "./script.js";
 import { updateJoinPop } from "./script.js";
 import { coin } from "./board.js";
-import { coinUpdateViewer,coinUpdate_Server } from "./script.js";
+import { coinUpdateViewer, coinUpdate_Server } from "./script.js";
 import { currentBidUpdate } from "./script.js";
 import { auctionobj } from "./board.js";
-import { invtobj,invtBlack,invtWhite } from "./board.js";
+import { invtobj, invtBlack, invtWhite } from "./board.js";
 import { mine } from "./mine.js";
 const user = JSON.parse(localStorage.getItem('user'))
 
 document.querySelector("#test").addEventListener("click", () => {
-    if(auctionobj.auctionStage){ 
+    if (auctionobj.auctionStage) {
         socket.emit('test-auction', "test")
     }
 })
@@ -29,12 +29,12 @@ document.querySelector("#test").addEventListener("click", () => {
 import('./board.js').then(({ socket }) => {
     socket.on('move_server', (arg) => {
         mineobj.mineListCount()
-        moveClient_Server(arg.source, arg.destination, arg.promoted)
+        moveClient_Server(arg.turn, arg.source, arg.destination, arg.promoted)
     })
-    
+
     socket.on('get-piece_auction_server', async (arg) => {
         const user = JSON.parse(localStorage.getItem('user'))
-        if(user.id == arg.id){
+        if (user.id == arg.id) {
             invtobj.invtPush(invtobj.pieceToObj(arg.newPiece))
             invtUpdate()
             invtobj.invtSetUp()
@@ -86,14 +86,14 @@ import('./board.js').then(({ socket }) => {
         const info = await JSON.parse(arg)
         currentBidUpdate(info)
         coinUpdate_Server(info)
-    }) 
+    })
 
     socket.on('invtViewerUpdate', async (arg) => {
         const user = JSON.parse(localStorage.getItem('user'))
-        if(user.id == arg.playerB){return}
-        if(user.id == arg.playerW){return}
-        invtBlack.invtSetUpViewer(arg.invtB,"B")
-        invtWhite.invtSetUpViewer(arg.invtW,"W")
+        if (user.id == arg.playerB) { return }
+        if (user.id == arg.playerW) { return }
+        invtBlack.invtSetUpViewer(arg.invtB, "B")
+        invtWhite.invtSetUpViewer(arg.invtW, "W")
         coinUpdateViewer(arg)
     })
 }).catch((error) => {
@@ -104,7 +104,7 @@ import('./board.js').then(({ socket }) => {
 
 
 export function bid(amout) {
-    if(auctionobj.auctionStage == false){ return }
+    if (auctionobj.auctionStage == false) { return }
     if (amout == "") { return }
     amout = parseInt(amout)
     if (amout == 0) { return }
@@ -118,19 +118,19 @@ export function bid(amout) {
     socket.emit('bid', data)
 }
 
-export function invtUpdate(){
-    const invtValidate = [] 
+export function invtUpdate() {
+    const invtValidate = []
     invtobj.invtList.forEach(element => {
         element.board = null
         invtValidate.push(element)
     });
     let data = {
         invt: invtValidate,
-}
+    }
     socket.emit('invtUpdate', stringify(data))
 }
 
-export function mineUpdate(mine,isReturn) {
+export function mineUpdate(mine, isReturn) {
     const mineValidate = []
     mine.forEach(element => {
         element.board = null
@@ -144,7 +144,7 @@ export function mineUpdate(mine,isReturn) {
     let data = {
         mine: mineValidate
     }
-    if(isReturn){return}
+    if (isReturn) { return }
     socket.emit('mineUpdate', stringify(data))
 }
 
@@ -204,13 +204,13 @@ function drop_server(element) {
     }
 }
 
-export function returnPieceFromMine(){
+export function returnPieceFromMine() {
 }
 
-export function dropEmit(piece,board) {
+export function dropEmit(piece, board) {
     mineobj.mineListCount()
     const currentGame = JSON.parse(localStorage.getItem("currentGame"))
-    const invtValidate = [] 
+    const invtValidate = []
     invtobj.invtList.forEach(element => {
         element.board = null
         invtValidate.push(element)
@@ -241,7 +241,7 @@ export function dropEmit(piece,board) {
 export function dropMineEmit(piece, board, mine) {
     const currentGame = JSON.parse(localStorage.getItem("currentGame"))
     piece.setCurrentTimeInMine()
-    const invtValidate = [] 
+    const invtValidate = []
     invtobj.invtList.forEach(element => {
         element.board = null
         invtValidate.push(element)

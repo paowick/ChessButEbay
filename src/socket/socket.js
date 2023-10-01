@@ -170,6 +170,7 @@ io.sockets.on("connection", async (socket) => {
             NX: false
         })
         let move = {
+            turn: turn,
             promoted: data.promoted,
             source: data.source,
             destination: data.destination,
