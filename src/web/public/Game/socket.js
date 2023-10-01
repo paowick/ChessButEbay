@@ -75,6 +75,31 @@ import('./board.js').then(({ socket }) => {
             changeMyTurn(false)
         }
         drop_server(arg.piece)
+        auctionobj.setAuctionStage(true)
+        const turndoc = document.querySelectorAll("#turn")
+        turndoc.forEach(ele => {
+            if (arg.turn == "W") {
+                ele.style.backgroundColor = "white"
+                if (currentGame.role == "W") {
+                    ele.innerHTML = "Your Turn!"
+                    ele.style.color = "black"
+                } else {
+                    ele.innerHTML = "White Turn"
+                    ele.style.color = "black"
+                }
+            }
+            if (arg.turn == "B") {
+                ele.style.backgroundColor = "black"
+                if (currentGame.role == "B") {
+                    ele.innerHTML = "Your Turn!"
+                    ele.style.color = "white"
+                } else {
+                    ele.innerHTML = "Balck Turn"
+                    ele.style.color = "white"
+                }
+
+            }
+        })
     })
 
     socket.on('drop_mine_server', async (arg) => {

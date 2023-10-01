@@ -314,7 +314,6 @@ export function hightLightDrop(piece, id) {
 export function showDropAble(posList) {
     posList.forEach(element => {
         const id = tranSlateToId(element)
-
         document.querySelectorAll(`#${id}`).forEach(element => {
             if (element.childNodes.length > 0) {
 

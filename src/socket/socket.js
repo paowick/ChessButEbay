@@ -82,9 +82,9 @@ io.sockets.on("connection", async (socket) => {
 
     socket.on('createRoom', (data) => {
         const value = {
-            roomname:data.req.roomName,
-            auctiontime:data.req.aucTime,
-            confcoins:parseInt(data.req.coins),
+            roomname: data.req.roomName,
+            auctiontime: data.req.aucTime,
+            confcoins: parseInt(data.req.coins),
             auctionslot1: null,
             auctionslot2: null,
             currentBid: 0,
@@ -119,9 +119,9 @@ io.sockets.on("connection", async (socket) => {
         const roomJSON = await redisClient.get(socket.request._query.code)
         const room = await JSON.parse(roomJSON)
         const value = {
-            roomname:room.roomName,
-            auctiontime:room.aucTime,
-            confcoins:room.confcoins,
+            roomname: room.roomName,
+            auctiontime: room.aucTime,
+            confcoins: room.confcoins,
             auctionslot1: null,
             auctionslot2: null,
             currentBid: 0,

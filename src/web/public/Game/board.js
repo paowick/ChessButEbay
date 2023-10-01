@@ -282,6 +282,31 @@ export function drop(piece, destination,invtId) {
     changeMyTurn(false)
     clearAllHightLight()
     dropEmit(piece, board)
+    auctionobj.setAuctionStage(true)
+    const turndoc = document.querySelectorAll("#turn")
+    turndoc.forEach(ele => {
+        if(currentGame.role == "B"){
+            ele.style.backgroundColor = "white"
+            if(currentGame.role == "W"){
+                ele.innerHTML = "Your Turn!"
+                ele.style.color = "black"
+            }else{
+                ele.innerHTML = "White Turn"
+                ele.style.color = "black"
+            }
+        }
+        if(currentGame.role == "W"){
+            ele.style.backgroundColor = "black"
+            if(currentGame.role == "B"){
+                ele.innerHTML = "Your Turn!"
+                ele.style.color = "white"
+            }else{
+                ele.innerHTML = "Balck Turn"
+                ele.style.color = "white"
+            }
+
+        }
+    })
 }
 
 
