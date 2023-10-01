@@ -154,7 +154,7 @@ io.sockets.on("connection", async (socket) => {
         const roomJSON = await redisClient.get(socket.request._query.code)
         const room = await JSON.parse(roomJSON)
         room.board = await data.board
-        room.turn = await data.turn
+        room.turn = await turn
         room.mine = await data.mine
         room.auctionStage = true
         if (socket.request._query.id == room.playerB) {
@@ -184,7 +184,7 @@ io.sockets.on("connection", async (socket) => {
         let turn = await data.turn
         if (turn == "W") { turn = "B" } else if (turn == "B") { turn = "W" }
         room.board = await data.board
-        room.turn = await data.turn
+        room.turn = await turn
         room.auctionStage = true
         if (socket.request._query.id == room.playerB) {
             room.invtB = await data.invt
