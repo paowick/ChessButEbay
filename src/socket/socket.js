@@ -64,8 +64,8 @@ io.sockets.on("connection", async (socket) => {
             if (boardRedis.playerB != null && boardRedis.playerW != null) {
                 boardRedis.turn = 'W'
                 boardRedis.gameStart = true
-                let piece1 = getRandomChessPiece()
-                let piece2 = getRandomChessPiece()
+                let piece1 = getRandomChessPiece(boardRedis.turnCount)
+                let piece2 = getRandomChessPiece(boardRedis.turnCount)
 
                 boardRedis.auctionslot1 = piece1
                 boardRedis.auctionslot2 = piece2
@@ -82,6 +82,7 @@ io.sockets.on("connection", async (socket) => {
 
     socket.on('createRoom', (data) => {
         const value = {
+            turnCount: 0,
             roomname: data.req.roomName,
             auctiontime: data.req.aucTime,
             confcoins: parseInt(data.req.coins),
@@ -119,6 +120,7 @@ io.sockets.on("connection", async (socket) => {
         const roomJSON = await redisClient.get(socket.request._query.code)
         const room = await JSON.parse(roomJSON)
         const value = {
+            turnCount: 0,
             roomname: room.roomName,
             auctiontime: room.aucTime,
             confcoins: room.confcoins,
@@ -156,6 +158,7 @@ io.sockets.on("connection", async (socket) => {
         room.board = await data.board
         room.turn = await turn
         room.mine = await data.mine
+        room.turnCount = await room.turnCount + 1
         room.auctionStage = true
         if (socket.request._query.id == room.playerB) {
             room.coinB = await data.coin
@@ -186,6 +189,7 @@ io.sockets.on("connection", async (socket) => {
         if (turn == "W") { turn = "B" } else if (turn == "B") { turn = "W" }
         room.board = await data.board
         room.turn = await turn
+        room.turnCount = await room.turnCount + 1
         room.auctionStage = true
         if (socket.request._query.id == room.playerB) {
             room.invtB = await data.invt
@@ -279,7 +283,7 @@ async function getAuction(socket) {
     const slotTemp = room.auctionslot1
     const bidderTemp = room.currentBidder
     room.auctionslot1 = room.auctionslot2
-    room.auctionslot2 = getRandomChessPiece()
+    room.auctionslot2 = getRandomChessPiece(room.turnCount)
     room.currentBid = 0
     room.currentBidder = null
     room.auctionStage = false
@@ -317,18 +321,38 @@ async function bid(arg, code, socket) {
 }
 
 
-function getRandomChessPiece() {
+function getRandomChessPiece(turnCount) {
     const randomNum = Math.random() * 100; // Generate a random number between 0 and 100
 
     // Define the percentages for each chess piece
-    const percentages = {
-        'pawn': 60,
-        'rook': 10,
-        'knight': 10,
-        'bishop': 10,
-        'queen': 5,
-        'king': 5
-    };
+    let percentages = null
+    if (turnCount <= 4) {
+        percentages = {
+            'pawn': 100,
+            'rook': 0,
+            'knight': 0,
+            'bishop': 0,
+            'queen': 0,
+        };
+    }
+    if(turnCount > 4 && turnCount <= 10 ){
+        percentages = {
+            'pawn': 70,
+            'rook': 10,
+            'knight': 10,
+            'bishop': 10,
+            'queen': 0,
+        };
+    }
+    if(turnCount > 10){
+        percentages = {
+            'pawn': 65,
+            'rook': 10,
+            'knight': 10,
+            'bishop': 10,
+            'queen': 5,
+        };
+    }
 
     let cumulativePercentage = 0;
 
