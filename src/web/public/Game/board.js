@@ -197,6 +197,9 @@ document.querySelector('#join_white')
 
 var source = null
 var destination = null
+export function setSourceNull(){
+    source = null
+}
 document.querySelectorAll('.box')
     .forEach(div => {
         div.addEventListener('click', function () {
