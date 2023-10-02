@@ -43,7 +43,7 @@ new pieces.pawn("pawn", "66", "W", false, board, true)
 new pieces.pawn("pawn", "67", "W", false, board, true)
 
 
-new pieces.king("king", "04", "B", true, board)
+new pieces.king("king", "44", "B", true, board)
 new pieces.queen("queen", "03", "B", false, board)
 new pieces.bishop("bishop", "02", "B", false, board)
 new pieces.bishop("bishop", "05", "B", false, board)

@@ -55,10 +55,8 @@ export var socket = io(window.location.origin, {
 export let myturn = false
 
 export function changeMyTurn(data) {
-    if (data == true) {
-        mineobj.changeMineDropAble(true)
-    }
     myturn = data
+    mineobj.changeMineDropAble(data)
 }
 
 // maybe it bug
@@ -312,23 +310,50 @@ export function drop(piece, destination,invtId) {
     })
 }
 
-export function logConv(source,destination) {
-    const oldpos = tranSlateTopos(source)
-    const newpos = tranSlateTopos(destination)
-    const sourcepiece = board[oldpos[0]][oldpos[1]]
-    const destinationpiece = board[newpos[0]][newpos[1]]
-    console.log("source",source,sourcepiece); // return object, have name ,if it null is null
-    console.log("des",destination,destinationpiece)// return object, have name ,if it null is null
-}
+let notation = ''
+const pieceToNotation = {
+    "pawn": "P",
+    "knight": "N",
+    "bishop": "B",
+    "rook": "R",
+    "queen": "Q",
+    "king": "K",
+  };
+export function logConv(source, destination,promoted) {
+    // Reversible algebraic Chess notation
+    notation = ''
+    const oldpos = tranSlateTopos(source);
+    const newpos = tranSlateTopos(destination);
+    const sourcepiece = board[oldpos[0]][oldpos[1]];
+    const destinationpiece = board[newpos[0]][newpos[1]];
 
+    if(destinationpiece == null){
+        notation = `${pieceToNotation[sourcepiece.name]}${source}-${destination}`
+    }
+    if(destinationpiece != null){
+        notation = `${pieceToNotation[sourcepiece.name]}${source}x${pieceToNotation[destinationpiece.name]}${destination}`
+    }
+  }
+export function logKingCheck(piece){
+    const moveable = piece.moveAblepos(board)
+    moveable.forEach(element =>{
+        const box = board[element[0]][element[1]]
+        if(box != null){
+            if(box.name == "king" && box.team != piece.team){
+                notation += "+"
+            }
+        }
+    })
+}
 export async function moveClient(source, destination, promoted) {
     const oldpos = tranSlateTopos(source)
     const newpos = tranSlateTopos(destination)
-    logConv(source,destination)
+    logConv(source,destination,promoted)
     const piece = board[oldpos[0]][oldpos[1]];
     piece.unset()
     piece.pos = newpos
     piece.setPiece()
+    logKingCheck(piece)
     if (piece.firstmove != undefined) { piece.firstmove = false }
     if (typeof piece.promoted === 'function' && promoted != null) {
         const newPiece = await piece.promoted(board, promoted)
@@ -339,14 +364,14 @@ export async function moveClient(source, destination, promoted) {
                 team: newPiece.team,
                 isKing: false
             }
-            move(source, destination, dataNewPiece)
+            move(source, destination, dataNewPiece ,notation)
             destination = null
             source = null
             localStorage.setItem("board", stringify(board))
             changeMyTurn(false)
         }
     }
-    move(source, destination, null)
+    move(source, destination, null, notation)
     destination = null
     source = null
     localStorage.setItem("board", stringify(board))

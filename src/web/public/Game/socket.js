@@ -58,9 +58,12 @@ import('./board.js').then(({ socket }) => {
 
         const currentGame = JSON.parse(localStorage.getItem("currentGame"))
         const info = JSON.parse(arg.board)
+        console.log(info.turn , currentGame.role);
         if (info.turn === currentGame.role) {
+            console.log("myturn");
             changeMyTurn(true)
         } else {
+            console.log("motmyturn");
             changeMyTurn(false)
         }
         startGame(info, arg, currentGame)
@@ -173,7 +176,7 @@ export function mineUpdate(mine, isReturn) {
     socket.emit('mineUpdate', stringify(data))
 }
 
-export function move(source, destination, promoted) {
+export function move(source, destination, promoted, notation) {
     mineobj.mineListCount()
     const mineValidate = []
     mineobj.mineList.forEach(element => {
@@ -194,7 +197,8 @@ export function move(source, destination, promoted) {
         board: board,
         mine: mineValidate,
         invt: invtValidate,
-        coin: coin
+        coin: coin,
+        notation : notation
     }
     if (destination != source) {
         socket.emit("move", stringify(data))
