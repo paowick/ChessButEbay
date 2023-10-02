@@ -2,7 +2,7 @@ import { board } from "./board.js"
 import { clearAllHightLight } from "./board.js"
 import { hightLightDrop, showDropAble, hightLightMine } from "./script.js"
 import { mineobj } from "./board.js"
-
+import { setSourceNull } from "./board.js"
 
 import { king } from './king.js';
 import { pawn } from './pawn.js';
@@ -83,9 +83,10 @@ export class inventory {
             div.addEventListener('click', function (e) {
                 // when click on invt-box in second time ti will be clear all hightlight
                 clearAllHightLight()
+                setSourceNull()
                 showDropAble(invtListTemp[this.id].dropPieceAble(board))
                 hightLightDrop(invtListTemp[this.id], this.id)
-                removeAllEvent()
+                // removeAllEvent()
                 if (mineobj.mineList.length >= mineobj.minelimit) {
                     return
                 }
@@ -93,19 +94,8 @@ export class inventory {
             })
         })
 
-        const removeAllEvent = () => {
-            this.temp()
-            document.querySelectorAll('.invt-box').forEach(div => {
-                const newdiv = div.cloneNode(true)
-                div.parentNode.replaceChild(newdiv, div)
-            })
-        }
-
     }
 
-    temp() {
-        this.invtSetUp()
-    }
 
     pieceToObjViewer(piece, team) {
         if (piece == 'king') {

@@ -183,7 +183,30 @@ export function boardSetupUi(currentGame, info) {
         currentGame.role = "viewer"
     }
     localStorage.setItem('currentGame', JSON.stringify(currentGame))
+    const turndoc = document.querySelectorAll("#turn")
+    turndoc.forEach(ele => {
+        if(info.turn == "W"){
+            ele.style.backgroundColor = "white"
+            if(user.id == info.playerW){
+                ele.innerHTML = "Your Turn!"
+            }else{
+                ele.innerHTML = "White Turn"
+            }
+        }
+        if(info.turn == "B"){
+            ele.style.backgroundColor = "black"
+            if(user.id == info.playerB){
+                ele.innerHTML = "Your Turn!"
+                ele.style.color = "white"
+            }else{
+                ele.innerHTML = "Balck Turn"
+                ele.style.color = "white"
+            }
+
+        }
+    })
 }
+
 
 
 // export function codePart(code) {
@@ -291,7 +314,6 @@ export function hightLightDrop(piece, id) {
 export function showDropAble(posList) {
     posList.forEach(element => {
         const id = tranSlateToId(element)
-
         document.querySelectorAll(`#${id}`).forEach(element => {
             if (element.childNodes.length > 0) {
 

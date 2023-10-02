@@ -55,10 +55,8 @@ export var socket = io(window.location.origin, {
 export let myturn = false
 
 export function changeMyTurn(data) {
-    if (data == true) {
-        mineobj.changeMineDropAble(true)
-    }
     myturn = data
+    mineobj.changeMineDropAble(data)
 }
 
 // maybe it bug
@@ -197,6 +195,9 @@ document.querySelector('#join_white')
 
 var source = null
 var destination = null
+export function setSourceNull(){
+    source = null
+}
 document.querySelectorAll('.box')
     .forEach(div => {
         div.addEventListener('click', function () {
@@ -282,17 +283,77 @@ export function drop(piece, destination,invtId) {
     changeMyTurn(false)
     clearAllHightLight()
     dropEmit(piece, board)
+    auctionobj.setAuctionStage(true)
+    const turndoc = document.querySelectorAll("#turn")
+    turndoc.forEach(ele => {
+        if(currentGame.role == "B"){
+            ele.style.backgroundColor = "white"
+            if(currentGame.role == "W"){
+                ele.innerHTML = "Your Turn!"
+                ele.style.color = "black"
+            }else{
+                ele.innerHTML = "White Turn"
+                ele.style.color = "black"
+            }
+        }
+        if(currentGame.role == "W"){
+            ele.style.backgroundColor = "black"
+            if(currentGame.role == "B"){
+                ele.innerHTML = "Your Turn!"
+                ele.style.color = "white"
+            }else{
+                ele.innerHTML = "Balck Turn"
+                ele.style.color = "white"
+            }
+
+        }
+    })
 }
 
+let notation = ''
+const pieceToNotation = {
+    "pawn": "P",
+    "knight": "N",
+    "bishop": "B",
+    "rook": "R",
+    "queen": "Q",
+    "king": "K",
+  };
+export function logConv(source, destination,promoted) {
+    // Reversible algebraic Chess notation
+    notation = ''
+    const oldpos = tranSlateTopos(source);
+    const newpos = tranSlateTopos(destination);
+    const sourcepiece = board[oldpos[0]][oldpos[1]];
+    const destinationpiece = board[newpos[0]][newpos[1]];
 
+    if(destinationpiece == null){
+        notation = `${pieceToNotation[sourcepiece.name]}${source}-${destination}`
+    }
+    if(destinationpiece != null){
+        notation = `${pieceToNotation[sourcepiece.name]}${source}x${pieceToNotation[destinationpiece.name]}${destination}`
+    }
+  }
+export function logKingCheck(piece){
+    const moveable = piece.moveAblepos(board)
+    moveable.forEach(element =>{
+        const box = board[element[0]][element[1]]
+        if(box != null){
+            if(box.name == "king" && box.team != piece.team){
+                notation += "+"
+            }
+        }
+    })
+}
 export async function moveClient(source, destination, promoted) {
-
     const oldpos = tranSlateTopos(source)
     const newpos = tranSlateTopos(destination)
+    logConv(source,destination,promoted)
     const piece = board[oldpos[0]][oldpos[1]];
     piece.unset()
     piece.pos = newpos
     piece.setPiece()
+    logKingCheck(piece)
     if (piece.firstmove != undefined) { piece.firstmove = false }
     if (typeof piece.promoted === 'function' && promoted != null) {
         const newPiece = await piece.promoted(board, promoted)
@@ -303,22 +364,46 @@ export async function moveClient(source, destination, promoted) {
                 team: newPiece.team,
                 isKing: false
             }
-            move(source, destination, dataNewPiece)
+            move(source, destination, dataNewPiece ,notation)
             destination = null
             source = null
             localStorage.setItem("board", stringify(board))
             changeMyTurn(false)
         }
     }
-    move(source, destination, null)
+    move(source, destination, null, notation)
     destination = null
     source = null
     localStorage.setItem("board", stringify(board))
     auctionobj.setAuctionStage(true)
     changeMyTurn(false)
     clearAllHightLight()
+    const turndoc = document.querySelectorAll("#turn")
+    turndoc.forEach(ele => {
+        if(currentGame.role == "B"){
+            ele.style.backgroundColor = "white"
+            if(currentGame.role == "W"){
+                ele.innerHTML = "Your Turn!"
+                ele.style.color = "black"
+            }else{
+                ele.innerHTML = "White Turn"
+                ele.style.color = "black"
+            }
+        }
+        if(currentGame.role == "W"){
+            ele.style.backgroundColor = "black"
+            if(currentGame.role == "B"){
+                ele.innerHTML = "Your Turn!"
+                ele.style.color = "white"
+            }else{
+                ele.innerHTML = "Balck Turn"
+                ele.style.color = "white"
+            }
+
+        }
+    })
 }
-export function moveClient_Server(source, destination, promoted) {
+export function moveClient_Server(turn ,source, destination, promoted) {
     const oldpos = tranSlateTopos(source)
     const newpos = tranSlateTopos(destination)
     const piece = board[oldpos[0]][oldpos[1]];
@@ -340,6 +425,31 @@ export function moveClient_Server(source, destination, promoted) {
 
     auctionobj.setAuctionStage(true)
     clearAllHightLight()
+
+    const turndoc = document.querySelectorAll("#turn")
+    turndoc.forEach(ele => {
+        if(turn == "W"){
+            ele.style.backgroundColor = "white"
+            if(currentGame.role == "W"){
+                ele.innerHTML = "Your Turn!"
+                ele.style.color = "black"
+            }else{
+                ele.innerHTML = "White Turn"
+                ele.style.color = "black"
+            }
+        }
+        if(turn == "B"){
+            ele.style.backgroundColor = "black"
+            if(currentGame.role == "B"){
+                ele.innerHTML = "Your Turn!"
+                ele.style.color = "white"
+            }else{
+                ele.innerHTML = "Balck Turn"
+                ele.style.color = "white"
+            }
+
+        }
+    })
 }
 export function clearAllHightLight() {
     document.querySelectorAll(".hight-light").forEach(div => {

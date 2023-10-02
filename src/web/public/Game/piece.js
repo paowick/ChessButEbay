@@ -28,18 +28,22 @@ export class pieces {
         this.inInvt = newvalue
     }
     dropPieceAble(board){
-        let temp = []
+        let temp = null
         if(this.team == "B"){
             temp = ['00', '01', '02', '03', '04', '05', '06', '07','10', '11', '12', '13', '14', '15', '16', '17']
-        }else if(this.team == "W"){
+        }
+        if(this.team == "W"){
             temp = ['70', '71', '72', '73', '74', '75', '76', '77','60', '61', '62', '63', '64', '65', '66', '67']
         }
-        temp.forEach((element,index) => {
+        console.log(temp);
+        let mustpop = []
+        temp.forEach((element) => {
             if(board[element[0]][element[1]] != null){
-                temp.splice(index,1)
+                mustpop.push(element)
             }
         });
-        return temp
+        let result = temp.filter(item => !mustpop.includes(item));
+        return result
     }
     tranSlateToId() {
         var temp = ""
