@@ -312,11 +312,17 @@ export function drop(piece, destination,invtId) {
     })
 }
 
+export function logConv(source,destination) {
+    const sourcepiece = board[source[0]][source[1]]
+    const destinationpiece = board[destination[0]][destination[1]]
+    console.log("source",sourcepiece);
+    console.log("des",destinationpiece)
+}
 
 export async function moveClient(source, destination, promoted) {
-
     const oldpos = tranSlateTopos(source)
     const newpos = tranSlateTopos(destination)
+    logConv(oldpos,newpos)
     const piece = board[oldpos[0]][oldpos[1]];
     piece.unset()
     piece.pos = newpos

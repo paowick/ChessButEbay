@@ -38,6 +38,7 @@ io.use(function (socket, next) {
 io.sockets.on("connection", async (socket) => {
     console.log(`connnect ${socket.id}`)
     socket.join(socket.request._query.code)
+    console.log(socket.request._query.code);
     if (socket.request._query.code != "admin") {
         let socketRole = null
         const boardRedisJSON = await redisClient.get(socket.request._query.code)
@@ -54,6 +55,36 @@ io.sockets.on("connection", async (socket) => {
 
     }
 
+    socket.on('resetroom',(arg)=>{
+        const value = {
+            turnCount: 0,
+            roomname: "tui",
+            auctiontime: 5,
+            confcoins: 1000,
+            auctionslot1: null,
+            auctionslot2: null,
+            currentBid: 0,
+            currentBidder: null,
+            auctionStage: true,
+            turn: null,
+            code: arg,
+            playerB: null,
+            playerBName: null,
+            invtB: [],
+            coinB: 1000,
+            playerW: null,
+            playerWName: null,
+            invtW: [],
+            coinW: 1000,
+            mine: [],
+            gameStart: false,
+            board: board,
+            log: null
+        }
+        redisClient.set(arg, stringify(value), {
+            NX: false
+        })
+    })
 
     socket.on('join', async (arg) => {
         await storedata(arg, socket).then(async (boardRedis) => {
