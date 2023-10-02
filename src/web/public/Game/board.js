@@ -313,16 +313,18 @@ export function drop(piece, destination,invtId) {
 }
 
 export function logConv(source,destination) {
-    const sourcepiece = board[source[0]][source[1]]
-    const destinationpiece = board[destination[0]][destination[1]]
-    console.log("source",sourcepiece);
-    console.log("des",destinationpiece)
+    const oldpos = tranSlateTopos(source)
+    const newpos = tranSlateTopos(destination)
+    const sourcepiece = board[oldpos[0]][oldpos[1]]
+    const destinationpiece = board[newpos[0]][newpos[1]]
+    console.log("source",source,sourcepiece); // return object, have name ,if it null is null
+    console.log("des",destination,destinationpiece)// return object, have name ,if it null is null
 }
 
 export async function moveClient(source, destination, promoted) {
     const oldpos = tranSlateTopos(source)
     const newpos = tranSlateTopos(destination)
-    logConv(oldpos,newpos)
+    logConv(source,destination)
     const piece = board[oldpos[0]][oldpos[1]];
     piece.unset()
     piece.pos = newpos
