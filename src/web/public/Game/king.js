@@ -71,6 +71,7 @@ export class king extends pieces {
             var id = this.tranSlateToId()
             var box = document.querySelectorAll(`#${id}`)
             box.forEach(element => {
+                element.innerHTML = ''
                 const newDiv = document.createElement("div");
                 const newimg = document.createElement("img");
                 newDiv.classList.add("boxpiece");
