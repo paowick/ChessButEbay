@@ -296,6 +296,7 @@ function castle(source, destination) {
     const newpos = tranSlateTopos(destination)
     const piece = havePiece(source)
     piece.setChecked(true)
+    console.log(piece);
     let kingSource = source
     let kingDestination = destination
     let rookSource = null
@@ -409,13 +410,14 @@ function castle(source, destination) {
     })
 }
 export function castle_server(source, destination, turn) {
-    console.log("in");
+    
     const newpos = tranSlateTopos(destination)
     const piece = havePiece(source)
-    if (!piece.moveAblepos(board).includes(newpos)) { return }
+    piece.setChecked(true)
+    console.log(piece);
     if (tranSlateTopos(destination)[1] == 6) {
         if (piece.team == "W") {
-            if (tranSlateTopos(destination)[0] != 7) { return }
+            console.log("h");
             const rook = havePiece("h1")
             piece.unset()
             piece.pos = newpos
@@ -425,7 +427,6 @@ export function castle_server(source, destination, turn) {
             rook.setPiece()
         }
         if (piece.team == "B") {
-            if (tranSlateTopos(destination)[0] != 0) { return }
             const rook = havePiece("h8")
             piece.unset()
             piece.pos = newpos
@@ -438,7 +439,7 @@ export function castle_server(source, destination, turn) {
     }
     if (tranSlateTopos(destination)[1] == 2) {
         if (piece.team == "W") {
-            if (tranSlateTopos(destination)[0] != 7) { return }
+            console.log("h2");
             const rook = havePiece("a1")
             piece.unset()
             piece.pos = newpos
@@ -448,7 +449,6 @@ export function castle_server(source, destination, turn) {
             rook.setPiece()
         }
         if (piece.team == "B") {
-            if (tranSlateTopos(destination)[0] != 0) { return }
             const rook = havePiece("a8")
             piece.unset()
             piece.pos = newpos

@@ -178,7 +178,7 @@ io.sockets.on("connection", async (socket) => {
         redisClient.set(socket.request._query.code, stringify(value), {
             NX: false
         })
-        socket.broadcast.to(socket.request._query.code).emit(`win_server`, arg.team)
+        socket.broadcast.to(socket.request._query.code).emit(`win_server`, data.team)
     })
 
     socket.on('castle', async (arg) => {
