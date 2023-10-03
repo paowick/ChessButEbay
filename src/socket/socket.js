@@ -208,9 +208,6 @@ io.sockets.on("connection", async (socket) => {
             turn: turn,
             kingSource: data.kingSource,
             kingDestination: data.kingDestination,
-            rookSource: data.rookSource,
-            rookDestination: data.rookDestination,
-            notation: data.notation
         }
         socket.broadcast.to(socket.request._query.code).emit(`castle_server`, castle)
     })
@@ -235,12 +232,13 @@ io.sockets.on("connection", async (socket) => {
             room.invtW = await data.invt
         }
         invtViewerUpdate(socket, room)
-        redisClient.set(socket.request._query.code, stringify(room), {
+        await redisClient.set(socket.request._query.code, stringify(room), {
             NX: false
         })
         let move = {
             turn: turn,
             promoted: data.promoted,
+            checked:data.checked,
             source: data.source,
             destination: data.destination,
             notation: data.notation

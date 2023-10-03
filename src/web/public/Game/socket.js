@@ -29,7 +29,7 @@ document.querySelector("#test").addEventListener("click", () => {
 import('./board.js').then(({ socket }) => {
     socket.on('move_server', (arg) => {
         mineobj.mineListCount()
-        moveClient_Server(arg.turn, arg.source, arg.destination, arg.promoted)
+        moveClient_Server(arg.turn, arg.source, arg.destination, arg.promoted ,arg.checked)
     })
     socket.on('castle_server', (arg) => {
         mineobj.mineListCount()
@@ -177,7 +177,7 @@ export function mineUpdate(mine, isReturn) {
     socket.emit('mineUpdate', stringify(data))
 }
 
-export function move(source, destination, promoted, notation) {
+export function move(source, destination, promoted , checked, notation) {
     mineobj.mineListCount()
     const mineValidate = []
     mineobj.mineList.forEach(element => {
@@ -190,8 +190,9 @@ export function move(source, destination, promoted, notation) {
         invtValidate.push(element)
     });
     const currentGame = JSON.parse(localStorage.getItem("currentGame"))
-    let data = {
+    const data = {
         promoted: promoted,
+        checked:checked.pos,
         turn: currentGame.role,
         source: source,
         destination: destination,

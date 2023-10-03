@@ -107,24 +107,32 @@ export class king extends pieces {
             if(this.team == "W"){
                 if(board[7][7] != null){
                     if(board[7][7].name == "rook" && board[7][7].team == this.team ){
-                        result.push(`${col}${row + 2}`)
+                        if(board[col][row+2] == null){
+                            result.push(`${col}${row + 2}`)
+                        }
                     }
                 }
                 if(board[7][0] != null){
                     if(board[7][0].name == "rook" && board[7][0].team == this.team ){
-                        result.push(`${col}${row - 2}`)
+                        if(board[col][row+2] == null){
+                            result.push(`${col}${row - 2}`)
+                        }
                     }
                 }
             }
             if(this.team == "B"){
                 if(board[0][7] != null){
                     if(board[0][7].name == "rook" && board[0][7].team == this.team ){
-                        result.push(`${col}${row + 2}`)
+                        if(board[col][row+2] == null){
+                            result.push(`${col}${row + 2}`)
+                        }
                     }
                 }
                 if(board[0][0] != null){
                     if(board[0][0].name == "rook" && board[0][0].team == this.team ){
-                        result.push(`${col}${row - 2}`)
+                        if(board[col][row+2] == null){
+                            result.push(`${col}${row - 2}`)
+                        }
                     }
                 }
             }

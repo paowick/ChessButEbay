@@ -28,6 +28,9 @@ export function setCoin(data) {
     coin = data
 }
 
+
+export let whiteKing = null
+export let blackKing = null
 export const invtobj = new inventory(invtList)
 export const mineobj = new mine(mineList, minelimt, 1000)
 export const auctionobj = new auction(null, null, null, null, null)
@@ -115,10 +118,15 @@ export function chessBoardSetUp(info) {
             const element = elements[index];
             if (element == null) { continue }
             if (element.name == 'king') {
-                if(element.checked == undefined){
+                if (element.checked == undefined) {
                     element.checked = false
                 }
-                new king("king", element.pos, element.team, true, board, 3, element.checked)
+                if (element.team == "W") {
+                    whiteKing = new king("king", element.pos, element.team, true, board, 3, element.checked)
+                }
+                if (element.team == "B") {
+                    blackKing = new king("king", element.pos, element.team, true, board, 3, element.checked)
+                }
                 continue
             }
             if (element.name == 'queen') {
@@ -374,8 +382,6 @@ function castle(source, destination) {
         turn: currentGame.role,
         kingSource: kingSource,
         kingDestination: kingDestination,
-        rookSource: rookSource,
-        rookDestination: rookDestination,
         board: board,
         mine: mineValidate,
         invt: invtValidate,
@@ -410,7 +416,7 @@ function castle(source, destination) {
     })
 }
 export function castle_server(source, destination, turn) {
-    
+
     const newpos = tranSlateTopos(destination)
     const piece = havePiece(source)
     piece.setChecked(true)
@@ -557,6 +563,7 @@ export function logKingCheck(piece) {
         const box = board[element[0]][element[1]]
         if (box != null) {
             if (box.name == "king" && box.team != piece.team) {
+                box.setChecked(true)
                 notation += "+"
             }
         }
@@ -573,6 +580,11 @@ export async function moveClient(source, destination, promoted) {
     logKingCheck(piece)
     if (piece.name == 'king') {
         piece.setChecked(true)
+        move(source, destination, null, piece, notation)
+        destination = null
+        source = null
+        changeMyTurn(false)
+        return
     }
     if (piece.firstmove != undefined) { piece.firstmove = false }
     if (typeof piece.promoted === 'function' && promoted != null) {
@@ -584,14 +596,14 @@ export async function moveClient(source, destination, promoted) {
                 team: newPiece.team,
                 isKing: false
             }
-            move(source, destination, dataNewPiece, notation)
+            move(source, destination, dataNewPiece, null, notation)
             destination = null
             source = null
             localStorage.setItem("board", stringify(board))
             changeMyTurn(false)
         }
     }
-    move(source, destination, null, notation)
+    move(source, destination, null, null, notation)
     destination = null
     source = null
     localStorage.setItem("board", stringify(board))
@@ -623,13 +635,16 @@ export async function moveClient(source, destination, promoted) {
         }
     })
 }
-export function moveClient_Server(turn, source, destination, promoted) {
+export function moveClient_Server(turn, source, destination, promoted ,pos) {
     const oldpos = tranSlateTopos(source)
     const newpos = tranSlateTopos(destination)
     const piece = board[oldpos[0]][oldpos[1]];
     piece.unset()
     piece.pos = newpos
     piece.setPiece()
+    if(pos != null){
+        board[pos[0]][pos[1]].setChecked(true)
+    }
     if (piece.firstmove != undefined) { piece.firstmove = false }
     if (typeof piece.promoted === 'function' && promoted != null) {
         const newPiece = piece.promoted_server(board, promoted)
