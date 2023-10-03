@@ -190,9 +190,13 @@ export function move(source, destination, promoted, checked, notation) {
         invtValidate.push(element)
     });
     const currentGame = JSON.parse(localStorage.getItem("currentGame"))
+    let temp = null
+    if(checked != null){
+        temp = checked.pos
+    }
     const data = {
         promoted: promoted,
-        checked: checked.pos,
+        checked: temp,
         turn: currentGame.role,
         source: source,
         destination: destination,
