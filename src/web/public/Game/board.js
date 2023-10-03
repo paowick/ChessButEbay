@@ -307,8 +307,6 @@ function castle(source, destination) {
     console.log(piece);
     let kingSource = source
     let kingDestination = destination
-    let rookSource = null
-    let rookDestination = null
     let notation = null
     if (tranSlateTopos(destination)[1] == 6) {
         if (piece.team == "W") {
@@ -497,6 +495,9 @@ export function castle_server(source, destination, turn) {
 
 export function drop(piece, destination, invtId) {
 
+    notation = ''
+    notation = `${pieceToNotation[piece.name]}*${destination}`
+    console.log(notation);
     const pos = tranSlateTopos(destination)
     piece.setpos(pos)
     piece.setInInvt(false)

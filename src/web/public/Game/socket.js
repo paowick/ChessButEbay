@@ -29,11 +29,11 @@ document.querySelector("#test").addEventListener("click", () => {
 import('./board.js').then(({ socket }) => {
     socket.on('move_server', (arg) => {
         mineobj.mineListCount()
-        moveClient_Server(arg.turn, arg.source, arg.destination, arg.promoted ,arg.checked)
+        moveClient_Server(arg.turn, arg.source, arg.destination, arg.promoted, arg.checked)
     })
     socket.on('castle_server', (arg) => {
         mineobj.mineListCount()
-        castle_server(arg.kingSource,arg.kingDestination,arg.turn)
+        castle_server(arg.kingSource, arg.kingDestination, arg.turn)
     })
 
     socket.on('get-piece_auction_server', async (arg) => {
@@ -177,7 +177,7 @@ export function mineUpdate(mine, isReturn) {
     socket.emit('mineUpdate', stringify(data))
 }
 
-export function move(source, destination, promoted , checked, notation) {
+export function move(source, destination, promoted, checked, notation) {
     mineobj.mineListCount()
     const mineValidate = []
     mineobj.mineList.forEach(element => {
@@ -192,7 +192,7 @@ export function move(source, destination, promoted , checked, notation) {
     const currentGame = JSON.parse(localStorage.getItem("currentGame"))
     const data = {
         promoted: promoted,
-        checked:checked.pos,
+        checked: checked.pos,
         turn: currentGame.role,
         source: source,
         destination: destination,
@@ -238,7 +238,7 @@ function drop_server(element) {
 export function returnPieceFromMine() {
 }
 
-export function dropEmit(piece, board) {
+export function dropEmit(piece, board, notation) {
     mineobj.mineListCount()
     const currentGame = JSON.parse(localStorage.getItem("currentGame"))
     const invtValidate = []
@@ -260,6 +260,7 @@ export function dropEmit(piece, board) {
             isKing: piece.isKing,
             inInvt: piece.inInvt,
             timeInMine: piece.timeInMine,
+            notation: notation
         },
         mine: mineValidate,
         invt: invtValidate,
