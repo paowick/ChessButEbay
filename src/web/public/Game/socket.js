@@ -16,7 +16,7 @@ import { coinUpdateViewer, coinUpdate_Server } from "./script.js";
 import { currentBidUpdate } from "./script.js";
 import { auctionobj } from "./board.js";
 import { invtobj, invtBlack, invtWhite } from "./board.js";
-import { mine } from "./mine.js";
+import { castle_server } from "./board.js";
 const user = JSON.parse(localStorage.getItem('user'))
 
 document.querySelector("#test").addEventListener("click", () => {
@@ -30,6 +30,10 @@ import('./board.js').then(({ socket }) => {
     socket.on('move_server', (arg) => {
         mineobj.mineListCount()
         moveClient_Server(arg.turn, arg.source, arg.destination, arg.promoted)
+    })
+    socket.on('castle_server', (arg) => {
+        mineobj.mineListCount()
+        castle_server(arg.kingSource,arg.kingDestination,arg.turn)
     })
 
     socket.on('get-piece_auction_server', async (arg) => {
@@ -58,12 +62,9 @@ import('./board.js').then(({ socket }) => {
 
         const currentGame = JSON.parse(localStorage.getItem("currentGame"))
         const info = JSON.parse(arg.board)
-        console.log(info.turn , currentGame.role);
         if (info.turn === currentGame.role) {
-            console.log("myturn");
             changeMyTurn(true)
         } else {
-            console.log("motmyturn");
             changeMyTurn(false)
         }
         startGame(info, arg, currentGame)
@@ -198,7 +199,7 @@ export function move(source, destination, promoted, notation) {
         mine: mineValidate,
         invt: invtValidate,
         coin: coin,
-        notation : notation
+        notation: notation
     }
     if (destination != source) {
         socket.emit("move", stringify(data))

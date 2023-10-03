@@ -64,8 +64,8 @@ window.onload = run()
 export async function run() {
     socket.on('board', async (arg) => {
         const info = arg.boardRedis
-        invtBlack.invtSetUpViewer(info.invtB,"B")
-        invtWhite.invtSetUpViewer(info.invtW,"W")
+        invtBlack.invtSetUpViewer(info.invtB, "B")
+        invtWhite.invtSetUpViewer(info.invtW, "W")
         info.mine.forEach(element => {
             mineobj.drop_mine_server(element);
         })
@@ -115,7 +115,10 @@ export function chessBoardSetUp(info) {
             const element = elements[index];
             if (element == null) { continue }
             if (element.name == 'king') {
-                new king("king", element.pos, element.team, true, board, 3)
+                if(element.checked == undefined){
+                    element.checked = false
+                }
+                new king("king", element.pos, element.team, true, board, 3, element.checked)
                 continue
             }
             if (element.name == 'queen') {
@@ -195,84 +198,298 @@ document.querySelector('#join_white')
 
 var source = null
 var destination = null
-export function setSourceNull(){
+export function setSourceNull() {
     source = null
 }
-document.querySelectorAll('.box')
-    .forEach(div => {
-        div.addEventListener('click', function () {
-            const currentGame = JSON.parse(localStorage.getItem("currentGame"))
-            if (currentGame.role != 'viewer') {
-                if (source == null && destination == null) {
-                    // console.log(new DOMParser().parseFromString(this.innerHTML, "text/xml").documentElement);
-                    // source position ====================================================================
+document.querySelectorAll('.box').forEach(div => {
+    div.addEventListener('click', function () {
+        const currentGame = JSON.parse(localStorage.getItem("currentGame"))
+        if (currentGame.role != 'viewer') {
+            if (source == null && destination == null) {
+                // console.log(new DOMParser().parseFromString(this.innerHTML, "text/xml").documentElement);
+                // source position ====================================================================
 
-                    if (auctionobj.auctionStage == true) { return }
-                    const piece = havePiece(this.id)
+                if (auctionobj.auctionStage == true) { return }
+                const piece = havePiece(this.id)
 
+                clearAllHightLight()
+                if (piece == null) { return source = null; }
+                source = this.id;
+                showMoveAble(piece)
+
+
+            } else if (source != null && destination == null) {
+                // destination position ===============================================================
+
+                clearAllHightLight()
+
+                if (!myturn) {
+                    waitingForPlayer()
                     clearAllHightLight()
-                    if (piece == null) { return source = null; }
-                    source = this.id;
-                    showMoveAble(piece)
-
-
-                } else if (source != null && destination == null) {
-                    // destination position ===============================================================
-
-                    clearAllHightLight()
-
-                    if (!myturn) {
-                        waitingForPlayer()
-                        clearAllHightLight()
-                        source = null;
-                        destination = null;
-                        return
-                    }
-                    const piece = havePiece(source)
-                    if (currentGame.role != piece.team) {
-                        clearAllHightLight()
-                        source = null
-                        return
-                    }
-                    if (!pieceMoveable(piece, this.id)) {
-                        clearAllHightLight()
-                        source = null
-                        return destination = null
-                    }
-                    const oldpos = tranSlateTopos(source)
-                    const thispiece = board[oldpos[0]][oldpos[1]];
-                    if (thispiece.name == "pawn") {
-                        if (thispiece.promotedPos.includes(tranSlateTopos(this.id))) {
-                            destination = this.id;
-                            askPlayer(source, destination)
-                            clearAllHightLight()
+                    source = null;
+                    destination = null;
+                    return
+                }
+                const piece = havePiece(source)
+                if (!piece.moveAblepos(board).includes(tranSlateTopos(this.id))) {
+                    source = null
+                    destination = null
+                    return
+                }
+                if (piece.name == "king") {
+                    if (piece.checked == false) {
+                        if (this.id == 'g1' || this.id == 'c1' ||
+                            this.id == 'g8' || this.id == 'c8') {
+                            castle(source, this.id)
                             source = null
                             destination = null
+                            clearAllHightLight()
                             return
                         }
                     }
-                    destination = this.id;
-                    clearAllHightLight()
-                    moveClient(source, destination, null)
+                    moveClient(source, this.id, null)
                     source = null
                     destination = null
-
-
-
-                    // end here ===========================================================================
+                    clearAllHightLight()
+                    return
                 }
+                if (currentGame.role != piece.team) {
+                    clearAllHightLight()
+                    source = null
+                    return
+                }
+                if (!pieceMoveable(piece, this.id)) {
+                    clearAllHightLight()
+                    source = null
+                    return destination = null
+                }
+                if (piece.name == "pawn") {
+                    if (piece.promotedPos.includes(tranSlateTopos(this.id))) {
+                        destination = this.id;
+                        askPlayer(source, destination)
+                        clearAllHightLight()
+                        source = null
+                        destination = null
+                        return
+                    }
+                }
+                destination = this.id;
+                clearAllHightLight()
+                moveClient(source, destination, null)
+                source = null
+                destination = null
 
 
+
+                // end here ===========================================================================
             }
-        })
 
 
+        }
     })
 
 
+})
 
 
-export function drop(piece, destination,invtId) {
+function castle(source, destination) {
+    const newpos = tranSlateTopos(destination)
+    const piece = havePiece(source)
+    piece.setChecked(true)
+    let kingSource = source
+    let kingDestination = destination
+    let rookSource = null
+    let rookDestination = null
+    let notation = null
+    if (tranSlateTopos(destination)[1] == 6) {
+        if (piece.team == "W") {
+            if (tranSlateTopos(destination)[0] != 7) { return }
+            const rook = havePiece("h1")
+            piece.unset()
+            piece.pos = newpos
+            piece.setPiece()
+            rook.unset()
+            rook.pos = tranSlateTopos("f1")
+            rook.setPiece()
+            rookSource = "h1"
+            rookDestination = "f1"
+            notation = "0-0"
+        }
+        if (piece.team == "B") {
+            if (tranSlateTopos(destination)[0] != 0) { return }
+            const rook = havePiece("h8")
+            piece.unset()
+            piece.pos = newpos
+            piece.setPiece()
+            rook.unset()
+            rook.pos = tranSlateTopos("f8")
+            rook.setPiece()
+            rookSource = "h8"
+            rookDestination = "f8"
+            notation = "0-0"
+        }
+
+    }
+    if (tranSlateTopos(destination)[1] == 2) {
+        if (piece.team == "W") {
+            if (tranSlateTopos(destination)[0] != 7) { return }
+            const rook = havePiece("a1")
+            piece.unset()
+            piece.pos = newpos
+            piece.setPiece()
+            rook.unset()
+            rook.pos = tranSlateTopos("d1")
+            rook.setPiece()
+            rookSource = "a1"
+            rookDestination = "d1"
+            notation = "0-0-0"
+        }
+        if (piece.team == "B") {
+            if (tranSlateTopos(destination)[0] != 0) { return }
+            const rook = havePiece("a8")
+            piece.unset()
+            piece.pos = newpos
+            piece.setPiece()
+            rook.unset()
+            rook.pos = tranSlateTopos("d8")
+            rook.setPiece()
+            rookSource = "a8"
+            rookDestination = "d8"
+            notation = "0-0-0"
+        }
+    }
+    mineobj.mineListCount()
+    const mineValidate = []
+    mineobj.mineList.forEach(element => {
+        element.board = null
+        mineValidate.push(element)
+    });
+    const invtValidate = []
+    invtobj.invtList.forEach(element => {
+        element.board = null
+        invtValidate.push(element)
+    });
+    let data = {
+        turn: currentGame.role,
+        kingSource: kingSource,
+        kingDestination: kingDestination,
+        rookSource: rookSource,
+        rookDestination: rookDestination,
+        board: board,
+        mine: mineValidate,
+        invt: invtValidate,
+        coin: coin,
+        notation: notation
+    }
+    changeMyTurn(false)
+    socket.emit("castle", stringify(data))
+    const turndoc = document.querySelectorAll("#turn")
+    turndoc.forEach(ele => {
+        if (currentGame.role == "B") {
+            ele.style.backgroundColor = "white"
+            if (currentGame.role == "W") {
+                ele.innerHTML = "Your Turn!"
+                ele.style.color = "black"
+            } else {
+                ele.innerHTML = "White Turn"
+                ele.style.color = "black"
+            }
+        }
+        if (currentGame.role == "W") {
+            ele.style.backgroundColor = "black"
+            if (currentGame.role == "B") {
+                ele.innerHTML = "Your Turn!"
+                ele.style.color = "white"
+            } else {
+                ele.innerHTML = "Balck Turn"
+                ele.style.color = "white"
+            }
+
+        }
+    })
+}
+export function castle_server(source, destination, turn) {
+    console.log("in");
+    const newpos = tranSlateTopos(destination)
+    const piece = havePiece(source)
+    if (!piece.moveAblepos(board).includes(newpos)) { return }
+    if (tranSlateTopos(destination)[1] == 6) {
+        if (piece.team == "W") {
+            if (tranSlateTopos(destination)[0] != 7) { return }
+            const rook = havePiece("h1")
+            piece.unset()
+            piece.pos = newpos
+            piece.setPiece()
+            rook.unset()
+            rook.pos = tranSlateTopos("f1")
+            rook.setPiece()
+        }
+        if (piece.team == "B") {
+            if (tranSlateTopos(destination)[0] != 0) { return }
+            const rook = havePiece("h8")
+            piece.unset()
+            piece.pos = newpos
+            piece.setPiece()
+            rook.unset()
+            rook.pos = tranSlateTopos("f8")
+            rook.setPiece()
+        }
+
+    }
+    if (tranSlateTopos(destination)[1] == 2) {
+        if (piece.team == "W") {
+            if (tranSlateTopos(destination)[0] != 7) { return }
+            const rook = havePiece("a1")
+            piece.unset()
+            piece.pos = newpos
+            piece.setPiece()
+            rook.unset()
+            rook.pos = tranSlateTopos("d1")
+            rook.setPiece()
+        }
+        if (piece.team == "B") {
+            if (tranSlateTopos(destination)[0] != 0) { return }
+            const rook = havePiece("a8")
+            piece.unset()
+            piece.pos = newpos
+            piece.setPiece()
+            rook.unset()
+            rook.pos = tranSlateTopos("d8")
+            rook.setPiece()
+
+        }
+    }
+    auctionobj.setAuctionStage(true)
+    clearAllHightLight()
+    changeMyTurn(true)
+
+    const turndoc = document.querySelectorAll("#turn")
+    turndoc.forEach(ele => {
+        if (turn == "W") {
+            ele.style.backgroundColor = "white"
+            if (currentGame.role == "W") {
+                ele.innerHTML = "Your Turn!"
+                ele.style.color = "black"
+            } else {
+                ele.innerHTML = "White Turn"
+                ele.style.color = "black"
+            }
+        }
+        if (turn == "B") {
+            ele.style.backgroundColor = "black"
+            if (currentGame.role == "B") {
+                ele.innerHTML = "Your Turn!"
+                ele.style.color = "white"
+            } else {
+                ele.innerHTML = "Balck Turn"
+                ele.style.color = "white"
+            }
+
+        }
+    })
+}
+
+export function drop(piece, destination, invtId) {
 
     const pos = tranSlateTopos(destination)
     piece.setpos(pos)
@@ -286,22 +503,22 @@ export function drop(piece, destination,invtId) {
     auctionobj.setAuctionStage(true)
     const turndoc = document.querySelectorAll("#turn")
     turndoc.forEach(ele => {
-        if(currentGame.role == "B"){
+        if (currentGame.role == "B") {
             ele.style.backgroundColor = "white"
-            if(currentGame.role == "W"){
+            if (currentGame.role == "W") {
                 ele.innerHTML = "Your Turn!"
                 ele.style.color = "black"
-            }else{
+            } else {
                 ele.innerHTML = "White Turn"
                 ele.style.color = "black"
             }
         }
-        if(currentGame.role == "W"){
+        if (currentGame.role == "W") {
             ele.style.backgroundColor = "black"
-            if(currentGame.role == "B"){
+            if (currentGame.role == "B") {
                 ele.innerHTML = "Your Turn!"
                 ele.style.color = "white"
-            }else{
+            } else {
                 ele.innerHTML = "Balck Turn"
                 ele.style.color = "white"
             }
@@ -318,8 +535,8 @@ const pieceToNotation = {
     "rook": "R",
     "queen": "Q",
     "king": "K",
-  };
-export function logConv(source, destination,promoted) {
+};
+export function logConv(source, destination, promoted) {
     // Reversible algebraic Chess notation
     notation = ''
     const oldpos = tranSlateTopos(source);
@@ -327,19 +544,19 @@ export function logConv(source, destination,promoted) {
     const sourcepiece = board[oldpos[0]][oldpos[1]];
     const destinationpiece = board[newpos[0]][newpos[1]];
 
-    if(destinationpiece == null){
+    if (destinationpiece == null) {
         notation = `${pieceToNotation[sourcepiece.name]}${source}-${destination}`
     }
-    if(destinationpiece != null){
+    if (destinationpiece != null) {
         notation = `${pieceToNotation[sourcepiece.name]}${source}x${pieceToNotation[destinationpiece.name]}${destination}`
     }
-  }
-export function logKingCheck(piece){
+}
+export function logKingCheck(piece) {
     const moveable = piece.moveAblepos(board)
-    moveable.forEach(element =>{
+    moveable.forEach(element => {
         const box = board[element[0]][element[1]]
-        if(box != null){
-            if(box.name == "king" && box.team != piece.team){
+        if (box != null) {
+            if (box.name == "king" && box.team != piece.team) {
                 notation += "+"
             }
         }
@@ -348,12 +565,15 @@ export function logKingCheck(piece){
 export async function moveClient(source, destination, promoted) {
     const oldpos = tranSlateTopos(source)
     const newpos = tranSlateTopos(destination)
-    logConv(source,destination,promoted)
+    logConv(source, destination, promoted)
     const piece = board[oldpos[0]][oldpos[1]];
     piece.unset()
     piece.pos = newpos
     piece.setPiece()
     logKingCheck(piece)
+    if (piece.name == 'king') {
+        piece.setChecked(true)
+    }
     if (piece.firstmove != undefined) { piece.firstmove = false }
     if (typeof piece.promoted === 'function' && promoted != null) {
         const newPiece = await piece.promoted(board, promoted)
@@ -364,7 +584,7 @@ export async function moveClient(source, destination, promoted) {
                 team: newPiece.team,
                 isKing: false
             }
-            move(source, destination, dataNewPiece ,notation)
+            move(source, destination, dataNewPiece, notation)
             destination = null
             source = null
             localStorage.setItem("board", stringify(board))
@@ -380,22 +600,22 @@ export async function moveClient(source, destination, promoted) {
     clearAllHightLight()
     const turndoc = document.querySelectorAll("#turn")
     turndoc.forEach(ele => {
-        if(currentGame.role == "B"){
+        if (currentGame.role == "B") {
             ele.style.backgroundColor = "white"
-            if(currentGame.role == "W"){
+            if (currentGame.role == "W") {
                 ele.innerHTML = "Your Turn!"
                 ele.style.color = "black"
-            }else{
+            } else {
                 ele.innerHTML = "White Turn"
                 ele.style.color = "black"
             }
         }
-        if(currentGame.role == "W"){
+        if (currentGame.role == "W") {
             ele.style.backgroundColor = "black"
-            if(currentGame.role == "B"){
+            if (currentGame.role == "B") {
                 ele.innerHTML = "Your Turn!"
                 ele.style.color = "white"
-            }else{
+            } else {
                 ele.innerHTML = "Balck Turn"
                 ele.style.color = "white"
             }
@@ -403,7 +623,7 @@ export async function moveClient(source, destination, promoted) {
         }
     })
 }
-export function moveClient_Server(turn ,source, destination, promoted) {
+export function moveClient_Server(turn, source, destination, promoted) {
     const oldpos = tranSlateTopos(source)
     const newpos = tranSlateTopos(destination)
     const piece = board[oldpos[0]][oldpos[1]];
@@ -428,22 +648,22 @@ export function moveClient_Server(turn ,source, destination, promoted) {
 
     const turndoc = document.querySelectorAll("#turn")
     turndoc.forEach(ele => {
-        if(turn == "W"){
+        if (turn == "W") {
             ele.style.backgroundColor = "white"
-            if(currentGame.role == "W"){
+            if (currentGame.role == "W") {
                 ele.innerHTML = "Your Turn!"
                 ele.style.color = "black"
-            }else{
+            } else {
                 ele.innerHTML = "White Turn"
                 ele.style.color = "black"
             }
         }
-        if(turn == "B"){
+        if (turn == "B") {
             ele.style.backgroundColor = "black"
-            if(currentGame.role == "B"){
+            if (currentGame.role == "B") {
                 ele.innerHTML = "Your Turn!"
                 ele.style.color = "white"
-            }else{
+            } else {
                 ele.innerHTML = "Balck Turn"
                 ele.style.color = "white"
             }

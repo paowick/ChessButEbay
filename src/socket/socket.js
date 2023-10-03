@@ -55,7 +55,8 @@ io.sockets.on("connection", async (socket) => {
 
     }
 
-    socket.on('resetroom',(arg)=>{
+    socket.on('resetroom', (arg) => {
+        console.log('reset');
         const value = {
             turnCount: 0,
             roomname: "tui",
@@ -180,6 +181,40 @@ io.sockets.on("connection", async (socket) => {
         socket.broadcast.to(socket.request._query.code).emit(`win_server`, arg.team)
     })
 
+    socket.on('castle', async (arg) => {
+        const data = JSON.parse(arg)
+        let turn = await data.turn
+        if (turn == "W") { turn = "B" } else if (turn == "B") { turn = "W" }
+        const roomJSON = await redisClient.get(socket.request._query.code)
+        const room = await JSON.parse(roomJSON)
+        room.board = await data.board
+        room.turn = await turn
+        room.mine = await data.mine
+        room.turnCount = await room.turnCount + 1
+        room.auctionStage = true
+        if (socket.request._query.id == room.playerB) {
+            room.coinB = await data.coin
+            room.invtB = await data.invt
+        }
+        if (socket.request._query.id == room.playerW) {
+            room.coinW = await data.coin
+            room.invtW = await data.invt
+        }
+        invtViewerUpdate(socket, room)
+        redisClient.set(socket.request._query.code, stringify(room), {
+            NX: false
+        })
+        let castle = {
+            turn: turn,
+            kingSource: data.kingSource,
+            kingDestination: data.kingDestination,
+            rookSource: data.rookSource,
+            rookDestination: data.rookDestination,
+            notation: data.notation
+        }
+        socket.broadcast.to(socket.request._query.code).emit(`castle_server`, castle)
+    })
+
     socket.on("move", async (arg) => {
         const data = JSON.parse(arg)
         let turn = await data.turn
@@ -208,6 +243,7 @@ io.sockets.on("connection", async (socket) => {
             promoted: data.promoted,
             source: data.source,
             destination: data.destination,
+            notation: data.notation
         }
         socket.broadcast.to(socket.request._query.code).emit(`move_server`, move)
     })
@@ -366,7 +402,7 @@ function getRandomChessPiece(turnCount) {
             'queen': 0,
         };
     }
-    if(turnCount > 4 && turnCount <= 10 ){
+    if (turnCount > 4 && turnCount <= 10) {
         percentages = {
             'pawn': 70,
             'rook': 10,
@@ -375,7 +411,7 @@ function getRandomChessPiece(turnCount) {
             'queen': 0,
         };
     }
-    if(turnCount > 10){
+    if (turnCount > 10) {
         percentages = {
             'pawn': 65,
             'rook': 10,
