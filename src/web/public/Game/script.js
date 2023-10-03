@@ -253,6 +253,7 @@ export function hightLightMine(piece, id) {
             removeAllEvent()
             invtobj.removeInvtList(id)
             clearAllHightLight()
+            piece.setTimeInMine(6)// must have ui
             piece.setCurrentTimeInMine()
             mineobj.mineListPush(piece)
             mineSetUp()

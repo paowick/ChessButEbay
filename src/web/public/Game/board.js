@@ -23,7 +23,12 @@ var invtList = []
 var mineList = []
 var minelimt = 3
 export let coin = 0
-export let minereturnRate = 50
+
+export const returnRate ={
+    2:50,
+    4:120,
+    6:150,
+}
 export function setCoin(data) {
     coin = data
 }
@@ -122,27 +127,27 @@ export function chessBoardSetUp(info) {
                     element.checked = false
                 }
                 if (element.team == "W") {
-                    whiteKing = new king("king", element.pos, element.team, true, board, 3, element.checked)
+                    whiteKing = new king("king", element.pos, element.team, true, board, 2, element.checked)
                 }
                 if (element.team == "B") {
-                    blackKing = new king("king", element.pos, element.team, true, board, 3, element.checked)
+                    blackKing = new king("king", element.pos, element.team, true, board, 2, element.checked)
                 }
                 continue
             }
             if (element.name == 'queen') {
-                new queen("queen", element.pos, element.team, false, board, 3)
+                new queen("queen", element.pos, element.team, false, board, 2)
                 continue
             }
             if (element.name == 'bishop') {
-                new bishop("bishop", element.pos, element.team, false, board, 3)
+                new bishop("bishop", element.pos, element.team, false, board, 2)
                 continue
             }
             if (element.name == 'rook') {
-                new rook("rook", element.pos, element.team, false, board, 3)
+                new rook("rook", element.pos, element.team, false, board, 2)
                 continue
             }
             if (element.name == 'knight') {
-                new knight("knight", element.pos, element.team, false, board, 3)
+                new knight("knight", element.pos, element.team, false, board, 2)
                 continue
             }
             if (element.name == 'pawn') {

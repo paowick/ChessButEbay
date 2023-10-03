@@ -213,28 +213,24 @@ export function move(source, destination, promoted, checked, notation) {
 
 function drop_server(element) {
 
-    if (element.name == 'king') {
-        new king("king", element.pos, element.team, true, board, 3)
-        return
-    }
     if (element.name == 'queen') {
-        new queen("queen", element.pos, element.team, false, board, 3)
+        new queen("queen", element.pos, element.team, false, board, 2)
         return
     }
     if (element.name == 'bishop') {
-        new bishop("bishop", element.pos, element.team, false, board, 3)
+        new bishop("bishop", element.pos, element.team, false, board, 2)
         return
     }
     if (element.name == 'rook') {
-        new rook("rook", element.pos, element.team, false, board, 3)
+        new rook("rook", element.pos, element.team, false, board, 2)
         return
     }
     if (element.name == 'knight') {
-        new knight("knight", element.pos, element.team, false, board, 3)
+        new knight("knight", element.pos, element.team, false, board, 2)
         return
     }
     if (element.name == 'pawn') {
-        new pawn("pawn", element.pos, element.team, false, board, 3, true)
+        new pawn("pawn", element.pos, element.team, false, board, 2, true)
         return
     }
 }

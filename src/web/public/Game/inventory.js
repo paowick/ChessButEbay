@@ -125,26 +125,26 @@ export class inventory {
     pieceToObj(piece) {
         const currentGame = JSON.parse(localStorage.getItem("currentGame"))
         if (piece == 'king') {
-            return new king("king", null, currentGame.role, true, board, 3)
+            return new king("king", null, currentGame.role, true, board, 2)
         }
         if (piece == 'queen') {
-            return new queen("queen", null, currentGame.role, false, board, 3)
+            return new queen("queen", null, currentGame.role, false, board, 2)
 
         }
         if (piece == 'bishop') {
-            return new bishop("bishop", null, currentGame.role, false, board, 3)
+            return new bishop("bishop", null, currentGame.role, false, board, 2)
 
         }
         if (piece == 'rook') {
-            return new rook("rook", null, currentGame.role, false, board, 3)
+            return new rook("rook", null, currentGame.role, false, board, 2)
 
         }
         if (piece == 'knight') {
-            return new knight("knight", null, currentGame.role, false, board, 3)
+            return new knight("knight", null, currentGame.role, false, board, 2)
 
         }
         if (piece == 'pawn') {
-            return new pawn("pawn", null, currentGame.role, false, board, 3, true)
+            return new pawn("pawn", null, currentGame.role, false, board, 2, true)
         }
     }
 }

@@ -15,6 +15,9 @@ export class pieces {
             this.setPiece()
         }
     }
+    setTimeInMine(data){
+        this.timeInMine = data
+    }
     countCurrentTimeInMine(){
         this.currentTimeInMine -= 1
     }
