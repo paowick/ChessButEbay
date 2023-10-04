@@ -240,6 +240,7 @@ export function mineSetUp() {
 }
 
 export function hightLightMine(piece, id) {
+    document.querySelector('#mine').style.borderColor  = "red"
     document.querySelectorAll('.mine').forEach(div => {
         div.addEventListener('click', function () {
             if (!myturn) {
@@ -263,6 +264,7 @@ export function hightLightMine(piece, id) {
     })
 
     function removeAllEvent() {
+        document.querySelector('#mine').style.borderColor  = "#252525"
         document.querySelectorAll('.mine').forEach(div => {
             const newdiv = div.cloneNode(true)
             div.parentNode.replaceChild(newdiv, div)

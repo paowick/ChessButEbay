@@ -370,6 +370,7 @@ main {
     height: 311px;
     background-color: #252525;
     overflow-y: auto;
+    border: 10px solid #252525 ;
 }
 
 .row-text {
