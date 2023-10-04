@@ -23,7 +23,9 @@ export class mine {
         this.mineList.push(obj)
         mineSetUp()
     }
-
+    setMineToNull(){
+        this.mineList = []
+    }
     mineListPop(obj) {
         const index = this.mineList.indexOf(obj)
         this.mineList.splice(index, 1)

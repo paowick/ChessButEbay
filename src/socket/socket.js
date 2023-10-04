@@ -237,6 +237,7 @@ io.sockets.on("connection", async (socket) => {
         })
         let move = {
             turn: turn,
+            mine:data.mine,
             promoted: data.promoted,
             checked:data.checked,
             source: data.source,
@@ -254,6 +255,7 @@ io.sockets.on("connection", async (socket) => {
         if (turn == "W") { turn = "B" } else if (turn == "B") { turn = "W" }
         room.board = await data.board
         room.turn = await turn
+        room.mine = await data.mine
         room.turnCount = await room.turnCount + 1
         room.auctionStage = true
         if (socket.request._query.id == room.playerB) {
@@ -267,6 +269,7 @@ io.sockets.on("connection", async (socket) => {
         })
         invtViewerUpdate(socket, room)
         const drop = {
+            mine: data.mine,
             piece: data.piece,
             turn: turn
         }

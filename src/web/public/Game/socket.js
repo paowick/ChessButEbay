@@ -1,7 +1,7 @@
 import { board, moveClient_Server } from "./board.js";
 import { socket } from "./board.js";
 import { changeMyTurn } from "./board.js";
-import { winPop } from "./script.js";
+import { mineSetUp, winPop } from "./script.js";
 import { king } from './king.js';
 import { pawn } from './pawn.js';
 import { queen } from './queen.js';
@@ -30,6 +30,12 @@ import('./board.js').then(({ socket }) => {
     socket.on('move_server', (arg) => {
         mineobj.mineListCount()
         moveClient_Server(arg.turn, arg.source, arg.destination, arg.promoted, arg.checked)
+        mineobj.setMineToNull()
+        console.log(arg);
+        mineSetUp()
+        arg.mine.forEach(element => {
+            mineobj.drop_mine_server(element);
+        })
     })
     socket.on('castle_server', (arg) => {
         mineobj.mineListCount()
