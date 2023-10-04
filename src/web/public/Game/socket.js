@@ -159,24 +159,6 @@ export function invtUpdate() {
     socket.emit('invtUpdate', stringify(data))
 }
 
-export function mineUpdate(mine, isReturn) {
-    
-    const mineValidate = []
-    mine.forEach(element => {
-        element.board = null
-        mineValidate.push(element)
-    });
-    const invtValidate = []
-    invtobj.invtList.forEach(element => {
-        element.board = null
-        invtValidate.push(element)
-    });
-    let data = {
-        mine: mineValidate
-    }
-    if (isReturn) { return }
-    socket.emit('mineUpdate', stringify(data))
-}
 
 export function move(source, destination, promoted, checked, notation) {
     mineobj.mineListCount()

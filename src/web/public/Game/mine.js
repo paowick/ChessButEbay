@@ -1,6 +1,5 @@
 import { coinUpdate, mineSetUp } from "./script.js"
-import { mineUpdate } from "./socket.js"
-import { invtobj } from "./board.js"
+import { invtobj, logConv } from "./board.js"
 import { coin, setCoin } from "./board.js";
 import { king } from './king.js';
 import { pawn } from './pawn.js';
@@ -47,9 +46,12 @@ export class mine {
                 text.innerHTML = `${piece.currentTimeInMine}/${piece.timeInMine} turn`
             }
         })
-        this.mineList.forEach(element => {
+        const temp = this.mineList
+        let mustpop = []
+        temp.forEach(element => {
             if (element.currentTimeInMine + 1 <= 0) {
                 if (currentGame.role == element.team) {
+                    mustpop.push(element)
                     if (element.name == "pawn") {
                         setCoin((coin + returnRate[element.timeInMine]) * 1)
                     }
@@ -67,15 +69,20 @@ export class mine {
                     }
                     coinUpdate(coin)
                 }
-                this.mineListPop(element)
-                invtobj.invtPush(element)
             }
         })
-        if (isReturn == true) {
-            mineUpdate(this.mineList, true)
+        if(mustpop.length > 0){
+            isReturn = true
         }
-        if (isReturn == false) {
-            mineUpdate(this.mineList, false)
+        for (let index = 0; index < mustpop.length; index++) {
+            const element = mustpop[index];
+            for (let index2 = 0; index2 < this.mineList.length; index2++) {
+                const element2 = this.mineList[index2];
+                if(element === element2){
+                    this.mineListPop(element2)
+                    invtobj.invtPush(element2)
+                }
+            }
         }
     }
 
