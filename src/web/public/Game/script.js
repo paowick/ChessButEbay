@@ -253,15 +253,8 @@ export function hightLightMine(piece, id) {
                 clearAllHightLight()
                 return
             }
+            askTurnInMine(piece, id)
             removeAllEvent()
-            invtobj.removeInvtList(id)
-            clearAllHightLight()
-            piece.setTimeInMine(6)// must have ui
-            piece.setCurrentTimeInMine()
-            mineobj.mineListPush(piece)
-            mineSetUp()
-            mineobj.changeMineDropAble(false)
-            dropMineEmit(piece, board, mineobj.mineList)
         })
     })
 
@@ -274,7 +267,38 @@ export function hightLightMine(piece, id) {
     }
 }
 
+function askTurnInMine(piece, id) {
 
+    document.querySelector("#askmine-pop").style.visibility = "visible"
+    document.querySelector("#askmine-pop").setAttribute("show", "")
+    setTimeout(() => {
+        document.querySelector("#askmine-con").style.display = "flex"
+    }, 200);
+    document.querySelectorAll("#askmine").forEach(button =>{
+        button.addEventListener("click",(e)=>{
+            document.querySelector("#askmine-con").style.display = "none"
+            document.querySelector("#askmine-pop").removeAttribute("show")
+            document.querySelector("#askmine-pop").style.visibility = "hidden"
+            invtobj.removeInvtList(id)
+            clearAllHightLight()
+            piece.setTimeInMine(parseInt(e.target.value))// must have ui
+            piece.setCurrentTimeInMine()
+            mineobj.mineListPush(piece)
+            mineSetUp()
+            mineobj.changeMineDropAble(false)
+            dropMineEmit(piece, board, mineobj.mineList)
+            removeAllEvent()
+        })
+    })
+
+    function removeAllEvent() {
+        document.querySelectorAll("#askmine").forEach(button =>{
+            const newbutton = button.cloneNode(true)
+            button.parentNode.replaceChild(newbutton, button)
+        })
+    }
+
+}
 
 
 

@@ -370,7 +370,7 @@ main {
     height: 311px;
     background-color: #252525;
     overflow-y: auto;
-    border: 10px solid #252525 ;
+    border: 10px solid #252525;
 }
 
 .row-text {
@@ -547,6 +547,7 @@ main {
 .chat-header div h2 {
     color: #FFF;
 }
+
 .chat-header div h2 {
     cursor: pointer;
 }
@@ -686,6 +687,30 @@ main {
     0%{opacity: 1;}
     100%{opacity: 0;}
 } */
+
+.askmine-pop {
+    background-color: #252525;
+    height: 230px;
+    position: absolute;
+    top: 340px;
+    left: 363px;
+    border-radius: 10%;
+    width: 0;
+    transition: 0.2s width ease-out;
+    padding: 6px;
+}
+
+.askmine-pop[show=""] {
+    width: 200px;
+}
+
+.askmine-con{
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    align-items: center;
+
+}
 
 button {
     font-family: Courier New;
