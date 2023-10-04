@@ -327,8 +327,6 @@ function castle(source, destination) {
             rook.unset()
             rook.pos = tranSlateTopos("f1")
             rook.setPiece()
-            rookSource = "h1"
-            rookDestination = "f1"
             notation = "0-0"
         }
         if (piece.team == "B") {
@@ -340,8 +338,6 @@ function castle(source, destination) {
             rook.unset()
             rook.pos = tranSlateTopos("f8")
             rook.setPiece()
-            rookSource = "h8"
-            rookDestination = "f8"
             notation = "0-0"
         }
 
@@ -356,8 +352,6 @@ function castle(source, destination) {
             rook.unset()
             rook.pos = tranSlateTopos("d1")
             rook.setPiece()
-            rookSource = "a1"
-            rookDestination = "d1"
             notation = "0-0-0"
         }
         if (piece.team == "B") {
@@ -369,8 +363,6 @@ function castle(source, destination) {
             rook.unset()
             rook.pos = tranSlateTopos("d8")
             rook.setPiece()
-            rookSource = "a8"
-            rookDestination = "d8"
             notation = "0-0-0"
         }
     }
@@ -594,6 +586,30 @@ export async function moveClient(source, destination, promoted) {
         destination = null
         source = null
         changeMyTurn(false)
+        const turndoc = document.querySelectorAll("#turn")
+        turndoc.forEach(ele => {
+            if (currentGame.role == "B") {
+                ele.style.backgroundColor = "white"
+                if (currentGame.role == "W") {
+                    ele.innerHTML = "Your Turn!"
+                    ele.style.color = "black"
+                } else {
+                    ele.innerHTML = "White Turn"
+                    ele.style.color = "black"
+                }
+            }
+            if (currentGame.role == "W") {
+                ele.style.backgroundColor = "black"
+                if (currentGame.role == "B") {
+                    ele.innerHTML = "Your Turn!"
+                    ele.style.color = "white"
+                } else {
+                    ele.innerHTML = "Balck Turn"
+                    ele.style.color = "white"
+                }
+
+            }
+        })
         return
     }
     if (piece.firstmove != undefined) { piece.firstmove = false }
