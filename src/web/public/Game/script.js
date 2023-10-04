@@ -307,7 +307,6 @@ function askTurnInMine(piece, id) {
 
 
 export function hightLightDrop(piece, id) {
-    console.log(id);
     document.querySelectorAll('.drop').forEach(div => {
         div.addEventListener('click', function () {
             if (!myturn) {
