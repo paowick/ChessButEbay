@@ -75,7 +75,11 @@ export async function run() {
         const info = arg.boardRedis
         invtBlack.invtSetUpViewer(info.invtB, "B")
         invtWhite.invtSetUpViewer(info.invtW, "W")
-        info.mine.forEach(element => {
+
+        let newMine = info.mine.filter(function(item){
+            return item !== null
+        });
+        newMine.forEach(element => {
             mineobj.drop_mine_server(element);
         })
         if (arg.role == "W") {

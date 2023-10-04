@@ -31,11 +31,13 @@ import('./board.js').then(({ socket }) => {
         mineobj.mineListCount()
         moveClient_Server(arg.turn, arg.source, arg.destination, arg.promoted, arg.checked)
         mineobj.setMineToNull()
-        console.log(arg);
-        mineSetUp()
-        arg.mine.forEach(element => {
+        let newMine = arg.mine.filter(function(item){
+            return item !== null
+        });
+        newMine.forEach(element => {
             mineobj.drop_mine_server(element);
         })
+        mineSetUp()
     })
     socket.on('castle_server', (arg) => {
         mineobj.mineListCount()
@@ -85,6 +87,14 @@ import('./board.js').then(({ socket }) => {
             changeMyTurn(false)
         }
         drop_server(arg.piece)
+        mineobj.setMineToNull()
+        let newMine = arg.mine.filter(function(item){
+            return item !== null
+        });
+        newMine.forEach(element => {
+            mineobj.drop_mine_server(element);
+        })
+        mineSetUp()
         auctionobj.setAuctionStage(true)
         const turndoc = document.querySelectorAll("#turn")
         turndoc.forEach(ele => {
