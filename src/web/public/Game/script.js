@@ -229,7 +229,11 @@ export function mineSetUp() {
     mineobj.mineList.forEach((element, index) => {
         var doc = null
         if (element.team == currentGame.role || currentGame.role == 'viewer') {
+            console.log(element);
             doc = element.html()
+            const num = document.createElement("div")
+            num.innerHTML = `${element.currentTimeInMine}/${element.timeInMine} turn`
+            doc.appendChild(num)
         } else {
             doc = new DOMParser().parseFromString(`<div class="blind"></div>`, "text/xml").documentElement
         }

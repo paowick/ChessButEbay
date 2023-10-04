@@ -384,6 +384,11 @@ main {
     overflow-y: auto;
     border: 10px solid #252525;
 }
+.mine-box > div{
+    position: absolute;
+    font-size: 20px;
+    transform: translate(18px, -36px);
+}
 
 .row-text {
     display: flex;

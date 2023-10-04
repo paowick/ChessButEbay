@@ -160,6 +160,7 @@ export function invtUpdate() {
 }
 
 export function mineUpdate(mine, isReturn) {
+    
     const mineValidate = []
     mine.forEach(element => {
         element.board = null

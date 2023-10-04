@@ -1,7 +1,7 @@
 import { coinUpdate, mineSetUp } from "./script.js"
 import { mineUpdate } from "./socket.js"
 import { invtobj } from "./board.js"
-import { coin,setCoin } from "./board.js";
+import { coin, setCoin } from "./board.js";
 import { king } from './king.js';
 import { pawn } from './pawn.js';
 import { queen } from './queen.js';
@@ -35,73 +35,84 @@ export class mine {
     }
 
     mineListCount() {
+        let isReturn = false
         const currentGame = JSON.parse(localStorage.getItem("currentGame"))
         this.mineList.forEach(element => {
             element.countCurrentTimeInMine()
         });
+        document.querySelectorAll('.mine-box').forEach(boxs => {
+            const piece = this.mineList[boxs.id]
+            const text = boxs.childNodes[1]
+            if (text != undefined) {
+                text.innerHTML = `${piece.currentTimeInMine}/${piece.timeInMine} turn`
+            }
+        })
         this.mineList.forEach(element => {
-            if (element.currentTimeInMine+1 <= 0) {
-                if(currentGame.role == element.team){
-                    if(element.name == "pawn"){
-                        setCoin((coin + returnRate[element.timeInMine])*1)
+            if (element.currentTimeInMine + 1 <= 0) {
+                if (currentGame.role == element.team) {
+                    if (element.name == "pawn") {
+                        setCoin((coin + returnRate[element.timeInMine]) * 1)
                     }
-                    if(element.name == "bishop"){
-                        setCoin((coin + returnRate[element.timeInMine])*2)
+                    if (element.name == "bishop") {
+                        setCoin((coin + returnRate[element.timeInMine]) * 2)
                     }
-                    if(element.name == "knight"){
-                        setCoin((coin + returnRate[element.timeInMine])*2)
+                    if (element.name == "knight") {
+                        setCoin((coin + returnRate[element.timeInMine]) * 2)
                     }
-                    if(element.name == "rook"){
-                        setCoin((coin + returnRate[element.timeInMine])*2)
+                    if (element.name == "rook") {
+                        setCoin((coin + returnRate[element.timeInMine]) * 2)
                     }
-                    if(element.name == "queen"){
-                        setCoin((coin + returnRate[element.timeInMine])*3)
+                    if (element.name == "queen") {
+                        setCoin((coin + returnRate[element.timeInMine]) * 3)
                     }
                     coinUpdate(coin)
                 }
                 this.mineListPop(element)
                 invtobj.invtPush(element)
-                mineUpdate(this.mineList,true)
-                return
             }
         })
-        mineUpdate(this.mineList,false)
+        if (isReturn == true) {
+            mineUpdate(this.mineList, true)
+        }
+        if (isReturn == false) {
+            mineUpdate(this.mineList, false)
+        }
     }
 
 
     drop_mine_server(element) {
         if (element.name == 'king') {
-            const obj = new king("king", element.pos, element.team, true, board, 2)
+            const obj = new king("king", element.pos, element.team, true, board, element.timeInMine)
             obj.currentTimeInMine = element.currentTimeInMine
             this.mineListPush(obj)
             return
         }
         if (element.name == 'queen') {
-            const obj = new queen("queen", element.pos, element.team, false, board, 2)
+            const obj = new queen("queen", element.pos, element.team, false, board, element.timeInMine)
             obj.currentTimeInMine = element.currentTimeInMine
             this.mineListPush(obj)
             return
         }
         if (element.name == 'bishop') {
-            const obj = new bishop("bishop", element.pos, element.team, false, board, 2)
+            const obj = new bishop("bishop", element.pos, element.team, false, board, element.timeInMine)
             obj.currentTimeInMine = element.currentTimeInMine
             this.mineListPush(obj)
             return
         }
         if (element.name == 'rook') {
-            const obj = new rook("rook", element.pos, element.team, false, board, 2)
+            const obj = new rook("rook", element.pos, element.team, false, board, element.timeInMine)
             obj.currentTimeInMine = element.currentTimeInMine
             this.mineListPush(obj)
             return
         }
         if (element.name == 'knight') {
-            const obj = new knight("knight", element.pos, element.team, false, board, 2)
+            const obj = new knight("knight", element.pos, element.team, false, board, element.timeInMine)
             obj.currentTimeInMine = element.currentTimeInMine
             this.mineListPush(obj)
             return
         }
         if (element.name == 'pawn') {
-            const obj = new pawn("pawn", element.pos, element.team, false, board, 2, true)
+            const obj = new pawn("pawn", element.pos, element.team, false, board, element.timeInMine, true)
             obj.currentTimeInMine = element.currentTimeInMine
             this.mineListPush(obj)
             return
