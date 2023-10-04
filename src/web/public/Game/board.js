@@ -18,16 +18,17 @@ import { auction } from './auction.js';
 import { bid } from './socket.js'
 import { coinUpdate, coinUpdate_Server } from './script.js';
 import { currentBidUpdate } from './script.js';
+import { auctionStageBlink } from './script.js';
 
 var invtList = []
 var mineList = []
 var minelimt = 3
 export let coin = 0
 
-export const returnRate ={
-    2:50,
-    4:120,
-    6:150,
+export const returnRate = {
+    2: 50,
+    4: 120,
+    6: 150,
 }
 export function setCoin(data) {
     coin = data
@@ -222,7 +223,10 @@ document.querySelectorAll('.box').forEach(div => {
                 // console.log(new DOMParser().parseFromString(this.innerHTML, "text/xml").documentElement);
                 // source position ====================================================================
 
-                if (auctionobj.auctionStage == true) { return }
+                if (auctionobj.auctionStage == true) {
+                    auctionStageBlink()
+                    return
+                }
                 const piece = havePiece(this.id)
 
                 clearAllHightLight()
@@ -641,14 +645,14 @@ export async function moveClient(source, destination, promoted) {
         }
     })
 }
-export function moveClient_Server(turn, source, destination, promoted ,pos) {
+export function moveClient_Server(turn, source, destination, promoted, pos) {
     const oldpos = tranSlateTopos(source)
     const newpos = tranSlateTopos(destination)
     const piece = board[oldpos[0]][oldpos[1]];
     piece.unset()
     piece.pos = newpos
     piece.setPiece()
-    if(pos != null){
+    if (pos != null) {
         board[pos[0]][pos[1]].setChecked(true)
     }
     if (piece.firstmove != undefined) { piece.firstmove = false }

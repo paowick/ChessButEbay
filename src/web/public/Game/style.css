@@ -269,6 +269,18 @@ main {
     border: 1px solid black;
     border-radius: 35px;
 }
+.blink {
+  animation: blink-animation 0.1s infinite;
+}
+
+@keyframes blink-animation {
+  0% {
+    background-color: #A19C9C;
+  }
+  100% {
+    background-color: #252525;
+  }
+}
 
 .auction-view {
     display: flex;

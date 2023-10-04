@@ -274,8 +274,8 @@ function askTurnInMine(piece, id) {
     setTimeout(() => {
         document.querySelector("#askmine-con").style.display = "flex"
     }, 200);
-    document.querySelectorAll("#askmine").forEach(button =>{
-        button.addEventListener("click",(e)=>{
+    document.querySelectorAll("#askmine").forEach(button => {
+        button.addEventListener("click", (e) => {
             document.querySelector("#askmine-con").style.display = "none"
             document.querySelector("#askmine-pop").removeAttribute("show")
             document.querySelector("#askmine-pop").style.visibility = "hidden"
@@ -292,7 +292,7 @@ function askTurnInMine(piece, id) {
     })
 
     function removeAllEvent() {
-        document.querySelectorAll("#askmine").forEach(button =>{
+        document.querySelectorAll("#askmine").forEach(button => {
             const newbutton = button.cloneNode(true)
             button.parentNode.replaceChild(newbutton, button)
         })
@@ -364,4 +364,12 @@ export function clearHightLightDrop(posList) {
         })
 
     });
+}
+
+export function auctionStageBlink() {
+    var blinkDiv = document.querySelector('#action')
+    blinkDiv.classList.add('blink')
+    setTimeout(function () {
+        blinkDiv.classList.remove('blink');
+    }, 200);
 }

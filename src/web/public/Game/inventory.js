@@ -1,9 +1,9 @@
-import { board } from "./board.js"
+import { auctionobj, board } from "./board.js"
 import { clearAllHightLight } from "./board.js"
 import { hightLightDrop, showDropAble, hightLightMine } from "./script.js"
 import { mineobj } from "./board.js"
 import { setSourceNull } from "./board.js"
-
+import { auctionStageBlink } from "./script.js"
 import { king } from './king.js';
 import { pawn } from './pawn.js';
 import { queen } from './queen.js';
@@ -81,6 +81,10 @@ export class inventory {
 
         document.querySelectorAll('.invt-box').forEach(div => {
             div.addEventListener('click', function (e) {
+                if(auctionobj.auctionStage == true){
+                    auctionStageBlink()
+                    return
+                }
                 // when click on invt-box in second time ti will be clear all hightlight
                 clearAllHightLight()
                 setSourceNull()
