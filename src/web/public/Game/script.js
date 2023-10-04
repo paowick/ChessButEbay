@@ -185,20 +185,20 @@ export function boardSetupUi(currentGame, info) {
     localStorage.setItem('currentGame', JSON.stringify(currentGame))
     const turndoc = document.querySelectorAll("#turn")
     turndoc.forEach(ele => {
-        if(info.turn == "W"){
+        if (info.turn == "W") {
             ele.style.backgroundColor = "white"
-            if(user.id == info.playerW){
+            if (user.id == info.playerW) {
                 ele.innerHTML = "Your Turn!"
-            }else{
+            } else {
                 ele.innerHTML = "White Turn"
             }
         }
-        if(info.turn == "B"){
+        if (info.turn == "B") {
             ele.style.backgroundColor = "black"
-            if(user.id == info.playerB){
+            if (user.id == info.playerB) {
                 ele.innerHTML = "Your Turn!"
                 ele.style.color = "white"
-            }else{
+            } else {
                 ele.innerHTML = "Balck Turn"
                 ele.style.color = "white"
             }
@@ -240,14 +240,16 @@ export function mineSetUp() {
 }
 
 export function hightLightMine(piece, id) {
-    document.querySelector('#mine').style.borderColor  = "red"
+    document.querySelector('#mine').style.borderColor = "red"
     document.querySelectorAll('.mine').forEach(div => {
         div.addEventListener('click', function () {
             if (!myturn) {
+                document.querySelector('#mine').style.borderColor = "#252525"
                 clearAllHightLight()
                 return
             }
             if (!mineobj.mineDropAble) {
+                document.querySelector('#mine').style.borderColor = "#252525"
                 clearAllHightLight()
                 return
             }
@@ -264,7 +266,7 @@ export function hightLightMine(piece, id) {
     })
 
     function removeAllEvent() {
-        document.querySelector('#mine').style.borderColor  = "#252525"
+        document.querySelector('#mine').style.borderColor = "#252525"
         document.querySelectorAll('.mine').forEach(div => {
             const newdiv = div.cloneNode(true)
             div.parentNode.replaceChild(newdiv, div)
