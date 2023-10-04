@@ -292,7 +292,7 @@ io.sockets.on("connection", async (socket) => {
 
     socket.on("mineUpdate", (arg) => {
         const data = JSON.parse(arg);
-        // setMineRedis(socket.request._query.code, data.mine)
+        setMineRedis(socket.request._query.code, data.mine)
     })
 
     socket.on("bid", async (arg) => {
