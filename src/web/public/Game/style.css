@@ -387,7 +387,7 @@ main {
 .mine-box > div{
     position: absolute;
     font-size: 20px;
-    transform: translate(18px, -36px);
+    transform: translate(9px, -36px);
 }
 
 .row-text {
@@ -676,6 +676,7 @@ main {
     height: 80px;
     font-size: 60px;
     text-align: center;
+    border-radius: 20px;
 }
 
 .mine>div:hover {

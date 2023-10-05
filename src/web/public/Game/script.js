@@ -235,6 +235,11 @@ export function mineSetUp() {
             doc.appendChild(num)
         } else {
             doc = new DOMParser().parseFromString(`<div class="blind"></div>`, "text/xml").documentElement
+            const dom = document.createElement('div')
+            const img = document.createElement('img')
+            img.setAttribute("src","../assets/component/svg/NOSEE.svg")
+            dom.appendChild(img)
+            doc = dom
         }
         doc.setAttribute('id', index)
         doc.classList.add('mine-box')
