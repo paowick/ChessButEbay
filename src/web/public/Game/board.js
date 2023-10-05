@@ -76,7 +76,7 @@ export async function run() {
         invtBlack.invtSetUpViewer(info.invtB, "B")
         invtWhite.invtSetUpViewer(info.invtW, "W")
 
-        let newMine = info.mine.filter(function(item){
+        let newMine = info.mine.filter(function (item) {
             return item !== null
         });
         newMine.forEach(element => {
@@ -227,6 +227,10 @@ document.querySelectorAll('.box').forEach(div => {
                 // console.log(new DOMParser().parseFromString(this.innerHTML, "text/xml").documentElement);
                 // source position ====================================================================
 
+                document.querySelector("#askmine-con").style.display = "none"
+                document.querySelector("#askmine-pop").removeAttribute("show")
+                document.querySelector("#askmine-pop").style.visibility = "hidden"
+                document.querySelector('#mine').style.borderColor = "#252525"
                 if (auctionobj.auctionStage == true) {
                     auctionStageBlink()
                     return

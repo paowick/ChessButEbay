@@ -251,6 +251,11 @@ export function hightLightMine(piece, id) {
     document.querySelector('#mine').style.borderColor = "red"
     document.querySelectorAll('.mine').forEach(div => {
         div.addEventListener('click', function () {
+            if(auctionobj.auctionStage == true){
+                document.querySelector('#mine').style.borderColor = "#252525"
+                clearAllHightLight()
+                return
+            }
             if (!myturn) {
                 document.querySelector('#mine').style.borderColor = "#252525"
                 clearAllHightLight()
@@ -261,6 +266,7 @@ export function hightLightMine(piece, id) {
                 clearAllHightLight()
                 return
             }
+            clearAllHightLight()
             askTurnInMine(piece, id)
             removeAllEvent()
         })
@@ -359,17 +365,6 @@ export function showDropAble(posList) {
             }
             element.innerHTML += `<div class="hight-light drop" id="${id}" value="drop" >&#9900</div>`
         })
-    });
-}
-export function clearHightLightDrop(posList) {
-    posList.forEach(element => {
-        const id = tranSlateToId(element)
-        document.querySelectorAll(`#${id}`).forEach(element => {
-            element.removeChild(element.lastChild)
-            element.style.backgroundColor = ``
-
-        })
-
     });
 }
 
