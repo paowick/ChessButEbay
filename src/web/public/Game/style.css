@@ -709,8 +709,8 @@ main {
     background-color: #252525;
     height: 230px;
     position: absolute;
-    top: 340px;
-    left: 363px;
+    top: 330px;
+    left: 610px;
     border-radius: 10%;
     width: 0;
     transition: 0.2s width ease-out;
