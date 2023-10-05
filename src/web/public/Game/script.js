@@ -8,6 +8,7 @@ import { dropMineEmit } from "./socket.js";
 import { mineobj } from "./board.js";
 import { invtobj } from "./board.js";
 import { setCoin } from "./board.js";
+import { setOnDrop } from "./board.js";
 
 const user = JSON.parse(localStorage.getItem("user"))
 export function updateJoinPop(playerB, playerW, playerBName, playerWName) {
@@ -320,6 +321,7 @@ function askTurnInMine(piece, id) {
 export function hightLightDrop(piece, id) {
     document.querySelectorAll('.drop').forEach(div => {
         div.addEventListener('click', function () {
+            setOnDrop(true)
             if (!myturn) {
                 clearAllHightLight()
                 return

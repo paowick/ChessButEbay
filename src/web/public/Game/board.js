@@ -219,6 +219,10 @@ var destination = null
 export function setSourceNull() {
     source = null
 }
+let onDrop = false
+export function setOnDrop(stage){
+    onDrop = stage
+}
 document.querySelectorAll('.box').forEach(div => {
     div.addEventListener('click', function () {
         const currentGame = JSON.parse(localStorage.getItem("currentGame"))
@@ -231,6 +235,10 @@ document.querySelectorAll('.box').forEach(div => {
                 document.querySelector("#askmine-pop").removeAttribute("show")
                 document.querySelector("#askmine-pop").style.visibility = "hidden"
                 document.querySelector('#mine').style.borderColor = "#252525"
+                if(onDrop){
+                    onDrop = false
+                    return
+                }       
                 if (auctionobj.auctionStage == true) {
                     auctionStageBlink()
                     return
@@ -396,6 +404,7 @@ function castle(source, destination) {
         notation: notation
     }
     changeMyTurn(false)
+    auctionobj.setAuctionStage(true)
     socket.emit("castle", stringify(data))
     const turndoc = document.querySelectorAll("#turn")
     turndoc.forEach(ele => {

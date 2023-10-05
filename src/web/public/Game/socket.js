@@ -22,6 +22,7 @@ const user = JSON.parse(localStorage.getItem('user'))
 document.querySelector("#test").addEventListener("click", () => {
     if (auctionobj.auctionStage) {
         socket.emit('test-auction', "test")
+        auctionobj.setAuctionStage(false)
     }
 })
 
@@ -51,7 +52,7 @@ import('./board.js').then(({ socket }) => {
             invtUpdate()
             invtobj.invtSetUp()
         }
-        auctionobj.setAuctionStage(arg.room.auctionStage)
+        auctionobj.setAuctionStage(false)
         auctionobj.auctionSetUp(arg.room)
         currentBidUpdate(arg.room)
         coinUpdate_Server(arg.room)
