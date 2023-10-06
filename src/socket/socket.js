@@ -39,15 +39,11 @@ let redisStore = new RedisStore({
     client: redisAuth,
     prefix: "myapp:",
 })
-const age = 365 * 24 * 60 * 60 * 1000;
 const sessionMiddleware = sessions({
   store: redisStore,
   secret: '56709', // Same secret key as in your Express app
   resave: false,
   saveUninitialized: false,
-    cookie: {
-        maxAge: age
-    },
 });
 app.use(sessionMiddleware);
 
