@@ -136,11 +136,6 @@ export function uiSetUpControll(info, arg, currentGame) {
         return
     }
     boardSetupUi(currentGame, info)
-    if (arg.turn === arg.role) {
-        myturn = true
-    } else {
-        myturn = false
-    }
     coinUpdate_Server(info)
 }
 
