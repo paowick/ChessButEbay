@@ -1,4 +1,4 @@
-import { move } from './socket.js';
+import { move, win } from './socket.js';
 import { io } from "https://cdn.socket.io/4.3.2/socket.io.esm.min.js";
 import { join } from './socket.js';
 import { waitingForPlayer, askPlayer, updateJoinPop } from './script.js';
@@ -618,6 +618,11 @@ export async function moveClient(source, destination, promoted) {
     const newpos = tranSlateTopos(destination)
     logConv(source, destination, promoted)
     const piece = board[oldpos[0]][oldpos[1]];
+    if(board[newpos[0]][newpos[1]] != null && board[newpos[0]][newpos[1]].name == "king"){
+        console.log("win");
+        win(currentGame.role)
+        return
+    }
     piece.unset()
     piece.pos = newpos
     piece.setPiece()

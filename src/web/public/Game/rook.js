@@ -33,9 +33,6 @@ export class rook extends pieces {
     setPiece() {
         if(this.board == null){this.board = board}
         if (this.team == "B") {
-            if (this.board[this.pos[0]][this.pos[1]] != null && this.board[this.pos[0]][this.pos[1]].name == "king") {
-                win("B")
-            }
             this.board[this.pos[0]][this.pos[1]] = this
             var id = this.tranSlateToId()
             var box = document.querySelectorAll(`#${id}`)
@@ -51,9 +48,6 @@ export class rook extends pieces {
             });
         }
         if (this.team == "W") {
-            if (this.board[this.pos[0]][this.pos[1]] != null && this.board[this.pos[0]][this.pos[1]].name == "king") {
-                win("W")
-            }
             this.board[this.pos[0]][this.pos[1]] = this
             var id = this.tranSlateToId()
             var box = document.querySelectorAll(`#${id}`)

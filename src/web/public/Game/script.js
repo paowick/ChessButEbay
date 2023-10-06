@@ -19,20 +19,20 @@ function formatTime(minutes) {
 export function logInit(log) {
     const logbox = document.querySelector("#log-box")
     logbox.innerHTML = ''
-    log.forEach((e,index)=>{
+    log.forEach((e, index) => {
         const logtext = document.createElement("div")
         const indexShow = document.createElement("div")
         const W = document.createElement("div")
         const B = document.createElement("div")
-        indexShow.innerHTML = index+1
+        indexShow.innerHTML = index + 1
         W.innerHTML = e.W
         B.innerHTML = e.B
         logtext.appendChild(indexShow)
         logtext.appendChild(W)
         logtext.appendChild(B)
         logbox.appendChild(logtext)
-        if(index % 2 == 0){
-            logtext.setAttribute("highlight","")
+        if (index % 2 == 0) {
+            logtext.setAttribute("highlight", "")
         }
     })
 }
@@ -172,21 +172,33 @@ export function coinUpdate(coin) {
 
 export function winPop(arg) {
     const currentGame = JSON.parse(localStorage.getItem("currentGame"))
-    if (currentGame.role == arg) {
-        document.querySelector("#win-pop").style.display = "flex"
-        const para = document.createElement("h1");
-        para.innerText = "You Win";
-        document.querySelector("#win-pop-text").appendChild(para)
+    const dateString = arg.starttime
+    const targetTime = new Date(dateString);
+    const currentTime = new Date();
+    const timeDifference = currentTime - targetTime;
+
+    // Convert time difference to seconds
+    const secondsDifference = Math.floor(timeDifference / 1000);
+    const formattedTimeDifference = formatTime(secondsDifference);
+    document.querySelector("#win-pop").style.display = "flex"
+    if (user.id === arg.winnerId) {
+        document.querySelector('#win-pop-text').innerHTML = "You Win"
+        document.querySelector('#win-time').innerHTML = `Time : ${formattedTimeDifference}`
+        document.querySelector('#win-round').innerHTML = `Round : ${arg.round}`
+        document.querySelector('#win-score').innerHTML = "+200"
     } else {
-        document.querySelector("#win-pop").style.display = "flex"
-        const para = document.createElement("h1");
-        para.innerText = "You Lose";
-        document.querySelector("#win-pop-text").appendChild(para)
+        document.querySelector('#win-pop-text').innerHTML = "You Lose"
+        document.querySelector('#win-time').innerHTML = `Time : ${formattedTimeDifference}`
+        document.querySelector('#win-round').innerHTML = `Round : ${arg.round}`
+        document.querySelector('#win-score').innerHTML = "-200"
     }
-    document.querySelector("#win-pop-butt").addEventListener("click", () => {
-        location.reload()
-    })
 }
+document.querySelector("#win-pop-butt").addEventListener("click", () => {
+    location.reload()
+})
+document.querySelector("#gotohome").addEventListener("click", () => {
+    window.location = "/"
+})
 
 export function boardSetUpNoStart() {
     document.querySelector("#invt").style.display = "none"

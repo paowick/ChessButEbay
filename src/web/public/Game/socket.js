@@ -323,7 +323,7 @@ export function join(game, username) {
 export function win(team) {
     let data = {
         team: team,
-        username: user.id
+        id: user.id
     }
     import('./board.js').then(({ socket }) => {
         socket.emit('win', data)

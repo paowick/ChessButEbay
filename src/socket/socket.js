@@ -124,15 +124,16 @@ io.sockets.on("connection", async (socket) => {
         const value = {
             starttime: null,
             turnCount: 0,
-            roomname: room.roomName,
-            auctiontime: room.aucTime,
+            roomname: room.roomname,
+            auctiontime: room.auctime,
             confcoins: room.confcoins,
             auctionslot1: null,
             auctionslot2: null,
+            auctionStage: true,
             currentBid: 0,
             currentBidder: null,
             turn: null,
-            code: data.room,
+            code: room.code,
             playerB: null,
             playerBName: null,
             invtB: [],
@@ -149,7 +150,17 @@ io.sockets.on("connection", async (socket) => {
         redisClient.set(socket.request._query.code, stringify(value), {
             NX: false
         })
-        socket.broadcast.to(socket.request._query.code).emit(`win_server`, data.team)
+        let WhiteScoe = 0
+        let BlackScore = 0
+        if(data.team = "W"){
+        }
+        const datareturn = {
+            winner: data.team,
+            winnerId: data.id,
+            starttime:room.starttime,
+            round:room.log.length
+        }
+        io.sockets.to(socket.request._query.code).emit(`win_server`, datareturn)
     })
 
     socket.on('castle', async (arg) => {
