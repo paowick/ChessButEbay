@@ -13,18 +13,49 @@ import { setMineRedis } from './allFunction.js';
 import { storedata } from './allFunction.js';
 import { now } from './allFunction.js';
 import { stringify } from './allFunction.js';
-export const redisClient = redis.createClient({
+
+
+import express from 'express';
+import sessions from 'express-session';
+import RedisStore from "connect-redis"
+
+const app = express();
+
+export const redisClient = new redis.createClient({
     socket: {
         host: 'gameredis',
         port: '6379'
     }
 });
 
+let redisAuth = new redis.createClient({
+    socket: {
+        host: 'authredis',
+        port: '6379'
+    }
+})
+redisAuth.connect().catch(console.error)
+let redisStore = new RedisStore({
+    client: redisAuth,
+    prefix: "myapp:",
+})
+const age = 365 * 24 * 60 * 60 * 1000;
+const sessionMiddleware = sessions({
+  store: redisStore,
+  secret: '56709', // Same secret key as in your Express app
+  resave: false,
+  saveUninitialized: false,
+    cookie: {
+        maxAge: age
+    },
+});
+app.use(sessionMiddleware);
+
 await redisClient.connect()
 export async function test() {
     redisClient.set('test', 'test').then((r) => { console.log(r); })
 }
-const sever = createServer()
+const sever = createServer(app)
 export const io = new Server(sever, {
     cors: {
         origin: "*",
@@ -38,14 +69,17 @@ sever.listen(8080, () => {
 
 io.use(function (socket, next) {
     var handshakeData = socket.request;
+    sessionMiddleware(socket.request, socket.request.res, next);
     // console.log("middleware:", handshakeData._query['code']);
     next();
 });
 
 
 io.sockets.on("connection", async (socket) => {
+    const session = socket.request.session;
+    console.log('Session Data:', session);
     // console.log(`connnect ${socket.id}`)
-    socket.join(socket.request._query.code)
+    socket.join(socket.request._query.code) 
     // console.log(socket.request._query.code);
     if (socket.request._query.code != "admin") {
         let socketRole = null
