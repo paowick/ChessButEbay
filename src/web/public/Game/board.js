@@ -19,7 +19,7 @@ import { bid } from './socket.js'
 import { coinUpdate, coinUpdate_Server } from './script.js';
 import { currentBidUpdate } from './script.js';
 import { auctionStageBlink } from './script.js';
-
+import { mainTimeInit } from './script.js';
 var invtList = []
 var mineList = []
 var minelimt = 3
@@ -75,7 +75,7 @@ export async function run() {
         const info = arg.boardRedis
         invtBlack.invtSetUpViewer(info.invtB, "B")
         invtWhite.invtSetUpViewer(info.invtW, "W")
-
+        mainTimeInit(info.starttime)
         let newMine = info.mine.filter(function (item) {
             return item !== null
         });

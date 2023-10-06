@@ -9,6 +9,30 @@ import { mineobj } from "./board.js";
 import { invtobj } from "./board.js";
 import { setCoin } from "./board.js";
 import { setOnDrop } from "./board.js";
+function formatTime(minutes) {
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+    return `${String(hours).padStart(2, '0')}:${String(remainingMinutes).padStart(2, '0')}`;
+}
+export function mainTimeInit(time) {
+
+    setInterval(() => {
+        const dateString = time
+        const targetTime = new Date(dateString);
+        const currentTime = new Date();
+        const timeDifference = currentTime - targetTime;
+
+        // Convert time difference to seconds
+        const secondsDifference = Math.floor(timeDifference / 1000);
+        const formattedTimeDifference = formatTime(secondsDifference);
+
+        document.querySelectorAll("#time").forEach(ele =>{
+            ele.innerHTML = `${formattedTimeDifference}`
+        })
+
+    }, 1000);
+
+}
 
 const user = JSON.parse(localStorage.getItem("user"))
 export function updateJoinPop(playerB, playerW, playerBName, playerWName) {
@@ -238,7 +262,7 @@ export function mineSetUp() {
             doc = new DOMParser().parseFromString(`<div class="blind"></div>`, "text/xml").documentElement
             const dom = document.createElement('div')
             const img = document.createElement('img')
-            img.setAttribute("src","../assets/component/svg/NOSEE.svg")
+            img.setAttribute("src", "../assets/component/svg/NOSEE.svg")
             dom.appendChild(img)
             doc = dom
         }
@@ -252,7 +276,7 @@ export function hightLightMine(piece, id) {
     document.querySelector('#mine').style.borderColor = "red"
     document.querySelectorAll('.mine').forEach(div => {
         div.addEventListener('click', function () {
-            if(auctionobj.auctionStage == true){
+            if (auctionobj.auctionStage == true) {
                 document.querySelector('#mine').style.borderColor = "#252525"
                 clearAllHightLight()
                 return

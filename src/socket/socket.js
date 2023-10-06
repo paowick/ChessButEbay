@@ -55,37 +55,6 @@ io.sockets.on("connection", async (socket) => {
 
     }
 
-    socket.on('resetroom', (arg) => {
-        console.log('reset');
-        const value = {
-            turnCount: 0,
-            roomname: "tui",
-            auctiontime: 5,
-            confcoins: 1000,
-            auctionslot1: null,
-            auctionslot2: null,
-            currentBid: 0,
-            currentBidder: null,
-            auctionStage: true,
-            turn: null,
-            code: arg,
-            playerB: null,
-            playerBName: null,
-            invtB: [],
-            coinB: 1000,
-            playerW: null,
-            playerWName: null,
-            invtW: [],
-            coinW: 1000,
-            mine: [],
-            gameStart: false,
-            board: board,
-            log: null
-        }
-        redisClient.set(arg, stringify(value), {
-            NX: false
-        })
-    })
 
     socket.on('join', async (arg) => {
         await storedata(arg, socket).then(async (boardRedis) => {
@@ -98,7 +67,7 @@ io.sockets.on("connection", async (socket) => {
                 boardRedis.gameStart = true
                 let piece1 = getRandomChessPiece(boardRedis.turnCount)
                 let piece2 = getRandomChessPiece(boardRedis.turnCount)
-
+                boardRedis.starttime = now()
                 boardRedis.auctionslot1 = piece1
                 boardRedis.auctionslot2 = piece2
                 redisClient.set(socket.request._query.code, stringify(boardRedis), {
@@ -114,6 +83,7 @@ io.sockets.on("connection", async (socket) => {
 
     socket.on('createRoom', (data) => {
         const value = {
+            starttime:null,
             turnCount: 0,
             roomname: data.req.roomName,
             auctiontime: data.req.aucTime,
@@ -152,6 +122,7 @@ io.sockets.on("connection", async (socket) => {
         const roomJSON = await redisClient.get(socket.request._query.code)
         const room = await JSON.parse(roomJSON)
         const value = {
+            starttime: null,
             turnCount: 0,
             roomname: room.roomName,
             auctiontime: room.aucTime,
@@ -506,6 +477,20 @@ async function storedata(arg, socket) {
     return room
 }
 
+function now() {
+    var date = new Date();
+    let now = new Date(date.valueOf() + 25200000)
+    return ((now.getMonth() + 1) + '/' +
+        (now.getDate()) + '/' +
+        now.getFullYear() + " " +
+        now.getHours() + ':' +
+        ((now.getMinutes() < 10)
+            ? ("0" + now.getMinutes())
+            : (now.getMinutes())) + ':' +
+        ((now.getSeconds() < 10)
+            ? ("0" + now.getSeconds())
+            : (now.getSeconds())));
+}
 
 function stringify(obj) {
     let cache = [];

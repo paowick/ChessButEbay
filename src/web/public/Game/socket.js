@@ -17,6 +17,7 @@ import { currentBidUpdate } from "./script.js";
 import { auctionobj } from "./board.js";
 import { invtobj, invtBlack, invtWhite } from "./board.js";
 import { castle_server } from "./board.js";
+import { mainTimeInit } from "./script.js";
 const user = JSON.parse(localStorage.getItem('user'))
 
 document.querySelector("#test").addEventListener("click", () => {
@@ -76,6 +77,7 @@ import('./board.js').then(({ socket }) => {
         } else {
             changeMyTurn(false)
         }
+        mainTimeInit(info.starttime)
         startGame(info, arg, currentGame)
     })
 

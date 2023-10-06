@@ -778,3 +778,13 @@ input {
 input:focus {
     outline-color: #171717;
 }
+
+.turn {
+    text-align: center;
+}
+.time {
+    text-align: center;
+}
+.coim {
+    text-align: center;
+}
