@@ -15,11 +15,7 @@ import { now } from './allFunction.js';
 import { stringify } from './allFunction.js';
 
 
-import express from 'express';
-import sessions from 'express-session';
-import RedisStore from "connect-redis"
-
-const app = express();
+import cookieParser from 'cookie-parser';
 
 export const redisClient = new redis.createClient({
     socket: {
@@ -28,30 +24,18 @@ export const redisClient = new redis.createClient({
     }
 });
 
-let redisAuth = new redis.createClient({
+export const redisauth = new redis.createClient({
     socket: {
         host: 'authredis',
         port: '6379'
     }
 })
-redisAuth.connect().catch(console.error)
-let redisStore = new RedisStore({
-    client: redisAuth,
-    prefix: "myapp:",
-})
-const sessionMiddleware = sessions({
-  store: redisStore,
-  secret: '56709', // Same secret key as in your Express app
-  resave: false,
-  saveUninitialized: false,
-});
-app.use(sessionMiddleware);
-
+await redisauth.connect()
 await redisClient.connect()
 export async function test() {
     redisClient.set('test', 'test').then((r) => { console.log(r); })
 }
-const sever = createServer(app)
+const sever = createServer()
 export const io = new Server(sever, {
     cors: {
         origin: "*",
@@ -65,19 +49,18 @@ sever.listen(8080, () => {
 
 io.use(function (socket, next) {
     var handshakeData = socket.request;
-    sessionMiddleware(socket.request, socket.request.res, next);
+    cookieParser()
     // console.log("middleware:", handshakeData._query['code']);
     next();
 });
 
 
 io.sockets.on("connection", async (socket) => {
-    const session = socket.request.session;
-    console.log('Session Data:', session);
     // console.log(`connnect ${socket.id}`)
-    socket.join(socket.request._query.code) 
+    socket.join(socket.request._query.code)
     // console.log(socket.request._query.code);
     if (socket.request._query.code != "admin") {
+        // console.log(socket.request.headers.cookie);
         let socketRole = null
         const boardRedisJSON = await redisClient.get(socket.request._query.code)
         const boardRedis = await JSON.parse(boardRedisJSON)
@@ -96,7 +79,6 @@ io.sockets.on("connection", async (socket) => {
 
     socket.on('join', async (arg) => {
         await storedata(arg, socket).then(async (boardRedis) => {
-
             io.sockets.to(socket.request._query.code).emit(`join_server`, {
                 board: stringify(boardRedis)
             })
@@ -135,10 +117,12 @@ io.sockets.on("connection", async (socket) => {
             code: data.room,
             playerB: null,
             playerBName: null,
+            playerBSessionId:null,
             invtB: [],
             coinB: parseInt(data.req.coins),
             playerW: null,
             playerWName: null,
+            playerWSessionId:null,
             invtW: [],
             coinW: parseInt(data.req.coins),
             mine: [],
@@ -185,10 +169,12 @@ io.sockets.on("connection", async (socket) => {
             code: room.code,
             playerB: null,
             playerBName: null,
+            playerBSessionId:null,
             invtB: [],
             coinB: room.confcoins,
             playerW: null,
             playerWName: null,
+            playerWSessionId:null,
             invtW: [],
             coinW: room.confcoins,
             mine: [],
@@ -206,17 +192,23 @@ io.sockets.on("connection", async (socket) => {
         let loserId
         let winnerName
         let loserName
+        let winnerSessionId
+        let loserSessionId
         if (room.playerB == data.id) {
             winnerId = room.playerB
             winnerName = room.playerBName
+            winnerSessionId = room.playerBSessionId
             loserId = room.playerW
             loserName = room.playerWName
+            loserSessionId = room.playerWSessionId
         }
         if (room.playerW == data.id) {
             winnerId = room.playerW
             winnerName = room.playerWName
+            winnerSessionId = room.playerWSessionId
             loserId = room.playerB
             loserName = room.playerBName
+            loserSessionId = room.playerBSessionId
         }
         const datareturn = {
             winner: data.team,
@@ -238,6 +230,15 @@ io.sockets.on("connection", async (socket) => {
             BlackId: room.playerW,
             log: room.log
         }
+        
+        const userJSONwin = await redisauth.get(`myapp:${winnerSessionId}`)
+        const userwin = await JSON.parse(userJSONwin)
+        const userJSONlose = await redisauth.get(`myapp:${loserSessionId}`)
+        const userlose = await JSON.parse(userJSONlose)
+        userwin.user.score = await userwin.user.score+20
+        userlose.user.score = await userlose.user.score-20
+        await redisauth.set(`myapp:${winnerSessionId}`, stringify(userwin))
+        await redisauth.set(`myapp:${loserSessionId}`, stringify(userlose))
         const res = await fetch("http://api:8080/api/logs", {
             method: 'POST',
             headers: {

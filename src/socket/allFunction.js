@@ -1,5 +1,5 @@
 import { redisClient, io } from './socket.js';
-
+import cookie from 'cookie';
 
 export async function invtUpdate(socket, arg) {
     const data = JSON.parse(arg);
@@ -140,22 +140,28 @@ export async function setMineRedis(code, mine) {
 export async function storedata(arg, socket) {
     const roomJSON = await redisClient.get(arg.data.code);
     const room = await JSON.parse(roomJSON);
+    const sessionID = extractSessionId(socket.request.headers.cookie);
+
     if (socket.request._query.id == room.playerB) {
         room.playerBName = null;
         room.playerB = null;
+        room.playerBSessionId = null
     }
     if (socket.request._query.id == room.playerW) {
         room.playerWName = null;
         room.playerW = null;
+        room.playerWSessionId = null
     }
 
     if (arg.data.role == 'B' && room.playerB == null) {
         room.playerB = socket.request._query.id;
         room.playerBName = arg.username;
+        room.playerBSessionId = sessionID
     }
     if (arg.data.role == 'W' && room.playerW == null) {
         room.playerW = socket.request._query.id;
         room.playerWName = arg.username;
+        room.playerWSessionId = sessionID
     }
     if (room.playerB != null && room.playerW != null) {
         room.turn = "W";
@@ -165,6 +171,26 @@ export async function storedata(arg, socket) {
     });
     return room;
 }
+function extractSessionId(cookieString) {
+  // Split the input string by '=' and ';'
+  const parts = cookieString.split(/=|;/);
+  // Find the part that starts with 's%3A'
+  const sessionIdPart = parts.find(part => part.startsWith('s%3A'));
+  
+  if (sessionIdPart) {
+      // Remove 's%3A' prefix and decode the part
+      let sessionId = decodeURIComponent(sessionIdPart.substring(4));
+
+    // Remove everything after the '.' character, if present
+    sessionId = sessionId.split('.')[0];
+
+    return sessionId;
+  }
+
+  // Return null if the session ID is not found
+  return null;
+}
+
 export function now() {
     var date = new Date();
     let now = new Date(date.valueOf() + 25200000);

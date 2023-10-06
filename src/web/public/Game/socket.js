@@ -113,7 +113,6 @@ import('./board.js').then(({ socket }) => {
     })
 
     socket.on('win_server', async (arg) => {
-        const currentGame = JSON.parse(localStorage.getItem("currentGame"))
         winPop(arg)
     })
 
