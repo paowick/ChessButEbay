@@ -106,7 +106,7 @@ io.sockets.on("connection", async (socket) => {
             mine: [],
             gameStart: false,
             board: board,
-            log: null
+            log: []
         }
         redisClient.set(data.room, stringify(value), {
             NX: false
@@ -144,7 +144,7 @@ io.sockets.on("connection", async (socket) => {
             mine: [],
             gameStart: false,
             board: board,
-            log: null
+            log: []
         }
         redisClient.set(socket.request._query.code, stringify(value), {
             NX: false
@@ -163,6 +163,17 @@ io.sockets.on("connection", async (socket) => {
         room.mine = await data.mine
         room.turnCount = await room.turnCount + 1
         room.auctionStage = true
+        let log = room.log
+        if(data.turn == "W"){
+            log.push({
+                W:data.notation,
+                B:''
+            })
+        }else if(data.turn == "B"){
+            let element = log[log.length-1]
+            element.B = data.notation
+        }
+        room.log = await log
         if (socket.request._query.id == room.playerB) {
             room.coinB = await data.coin
             room.invtB = await data.invt
@@ -194,6 +205,17 @@ io.sockets.on("connection", async (socket) => {
         room.mine = await data.mine
         room.turnCount = await room.turnCount + 1
         room.auctionStage = true
+        let log = room.log
+        if(data.turn == "W"){
+            log.push({
+                W:data.notation,
+                B:''
+            })
+        }else if(data.turn == "B"){
+            let element = log[log.length-1]
+            element.B = data.notation
+        }
+        room.log = await log
         if (socket.request._query.id == room.playerB) {
             room.coinB = await data.coin
             room.invtB = await data.invt
@@ -229,6 +251,18 @@ io.sockets.on("connection", async (socket) => {
         room.mine = await data.mine
         room.turnCount = await room.turnCount + 1
         room.auctionStage = true
+        let log = room.log
+        console.log(data.notation);
+        if(data.turn == "W"){
+            log.push({
+                W:data.notation,
+                B:''
+            })
+        }else if(data.turn == "B"){
+            let element = log[log.length-1]
+            element.B = data.notation
+        }
+        room.log = await log
         if (socket.request._query.id == room.playerB) {
             room.invtB = await data.invt
         }

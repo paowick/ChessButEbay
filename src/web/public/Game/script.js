@@ -16,21 +16,21 @@ function formatTime(minutes) {
 }
 export function mainTimeInit(time) {
 
-    setInterval(() => {
-        const dateString = time
-        const targetTime = new Date(dateString);
-        const currentTime = new Date();
-        const timeDifference = currentTime - targetTime;
+    // setInterval(() => {
+    //     const dateString = time
+    //     const targetTime = new Date(dateString);
+    //     const currentTime = new Date();
+    //     const timeDifference = currentTime - targetTime;
 
-        // Convert time difference to seconds
-        const secondsDifference = Math.floor(timeDifference / 1000);
-        const formattedTimeDifference = formatTime(secondsDifference);
+    //     // Convert time difference to seconds
+    //     const secondsDifference = Math.floor(timeDifference / 1000);
+    //     const formattedTimeDifference = formatTime(secondsDifference);
 
-        document.querySelectorAll("#time").forEach(ele =>{
-            ele.innerHTML = `${formattedTimeDifference}`
-        })
+    //     document.querySelectorAll("#time").forEach(ele =>{
+    //         ele.innerHTML = `${formattedTimeDifference}`
+    //     })
 
-    }, 1000);
+    // }, 1000);
 
 }
 

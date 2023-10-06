@@ -262,8 +262,8 @@ export function dropEmit(piece, board, notation) {
             isKing: piece.isKing,
             inInvt: piece.inInvt,
             timeInMine: piece.timeInMine,
-            notation: notation
         },
+        notation: notation,
         mine: mineValidate,
         invt: invtValidate,
         board: board

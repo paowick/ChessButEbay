@@ -526,7 +526,7 @@ export function drop(piece, destination, invtId) {
     source = null
     changeMyTurn(false)
     clearAllHightLight()
-    dropEmit(piece, board)
+    dropEmit(piece, board, notation)
     auctionobj.setAuctionStage(true)
     const turndoc = document.querySelectorAll("#turn")
     turndoc.forEach(ele => {
