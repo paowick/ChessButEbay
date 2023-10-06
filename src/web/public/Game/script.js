@@ -184,12 +184,12 @@ export function winPop(arg) {
     if (user.id === arg.winnerId) {
         document.querySelector('#win-pop-text').innerHTML = "You Win"
         document.querySelector('#win-time').innerHTML = `Time : ${formattedTimeDifference}`
-        document.querySelector('#win-round').innerHTML = `Round : ${arg.round}`
+        document.querySelector('#win-round').innerHTML = `Play Count : ${arg.round}`
         document.querySelector('#win-score').innerHTML = "+200"
     } else {
         document.querySelector('#win-pop-text').innerHTML = "You Lose"
         document.querySelector('#win-time').innerHTML = `Time : ${formattedTimeDifference}`
-        document.querySelector('#win-round').innerHTML = `Round : ${arg.round}`
+        document.querySelector('#win-round').innerHTML = `Play Count : ${arg.round}`
         document.querySelector('#win-score').innerHTML = "-200"
     }
 }
