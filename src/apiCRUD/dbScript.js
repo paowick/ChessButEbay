@@ -146,3 +146,14 @@ export async function banstatus(id,newStatus) {
         if (conn) conn.destroy();
     }
 }
+export async function logsUpdate(info){
+    let conn;
+    try {
+        conn = await pool.getConnection();
+        // const rows = await conn.query("UPDATE User SET User.Ban_Status = ? WHERE Id = ?;",[newStatus,id]);
+        // console.log(rows);
+        // return rows.affectedRows == 1 ? true : false
+    } finally {
+        if (conn) conn.destroy();
+    }
+}

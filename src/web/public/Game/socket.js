@@ -113,6 +113,9 @@ import('./board.js').then(({ socket }) => {
     })
 
     socket.on('win_server', async (arg) => {
+        if(currentGame == "viewer"){
+            location.reload()
+        }
         winPop(arg)
     })
 
@@ -320,10 +323,14 @@ export function join(game, username) {
         console.error('Error loading socket:', error);
     })
 }
-export function win(team) {
+export function win(team, notation) {
+
+    const currentGame = JSON.parse(localStorage.getItem("currentGame"))
     let data = {
+        turn: currentGame.role,
         team: team,
-        id: user.id
+        id: user.id,
+        notation: notation
     }
     import('./board.js').then(({ socket }) => {
         socket.emit('win', data)

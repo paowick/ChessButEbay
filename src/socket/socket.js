@@ -91,7 +91,7 @@ io.sockets.on("connection", async (socket) => {
 
     socket.on('createRoom', (data) => {
         const value = {
-            starttime:null,
+            starttime: null,
             turnCount: 0,
             roomname: data.req.roomName,
             auctiontime: data.req.aucTime,
@@ -129,6 +129,17 @@ io.sockets.on("connection", async (socket) => {
     socket.on("win", async (data) => {
         const roomJSON = await redisClient.get(socket.request._query.code)
         const room = await JSON.parse(roomJSON)
+        let log = room.log
+        if (data.turn == "W") {
+            log.push({
+                W: data.notation,
+                B: ''
+            })
+        } else if (data.turn == "B") {
+            let element = log[log.length - 1]
+            element.B = data.notation
+        }
+        room.log = await log
         const value = {
             starttime: null,
             turnCount: 0,
@@ -160,15 +171,30 @@ io.sockets.on("connection", async (socket) => {
         })
         let WhiteScoe = 0
         let BlackScore = 0
-        if(data.team = "W"){
+        if (data.team = "W") {
         }
         const datareturn = {
             winner: data.team,
             winnerId: data.id,
-            starttime:room.starttime,
-            round:room.log.length
+            starttime: room.starttime,
+            round: room.log.length
         }
         io.sockets.to(socket.request._query.code).emit(`win_server`, datareturn)
+        const overAllNotation = {
+            Date: room.starttime,
+            PlayCount: room.log.length,
+            WhiteId: room.playerW,
+            BlackId: room.PlayerB,
+            WinnerId: data.id,
+            log: room.log
+        }
+        const res = await fetch("http://api:8080/api/logs", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(overAllNotation)
+        })
     })
 
     socket.on('castle', async (arg) => {
@@ -183,13 +209,13 @@ io.sockets.on("connection", async (socket) => {
         room.turnCount = await room.turnCount + 1
         room.auctionStage = true
         let log = room.log
-        if(data.turn == "W"){
+        if (data.turn == "W") {
             log.push({
-                W:data.notation,
-                B:''
+                W: data.notation,
+                B: ''
             })
-        }else if(data.turn == "B"){
-            let element = log[log.length-1]
+        } else if (data.turn == "B") {
+            let element = log[log.length - 1]
             element.B = data.notation
         }
         room.log = await log
@@ -209,7 +235,7 @@ io.sockets.on("connection", async (socket) => {
             turn: turn,
             kingSource: data.kingSource,
             kingDestination: data.kingDestination,
-            notation:data.notation
+            notation: data.notation
         }
         socket.broadcast.to(socket.request._query.code).emit(`castle_server`, castle)
     })
@@ -226,13 +252,13 @@ io.sockets.on("connection", async (socket) => {
         room.turnCount = await room.turnCount + 1
         room.auctionStage = true
         let log = room.log
-        if(data.turn == "W"){
+        if (data.turn == "W") {
             log.push({
-                W:data.notation,
-                B:''
+                W: data.notation,
+                B: ''
             })
-        }else if(data.turn == "B"){
-            let element = log[log.length-1]
+        } else if (data.turn == "B") {
+            let element = log[log.length - 1]
             element.B = data.notation
         }
         room.log = await log
@@ -250,9 +276,9 @@ io.sockets.on("connection", async (socket) => {
         })
         let move = {
             turn: turn,
-            mine:data.mine,
+            mine: data.mine,
             promoted: data.promoted,
-            checked:data.checked,
+            checked: data.checked,
             source: data.source,
             destination: data.destination,
             notation: data.notation
@@ -273,13 +299,13 @@ io.sockets.on("connection", async (socket) => {
         room.auctionStage = true
         let log = room.log
         console.log(data.notation);
-        if(data.turn == "W"){
+        if (data.turn == "W") {
             log.push({
-                W:data.notation,
-                B:''
+                W: data.notation,
+                B: ''
             })
-        }else if(data.turn == "B"){
-            let element = log[log.length-1]
+        } else if (data.turn == "B") {
+            let element = log[log.length - 1]
             element.B = data.notation
         }
         room.log = await log
@@ -297,7 +323,7 @@ io.sockets.on("connection", async (socket) => {
             mine: data.mine,
             piece: data.piece,
             turn: turn,
-            notation:data.notation
+            notation: data.notation
         }
         socket.broadcast.to(socket.request._query.code).emit(`drop_server`, drop)
     })

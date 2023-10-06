@@ -620,7 +620,7 @@ export async function moveClient(source, destination, promoted) {
     const piece = board[oldpos[0]][oldpos[1]];
     if(board[newpos[0]][newpos[1]] != null && board[newpos[0]][newpos[1]].name == "king"){
         console.log("win");
-        win(currentGame.role)
+        win(currentGame.role,`${notation}++`)
         return
     }
     piece.unset()
