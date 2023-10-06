@@ -199,7 +199,8 @@ io.sockets.on("connection", async (socket) => {
         }
         io.sockets.to(socket.request._query.code).emit(`win_server`, datareturn)
         const overAllNotation = {
-            Date: room.starttime,
+            StartDate: room.starttime,
+            EndDate: now(),
             PlayCount: room.log.length,
             winnerId: winnerId,
             loserId: loserId,

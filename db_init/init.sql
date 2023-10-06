@@ -17,7 +17,8 @@ CREATE TABLE `chessbutebay`.`User` (
 COMMIT;
 
 CREATE TABLE `chessbutebay`.`Logs` (
-  `Date` DATETIME NOT NULL ,
+  `StartDate` DATETIME NOT NULL ,
+  `EndDate` DATETIME NOT nULL,
   `plycount` INT NOT NULL ,
   `WinID` INT UNSIGNED NOT NULL ,
   `LosID` INT UNSIGNED NOT NULL ,

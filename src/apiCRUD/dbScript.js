@@ -150,9 +150,9 @@ export async function logsUpdate(info) {
     let conn;
     try {
         conn = await pool.getConnection();
-        const rowslog = await conn.query("INSERT INTO `Notation` (`log`) VALUES (?)",[JSON.stringify(info.log)]);
-        const rows = await conn.query("INSERT INTO `Logs` (`Date`, `plycount`, `WinID`, `LosID`, `WhiteID`, `BlackID`, `NotationID`) VALUES (?, ?, ?, ?, ?, ?, ?)", [timeConv(info.Date), info.PlayCount, info.winnerId, info.loserId, info.WhiteId, info.BlackId, rowslog.insertId]);
-        const updateW = await conn.query("UPDATE User SET User.Score = CASE WHEN User.Id = ? THEN User.Score + 20 WHEN User.Id = ? THEN User.Score - 20 END WHERE User.Id IN (?,?);",[info.winnerId,info.loserId,info.winnerId,info.loserId])
+        const rowslog = await conn.query("INSERT INTO `Notation` (`log`) VALUES (?)", [JSON.stringify(info.log)]);
+        const rows = await conn.query("INSERT INTO `Logs` (`StartDate`,`EndDate`, `plycount`, `WinID`, `LosID`, `WhiteID`, `BlackID`, `NotationID`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", [timeConv(info.StartDate), timeConv(info.EndDate), info.PlayCount, info.winnerId, info.loserId, info.WhiteId, info.BlackId, rowslog.insertId]);
+        const updateW = await conn.query("UPDATE User SET User.Score = CASE WHEN User.Id = ? THEN User.Score + 20 WHEN User.Id = ? THEN User.Score - 20 END WHERE User.Id IN (?,?);", [info.winnerId, info.loserId, info.winnerId, info.loserId])
     } finally {
         if (conn) conn.destroy();
     }
