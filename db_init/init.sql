@@ -16,6 +16,26 @@ CREATE TABLE `chessbutebay`.`User` (
 ) ENGINE = InnoDB;
 COMMIT;
 
+CREATE TABLE `chessbutebay`.`Logs` (
+  `Date` DATETIME NOT NULL ,
+  `plycount` INT NOT NULL ,
+  `WinID` INT UNSIGNED NOT NULL ,
+  `LosID` INT UNSIGNED NOT NULL ,
+  `WhiteID` INT UNSIGNED NOT NULL ,
+  `BlackID` INT UNSIGNED NOT NULL ,
+  `NotationID` INT UNSIGNED NOT NULL
+) ENGINE = InnoDB;
+COMMIT;
+
+ALTER TABLE Logs ADD CONSTRAINT `winid` FOREIGN KEY (WinID) REFERENCES User (id);
+ALTER TABLE Logs ADD CONSTRAINT `losid` FOREIGN KEY (LosID) REFERENCES User (id);
+ALTER TABLE Logs ADD CONSTRAINT `whiteid` FOREIGN KEY (WhiteID) REFERENCES User (id);
+ALTER TABLE Logs ADD CONSTRAINT `blackid` FOREIGN KEY (BlackID) REFERENCES User (id);
+COMMIT;
+
+
+
+
 INSERT INTO `User` (`Email`, `Password`, `Name`, `Fname`, `Lname`, `Score`, `Ban_Status`, `Admin`) 
   VALUES ('korn2k9@gmail.com', 'qwe123', 'paowick', NULL, NULL, 111, FALSE, TRUE);
 INSERT INTO `User` (`Email`, `Password`, `Name`, `Fname`, `Lname`, `Score`, `Ban_Status`, `Admin`) 
