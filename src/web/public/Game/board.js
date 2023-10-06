@@ -75,7 +75,9 @@ export async function run() {
         const info = arg.boardRedis
         invtBlack.invtSetUpViewer(info.invtB, "B")
         invtWhite.invtSetUpViewer(info.invtW, "W")
-        mainTimeInit(info.starttime)
+        if(arg.starttime != null){
+            mainTimeInit(info.starttime)
+        }
         let newMine = info.mine.filter(function (item) {
             return item !== null
         });
