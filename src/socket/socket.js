@@ -38,15 +38,15 @@ sever.listen(8080, () => {
 
 io.use(function (socket, next) {
     var handshakeData = socket.request;
-    console.log("middleware:", handshakeData._query['code']);
+    // console.log("middleware:", handshakeData._query['code']);
     next();
 });
 
 
 io.sockets.on("connection", async (socket) => {
-    console.log(`connnect ${socket.id}`)
+    // console.log(`connnect ${socket.id}`)
     socket.join(socket.request._query.code)
-    console.log(socket.request._query.code);
+    // console.log(socket.request._query.code);
     if (socket.request._query.code != "admin") {
         let socketRole = null
         const boardRedisJSON = await redisClient.get(socket.request._query.code)
