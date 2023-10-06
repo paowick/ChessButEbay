@@ -1,5 +1,6 @@
 import { pieces } from "./piece.js";
 import { board } from "./board.js"
+import { win } from "./socket.js";
 export class bishop extends pieces {
     html() {
         if (this.team == "B") {

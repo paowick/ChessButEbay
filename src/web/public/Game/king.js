@@ -1,5 +1,6 @@
 import { pieces } from "./piece.js";
 import { board } from "./board.js"
+import { win } from "./socket.js";
 export class king extends pieces {
 
     constructor(name, pos, team, isKing, board, timeInMine, checked) {
@@ -54,10 +55,10 @@ export class king extends pieces {
         if (this.board == null) { this.board = board }
         if (this.team == "B") {
             if (this.board[this.pos[0]][this.pos[1]] != null && this.board[this.pos[0]][this.pos[1]].name == "king") {
-                // win("W")
+                win("W")
             }
             if (this.board[this.pos[0]][this.pos[1]] != null && this.board[this.pos[0]][this.pos[1]].name == "king") {
-                // win("B")
+                win("B")
             }
             this.board[this.pos[0]][this.pos[1]] = this
             var id = this.tranSlateToId()

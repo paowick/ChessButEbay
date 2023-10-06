@@ -1,5 +1,6 @@
 import { pieces } from "./piece.js";
 import { board } from "./board.js"
+import { win } from "./socket.js";
 export class queen extends pieces {
 
     html() {
