@@ -176,23 +176,23 @@ io.sockets.on("connection", async (socket) => {
         let winnerName
         let loserName
         if (room.playerB == data.id) {
-            winnerId = room.PlayerB
+            winnerId = room.playerB
             winnerName = room.playerBName
             loserId = room.playerW
-            loserName =room.playerWName
+            loserName = room.playerWName
         }
         if (room.playerW == data.id) {
             winnerId = room.PlayerW
             winnerName = room.playerWName
             loserId = room.playerB
-            loserName =room.playerBName
+            loserName = room.playerBName
         }
         const datareturn = {
             winner: data.team,
             winnerId: winnerId,
             loserId: loserId,
-            winnerName : winnerName,
-            loserName : loserId,
+            winnerName: winnerName,
+            loserName: loserId,
             starttime: room.starttime,
             round: room.log.length
         }
@@ -202,9 +202,10 @@ io.sockets.on("connection", async (socket) => {
             PlayCount: room.log.length,
             WhiteId: room.playerW,
             BlackId: room.PlayerB,
-            WinnerId: data.id,
+            WinnerId: winnerId,
             log: room.log
         }
+        console.log(datareturn);
         const res = await fetch("http://api:8080/api/logs", {
             method: 'POST',
             headers: {

@@ -181,7 +181,8 @@ export function winPop(arg) {
     const secondsDifference = Math.floor(timeDifference / 1000);
     const formattedTimeDifference = formatTime(secondsDifference);
     document.querySelector("#win-pop").style.display = "flex"
-    if (user.id === arg.winnerId) {
+    console.log(arg);
+    if (user.id === parseInt(arg.winnerId)) {
         document.querySelector('#win-pop-text').innerHTML = "You Win"
         document.querySelector('#win-time').innerHTML = `Time : ${formattedTimeDifference}`
         document.querySelector('#win-round').innerHTML = `Play Count : ${arg.round}`
@@ -191,6 +192,12 @@ export function winPop(arg) {
         document.querySelector('#win-time').innerHTML = `Time : ${formattedTimeDifference}`
         document.querySelector('#win-round').innerHTML = `Play Count : ${arg.round}`
         document.querySelector('#win-score').innerHTML = "-20"
+    }
+    if(currentGame.role == "viewer"){
+        document.querySelector('#win-pop-text').innerHTML = `The Winner is ${arg.winnerName}`
+        document.querySelector('#win-time').innerHTML = `Time : ${formattedTimeDifference}`
+        document.querySelector('#win-round').innerHTML = `Play Count : ${arg.round}`
+        document.querySelector('#win-score').innerHTML = ""
     }
 }
 document.querySelector("#win-pop-butt").addEventListener("click", () => {
