@@ -14,6 +14,29 @@ function formatTime(minutes) {
     const remainingMinutes = minutes % 60;
     return `${String(hours).padStart(2, '0')}:${String(remainingMinutes).padStart(2, '0')}`;
 }
+
+
+export function logInit(log) {
+    const logbox = document.querySelector("#log-box")
+    logbox.innerHTML = ''
+    log.forEach((e,index)=>{
+        const logtext = document.createElement("div")
+        const indexShow = document.createElement("div")
+        const W = document.createElement("div")
+        const B = document.createElement("div")
+        indexShow.innerHTML = index+1
+        W.innerHTML = e.W
+        B.innerHTML = e.B
+        logtext.appendChild(indexShow)
+        logtext.appendChild(W)
+        logtext.appendChild(B)
+        logbox.appendChild(logtext)
+        if(index % 2 == 0){
+            logtext.setAttribute("highlight","")
+        }
+    })
+}
+
 export function mainTimeInit(time) {
 
     // setInterval(() => {

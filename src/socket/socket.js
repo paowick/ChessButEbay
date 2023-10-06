@@ -190,6 +190,7 @@ io.sockets.on("connection", async (socket) => {
             turn: turn,
             kingSource: data.kingSource,
             kingDestination: data.kingDestination,
+            notation:data.notation
         }
         socket.broadcast.to(socket.request._query.code).emit(`castle_server`, castle)
     })
@@ -276,7 +277,8 @@ io.sockets.on("connection", async (socket) => {
         const drop = {
             mine: data.mine,
             piece: data.piece,
-            turn: turn
+            turn: turn,
+            notation:data.notation
         }
         socket.broadcast.to(socket.request._query.code).emit(`drop_server`, drop)
     })

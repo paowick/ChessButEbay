@@ -20,10 +20,12 @@ import { coinUpdate, coinUpdate_Server } from './script.js';
 import { currentBidUpdate } from './script.js';
 import { auctionStageBlink } from './script.js';
 import { mainTimeInit } from './script.js';
+import { logInit } from './script.js';
 var invtList = []
 var mineList = []
 var minelimt = 3
 export let coin = 0
+export let log = []
 
 export const returnRate = {
     2: 50,
@@ -32,6 +34,25 @@ export const returnRate = {
 }
 export function setCoin(data) {
     coin = data
+}
+export function logPush(notation) {
+    let last = log[log.length - 1]
+    if (log.length == 0) {
+        log.push({
+            W: notation,
+            B: ""
+        })
+        return logInit(log)
+    }
+    if (last.B == "") {
+        last.B = notation
+    } else {
+        log.push({
+            W: notation,
+            B: ""
+        })
+    }
+    logInit(log)
 }
 
 
@@ -73,9 +94,12 @@ window.onload = run()
 export async function run() {
     socket.on('board', async (arg) => {
         const info = arg.boardRedis
+        log = info.log
+        logInit(log)
+
         invtBlack.invtSetUpViewer(info.invtB, "B")
         invtWhite.invtSetUpViewer(info.invtW, "W")
-        if(arg.starttime != null){
+        if (arg.starttime != null) {
             mainTimeInit(info.starttime)
         }
         let newMine = info.mine.filter(function (item) {
@@ -222,7 +246,7 @@ export function setSourceNull() {
     source = null
 }
 let onDrop = false
-export function setOnDrop(stage){
+export function setOnDrop(stage) {
     onDrop = stage
 }
 document.querySelectorAll('.box').forEach(div => {
@@ -237,10 +261,10 @@ document.querySelectorAll('.box').forEach(div => {
                 document.querySelector("#askmine-pop").removeAttribute("show")
                 document.querySelector("#askmine-pop").style.visibility = "hidden"
                 document.querySelector('#mine').style.borderColor = "#252525"
-                if(onDrop){
+                if (onDrop) {
                     onDrop = false
                     return
-                }       
+                }
                 if (auctionobj.auctionStage == true) {
                     auctionStageBlink()
                     return
@@ -407,6 +431,7 @@ function castle(source, destination) {
     }
     changeMyTurn(false)
     auctionobj.setAuctionStage(true)
+    logPush(notation)
     socket.emit("castle", stringify(data))
     const turndoc = document.querySelectorAll("#turn")
     turndoc.forEach(ele => {
@@ -441,7 +466,6 @@ export function castle_server(source, destination, turn) {
     console.log(piece);
     if (tranSlateTopos(destination)[1] == 6) {
         if (piece.team == "W") {
-            console.log("h");
             const rook = havePiece("h1")
             piece.unset()
             piece.pos = newpos
@@ -517,7 +541,6 @@ export function drop(piece, destination, invtId) {
 
     notation = ''
     notation = `${pieceToNotation[piece.name]}*${destination}`
-    console.log(notation);
     const pos = tranSlateTopos(destination)
     piece.setpos(pos)
     piece.setInInvt(false)

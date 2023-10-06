@@ -362,6 +362,21 @@ main {
     width: 299px;
     height: 205px;
     box-shadow: 2px 5px 10px 0px #050505 inset;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.log-box>div {
+    font-size: 25px;
+    display: inline-flex;
+    justify-content: space-between;
+    padding: 0 10px;
+    background-color: #A19C9C;
+}
+.log-box>div[highlight=""] {
+    background-color: #ccc;
 }
 
 .mine-con {

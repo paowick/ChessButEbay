@@ -18,6 +18,7 @@ import { auctionobj } from "./board.js";
 import { invtobj, invtBlack, invtWhite } from "./board.js";
 import { castle_server } from "./board.js";
 import { mainTimeInit } from "./script.js";
+import { logPush } from "./board.js";
 const user = JSON.parse(localStorage.getItem('user'))
 
 document.querySelector("#test").addEventListener("click", () => {
@@ -30,10 +31,11 @@ document.querySelector("#test").addEventListener("click", () => {
 
 import('./board.js').then(({ socket }) => {
     socket.on('move_server', (arg) => {
+        logPush(arg.notation)
         mineobj.mineListCount()
         moveClient_Server(arg.turn, arg.source, arg.destination, arg.promoted, arg.checked)
         mineobj.setMineToNull()
-        let newMine = arg.mine.filter(function(item){
+        let newMine = arg.mine.filter(function (item) {
             return item !== null
         });
         newMine.forEach(element => {
@@ -42,8 +44,54 @@ import('./board.js').then(({ socket }) => {
         mineSetUp()
     })
     socket.on('castle_server', (arg) => {
+        logPush(arg.notation)
         mineobj.mineListCount()
         castle_server(arg.kingSource, arg.kingDestination, arg.turn)
+    })
+
+    socket.on('drop_server', async (arg) => {
+        const currentGame = JSON.parse(localStorage.getItem("currentGame"))
+        mineobj.mineListCount()
+        logPush(arg.notation)
+        if (arg.turn === currentGame.role) {
+            changeMyTurn(true)
+        } else {
+            changeMyTurn(false)
+        }
+        drop_server(arg.piece)
+        mineobj.setMineToNull()
+        let newMine = arg.mine.filter(function (item) {
+            return item !== null
+        });
+        newMine.forEach(element => {
+            mineobj.drop_mine_server(element);
+        })
+        mineSetUp()
+        auctionobj.setAuctionStage(true)
+        const turndoc = document.querySelectorAll("#turn")
+        turndoc.forEach(ele => {
+            if (arg.turn == "W") {
+                ele.style.backgroundColor = "white"
+                if (currentGame.role == "W") {
+                    ele.innerHTML = "Your Turn!"
+                    ele.style.color = "black"
+                } else {
+                    ele.innerHTML = "White Turn"
+                    ele.style.color = "black"
+                }
+            }
+            if (arg.turn == "B") {
+                ele.style.backgroundColor = "black"
+                if (currentGame.role == "B") {
+                    ele.innerHTML = "Your Turn!"
+                    ele.style.color = "white"
+                } else {
+                    ele.innerHTML = "Balck Turn"
+                    ele.style.color = "white"
+                }
+
+            }
+        })
     })
 
     socket.on('get-piece_auction_server', async (arg) => {
@@ -81,49 +129,6 @@ import('./board.js').then(({ socket }) => {
         startGame(info, arg, currentGame)
     })
 
-    socket.on('drop_server', async (arg) => {
-        const currentGame = JSON.parse(localStorage.getItem("currentGame"))
-        mineobj.mineListCount()
-        if (arg.turn === currentGame.role) {
-            changeMyTurn(true)
-        } else {
-            changeMyTurn(false)
-        }
-        drop_server(arg.piece)
-        mineobj.setMineToNull()
-        let newMine = arg.mine.filter(function(item){
-            return item !== null
-        });
-        newMine.forEach(element => {
-            mineobj.drop_mine_server(element);
-        })
-        mineSetUp()
-        auctionobj.setAuctionStage(true)
-        const turndoc = document.querySelectorAll("#turn")
-        turndoc.forEach(ele => {
-            if (arg.turn == "W") {
-                ele.style.backgroundColor = "white"
-                if (currentGame.role == "W") {
-                    ele.innerHTML = "Your Turn!"
-                    ele.style.color = "black"
-                } else {
-                    ele.innerHTML = "White Turn"
-                    ele.style.color = "black"
-                }
-            }
-            if (arg.turn == "B") {
-                ele.style.backgroundColor = "black"
-                if (currentGame.role == "B") {
-                    ele.innerHTML = "Your Turn!"
-                    ele.style.color = "white"
-                } else {
-                    ele.innerHTML = "Balck Turn"
-                    ele.style.color = "white"
-                }
-
-            }
-        })
-    })
 
     socket.on('drop_mine_server', async (arg) => {
         mineobj.drop_mine_server(arg.piece)
@@ -180,6 +185,7 @@ export function invtUpdate() {
 
 
 export function move(source, destination, promoted, checked, notation) {
+    logPush(notation)
     mineobj.mineListCount()
     const mineValidate = []
     mineobj.mineList.forEach(element => {
@@ -193,7 +199,7 @@ export function move(source, destination, promoted, checked, notation) {
     });
     const currentGame = JSON.parse(localStorage.getItem("currentGame"))
     let temp = null
-    if(checked != null){
+    if (checked != null) {
         temp = checked.pos
     }
     const data = {
@@ -241,6 +247,7 @@ export function returnPieceFromMine() {
 }
 
 export function dropEmit(piece, board, notation) {
+    logPush(notation)
     mineobj.mineListCount()
     const currentGame = JSON.parse(localStorage.getItem("currentGame"))
     const invtValidate = []
@@ -268,7 +275,6 @@ export function dropEmit(piece, board, notation) {
         invt: invtValidate,
         board: board
     }
-    console.log(invtValidate);
     socket.emit('drop', stringify(data))
 }
 
