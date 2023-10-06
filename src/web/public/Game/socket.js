@@ -323,6 +323,7 @@ export function join(game, username) {
 }
 export function win(team, notation) {
 
+    const user = JSON.parse(localStorage.getItem('user'))
     const currentGame = JSON.parse(localStorage.getItem("currentGame"))
     let data = {
         turn: currentGame.role,

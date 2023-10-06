@@ -167,7 +167,8 @@ io.sockets.on("connection", async (socket) => {
             log: []
         }
         redisClient.set(socket.request._query.code, stringify(value), {
-            NX: false
+            NX: false,
+            EX: 600
         })
         let WhiteScoe = 0
         let BlackScore = 0
@@ -182,7 +183,7 @@ io.sockets.on("connection", async (socket) => {
             loserName = room.playerWName
         }
         if (room.playerW == data.id) {
-            winnerId = room.PlayerW
+            winnerId = room.playerW
             winnerName = room.playerWName
             loserId = room.playerB
             loserName = room.playerBName
@@ -200,12 +201,12 @@ io.sockets.on("connection", async (socket) => {
         const overAllNotation = {
             Date: room.starttime,
             PlayCount: room.log.length,
-            WhiteId: room.playerW,
-            BlackId: room.PlayerB,
-            WinnerId: winnerId,
+            winnerId: winnerId,
+            loserId: loserId,
+            WhiteId: room.playerB,
+            BlackId: room.playerW,
             log: room.log
         }
-        console.log(datareturn);
         const res = await fetch("http://api:8080/api/logs", {
             method: 'POST',
             headers: {
