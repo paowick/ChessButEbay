@@ -171,11 +171,28 @@ io.sockets.on("connection", async (socket) => {
         })
         let WhiteScoe = 0
         let BlackScore = 0
-        if (data.team = "W") {
+        let winnerId
+        let loserId
+        let winnerName
+        let loserName
+        if (room.playerB == data.id) {
+            winnerId = room.PlayerB
+            winnerName = room.playerBName
+            loserId = room.playerW
+            loserName =room.playerWName
+        }
+        if (room.playerW == data.id) {
+            winnerId = room.PlayerW
+            winnerName = room.playerWName
+            loserId = room.playerB
+            loserName =room.playerBName
         }
         const datareturn = {
             winner: data.team,
-            winnerId: data.id,
+            winnerId: winnerId,
+            loserId: loserId,
+            winnerName : winnerName,
+            loserName : loserId,
             starttime: room.starttime,
             round: room.log.length
         }

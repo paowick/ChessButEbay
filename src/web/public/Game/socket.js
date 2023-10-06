@@ -113,9 +113,7 @@ import('./board.js').then(({ socket }) => {
     })
 
     socket.on('win_server', async (arg) => {
-        if(currentGame == "viewer"){
-            location.reload()
-        }
+        const currentGame = JSON.parse(localStorage.getItem("currentGame"))
         winPop(arg)
     })
 
