@@ -23,7 +23,7 @@
     "express-session": "^1.17.3",
     "jsonwebtoken": "^9.0.0",
     "nodemon": "^2.0.20",
-    "redis": "^4.6.7",
+    "redis": "^4.6.9",
     "socket.io": "^4.6.1",
     "socket.io-client": "^4.7.1"
   }
