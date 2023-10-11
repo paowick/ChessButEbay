@@ -8,6 +8,54 @@ import { dropMineEmit } from "./socket.js";
 import { mineobj } from "./board.js";
 import { invtobj } from "./board.js";
 import { setCoin } from "./board.js";
+import { setOnDrop } from "./board.js";
+function formatTime(minutes) {
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+    return `${String(hours).padStart(2, '0')}:${String(remainingMinutes).padStart(2, '0')}`;
+}
+
+
+export function logInit(log) {
+    const logbox = document.querySelector("#log-box")
+    logbox.innerHTML = ''
+    log.forEach((e, index) => {
+        const logtext = document.createElement("div")
+        const indexShow = document.createElement("div")
+        const W = document.createElement("div")
+        const B = document.createElement("div")
+        indexShow.innerHTML = index + 1
+        W.innerHTML = e.W
+        B.innerHTML = e.B
+        logtext.appendChild(indexShow)
+        logtext.appendChild(W)
+        logtext.appendChild(B)
+        logbox.appendChild(logtext)
+        if (index % 2 == 0) {
+            logtext.setAttribute("highlight", "")
+        }
+    })
+}
+
+export function mainTimeInit(time) {
+
+    // setInterval(() => {
+    //     const dateString = time
+    //     const targetTime = new Date(dateString);
+    //     const currentTime = new Date();
+    //     const timeDifference = currentTime - targetTime;
+
+    //     // Convert time difference to seconds
+    //     const secondsDifference = Math.floor(timeDifference / 1000);
+    //     const formattedTimeDifference = formatTime(secondsDifference);
+
+    //     document.querySelectorAll("#time").forEach(ele =>{
+    //         ele.innerHTML = `${formattedTimeDifference}`
+    //     })
+
+    // }, 1000);
+
+}
 
 const user = JSON.parse(localStorage.getItem("user"))
 export function updateJoinPop(playerB, playerW, playerBName, playerWName) {
@@ -124,21 +172,40 @@ export function coinUpdate(coin) {
 
 export function winPop(arg) {
     const currentGame = JSON.parse(localStorage.getItem("currentGame"))
-    if (currentGame.role == arg) {
-        document.querySelector("#win-pop").style.display = "flex"
-        const para = document.createElement("h1");
-        para.innerText = "You Win";
-        document.querySelector("#win-pop-text").appendChild(para)
+    const dateString = arg.starttime
+    const targetTime = new Date(dateString);
+    const currentTime = new Date();
+    const timeDifference = currentTime - targetTime;
+
+    // Convert time difference to seconds
+    const secondsDifference = Math.floor(timeDifference / 1000);
+    const formattedTimeDifference = formatTime(secondsDifference);
+    document.querySelector("#win-pop").style.display = "flex"
+    console.log(arg);
+    if (user.id === parseInt(arg.winnerId)) {
+        document.querySelector('#win-pop-text').innerHTML = "You Win"
+        document.querySelector('#win-time').innerHTML = `Time : ${formattedTimeDifference}`
+        document.querySelector('#win-round').innerHTML = `Play Count : ${arg.round}`
+        document.querySelector('#win-score').innerHTML = "Score  +20"
     } else {
-        document.querySelector("#win-pop").style.display = "flex"
-        const para = document.createElement("h1");
-        para.innerText = "You Lose";
-        document.querySelector("#win-pop-text").appendChild(para)
+        document.querySelector('#win-pop-text').innerHTML = "You Lose"
+        document.querySelector('#win-time').innerHTML = `Time : ${formattedTimeDifference}`
+        document.querySelector('#win-round').innerHTML = `Play Count : ${arg.round}`
+        document.querySelector('#win-score').innerHTML = "Score  -20"
     }
-    document.querySelector("#win-pop-butt").addEventListener("click", () => {
-        location.reload()
-    })
+    if(currentGame.role == "viewer"){
+        document.querySelector('#win-pop-text').innerHTML = `The Winner is ${arg.winnerName}`
+        document.querySelector('#win-time').innerHTML = `Time : ${formattedTimeDifference}`
+        document.querySelector('#win-round').innerHTML = `Play Count : ${arg.round}`
+        document.querySelector('#win-score').innerHTML = ""
+    }
 }
+document.querySelector("#win-pop-butt").addEventListener("click", () => {
+    location.reload()
+})
+document.querySelector("#gotohome").addEventListener("click", () => {
+    window.location = "/"
+})
 
 export function boardSetUpNoStart() {
     document.querySelector("#invt").style.display = "none"
@@ -185,20 +252,20 @@ export function boardSetupUi(currentGame, info) {
     localStorage.setItem('currentGame', JSON.stringify(currentGame))
     const turndoc = document.querySelectorAll("#turn")
     turndoc.forEach(ele => {
-        if(info.turn == "W"){
+        if (info.turn == "W") {
             ele.style.backgroundColor = "white"
-            if(user.id == info.playerW){
+            if (user.id == info.playerW) {
                 ele.innerHTML = "Your Turn!"
-            }else{
+            } else {
                 ele.innerHTML = "White Turn"
             }
         }
-        if(info.turn == "B"){
+        if (info.turn == "B") {
             ele.style.backgroundColor = "black"
-            if(user.id == info.playerB){
+            if (user.id == info.playerB) {
                 ele.innerHTML = "Your Turn!"
                 ele.style.color = "white"
-            }else{
+            } else {
                 ele.innerHTML = "Balck Turn"
                 ele.style.color = "white"
             }
@@ -230,8 +297,16 @@ export function mineSetUp() {
         var doc = null
         if (element.team == currentGame.role || currentGame.role == 'viewer') {
             doc = element.html()
+            const num = document.createElement("div")
+            num.innerHTML = `${element.currentTimeInMine}/${element.timeInMine} turn`
+            doc.appendChild(num)
         } else {
             doc = new DOMParser().parseFromString(`<div class="blind"></div>`, "text/xml").documentElement
+            const dom = document.createElement('div')
+            const img = document.createElement('img')
+            img.setAttribute("src", "../assets/component/svg/NOSEE.svg")
+            dom.appendChild(img)
+            doc = dom
         }
         doc.setAttribute('id', index)
         doc.classList.add('mine-box')
@@ -240,28 +315,32 @@ export function mineSetUp() {
 }
 
 export function hightLightMine(piece, id) {
+    document.querySelector('#mine').style.borderColor = "red"
     document.querySelectorAll('.mine').forEach(div => {
         div.addEventListener('click', function () {
+            if (auctionobj.auctionStage == true) {
+                document.querySelector('#mine').style.borderColor = "#252525"
+                clearAllHightLight()
+                return
+            }
             if (!myturn) {
+                document.querySelector('#mine').style.borderColor = "#252525"
                 clearAllHightLight()
                 return
             }
             if (!mineobj.mineDropAble) {
+                document.querySelector('#mine').style.borderColor = "#252525"
                 clearAllHightLight()
                 return
             }
-            removeAllEvent()
-            invtobj.removeInvtList(id)
             clearAllHightLight()
-            piece.setCurrentTimeInMine()
-            mineobj.mineListPush(piece)
-            mineSetUp()
-            mineobj.changeMineDropAble(false)
-            dropMineEmit(piece, board, mineobj.mineList)
+            askTurnInMine(piece, id)
+            removeAllEvent()
         })
     })
 
     function removeAllEvent() {
+        document.querySelector('#mine').style.borderColor = "#252525"
         document.querySelectorAll('.mine').forEach(div => {
             const newdiv = div.cloneNode(true)
             div.parentNode.replaceChild(newdiv, div)
@@ -269,15 +348,46 @@ export function hightLightMine(piece, id) {
     }
 }
 
+function askTurnInMine(piece, id) {
 
+    document.querySelector("#askmine-pop").style.visibility = "visible"
+    document.querySelector("#askmine-pop").setAttribute("show", "")
+    setTimeout(() => {
+        document.querySelector("#askmine-con").style.display = "flex"
+    }, 200);
+    document.querySelectorAll("#askmine").forEach(button => {
+        button.addEventListener("click", (e) => {
+            document.querySelector("#askmine-con").style.display = "none"
+            document.querySelector("#askmine-pop").removeAttribute("show")
+            document.querySelector("#askmine-pop").style.visibility = "hidden"
+            invtobj.removeInvtList(id)
+            clearAllHightLight()
+            piece.setTimeInMine(parseInt(e.target.value))// must have ui
+            piece.setCurrentTimeInMine()
+            mineobj.mineListPush(piece)
+            mineSetUp()
+            mineobj.changeMineDropAble(false)
+            dropMineEmit(piece, board, mineobj.mineList)
+            removeAllEvent()
+        })
+    })
+
+    function removeAllEvent() {
+        document.querySelectorAll("#askmine").forEach(button => {
+            const newbutton = button.cloneNode(true)
+            button.parentNode.replaceChild(newbutton, button)
+        })
+    }
+
+}
 
 
 
 
 export function hightLightDrop(piece, id) {
-    console.log(id);
     document.querySelectorAll('.drop').forEach(div => {
         div.addEventListener('click', function () {
+            setOnDrop(true)
             if (!myturn) {
                 clearAllHightLight()
                 return
@@ -325,14 +435,11 @@ export function showDropAble(posList) {
         })
     });
 }
-export function clearHightLightDrop(posList) {
-    posList.forEach(element => {
-        const id = tranSlateToId(element)
-        document.querySelectorAll(`#${id}`).forEach(element => {
-            element.removeChild(element.lastChild)
-            element.style.backgroundColor = ``
 
-        })
-
-    });
+export function auctionStageBlink() {
+    var blinkDiv = document.querySelector('#action')
+    blinkDiv.classList.add('blink')
+    setTimeout(function () {
+        blinkDiv.classList.remove('blink');
+    }, 200);
 }

@@ -3,21 +3,40 @@ import { Server } from "socket.io"
 import { board } from "./board.js"
 
 import redis from "redis"
-import { log } from 'console';
-import { loadavg } from 'os';
-const redisClient = redis.createClient({
+import { invtUpdate } from './allFunction.js';
+import { invtViewerUpdate } from './allFunction.js';
+import { getAuction } from './allFunction.js';
+import { bid } from './allFunction.js';
+import { getRandomChessPiece } from './allFunction.js';
+import { dropmineInvtRedis } from './allFunction.js';
+import { setMineRedis } from './allFunction.js';
+import { storedata } from './allFunction.js';
+import { now } from './allFunction.js';
+import { stringify } from './allFunction.js';
+
+
+import cookieParser from 'cookie-parser';
+
+export const redisClient = new redis.createClient({
     socket: {
         host: 'gameredis',
         port: '6379'
     }
 });
 
+export const redisauth = new redis.createClient({
+    socket: {
+        host: 'authredis',
+        port: '6379'
+    }
+})
+await redisauth.connect()
 await redisClient.connect()
 export async function test() {
     redisClient.set('test', 'test').then((r) => { console.log(r); })
 }
 const sever = createServer()
-const io = new Server(sever, {
+export const io = new Server(sever, {
     cors: {
         origin: "*",
         methods: ["GET", "POST"]
@@ -30,16 +49,18 @@ sever.listen(8080, () => {
 
 io.use(function (socket, next) {
     var handshakeData = socket.request;
-    console.log("middleware:", handshakeData._query['code']);
+    cookieParser()
+    // console.log("middleware:", handshakeData._query['code']);
     next();
 });
 
 
 io.sockets.on("connection", async (socket) => {
-    console.log(`connnect ${socket.id}`)
+    // console.log(`connnect ${socket.id}`)
     socket.join(socket.request._query.code)
-    console.log(socket.request._query.code);
+    // console.log(socket.request._query.code);
     if (socket.request._query.code != "admin") {
+        // console.log(socket.request.headers.cookie);
         let socketRole = null
         const boardRedisJSON = await redisClient.get(socket.request._query.code)
         const boardRedis = await JSON.parse(boardRedisJSON)
@@ -55,41 +76,9 @@ io.sockets.on("connection", async (socket) => {
 
     }
 
-    socket.on('resetroom', (arg) => {
-        console.log('reset');
-        const value = {
-            turnCount: 0,
-            roomname: "tui",
-            auctiontime: 5,
-            confcoins: 1000,
-            auctionslot1: null,
-            auctionslot2: null,
-            currentBid: 0,
-            currentBidder: null,
-            auctionStage: true,
-            turn: null,
-            code: arg,
-            playerB: null,
-            playerBName: null,
-            invtB: [],
-            coinB: 1000,
-            playerW: null,
-            playerWName: null,
-            invtW: [],
-            coinW: 1000,
-            mine: [],
-            gameStart: false,
-            board: board,
-            log: null
-        }
-        redisClient.set(arg, stringify(value), {
-            NX: false
-        })
-    })
 
     socket.on('join', async (arg) => {
         await storedata(arg, socket).then(async (boardRedis) => {
-
             io.sockets.to(socket.request._query.code).emit(`join_server`, {
                 board: stringify(boardRedis)
             })
@@ -98,7 +87,7 @@ io.sockets.on("connection", async (socket) => {
                 boardRedis.gameStart = true
                 let piece1 = getRandomChessPiece(boardRedis.turnCount)
                 let piece2 = getRandomChessPiece(boardRedis.turnCount)
-
+                boardRedis.starttime = now()
                 boardRedis.auctionslot1 = piece1
                 boardRedis.auctionslot2 = piece2
                 redisClient.set(socket.request._query.code, stringify(boardRedis), {
@@ -114,6 +103,7 @@ io.sockets.on("connection", async (socket) => {
 
     socket.on('createRoom', (data) => {
         const value = {
+            starttime: null,
             turnCount: 0,
             roomname: data.req.roomName,
             auctiontime: data.req.aucTime,
@@ -127,16 +117,18 @@ io.sockets.on("connection", async (socket) => {
             code: data.room,
             playerB: null,
             playerBName: null,
+            playerBSessionId:null,
             invtB: [],
             coinB: parseInt(data.req.coins),
             playerW: null,
             playerWName: null,
+            playerWSessionId:null,
             invtW: [],
             coinW: parseInt(data.req.coins),
             mine: [],
             gameStart: false,
             board: board,
-            log: null
+            log: []
         }
         redisClient.set(data.room, stringify(value), {
             NX: false
@@ -151,34 +143,109 @@ io.sockets.on("connection", async (socket) => {
     socket.on("win", async (data) => {
         const roomJSON = await redisClient.get(socket.request._query.code)
         const room = await JSON.parse(roomJSON)
+        let log = room.log
+        if (data.turn == "W") {
+            log.push({
+                W: data.notation,
+                B: ''
+            })
+        } else if (data.turn == "B") {
+            let element = log[log.length - 1]
+            element.B = data.notation
+        }
+        room.log = await log
         const value = {
+            starttime: null,
             turnCount: 0,
-            roomname: room.roomName,
-            auctiontime: room.aucTime,
+            roomname: room.roomname,
+            auctiontime: room.auctime,
             confcoins: room.confcoins,
             auctionslot1: null,
             auctionslot2: null,
+            auctionStage: true,
             currentBid: 0,
             currentBidder: null,
             turn: null,
-            code: data.room,
+            code: room.code,
             playerB: null,
             playerBName: null,
+            playerBSessionId:null,
             invtB: [],
             coinB: room.confcoins,
             playerW: null,
             playerWName: null,
+            playerWSessionId:null,
             invtW: [],
             coinW: room.confcoins,
             mine: [],
             gameStart: false,
             board: board,
-            log: null
+            log: []
         }
         redisClient.set(socket.request._query.code, stringify(value), {
-            NX: false
+            NX: false,
+            EX: 600
         })
-        socket.broadcast.to(socket.request._query.code).emit(`win_server`, arg.team)
+        let WhiteScoe = 0
+        let BlackScore = 0
+        let winnerId
+        let loserId
+        let winnerName
+        let loserName
+        let winnerSessionId
+        let loserSessionId
+        if (room.playerB == data.id) {
+            winnerId = room.playerB
+            winnerName = room.playerBName
+            winnerSessionId = room.playerBSessionId
+            loserId = room.playerW
+            loserName = room.playerWName
+            loserSessionId = room.playerWSessionId
+        }
+        if (room.playerW == data.id) {
+            winnerId = room.playerW
+            winnerName = room.playerWName
+            winnerSessionId = room.playerWSessionId
+            loserId = room.playerB
+            loserName = room.playerBName
+            loserSessionId = room.playerBSessionId
+        }
+        const datareturn = {
+            winner: data.team,
+            winnerId: winnerId,
+            loserId: loserId,
+            winnerName: winnerName,
+            loserName: loserId,
+            starttime: room.starttime,
+            round: room.log.length
+        }
+        io.sockets.to(socket.request._query.code).emit(`win_server`, datareturn)
+        const overAllNotation = {
+            StartDate: room.starttime,
+            EndDate: now(),
+            PlayCount: room.log.length,
+            winnerId: winnerId,
+            loserId: loserId,
+            WhiteId: room.playerB,
+            BlackId: room.playerW,
+            log: room.log
+        }
+        
+        const userJSONwin = await redisauth.get(`myapp:${winnerSessionId}`)
+        const userwin = await JSON.parse(userJSONwin)
+        const userJSONlose = await redisauth.get(`myapp:${loserSessionId}`)
+        const userlose = await JSON.parse(userJSONlose)
+        userwin.user.score = await userwin.user.score+20
+        userlose.user.score = await userlose.user.score-20
+        await redisauth.set(`myapp:${winnerSessionId}`, stringify(userwin))
+        await redisauth.set(`myapp:${loserSessionId}`, stringify(userlose))
+        const res = await fetch("http://api:8080/api/logs", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(overAllNotation)
+        })
     })
 
     socket.on('castle', async (arg) => {
@@ -192,6 +259,17 @@ io.sockets.on("connection", async (socket) => {
         room.mine = await data.mine
         room.turnCount = await room.turnCount + 1
         room.auctionStage = true
+        let log = room.log
+        if (data.turn == "W") {
+            log.push({
+                W: data.notation,
+                B: ''
+            })
+        } else if (data.turn == "B") {
+            let element = log[log.length - 1]
+            element.B = data.notation
+        }
+        room.log = await log
         if (socket.request._query.id == room.playerB) {
             room.coinB = await data.coin
             room.invtB = await data.invt
@@ -208,8 +286,6 @@ io.sockets.on("connection", async (socket) => {
             turn: turn,
             kingSource: data.kingSource,
             kingDestination: data.kingDestination,
-            rookSource: data.rookSource,
-            rookDestination: data.rookDestination,
             notation: data.notation
         }
         socket.broadcast.to(socket.request._query.code).emit(`castle_server`, castle)
@@ -226,6 +302,17 @@ io.sockets.on("connection", async (socket) => {
         room.mine = await data.mine
         room.turnCount = await room.turnCount + 1
         room.auctionStage = true
+        let log = room.log
+        if (data.turn == "W") {
+            log.push({
+                W: data.notation,
+                B: ''
+            })
+        } else if (data.turn == "B") {
+            let element = log[log.length - 1]
+            element.B = data.notation
+        }
+        room.log = await log
         if (socket.request._query.id == room.playerB) {
             room.coinB = await data.coin
             room.invtB = await data.invt
@@ -235,12 +322,14 @@ io.sockets.on("connection", async (socket) => {
             room.invtW = await data.invt
         }
         invtViewerUpdate(socket, room)
-        redisClient.set(socket.request._query.code, stringify(room), {
+        await redisClient.set(socket.request._query.code, stringify(room), {
             NX: false
         })
         let move = {
             turn: turn,
+            mine: data.mine,
             promoted: data.promoted,
+            checked: data.checked,
             source: data.source,
             destination: data.destination,
             notation: data.notation
@@ -256,8 +345,21 @@ io.sockets.on("connection", async (socket) => {
         if (turn == "W") { turn = "B" } else if (turn == "B") { turn = "W" }
         room.board = await data.board
         room.turn = await turn
+        room.mine = await data.mine
         room.turnCount = await room.turnCount + 1
         room.auctionStage = true
+        let log = room.log
+        console.log(data.notation);
+        if (data.turn == "W") {
+            log.push({
+                W: data.notation,
+                B: ''
+            })
+        } else if (data.turn == "B") {
+            let element = log[log.length - 1]
+            element.B = data.notation
+        }
+        room.log = await log
         if (socket.request._query.id == room.playerB) {
             room.invtB = await data.invt
         }
@@ -269,8 +371,10 @@ io.sockets.on("connection", async (socket) => {
         })
         invtViewerUpdate(socket, room)
         const drop = {
+            mine: data.mine,
             piece: data.piece,
-            turn: turn
+            turn: turn,
+            notation: data.notation
         }
         socket.broadcast.to(socket.request._query.code).emit(`drop_server`, drop)
     })
@@ -294,7 +398,7 @@ io.sockets.on("connection", async (socket) => {
 
     socket.on("mineUpdate", (arg) => {
         const data = JSON.parse(arg);
-        // setMineRedis(socket.request._query.code, data.mine)
+        setMineRedis(socket.request._query.code, data.mine)
     })
 
     socket.on("bid", async (arg) => {
@@ -316,209 +420,4 @@ io.sockets.on("connection", async (socket) => {
     })
 });
 
-async function invtUpdate(socket, arg) {
-    const data = JSON.parse(arg)
-    const roomJSON = await redisClient.get(socket.request._query.code)
-    const room = await JSON.parse(roomJSON)
-    if (socket.request._query.id == room.playerB) {
-        room.invtB = await data.invt
-    }
-    if (socket.request._query.id == room.playerW) {
-        room.invtW = await data.invt
-    }
-    await redisClient.set(socket.request._query.code, stringify(room), {
-        NX: false
-    })
-    invtViewerUpdate(socket, room)
-}
 
-async function invtViewerUpdate(socket, room) {
-    const data = {
-        playerB: room.playerB,
-        playerW: room.playerW,
-        invtB: room.invtB,
-        invtW: room.invtW,
-        coinB: room.coinB,
-        coinW: room.coinW,
-    }
-    io.sockets.to(socket.request._query.code).emit(`invtViewerUpdate`, data)
-}
-
-async function getAuction(socket) {
-    const roomJSON = await redisClient.get(socket.request._query.code)
-    const room = await JSON.parse(roomJSON)
-    const slotTemp = room.auctionslot1
-    const bidderTemp = room.currentBidder
-    room.auctionslot1 = room.auctionslot2
-    room.auctionslot2 = getRandomChessPiece(room.turnCount)
-    room.currentBid = 0
-    room.currentBidder = null
-    room.auctionStage = false
-    const data = {
-        id: bidderTemp,
-        newPiece: slotTemp,
-        room: room
-    }
-    io.sockets.to(socket.request._query.code).emit(`get-piece_auction_server`, data)
-    redisClient.set(socket.request._query.code, stringify(room), {
-        NX: false
-    })
-}
-
-async function bid(arg, code, socket) {
-    const roomJSON = await redisClient.get(code)
-    const room = await JSON.parse(roomJSON)
-    if (arg.id == room.playerB) {
-        if (arg.amout > room.coinB) { return }
-        room.coinB -= arg.amout
-    }
-    if (arg.id == room.playerW) {
-        if (arg.amout > room.coinW) { return }
-        room.coinW -= arg.amout
-    }
-    if (room.currentBidder == arg.id) { return }
-    if (room.currentBid < arg.amout) {
-        room.currentBid = arg.amout
-        room.currentBidder = arg.id
-        redisClient.set(code, stringify(room), {
-            NX: false
-        })
-        io.sockets.to(socket.request._query.code).emit(`bid_server`, stringify(room))
-    }
-}
-
-
-function getRandomChessPiece(turnCount) {
-    const randomNum = Math.random() * 100; // Generate a random number between 0 and 100
-
-    // Define the percentages for each chess piece
-    let percentages = null
-    if (turnCount <= 4) {
-        percentages = {
-            'pawn': 100,
-            'rook': 0,
-            'knight': 0,
-            'bishop': 0,
-            'queen': 0,
-        };
-    }
-    if (turnCount > 4 && turnCount <= 10) {
-        percentages = {
-            'pawn': 70,
-            'rook': 10,
-            'knight': 10,
-            'bishop': 10,
-            'queen': 0,
-        };
-    }
-    if (turnCount > 10) {
-        percentages = {
-            'pawn': 65,
-            'rook': 10,
-            'knight': 10,
-            'bishop': 10,
-            'queen': 5,
-        };
-    }
-
-    let cumulativePercentage = 0;
-
-    // Loop through the percentages and check which piece corresponds to the random number
-    for (const piece in percentages) {
-        cumulativePercentage += percentages[piece];
-        if (randomNum <= cumulativePercentage) {
-            return piece; // Return the selected chess piece
-        }
-    }
-
-    return 'No piece selected'; // In case something goes wrong
-}
-
-// Example 
-
-async function dropmineInvtRedis(socket, data) {
-    const roomJSON = await redisClient.get(socket.request._query.code)
-    const room = await JSON.parse(roomJSON)
-    room.mine = await data.mine
-    if (socket.request._query.id == room.playerB) {
-        room.invtB = await data.invt
-    }
-    if (socket.request._query.id == room.playerW) {
-        room.invtW = await data.invt
-    }
-    redisClient.set(socket.request._query.code, stringify(room), {
-        NX: false
-    })
-    invtViewerUpdate(socket, room)
-}
-
-async function setMineRedis(code, mine) {
-    const roomJSON = await redisClient.get(code)
-    const room = await JSON.parse(roomJSON)
-    room.mine = await mine
-    redisClient.set(code, stringify(room), {
-        NX: false
-    })
-}
-
-async function setBoardRedis(code, board, turn) {
-    if (turn == "W") {
-        turn = "B"
-    } else if (turn == "B") {
-        turn = "W"
-    }
-    const roomJSON = await redisClient.get(code)
-    const room = await JSON.parse(roomJSON)
-    room.board = await board
-    room.turn = await turn
-    redisClient.set(code, stringify(room), {
-        NX: false
-    })
-}
-
-async function storedata(arg, socket) {
-    const roomJSON = await redisClient.get(arg.data.code)
-    const room = await JSON.parse(roomJSON)
-    if (socket.request._query.id == room.playerB) {
-        room.playerBName = null
-        room.playerB = null
-    }
-    if (socket.request._query.id == room.playerW) {
-        room.playerWName = null
-        room.playerW = null
-    }
-
-    if (arg.data.role == 'B' && room.playerB == null) {
-        room.playerB = socket.request._query.id
-        room.playerBName = arg.username
-    }
-    if (arg.data.role == 'W' && room.playerW == null) {
-        room.playerW = socket.request._query.id
-        room.playerWName = arg.username
-    }
-    if (room.playerB != null && room.playerW != null) {
-        room.turn = "W"
-    }
-    redisClient.set(arg.data.code, stringify(room), {
-        NX: false
-    })
-    return room
-}
-
-
-function stringify(obj) {
-    let cache = [];
-    let str = JSON.stringify(obj, function (key, value) {
-        if (typeof value === "object" && value !== null) {
-            if (cache.indexOf(value) !== -1) {
-                // Circular reference found, discard key
-                return;
-            }
-            // Store value in our collection
-            cache.push(value);
-        }
-        return value;
-    });
-    cache = null; // reset the cache
-    return str;
-}

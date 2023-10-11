@@ -15,6 +15,9 @@ export class pieces {
             this.setPiece()
         }
     }
+    setTimeInMine(data){
+        this.timeInMine = data
+    }
     countCurrentTimeInMine(){
         this.currentTimeInMine -= 1
     }
@@ -35,7 +38,6 @@ export class pieces {
         if(this.team == "W"){
             temp = ['70', '71', '72', '73', '74', '75', '76', '77','60', '61', '62', '63', '64', '65', '66', '67']
         }
-        console.log(temp);
         let mustpop = []
         temp.forEach((element) => {
             if(board[element[0]][element[1]] != null){

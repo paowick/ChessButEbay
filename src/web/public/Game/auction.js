@@ -45,26 +45,26 @@ export class auction {
 
     pieceToObj(piece) {
         if (piece == 'king') {
-            return new king("king", null, null, true, board, 3)
+            return new king("king", null, null, true, board, 2)
         }
         if (piece == 'queen') {
-            return new queen("queen", null, null, false, board, 3)
+            return new queen("queen", null, null, false, board, 2)
 
         }
         if (piece == 'bishop') {
-            return new bishop("bishop", null, null, false, board, 3)
+            return new bishop("bishop", null, null, false, board, 2)
 
         }
         if (piece == 'rook') {
-            return new rook("rook", null, null, false, board, 3)
+            return new rook("rook", null, null, false, board, 2)
             
         }
         if (piece == 'knight') {
-            return new knight("knight", null, null, false, board, 3)
+            return new knight("knight", null, null, false, board, 2)
 
         }
         if (piece == 'pawn') {
-            return new pawn("pawn", null, null, false, board, 3, true)
+            return new pawn("pawn", null, null, false, board, 2, true)
         }
     }
 }

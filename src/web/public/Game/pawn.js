@@ -34,7 +34,7 @@ export class pawn extends pieces {
             newimg.src = "../assets/component/svg/pawn-white.svg"
             newDiv.appendChild(newimg)
             return newDiv
-        }else{
+        } else {
             const newDiv = document.createElement("div");
             const newimg = document.createElement("img");
             newDiv.classList.add("boxpiece");
@@ -46,11 +46,8 @@ export class pawn extends pieces {
         }
     }
     setPiece() {
-        if(this.board == null){this.board = board}
+        if (this.board == null) { this.board = board }
         if (this.team == "B") {
-            if (this.board[this.pos[0]][this.pos[1]] != null && this.board[this.pos[0]][this.pos[1]].name == "king") {
-                win("B")
-            }
             this.board[this.pos[0]][this.pos[1]] = this
             var id = this.tranSlateToId()
             var box = document.querySelectorAll(`#${id}`)
@@ -66,9 +63,6 @@ export class pawn extends pieces {
             });
         }
         if (this.team == "W") {
-            if (this.board[this.pos[0]][this.pos[1]] != null && this.board[this.pos[0]][this.pos[1]].name == "king") {
-                win("W")
-            }
             this.board[this.pos[0]][this.pos[1]] = this
             var id = this.tranSlateToId()
             var box = document.querySelectorAll(`#${id}`)
@@ -171,19 +165,19 @@ export class pawn extends pieces {
         if (this.promotedPos.includes(`${this.pos}`)) {
             if (promoted == 'queen') {
                 this.unset
-                return new queen("queen", this.pos, this.team, true, board)
+                return new queen("queen", this.pos, this.team, true, board, 2)
             }
             if (promoted == 'bishop') {
                 this.unset
-                return new bishop("bishop", this.pos, this.team, true, board)
+                return new bishop("bishop", this.pos, this.team, true, board, 2)
             }
             if (promoted == 'rook') {
                 this.unset
-                return new rook("rook", this.pos, this.team, true, board)
+                return new rook("rook", this.pos, this.team, true, board, 2)
             }
             if (promoted == 'knight') {
                 this.unset
-                return new knight("knight", this.pos, this.team, true, board)
+                return new knight("knight", this.pos, this.team, true, board, 2)
             }
 
         }
@@ -194,19 +188,19 @@ export class pawn extends pieces {
             this.unset
             if (promoted.name == "queen") {
 
-                return new queen("queen", promoted.pos, promoted.team, false, board)
+                return new queen("queen", promoted.pos, promoted.team, false, board, 2)
             }
             if (promoted.name == "bishop") {
 
-                return new bishop("bishop", promoted.pos, promoted.team, false, board)
+                return new bishop("bishop", promoted.pos, promoted.team, false, board, 2)
             }
             if (promoted.name == "rook") {
 
-                return new rook("rook", promoted.pos, promoted.team, false, board)
+                return new rook("rook", promoted.pos, promoted.team, false, board, 2)
             }
             if (promoted.name == "knight") {
 
-                return new knight("knight", promoted.pos, promoted.team, false, board)
+                return new knight("knight", promoted.pos, promoted.team, false, board, 2)
             }
 
         }

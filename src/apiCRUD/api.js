@@ -5,6 +5,11 @@ const port = 8080;
 
 app.use(express.json())
 
+app.post('/api/logs', async (req,res)=>{
+    db.logsUpdate(req.body)
+    res.sendStatus(200)
+})
+
 app.post('/api/userCheckBackEnd', async (req, res) => {
     try {
         if (req.body.password == null) {

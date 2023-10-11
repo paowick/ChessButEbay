@@ -1,7 +1,7 @@
 import { board, moveClient_Server } from "./board.js";
 import { socket } from "./board.js";
 import { changeMyTurn } from "./board.js";
-import { winPop } from "./script.js";
+import { mineSetUp, winPop } from "./script.js";
 import { king } from './king.js';
 import { pawn } from './pawn.js';
 import { queen } from './queen.js';
@@ -17,68 +17,56 @@ import { currentBidUpdate } from "./script.js";
 import { auctionobj } from "./board.js";
 import { invtobj, invtBlack, invtWhite } from "./board.js";
 import { castle_server } from "./board.js";
+import { mainTimeInit } from "./script.js";
+import { logPush } from "./board.js";
 const user = JSON.parse(localStorage.getItem('user'))
 
 document.querySelector("#test").addEventListener("click", () => {
     if (auctionobj.auctionStage) {
         socket.emit('test-auction', "test")
+        auctionobj.setAuctionStage(false)
     }
 })
 
 
 import('./board.js').then(({ socket }) => {
     socket.on('move_server', (arg) => {
+        logPush(arg.notation)
         mineobj.mineListCount()
-        moveClient_Server(arg.turn, arg.source, arg.destination, arg.promoted)
+        moveClient_Server(arg.turn, arg.source, arg.destination, arg.promoted, arg.checked)
+        mineobj.setMineToNull()
+        let newMine = arg.mine.filter(function (item) {
+            return item !== null
+        });
+        newMine.forEach(element => {
+            mineobj.drop_mine_server(element);
+        })
+        mineSetUp()
     })
     socket.on('castle_server', (arg) => {
+        logPush(arg.notation)
         mineobj.mineListCount()
-        castle_server(arg.kingSource,arg.kingDestination,arg.turn)
-    })
-
-    socket.on('get-piece_auction_server', async (arg) => {
-        const user = JSON.parse(localStorage.getItem('user'))
-        if (user.id == arg.id) {
-            invtobj.invtPush(invtobj.pieceToObj(arg.newPiece))
-            invtUpdate()
-            invtobj.invtSetUp()
-        }
-        auctionobj.setAuctionStage(arg.room.auctionStage)
-        auctionobj.auctionSetUp(arg.room)
-        currentBidUpdate(arg.room)
-        coinUpdate_Server(arg.room)
-    })
-
-    socket.on('join_server', async (arg) => {
-        const info = JSON.parse(arg.board)
-        updateJoinPop(info.playerB, info.playerW, info.playerBName, info.playerWName)
-    })
-
-    socket.on('win_server', async (arg) => {
-        winPop(arg)
-    })
-
-    socket.on('start', async (arg) => {
-
-        const currentGame = JSON.parse(localStorage.getItem("currentGame"))
-        const info = JSON.parse(arg.board)
-        if (info.turn === currentGame.role) {
-            changeMyTurn(true)
-        } else {
-            changeMyTurn(false)
-        }
-        startGame(info, arg, currentGame)
+        castle_server(arg.kingSource, arg.kingDestination, arg.turn)
     })
 
     socket.on('drop_server', async (arg) => {
         const currentGame = JSON.parse(localStorage.getItem("currentGame"))
         mineobj.mineListCount()
+        logPush(arg.notation)
         if (arg.turn === currentGame.role) {
             changeMyTurn(true)
         } else {
             changeMyTurn(false)
         }
         drop_server(arg.piece)
+        mineobj.setMineToNull()
+        let newMine = arg.mine.filter(function (item) {
+            return item !== null
+        });
+        newMine.forEach(element => {
+            mineobj.drop_mine_server(element);
+        })
+        mineSetUp()
         auctionobj.setAuctionStage(true)
         const turndoc = document.querySelectorAll("#turn")
         turndoc.forEach(ele => {
@@ -105,6 +93,42 @@ import('./board.js').then(({ socket }) => {
             }
         })
     })
+
+    socket.on('get-piece_auction_server', async (arg) => {
+        const user = JSON.parse(localStorage.getItem('user'))
+        if (user.id == arg.id) {
+            invtobj.invtPush(invtobj.pieceToObj(arg.newPiece))
+            invtUpdate()
+            invtobj.invtSetUp()
+        }
+        auctionobj.setAuctionStage(false)
+        auctionobj.auctionSetUp(arg.room)
+        currentBidUpdate(arg.room)
+        coinUpdate_Server(arg.room)
+    })
+
+    socket.on('join_server', async (arg) => {
+        const info = JSON.parse(arg.board)
+        updateJoinPop(info.playerB, info.playerW, info.playerBName, info.playerWName)
+    })
+
+    socket.on('win_server', async (arg) => {
+        winPop(arg)
+    })
+
+    socket.on('start', async (arg) => {
+
+        const currentGame = JSON.parse(localStorage.getItem("currentGame"))
+        const info = JSON.parse(arg.board)
+        if (info.turn === currentGame.role) {
+            changeMyTurn(true)
+        } else {
+            changeMyTurn(false)
+        }
+        mainTimeInit(info.starttime)
+        startGame(info, arg, currentGame)
+    })
+
 
     socket.on('drop_mine_server', async (arg) => {
         mineobj.drop_mine_server(arg.piece)
@@ -159,25 +183,9 @@ export function invtUpdate() {
     socket.emit('invtUpdate', stringify(data))
 }
 
-export function mineUpdate(mine, isReturn) {
-    const mineValidate = []
-    mine.forEach(element => {
-        element.board = null
-        mineValidate.push(element)
-    });
-    const invtValidate = []
-    invtobj.invtList.forEach(element => {
-        element.board = null
-        invtValidate.push(element)
-    });
-    let data = {
-        mine: mineValidate
-    }
-    if (isReturn) { return }
-    socket.emit('mineUpdate', stringify(data))
-}
 
-export function move(source, destination, promoted, notation) {
+export function move(source, destination, promoted, checked, notation) {
+    logPush(notation)
     mineobj.mineListCount()
     const mineValidate = []
     mineobj.mineList.forEach(element => {
@@ -190,8 +198,13 @@ export function move(source, destination, promoted, notation) {
         invtValidate.push(element)
     });
     const currentGame = JSON.parse(localStorage.getItem("currentGame"))
-    let data = {
+    let temp = null
+    if (checked != null) {
+        temp = checked.pos
+    }
+    const data = {
         promoted: promoted,
+        checked: temp,
         turn: currentGame.role,
         source: source,
         destination: destination,
@@ -208,28 +221,24 @@ export function move(source, destination, promoted, notation) {
 
 function drop_server(element) {
 
-    if (element.name == 'king') {
-        new king("king", element.pos, element.team, true, board, 3)
-        return
-    }
     if (element.name == 'queen') {
-        new queen("queen", element.pos, element.team, false, board, 3)
+        new queen("queen", element.pos, element.team, false, board, 2)
         return
     }
     if (element.name == 'bishop') {
-        new bishop("bishop", element.pos, element.team, false, board, 3)
+        new bishop("bishop", element.pos, element.team, false, board, 2)
         return
     }
     if (element.name == 'rook') {
-        new rook("rook", element.pos, element.team, false, board, 3)
+        new rook("rook", element.pos, element.team, false, board, 2)
         return
     }
     if (element.name == 'knight') {
-        new knight("knight", element.pos, element.team, false, board, 3)
+        new knight("knight", element.pos, element.team, false, board, 2)
         return
     }
     if (element.name == 'pawn') {
-        new pawn("pawn", element.pos, element.team, false, board, 3, true)
+        new pawn("pawn", element.pos, element.team, false, board, 2, true)
         return
     }
 }
@@ -237,7 +246,8 @@ function drop_server(element) {
 export function returnPieceFromMine() {
 }
 
-export function dropEmit(piece, board) {
+export function dropEmit(piece, board, notation) {
+    logPush(notation)
     mineobj.mineListCount()
     const currentGame = JSON.parse(localStorage.getItem("currentGame"))
     const invtValidate = []
@@ -260,11 +270,11 @@ export function dropEmit(piece, board) {
             inInvt: piece.inInvt,
             timeInMine: piece.timeInMine,
         },
+        notation: notation,
         mine: mineValidate,
         invt: invtValidate,
         board: board
     }
-    console.log(invtValidate);
     socket.emit('drop', stringify(data))
 }
 
@@ -310,10 +320,15 @@ export function join(game, username) {
         console.error('Error loading socket:', error);
     })
 }
-export function win(team) {
+export function win(team, notation) {
+
+    const user = JSON.parse(localStorage.getItem('user'))
+    const currentGame = JSON.parse(localStorage.getItem("currentGame"))
     let data = {
+        turn: currentGame.role,
         team: team,
-        username: user.id
+        id: user.id,
+        notation: notation
     }
     import('./board.js').then(({ socket }) => {
         socket.emit('win', data)

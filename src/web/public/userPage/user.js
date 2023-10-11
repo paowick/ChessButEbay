@@ -1,3 +1,4 @@
+getSession()
 profileMain()
 function profileMain() {
     const profile = document.getElementById('profile-pic')

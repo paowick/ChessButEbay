@@ -1,5 +1,6 @@
 import { pieces } from "./piece.js";
 import { board } from "./board.js"
+import { win } from "./socket.js";
 export class king extends pieces {
 
     constructor(name, pos, team, isKing, board, timeInMine, checked) {
@@ -53,12 +54,6 @@ export class king extends pieces {
     setPiece() {
         if (this.board == null) { this.board = board }
         if (this.team == "B") {
-            if (this.board[this.pos[0]][this.pos[1]] != null && this.board[this.pos[0]][this.pos[1]].name == "king") {
-                // win("W")
-            }
-            if (this.board[this.pos[0]][this.pos[1]] != null && this.board[this.pos[0]][this.pos[1]].name == "king") {
-                // win("B")
-            }
             this.board[this.pos[0]][this.pos[1]] = this
             var id = this.tranSlateToId()
             var box = document.querySelectorAll(`#${id}`)
@@ -107,24 +102,32 @@ export class king extends pieces {
             if(this.team == "W"){
                 if(board[7][7] != null){
                     if(board[7][7].name == "rook" && board[7][7].team == this.team ){
-                        result.push(`${col}${row + 2}`)
+                        if(board[col][row+2] == null){
+                            result.push(`${col}${row + 2}`)
+                        }
                     }
                 }
                 if(board[7][0] != null){
                     if(board[7][0].name == "rook" && board[7][0].team == this.team ){
-                        result.push(`${col}${row - 2}`)
+                        if(board[col][row+2] == null){
+                            result.push(`${col}${row - 2}`)
+                        }
                     }
                 }
             }
             if(this.team == "B"){
                 if(board[0][7] != null){
                     if(board[0][7].name == "rook" && board[0][7].team == this.team ){
-                        result.push(`${col}${row + 2}`)
+                        if(board[col][row+2] == null){
+                            result.push(`${col}${row + 2}`)
+                        }
                     }
                 }
                 if(board[0][0] != null){
                     if(board[0][0].name == "rook" && board[0][0].team == this.team ){
-                        result.push(`${col}${row - 2}`)
+                        if(board[col][row+2] == null){
+                            result.push(`${col}${row - 2}`)
+                        }
                     }
                 }
             }
