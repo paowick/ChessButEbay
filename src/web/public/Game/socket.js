@@ -42,14 +42,29 @@ import('./board.js').then(({ socket }) => {
             mineobj.drop_mine_server(element);
         })
         mineSetUp()
+        auctionobj.setAuctionStage(true)
+        auctionobj.aucTimeSet(arg.auctionend)
+    })
+    socket.on('move_return',(arg)=>{
+        auctionobj.setAuctionStage(true)
+        auctionobj.aucTimeSet(arg)
     })
     socket.on('castle_server', (arg) => {
         logPush(arg.notation)
         mineobj.mineListCount()
         castle_server(arg.kingSource, arg.kingDestination, arg.turn)
         auctionobj.setAuctionStage(true)
+        auctionobj.aucTimeSet(arg.auctionend)
+    })
+    socket.on('castle_return',(arg)=>{
+        auctionobj.setAuctionStage(true)
+        auctionobj.aucTimeSet(arg)
     })
 
+    socket.on('drop_return',(arg)=>{
+        auctionobj.setAuctionStage(true)
+        auctionobj.aucTimeSet(arg)
+    })
     socket.on('drop_server', async (arg) => {
         const currentGame = JSON.parse(localStorage.getItem("currentGame"))
         mineobj.mineListCount()
@@ -69,6 +84,7 @@ import('./board.js').then(({ socket }) => {
         })
         mineSetUp()
         auctionobj.setAuctionStage(true)
+        auctionobj.aucTimeSet(arg.auctionend)
         const turndoc = document.querySelectorAll("#turn")
         turndoc.forEach(ele => {
             if (arg.turn == "W") {
