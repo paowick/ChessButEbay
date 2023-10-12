@@ -29,7 +29,7 @@ async function profileMain() {
     logsInit()
 
 }
-
+let logStage = null
 async function logsInit() {
 
     const user = JSON.parse(localStorage.getItem('user'))
@@ -37,7 +37,6 @@ async function logsInit() {
     const logs = await logsJson.json()
     const logsCon = document.querySelector("#history-con")
     logs.forEach(element => {
-        console.log(element);
         const box = document.createElement('div')
         const img = document.createElement('img')
         const h1 = document.createElement('h1')
@@ -62,23 +61,47 @@ async function logsInit() {
         box.appendChild(h1)
         box.appendChild(h12)
         box.appendChild(button)
-
         logsCon.appendChild(box)
 
 
 
     });
     document.querySelectorAll("#logView").forEach(button => {
-        button.addEventListener("click", e => {
+        button.addEventListener("click", async (e) => {
             document.querySelector("#notation-pop").style.visibility = "visible"
             document.querySelector("#notation-pop").setAttribute("show", "")
             document.querySelector("#changePassword-pop").style.display = "none"
             document.querySelector("#edit-pop").style.display = "none"
             console.log(e.target.value);
+            if(e.target.value == logStage){return}
+            logStage = e.target.value
+            const dataJson = await fetch(`/getnotation?id=${e.target.value}`)
+            const data = await dataJson.json()
+            logInit(data);
         })
     });
 }
 
+function logInit(log) {
+    const logbox = document.querySelector("#notation-con")
+    logbox.innerHTML = ''
+    log.forEach((e, index) => {
+        const logtext = document.createElement("div")
+        const indexShow = document.createElement("div")
+        const W = document.createElement("div")
+        const B = document.createElement("div")
+        indexShow.innerHTML = index + 1
+        W.innerHTML = e.W
+        B.innerHTML = e.B
+        logtext.appendChild(indexShow)
+        logtext.appendChild(W)
+        logtext.appendChild(B)
+        logbox.appendChild(logtext)
+        if (index % 2 == 0) {
+            logtext.setAttribute("highlight", "")
+        }
+    })
+}
 
 
 function result(data) {

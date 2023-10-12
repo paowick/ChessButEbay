@@ -170,6 +170,18 @@ export async function getLogs(id){
     }
 }
 
+export async function getNotation(id){
+    let conn;
+    try {
+        conn = await pool.getConnection();
+        const rows = await conn.query("SELECT * FROM Notation WHERE Notation.NotationID = ?",[id]);
+        return rows
+    }
+    finally {
+        if (conn) conn.destroy();
+    }
+}
+
 function timeConv(inputDateString) {
     const [datePart, timePart] = inputDateString.split(' ');
 

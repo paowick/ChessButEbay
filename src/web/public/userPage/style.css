@@ -328,4 +328,19 @@ h3 {
     margin-bottom: 10px;
     background: var(--bg, #404040);
     box-shadow: 2px 5px 10px 0px #050505 inset;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.notation-con>div {
+    font-size: 25px;
+    display: inline-flex;
+    justify-content: space-between;
+    padding: 0 10px;
+    background-color: #A19C9C;
+}
+
+.notation-con>div[highlight=""] {
+    background-color: #ccc;
 }

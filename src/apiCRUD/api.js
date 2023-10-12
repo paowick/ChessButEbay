@@ -131,6 +131,17 @@ app.get('/api/getlogs',async (req,res)=>{
         res.sendStatus(500)
     }
 })
+
+app.get('/api/getnotation',async (req,res)=>{
+    try {
+       const data = await db.getNotation(req.query.id)
+       res.send(data[0])
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500)
+    }
+})
+
 app.listen(port, () => {
     console.log(`listen on port ${port}`);
 })

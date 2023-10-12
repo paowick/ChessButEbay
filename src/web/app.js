@@ -303,6 +303,18 @@ app.get(`/getlogs`, async (req,res)=>{
 })
 
 
+app.get(`/getnotation`, async (req,res)=>{
+    try {
+        const dataJson = await fetch(`http://api:8080/api/getnotation?id=${req.query.id}`)
+        const data = await dataJson.json()
+        res.send(data.log)
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500)
+    }
+})
+
+
 app.get(`/clear`, (req, res) => {
     req.session.destroy((err) => {
         res.redirect('/login') // will always fire after session is destroyed
