@@ -15,6 +15,12 @@ main {
     gap: 40px;
 }
 
+.mascot{
+    height: 500px;
+}
+.mascot>img{
+    height: inherit;
+}
 .option-con {
     width: 30%;
     height: 700px;

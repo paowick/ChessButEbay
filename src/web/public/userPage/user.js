@@ -26,20 +26,55 @@ async function profileMain() {
     score.appendChild(h1_score)
     flname.appendChild(h1_flname)
     logsInit()
-    
+
 }
-async function preLogs(logs) {
-    
+try {
+    let logtemp = null
+} catch (error) {
+    console.log(error);
 }
 
-async function logsInit() {
-    let logStage = null
+document.querySelectorAll('input[type="radio"]').forEach(input => {
+    input.addEventListener('click', e => {
+        const value = e.target.value
+        let temp
+        if (value == "new") {
+            temp = logtemp.sort((a, b) => new Date(b.StartDate) - new Date(a.StartDate))
+        }
+        if (value == "old") {
+            temp = logtemp.sort((a, b) => new Date(a.StartDate) - new Date(b.StartDate))
+        }
+        if (value == "long") {
+            logtemp.forEach(item => {
+                const startDate = new Date(item.StartDate);
+                const endDate = new Date(item.EndDate);
+                item.duration = endDate - startDate;
+            });
+            temp = logtemp.sort((a, b) => b.duration - a.duration);
+        }
+        if (value == "fast"){
+            logtemp.forEach(item => {
+                const startDate = new Date(item.StartDate);
+                const endDate = new Date(item.EndDate);
+                item.duration = endDate - startDate;
+            });
+            temp = logtemp.sort((a, b) => a.duration - b.duration);
+        }
+        if(value == "most"){
+            temp = logtemp.sort((a, b) => b.plycount - a.plycount);
+        }
+        if(value == "least"){
+            temp = logtemp.sort((a, b) => a.plycount - b.plycount);
 
+        }
+        logsupdate(temp)
+    })
+})
+
+function logsupdate(logs) {
     const user = JSON.parse(localStorage.getItem('user'))
-    const logsJson = await fetch('/getlogs')
-    const logs = await logsJson.json()
     const logsCon = document.querySelector("#history-con")
-    preLogs()
+    logsCon.innerHTML = ''
     logs.forEach(element => {
         const box = document.createElement('div')
         const img = document.createElement('img')
@@ -80,16 +115,26 @@ async function logsInit() {
             document.querySelector("#changePassword-pop").style.display = "none"
             document.querySelector("#edit-pop").style.display = "none"
             console.log(e.target.value);
-            if(e.target.value == logStage){return}
+            if (e.target.value == logStage) { return }
             logStage = e.target.value
             const dataJson = await fetch(`/getnotation?id=${e.target.value}`)
             const data = await dataJson.json()
-            logInit(data);
+            natation(data);
         })
     });
+
 }
 
-function logInit(log) {
+async function logsInit() {
+    let logStage = null
+
+    const logsJson = await fetch('/getlogs')
+    const logs = await logsJson.json()
+    logtemp = logs
+    logsupdate(logs)
+}
+
+function natation(log) {
     const logbox = document.querySelector("#notation-con")
     logbox.innerHTML = ''
     log.forEach((e, index) => {
@@ -219,9 +264,9 @@ document.querySelector("#Edit").addEventListener("click", () => {
     const popupPw = document.querySelector(".changePassword-pop")
     popup.style.display = 'flex'
     popupPw.style.display = 'none'
-    
-        document.querySelector("#notation-pop").style.visibility = "hidden"
-        document.querySelector("#notation-pop").removeAttribute("show")
+
+    document.querySelector("#notation-pop").style.visibility = "hidden"
+    document.querySelector("#notation-pop").removeAttribute("show")
     profile.src = `/userimg/getimg?id=${user.id}`
     form.reset()
     const name = document.getElementById("name-pop")
@@ -239,8 +284,8 @@ document.querySelector("#ChangePassword").addEventListener('click', () => {
     popup.style.display = 'none'
     popupPw.style.display = 'flex'
 
-        document.querySelector("#notation-pop").style.visibility = "hidden"
-        document.querySelector("#notation-pop").removeAttribute("show")
+    document.querySelector("#notation-pop").style.visibility = "hidden"
+    document.querySelector("#notation-pop").removeAttribute("show")
 
 })
 document.querySelector("#save").addEventListener("click", () => {

@@ -21,8 +21,14 @@ export async function sendVerifycode(email,code) {
     let mailOptions = {
       from: "ChessButEbay@gmail.com", // sender address
       to: email, // list of receivers
-      subject: "Verify Code <ChessButEbay>", // Subject line
-      html: `<h1>your code is ${code}<h1/>`// html body
+      subject: "[ChessButEbay] Verify your email", // Subject line
+      html: `<center><img src="https://drive.google.com/uc?export=view&id=1sS541yV_McPlRFz2ESFgAsK1xy9KJOao" width="600" height="200">
+      <h1>Email Address Verification</h1>
+      <h2>Before you can apply for membership, we need to verify that this email belongs to you.</h2>
+      <h1>Code to verify your email address is ${code}</h1>
+      <h3>Thank You For Signing Up</h3>
+      </center>`// html body
+      
     };
     transporter.sendMail(mailOptions,
       (error, info) => {
@@ -33,7 +39,6 @@ export async function sendVerifycode(email,code) {
     throw Error(e)
   }
 }
-
 export async function test() {
   // verify connection configuration
   transporter.verify(function (error, success) {

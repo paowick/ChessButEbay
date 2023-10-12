@@ -83,6 +83,7 @@ export class auction {
     }
     updateCountdown() {
 
+        const currentGame = JSON.parse(localStorage.getItem("currentGame"))
         const Element = document.querySelectorAll("#time-action");
         setCountTime(countdownTime - 1)
         Element.forEach(countdownElement => {
@@ -93,6 +94,7 @@ export class auction {
             Element.forEach(countdownElement => {
                 countdownElement.innerHTML = "0";
             });
+            if(currentGame.role == "viewer"){return}
             socket.emit('get-auction', "")
             this.auctionStage = false
         }
