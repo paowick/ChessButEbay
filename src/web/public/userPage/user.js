@@ -31,7 +31,7 @@ async function profileMain() {
 }
 
 async function logsInit() {
-    
+
     const user = JSON.parse(localStorage.getItem('user'))
     const logsJson = await fetch('/getlogs')
     const logs = await logsJson.json()
@@ -42,21 +42,21 @@ async function logsInit() {
         const img = document.createElement('img')
         const h1 = document.createElement('h1')
         const h12 = document.createElement('h1')
-        const button =  document.createElement('button')
+        const button = document.createElement('button')
 
-        if(user.id == element.WhiteID){
+        if (user.id == element.WhiteID) {
             img.src = `../assets/component/svg/whiteIcon.svg`
         }
-        if(user.id == element.BlackID){
+        if (user.id == element.BlackID) {
             img.src = `../assets/component/svg/blackIcon.svg`
         }
 
 
         button.innerHTML = "View"
-        button.setAttribute('value',element.NotationID)
-        button.setAttribute('id','logView')
+        button.setAttribute('value', element.NotationID)
+        button.setAttribute('id', 'logView')
         h1.innerHTML = `${result(element)}`
-        h1.setAttribute('result','')
+        h1.setAttribute('result', '')
         h12.innerHTML = `${secondsToMinutes(calculateTimeDifference(element.StartDate, element.EndDate))}`
         box.appendChild(img)
         box.appendChild(h1)
@@ -64,12 +64,16 @@ async function logsInit() {
         box.appendChild(button)
 
         logsCon.appendChild(box)
-        
-        
+
+
 
     });
     document.querySelectorAll("#logView").forEach(button => {
-        button.addEventListener("click",e => {
+        button.addEventListener("click", e => {
+            document.querySelector("#notation-pop").style.visibility = "visible"
+            document.querySelector("#notation-pop").setAttribute("show", "")
+            document.querySelector("#changePassword-pop").style.display = "none"
+            document.querySelector("#edit-pop").style.display = "none"
             console.log(e.target.value);
         })
     });
@@ -79,52 +83,56 @@ async function logsInit() {
 
 function result(data) {
     const user = JSON.parse(localStorage.getItem('user'))
-    let result 
-    if(data.WinID == user.id){
+    let result
+    if (data.WinID == user.id) {
         result = 'Win'
-    }else{
+    } else {
         result = "Lose"
     }
     return result
 }
 function calculateTimeDifference(startDateStr, endDateStr) {
-  const startDate = new Date(startDateStr);
-  const endDate = new Date(endDateStr);
+    const startDate = new Date(startDateStr);
+    const endDate = new Date(endDateStr);
 
-  if (isNaN(startDate) || isNaN(endDate)) {
-    return "Invalid date format";
-  }
+    if (isNaN(startDate) || isNaN(endDate)) {
+        return "Invalid date format";
+    }
 
-  const timeDifference = endDate - startDate; // This will give the time difference in milliseconds
+    const timeDifference = endDate - startDate; // This will give the time difference in milliseconds
 
-  // You can convert the time difference to seconds, minutes, or any other format you need.
-  const secondsDifference = timeDifference / 1000;
+    // You can convert the time difference to seconds, minutes, or any other format you need.
+    const secondsDifference = timeDifference / 1000;
 
-  return secondsDifference;
+    return secondsDifference;
 }
 
 function secondsToMinutes(seconds) {
-  if (typeof seconds !== 'number' || seconds < 0) {
-    return "Invalid input. Please provide a non-negative number of seconds.";
-  }
+    if (typeof seconds !== 'number' || seconds < 0) {
+        return "Invalid input. Please provide a non-negative number of seconds.";
+    }
 
-  const minutes = Math.floor(seconds / 60);
-  const remainingSeconds = seconds % 60;
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
 
-  const minuteString = minutes === 1 ? "min" : "min";
-  const formattedTime = `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')} ${minuteString}`;
+    const minuteString = minutes === 1 ? "min" : "min";
+    const formattedTime = `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')} ${minuteString}`;
 
-  return formattedTime;
+    return formattedTime;
 }
 
 
-document.querySelectorAll('#close').forEach(button =>{
-    button.addEventListener("click",e =>{
-        document.querySelector("#notation-pop").style.display = "none"
+
+
+document.querySelectorAll('#close').forEach(button => {
+    button.addEventListener("click", e => {
+        document.querySelector("#notation-pop").style.visibility = "hidden"
+        document.querySelector("#notation-pop").removeAttribute("show")
         document.querySelector("#changePassword-pop").style.display = "none"
         document.querySelector("#edit-pop").style.display = "none"
     })
 })
+
 
 document.querySelector("#changePw").addEventListener("click", () => {
     const oldPw = document.getElementById("oldPw-pop")
@@ -181,8 +189,9 @@ document.querySelector("#Edit").addEventListener("click", () => {
     const popupPw = document.querySelector(".changePassword-pop")
     popup.style.display = 'flex'
     popupPw.style.display = 'none'
-    const nota = document.querySelector(".notation-pop")
-    nota.style.display = 'none'
+    
+        document.querySelector("#notation-pop").style.visibility = "hidden"
+        document.querySelector("#notation-pop").removeAttribute("show")
     profile.src = `/userimg/getimg?id=${user.id}`
     form.reset()
     const name = document.getElementById("name-pop")
@@ -199,8 +208,9 @@ document.querySelector("#ChangePassword").addEventListener('click', () => {
     const popup = document.querySelector(".edit-pop")
     popup.style.display = 'none'
     popupPw.style.display = 'flex'
-    const nota = document.querySelector(".notation-pop")
-    nota.style.display = 'none'
+
+        document.querySelector("#notation-pop").style.visibility = "hidden"
+        document.querySelector("#notation-pop").removeAttribute("show")
 
 })
 document.querySelector("#save").addEventListener("click", () => {
@@ -227,7 +237,7 @@ async function upload() {
     const img = await fetch(`/userimg/chageimg?id=${user.id}`, options);
 
     const data = {
-        id:user.id,
+        id: user.id,
         Username: document.getElementById('name-pop').value,
         Fname: document.getElementById('Fname-pop').value,
         Lname: document.getElementById('Lname-pop').value
