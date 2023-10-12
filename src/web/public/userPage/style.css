@@ -93,15 +93,15 @@ button:hover {
     gap: 10px;
 }
 
-.history-con>div>h1[result=''] {
+.history-con>div>h3[result=''] {
     width: 20%;
 }
 
 
-.history-con>div>h1 {
-    width: 55%;
+.history-con>div>h3 {
+    width: 27%;
     color: #000000;
-    padding: 10px 0px;
+    padding: 20px 0px;
 }
 
 .history-con>div>button {

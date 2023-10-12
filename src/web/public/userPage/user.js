@@ -25,23 +25,28 @@ async function profileMain() {
     email.appendChild(h1_email)
     score.appendChild(h1_score)
     flname.appendChild(h1_flname)
-
     logsInit()
-
+    
 }
-let logStage = null
+async function preLogs(logs) {
+    
+}
+
 async function logsInit() {
+    let logStage = null
 
     const user = JSON.parse(localStorage.getItem('user'))
     const logsJson = await fetch('/getlogs')
     const logs = await logsJson.json()
     const logsCon = document.querySelector("#history-con")
+    preLogs()
     logs.forEach(element => {
         const box = document.createElement('div')
         const img = document.createElement('img')
-        const h1 = document.createElement('h1')
-        const h12 = document.createElement('h1')
+        const h1 = document.createElement('h3')
+        const h12 = document.createElement('h3')
         const button = document.createElement('button')
+        const plycount = document.createElement('h3')
 
         if (user.id == element.WhiteID) {
             img.src = `../assets/component/svg/whiteIcon.svg`
@@ -57,9 +62,11 @@ async function logsInit() {
         h1.innerHTML = `${result(element)}`
         h1.setAttribute('result', '')
         h12.innerHTML = `${secondsToMinutes(calculateTimeDifference(element.StartDate, element.EndDate))}`
+        plycount.innerHTML = `playcount ${element.plycount}`
         box.appendChild(img)
         box.appendChild(h1)
         box.appendChild(h12)
+        box.appendChild(plycount)
         box.appendChild(button)
         logsCon.appendChild(box)
 
