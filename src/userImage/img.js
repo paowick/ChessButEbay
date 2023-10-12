@@ -20,7 +20,13 @@ const storage = multer.diskStorage({
                 if (err) throw err; console.log('Results Received');
             })
         }
-        const oldfile = getFiles(dir)
+        let oldfile = getFiles(dir)
+        if(oldfile == 0){
+            fs.writeFile(`${dir}/img.jpg`, '', function (err) {
+                if (err) throw err; console.log('Results Received');
+            })
+            oldfile = getFiles(dir)
+        }
         const old_file_extension = oldfile[0].split('.').pop()
         fs.rmSync(`${__dirname}/image_user/${req.query.id}/img.${old_file_extension}`)
         cb(null, `./image_user/${req.query.id}/`)  // Set the destination folder for uploaded files

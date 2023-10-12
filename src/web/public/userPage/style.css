@@ -4,6 +4,7 @@ body {
     background-repeat: no-repeat;
     background-attachment: fixed;
     /* overflow: hidden; */
+    height: 950px;
 }
 
 main {
@@ -56,7 +57,7 @@ button:hover {
     font-family: Courier New;
     font-weight: 650;
     font-size: 20px;
-
+    height: 818px;
     margin: 30px;
     width: 1000px;
     border-radius: 50px;
@@ -68,12 +69,44 @@ button:hover {
     align-items: center;
 }
 
-.history-con{
+.history-con {
     width: 90%;
     height: 80%;
     background-color: #404040;
     border: 1px solid #252525;
     box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    padding-top: 10px;
+    overflow-y: auto;
+}
+
+.history-con>div {
+    width: 98%;
+    height: 60px;
+    border-radius: 50px;
+    background: #F0F8FF;
+    display: inline-flex;
+    padding: 0px 10px;
+    gap: 10px;
+}
+
+.history-con>div>h3[result=''] {
+    width: 20%;
+}
+
+
+.history-con>div>h3 {
+    width: 27%;
+    color: #000000;
+    padding: 20px 0px;
+}
+
+.history-con>div>button {
+    width: 15%;
 }
 
 .profile-main>img {
@@ -89,7 +122,8 @@ button:hover {
     object-fit: fill;
     border-radius: 100%;
     position: absolute;
-    transform: translate(100%, 360%);
+    top: 235px;
+    left: 358px;
 }
 
 .edit-icon>img {
@@ -111,7 +145,7 @@ button:hover {
     font-weight: 650;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-evenly;
     align-items: center;
     margin: 0 auto;
     border: 1px solid black;
@@ -138,9 +172,6 @@ button:hover {
     border-radius: 100%;
 }
 
-.editclose {
-    transform: translateX(275px);
-}
 
 
 h3 {
@@ -197,7 +228,7 @@ h3 {
     font-family: Courier New;
     font-weight: 650;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-evenly;
     align-items: center;
     margin: 0 auto;
     border: 1px solid black;
@@ -258,21 +289,59 @@ h3 {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 50px;
+    width: 80px;
     font-size: 45px;
     font-weight: 600;
-    border-radius: 0% 25px 0% 0%/ 0% 25px 0% 0%;
-}
-
-.close-con {
+    position: absolute;
+    top: 10px;
+    right: 0;
     cursor: pointer;
+}
+
+
+
+
+.notation-pop {
     display: flex;
+    flex-direction: column;
     justify-content: end;
-    width: 100%;
-    height: 40px;
+    align-items: center;
+    border: 1px solid black;
+    margin: 0 auto;
+    position: absolute;
+    left: 0;
+    right: 33%;
+    top: 25%;
+    width: 0px;
+    height: 500px;
+    background-color: #404040;
+    transition: 0.2s width ease-out;
+    border-radius: 25px;
 }
 
-.close:hover {
-    background-color: red;
+.notation-pop[show=""] {
+    width: 500px;
 }
 
+.notation-con {
+    width: 90%;
+    height: 85%;
+    margin-bottom: 10px;
+    background: var(--bg, #404040);
+    box-shadow: 2px 5px 10px 0px #050505 inset;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.notation-con>div {
+    font-size: 25px;
+    display: inline-flex;
+    justify-content: space-between;
+    padding: 0 10px;
+    background-color: #A19C9C;
+}
+
+.notation-con>div[highlight=""] {
+    background-color: #ccc;
+}

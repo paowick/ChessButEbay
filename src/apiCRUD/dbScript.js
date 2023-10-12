@@ -14,7 +14,7 @@ export async function getAllUser() {
     let conn;
     try {
         conn = await pool.getConnection();
-        const rows = await conn.query("SELECT * FROM `User` WHERE Admin = 0x00");
+        const rows = await conn.query("SELECT * FROM `User` WHERE Admin = 0");
         return rows
     }
     finally {
@@ -75,9 +75,9 @@ export async function InsertUser(Email, Password, Name, Score) {
     let conn;
     try {
         conn = await pool.getConnection();
-        const rows = await conn.query("INSERT INTO `User` (`Email`, `Password`, `Name`, `Score`, `Admin`) VALUES (?, ?, ?, ?, 0x00);", [Email, Password, Name, Score]);
+        const rows = await conn.query("INSERT INTO `User` (`Email`, `Password`, `Name`, `Score`, `Ban_Status` ,`Admin`) VALUES (?, ?, ?, ?, 0, 0);", [Email, Password, Name, Score]);
         console.log(rows.affectedRows);
-        if(rows.affectedRows == 1){
+        if (rows.affectedRows == 1) {
             return true
         }
         return false
@@ -87,13 +87,13 @@ export async function InsertUser(Email, Password, Name, Score) {
 
 }
 
-export async function resetPassword(email,newPassword) {
+export async function resetPassword(email, newPassword) {
     let conn;
     try {
         console.log(email);
         console.log(newPassword);
         conn = await pool.getConnection();
-        const rows = await conn.query("UPDATE User SET User.Password = ? WHERE User.Email = ?;",[newPassword,email]);
+        const rows = await conn.query("UPDATE User SET User.Password = ? WHERE User.Email = ?;", [newPassword, email]);
         console.log(rows);
         return rows.affectedRows == 1 ? true : false
     } finally {
@@ -101,25 +101,102 @@ export async function resetPassword(email,newPassword) {
     }
 }
 
-export async function editinfo(id,name,fname,lname) {
+export async function editinfo(id, name, fname, lname) {
     let conn;
     try {
         conn = await pool.getConnection();
-        const rows = await conn.query("UPDATE User SET User.Name = ? , User.Fname = ? , User.Lname = ? WHERE Id = ?;",[name,fname,lname,id]);
+        const rows = await conn.query("UPDATE User SET User.Name = ? , User.Fname = ? , User.Lname = ? WHERE Id = ?;", [name, fname, lname, id]);
         console.log(rows);
         return rows.affectedRows == 1 ? true : false
     } finally {
         if (conn) conn.destroy();
     }
 }
-export async function editpassword(id,password) {
+export async function editpassword(id, password) {
     let conn;
     try {
         conn = await pool.getConnection();
-        const rows = await conn.query("UPDATE User SET User.Password = ? WHERE Id = ?;",[password,id]);
+        const rows = await conn.query("UPDATE User SET User.Password = ? WHERE Id = ?;", [password, id]);
+        return rows.affectedRows == 1 ? true : false
+    } finally {
+        if (conn) conn.destroy();
+    }
+}
+
+export async function deleteuser(user) {
+    let conn;
+    try {
+        conn = await pool.getConnection();
+        const rows = await conn.query("DELETE FROM `User` WHERE Id = ?;", [user.Id]);
         console.log(rows);
         return rows.affectedRows == 1 ? true : false
     } finally {
         if (conn) conn.destroy();
     }
+
+}
+export async function banstatus(id, newStatus) {
+    let conn;
+    try {
+        conn = await pool.getConnection();
+        const rows = await conn.query("UPDATE User SET User.Ban_Status = ? WHERE Id = ?;", [newStatus, id]);
+        console.log(rows);
+        return rows.affectedRows == 1 ? true : false
+    } finally {
+        if (conn) conn.destroy();
+    }
+}
+export async function logsUpdate(info) {
+    let conn;
+    try {
+        conn = await pool.getConnection();
+        const rowslog = await conn.query("INSERT INTO `Notation` (`log`) VALUES (?)", [JSON.stringify(info.log)]);
+        const rows = await conn.query("INSERT INTO `Logs` (`StartDate`,`EndDate`, `plycount`, `WinID`, `LosID`, `WhiteID`, `BlackID`, `NotationID`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", [timeConv(info.StartDate), timeConv(info.EndDate), info.PlayCount, info.winnerId, info.loserId, info.WhiteId, info.BlackId, rowslog.insertId]);
+        const updateW = await conn.query("UPDATE User SET User.Score = CASE WHEN User.Id = ? THEN User.Score + 20 WHEN User.Id = ? THEN User.Score - 20 END WHERE User.Id IN (?,?);", [info.winnerId, info.loserId, info.winnerId, info.loserId])
+    } finally {
+        if (conn) conn.destroy();
+    }
+}
+
+export async function getLogs(id){
+    let conn;
+    try {
+        conn = await pool.getConnection();
+        const rows = await conn.query("SELECT * FROM Logs WHERE Logs.WhiteID = ? OR Logs.BlackID = ?",[id,id]);
+        return rows
+    }
+    finally {
+        if (conn) conn.destroy();
+    }
+}
+
+export async function getNotation(id){
+    let conn;
+    try {
+        conn = await pool.getConnection();
+        const rows = await conn.query("SELECT * FROM Notation WHERE Notation.NotationID = ?",[id]);
+        return rows
+    }
+    finally {
+        if (conn) conn.destroy();
+    }
+}
+
+function timeConv(inputDateString) {
+    const [datePart, timePart] = inputDateString.split(' ');
+
+    // Split the date part into day, month, and year
+    const [month, day, year] = datePart.split('/');
+
+    // Split the time part into hours, minutes, and seconds
+    const [hours, minutes, seconds] = timePart.split(':');
+
+    // Create a new Date object with the extracted components
+    const newDate = new Date(`${year}-${month}-${day} ${hours}:${minutes}:${seconds}.000000`);
+
+    // Format the newDate as a string in the desired format
+    console.log(newDate);
+    const outputDateString = newDate.toISOString().replace('T', ' ').replace('Z', '');
+
+    return outputDateString
 }

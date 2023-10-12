@@ -270,6 +270,20 @@ main {
     border-radius: 35px;
 }
 
+.blink {
+    animation: blink-animation 0.1s infinite;
+}
+
+@keyframes blink-animation {
+    0% {
+        background-color: #A19C9C;
+    }
+
+    100% {
+        background-color: #252525;
+    }
+}
+
 .auction-view {
     display: flex;
     flex-direction: column;
@@ -346,10 +360,31 @@ main {
     background-color: #fff;
 }
 
+.time-action {
+    font-size: 50px;
+}
+
 .log-box {
     width: 299px;
     height: 205px;
     box-shadow: 2px 5px 10px 0px #050505 inset;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.log-box>div {
+    font-size: 25px;
+    display: inline-flex;
+    justify-content: space-between;
+    padding: 0 10px;
+    background-color: #A19C9C;
+}
+
+.log-box>div[highlight=""] {
+    background-color: #ccc;
 }
 
 .mine-con {
@@ -370,6 +405,13 @@ main {
     height: 311px;
     background-color: #252525;
     overflow-y: auto;
+    border: 10px solid #252525;
+}
+
+.mine-box>div {
+    position: absolute;
+    font-size: 20px;
+    transform: translate(9px, -36px);
 }
 
 .row-text {
@@ -497,19 +539,48 @@ main {
 
 .win-pop {
     padding: 10px;
-    border-radius: 50px;
-    display: none;
     position: absolute;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    top: 20%;
-    left: 40%;
+    top: 26%;
+    left: 26%;
     z-index: 10;
     background-color: rgba(17, 17, 17, 0.7);
     backdrop-filter: blur(10px);
-    width: 400px;
-    height: 400px;
+    width: 900px;
+    height: 350px;
+    border-radius: 20px;
+    border: 4px solid var(--stroke, #171717);
+    background: var(--bg, #404040);
+}
+
+.win-butt-con {
+    display: inline-flex;
+}
+
+.win-butt-con>button {
+    width: 350px;
+    height: 40px;
+}
+
+.win-pop>div[text=""] {
+    color: #FFF;
+    text-align: center;
+    font-family: Courier Prime;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+.win-pop>div[textbold=""] {
+    color: #FFF;
+    text-align: center;
+    font-family: Courier Prime;
+    font-size: 48px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
 }
 
 .chat-icon {
@@ -546,6 +617,7 @@ main {
 .chat-header div h2 {
     color: #FFF;
 }
+
 .chat-header div h2 {
     cursor: pointer;
 }
@@ -657,6 +729,7 @@ main {
     height: 80px;
     font-size: 60px;
     text-align: center;
+    border-radius: 20px;
 }
 
 .mine>div:hover {
@@ -685,6 +758,30 @@ main {
     0%{opacity: 1;}
     100%{opacity: 0;}
 } */
+
+.askmine-pop {
+    background-color: #252525;
+    height: 230px;
+    position: absolute;
+    top: 330px;
+    left: 610px;
+    border-radius: 10%;
+    width: 0;
+    transition: 0.2s width ease-out;
+    padding: 6px;
+}
+
+.askmine-pop[show=""] {
+    width: 200px;
+}
+
+.askmine-con {
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    align-items: center;
+
+}
 
 button {
     font-family: Courier New;
@@ -733,4 +830,16 @@ input {
 
 input:focus {
     outline-color: #171717;
+}
+
+.turn {
+    text-align: center;
+}
+
+.time {
+    text-align: center;
+}
+
+.coim {
+    text-align: center;
 }

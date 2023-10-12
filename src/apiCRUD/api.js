@@ -5,6 +5,11 @@ const port = 8080;
 
 app.use(express.json())
 
+app.post('/api/logs', async (req,res)=>{
+    db.logsUpdate(req.body)
+    res.sendStatus(200)
+})
+
 app.post('/api/userCheckBackEnd', async (req, res) => {
     try {
         if (req.body.password == null) {
@@ -83,6 +88,16 @@ app.post('/api/editpassword', async (req, res) => {
     }
 })
 
+app.post('/api/deleteuser',(req,res)=>{
+    try {
+        db.deleteuser(req.body)
+        res.sendStatus(200)
+    } catch (error) {
+        console.log(e);
+        res.sendStatus(500)
+    }
+})
+
 app.get('/api/getalluser',async (req,res)=>{
     try {
         const allUser = await db.getAllUser()
@@ -92,6 +107,41 @@ app.get('/api/getalluser',async (req,res)=>{
         res.sendStatus(500)
     }
 })
+
+app.post('/api/banstatus',async (req,res)=>{
+    try {
+        const banstatus = db.banstatus(req.body.id, req.body.isBan)
+        if (banstatus) {
+            res.sendStatus(200)
+        } else {
+            res.sendStatus(500)
+        }
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500)
+    }
+})
+
+app.get('/api/getlogs',async (req,res)=>{
+    try {
+       const data = await db.getLogs(req.query.id)
+       res.send(data)
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500)
+    }
+})
+
+app.get('/api/getnotation',async (req,res)=>{
+    try {
+       const data = await db.getNotation(req.query.id)
+       res.send(data[0])
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500)
+    }
+})
+
 app.listen(port, () => {
     console.log(`listen on port ${port}`);
 })

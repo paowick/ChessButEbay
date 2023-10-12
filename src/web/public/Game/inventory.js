@@ -1,9 +1,9 @@
-import { board } from "./board.js"
+import { auctionobj, board } from "./board.js"
 import { clearAllHightLight } from "./board.js"
 import { hightLightDrop, showDropAble, hightLightMine } from "./script.js"
 import { mineobj } from "./board.js"
-
-
+import { setSourceNull } from "./board.js"
+import { auctionStageBlink } from "./script.js"
 import { king } from './king.js';
 import { pawn } from './pawn.js';
 import { queen } from './queen.js';
@@ -81,11 +81,16 @@ export class inventory {
 
         document.querySelectorAll('.invt-box').forEach(div => {
             div.addEventListener('click', function (e) {
+                if(auctionobj.auctionStage == true){
+                    auctionStageBlink()
+                    return
+                }
                 // when click on invt-box in second time ti will be clear all hightlight
                 clearAllHightLight()
+                setSourceNull()
                 showDropAble(invtListTemp[this.id].dropPieceAble(board))
                 hightLightDrop(invtListTemp[this.id], this.id)
-                removeAllEvent()
+                // removeAllEvent()
                 if (mineobj.mineList.length >= mineobj.minelimit) {
                     return
                 }
@@ -93,19 +98,8 @@ export class inventory {
             })
         })
 
-        const removeAllEvent = () => {
-            this.temp()
-            document.querySelectorAll('.invt-box').forEach(div => {
-                const newdiv = div.cloneNode(true)
-                div.parentNode.replaceChild(newdiv, div)
-            })
-        }
-
     }
 
-    temp() {
-        this.invtSetUp()
-    }
 
     pieceToObjViewer(piece, team) {
         if (piece == 'king') {
@@ -135,26 +129,26 @@ export class inventory {
     pieceToObj(piece) {
         const currentGame = JSON.parse(localStorage.getItem("currentGame"))
         if (piece == 'king') {
-            return new king("king", null, currentGame.role, true, board, 3)
+            return new king("king", null, currentGame.role, true, board, 2)
         }
         if (piece == 'queen') {
-            return new queen("queen", null, currentGame.role, false, board, 3)
+            return new queen("queen", null, currentGame.role, false, board, 2)
 
         }
         if (piece == 'bishop') {
-            return new bishop("bishop", null, currentGame.role, false, board, 3)
+            return new bishop("bishop", null, currentGame.role, false, board, 2)
 
         }
         if (piece == 'rook') {
-            return new rook("rook", null, currentGame.role, false, board, 3)
+            return new rook("rook", null, currentGame.role, false, board, 2)
 
         }
         if (piece == 'knight') {
-            return new knight("knight", null, currentGame.role, false, board, 3)
+            return new knight("knight", null, currentGame.role, false, board, 2)
 
         }
         if (piece == 'pawn') {
-            return new pawn("pawn", null, currentGame.role, false, board, 3, true)
+            return new pawn("pawn", null, currentGame.role, false, board, 2, true)
         }
     }
 }

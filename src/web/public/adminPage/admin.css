@@ -108,6 +108,10 @@ input {
     background: var(--bg, #404040);
 }
 
+.search {
+    width: 90%;
+}
+
 .userlist-info>h1 {
     color: #FFF;
     text-align: center;
@@ -129,6 +133,8 @@ input {
     flex-direction: column;
     justify-content: flex-start;
     gap: 10px;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .user-list>div {

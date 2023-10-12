@@ -16,21 +16,54 @@ async function roomload() {
     });
 }
 function roomtabview(room) {
-    const text = `
-                    <div class="room-code">
-                    </div>
-                    <div class="info">
-                        <p class="player">${room.name}</p>
-                    </div>
-                    <button class="join-butt" type="button" value="${room.code}" onclick="enter(this.value)">Enter</button>
-    `
+    // <div id="room-status">
+    // </div>
+    // <div class="info">
+    //     <p class="player">${room.name}</p>
+    // </div>
+    // <button class="join-butt" type="button" value="${room.code}" onclick="enter(this.value)">Enter</button>
+    
+
+    const roomstatus = document.createElement('div')
+    roomstatus.setAttribute("id", "room-status")
+
+    const info = document.createElement('div')
+    info.classList.add("info")
+
+    const p = document.createElement('p')
+    p.classList.add("player")
+    p.innerHTML = room.name
+
+
+    const button = document.createElement('button')
+    button.classList.add("join-butt")
+    button.setAttribute("type", "button")
+    button.setAttribute("value", room.code)
+    button.setAttribute("onclick","enter(this.value)")
+    button.innerHTML = "Enter"
+
+    info.appendChild(p)
+
     const tag = document.createElement("div");
     tag.classList.add("room")
-    tag.innerHTML = text
+    tag.appendChild(roomstatus)
+    tag.appendChild(info)
+    tag.appendChild(button)
+    // tag.innerHTML = text
     return tag
 }
 
-function enter(code){
+document.querySelector("#code-input").addEventListener("input", (e) => {
+    let searchByName = str => roomList.filter(item => item.name.toLowerCase().includes(str.toLowerCase()))
+    const newroomlist = searchByName(e.target.value);
+    if (!document.body.contains(document.getElementById('board'))) { return }
+    document.getElementById('board').innerHTML = ""
+    newroomlist.forEach(element => {
+        document.getElementById("board").appendChild(roomtabview(element))
+    })
+
+})
+function enter(code) {
     const currentGame = localStorage.getItem('currentGame')
     const currentGameJSON = JSON.parse(currentGame)
     roomList.forEach(element => {
@@ -46,29 +79,18 @@ function enter(code){
     });
 }
 
-document.querySelector("#joingame").addEventListener("click", () => {
-    const code = document.querySelector("#code-input").value
-    const currentGame = localStorage.getItem('currentGame')
-    const currentGameJSON = JSON.parse(currentGame)
-    roomList.forEach(element => {
-        if (element.code == code) {
-            if (currentGame != null && currentGameJSON.code == code) { return window.location = '/Game' }
-            const userdata = {
-                code: code,
-                role: "viewer"
-            }
-            localStorage.setItem('currentGame', JSON.stringify(userdata))
-            window.location = '/Game'
-        }
-    });
-    console.log("dint have this room"); // <------
+
+
+
+document.querySelector('#auc-time').addEventListener('input', (e) => {
+    if (e.target.value > 60) { e.target.value = 60 }
+    if (e.target.value <= 0) { e.target.value = 5 }
+})
+document.querySelector('#coins').addEventListener('input', (e) => {
+    if (e.target.value <= 0) { e.target.value = 1000 }
 })
 
-
-
-
-
-document.querySelector("#createroom").addEventListener("click", async() => {
+document.querySelector("#createroom").addEventListener("click", async () => {
     const user = JSON.parse(localStorage.getItem('user'))
     let roomName = user.name
     if (document.querySelector("#roomName").value != "") {
@@ -76,7 +98,6 @@ document.querySelector("#createroom").addEventListener("click", async() => {
     }
     let coins = document.querySelector('#coins').value
     let aucTime = document.querySelector("#auc-time").value
-    console.log(roomName, coins, aucTime);
     const data = {
         roomName: roomName,
         coins: coins,

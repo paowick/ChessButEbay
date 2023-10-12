@@ -466,7 +466,6 @@
                 <div class="cur-pi" id="cur-pi"></div>
                 <input type="text" id="bid-input" placeholder="Enter a bid">
                 <button type="button" id="bid-butt">Accept</button>
-                <button type="button" id="test">test</button>
 
             </div>
         </div>
@@ -497,9 +496,15 @@
 <div class="prom-pop waiting-pop" id="waiting-pop" style="display: none;">
     <h1>Waiting for player...</h1>
 </div>
-<div id="win-pop" class="win-pop">
-    <div id="win-pop-text" class="win-pop-text"></div>
-    <button id="win-pop-butt" class="win-pop-butt">OK</button>
+<div id="win-pop" class="win-pop" style="display: none;" >
+    <div textbold id="win-pop-text" class="win-pop-text" style="font-style: bold;" ></div>
+    <div text id="win-time"></div>
+    <div text id="win-round"></div>
+    <div text id="win-score"></div>
+    <div class="win-butt-con">
+        <button id="gotohome">Go Back To Homepage</button>
+        <button id="win-pop-butt" class="win-pop-butt">Play again</button>
+    </div>
 </div>
 
 
@@ -520,6 +525,15 @@
     <div class="chat-input">
         <input type="text" id="message-input" placeholder="Type your message...">
         <button id="send-button">Send</button>
+    </div>
+</div>
+
+<div class="askmine-pop" id="askmine-pop" style="visibility: hidden;">
+    <div class="askmine-con" id="askmine-con" style="display: none;" >
+        <h3 style="color: white;" >Please choose how long in the mine</h3>
+        <button id="askmine" value="2" >2 turn</button>
+        <button id="askmine" value="4">4 turn</button>
+        <button id="askmine" value="6">6 turn</button>
     </div>
 </div>
 
