@@ -53,6 +53,8 @@ async function logsInit() {
 
 
         button.innerHTML = "View"
+        button.setAttribute('value',element.NotationID)
+        button.setAttribute('id','logView')
         h1.innerHTML = `${result(element)}`
         h1.setAttribute('result','')
         h12.innerHTML = `${secondsToMinutes(calculateTimeDifference(element.StartDate, element.EndDate))}`
@@ -65,6 +67,11 @@ async function logsInit() {
         
         
 
+    });
+    document.querySelectorAll("#logView").forEach(button => {
+        button.addEventListener("click",e => {
+            console.log(e.target.value);
+        })
     });
 }
 
@@ -107,7 +114,6 @@ function secondsToMinutes(seconds) {
 
   return formattedTime;
 }
-
 
 
 
