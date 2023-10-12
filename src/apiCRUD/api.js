@@ -121,6 +121,16 @@ app.post('/api/banstatus',async (req,res)=>{
         res.sendStatus(500)
     }
 })
+
+app.get('/api/getlogs',async (req,res)=>{
+    try {
+       const data = await db.getLogs(req.query.id)
+       res.send(data)
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500)
+    }
+})
 app.listen(port, () => {
     console.log(`listen on port ${port}`);
 })

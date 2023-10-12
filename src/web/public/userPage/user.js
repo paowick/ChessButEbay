@@ -1,6 +1,6 @@
 getSession()
 profileMain()
-function profileMain() {
+async function profileMain() {
     const profile = document.getElementById('profile-pic')
     const user = JSON.parse(localStorage.getItem('user'))
     profile.src = `/userimg/getimg?id=${user.id}`
@@ -25,7 +25,92 @@ function profileMain() {
     email.appendChild(h1_email)
     score.appendChild(h1_score)
     flname.appendChild(h1_flname)
+
+    logsInit()
+
 }
+
+async function logsInit() {
+    
+    const user = JSON.parse(localStorage.getItem('user'))
+    const logsJson = await fetch('/getlogs')
+    const logs = await logsJson.json()
+    const logsCon = document.querySelector("#history-con")
+    logs.forEach(element => {
+        console.log(element);
+        const box = document.createElement('div')
+        const img = document.createElement('img')
+        const h1 = document.createElement('h1')
+        const h12 = document.createElement('h1')
+        const button =  document.createElement('button')
+
+        if(user.id == element.WhiteID){
+            img.src = `../assets/component/svg/whiteIcon.svg`
+        }
+        if(user.id == element.BlackID){
+            img.src = `../assets/component/svg/blackIcon.svg`
+        }
+
+
+        button.innerHTML = "View"
+        h1.innerHTML = `${result(element)}`
+        h1.setAttribute('result','')
+        h12.innerHTML = `${secondsToMinutes(calculateTimeDifference(element.StartDate, element.EndDate))}`
+        box.appendChild(img)
+        box.appendChild(h1)
+        box.appendChild(h12)
+        box.appendChild(button)
+
+        logsCon.appendChild(box)
+        
+        
+
+    });
+}
+
+function result(data) {
+    const user = JSON.parse(localStorage.getItem('user'))
+    let result 
+    if(data.WinID == user.id){
+        result = 'Win'
+    }else{
+        result = "Lose"
+    }
+    return result
+}
+function calculateTimeDifference(startDateStr, endDateStr) {
+  const startDate = new Date(startDateStr);
+  const endDate = new Date(endDateStr);
+
+  if (isNaN(startDate) || isNaN(endDate)) {
+    return "Invalid date format";
+  }
+
+  const timeDifference = endDate - startDate; // This will give the time difference in milliseconds
+
+  // You can convert the time difference to seconds, minutes, or any other format you need.
+  const secondsDifference = timeDifference / 1000;
+
+  return secondsDifference;
+}
+
+function secondsToMinutes(seconds) {
+  if (typeof seconds !== 'number' || seconds < 0) {
+    return "Invalid input. Please provide a non-negative number of seconds.";
+  }
+
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
+
+  const minuteString = minutes === 1 ? "min" : "min";
+  const formattedTime = `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')} ${minuteString}`;
+
+  return formattedTime;
+}
+
+
+
+
 
 document.querySelector("#changePw").addEventListener("click", () => {
     const oldPw = document.getElementById("oldPw-pop")

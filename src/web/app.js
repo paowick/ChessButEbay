@@ -282,10 +282,20 @@ app.get(`/getroom`, async (req, res) => {
 
 app.get(`/getsession`, (req, res) => {
     try {
-        console.log(req.session.user);
         res.json({
             data: req.session.user
         })
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500)
+    }
+})
+
+app.get(`/getlogs`, async (req,res)=>{
+    try {
+        const dataJson = await fetch(`http://api:8080/api/getlogs?id=${req.session.user.id}`)
+        const data = await dataJson.json()
+        res.send(data)
     } catch (e) {
         console.log(e);
         res.sendStatus(500)
