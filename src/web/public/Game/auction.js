@@ -5,9 +5,9 @@ import { queen } from './queen.js';
 import { bishop } from './bishop.js';
 import { knight } from './knight.js';
 import { rook } from './rook.js';
-import { board } from './board.js';
+import { board, clearTimer, countdownTime, setCountTime, setTimer, socket, timer } from './board.js';
 export class auction {
-    constructor(slot1, slot2,currentBid,currentBidder,auctionStage) {
+    constructor(slot1, slot2, currentBid, currentBidder, auctionStage) {
         this.slot1 = slot1
         this.slot2 = slot2
         this.currentBid = currentBid
@@ -32,11 +32,11 @@ export class auction {
     }
 
     auctionSetUp(info) {
+        this.auctionStage = info.auctionStage
         if (info.auctionslot1 == null) { return }
         if (info.auctionslot2 == null) { return }
         this.slot1 = this.pieceToObj(info.auctionslot1)
         this.slot2 = this.pieceToObj(info.auctionslot2)
-        this.auctionStage = info.auctionStage
         document.querySelectorAll("#ac-piece").forEach(element => {
             element.innerHTML = ""
             element.appendChild(this.slot1.html())
@@ -57,7 +57,7 @@ export class auction {
         }
         if (piece == 'rook') {
             return new rook("rook", null, null, false, board, 2)
-            
+
         }
         if (piece == 'knight') {
             return new knight("knight", null, null, false, board, 2)
@@ -65,6 +65,36 @@ export class auction {
         }
         if (piece == 'pawn') {
             return new pawn("pawn", null, null, false, board, 2, true)
+        }
+    }
+
+
+    aucTimeSet(endTime) {
+        if (this.auctionStage == false) { return }
+
+        const timeDifference = endTime - Date.now();
+
+        // Convert time difference to seconds
+        const secondsDifference = Math.floor(timeDifference / 1000);
+        // const formattedTimeDifference = formatTime(secondsDifference);
+        setCountTime(secondsDifference)
+        this.updateCountdown();
+        setTimer(setInterval(this.updateCountdown, 1000))
+    }
+    updateCountdown() {
+
+        const Element = document.querySelectorAll("#time-action");
+        setCountTime(countdownTime - 1)
+        Element.forEach(countdownElement => {
+            countdownElement.innerHTML = countdownTime;
+        })
+        if (countdownTime < 0) {
+            clearTimer() // Stop the countdown when it reaches 0
+            Element.forEach(countdownElement => {
+                countdownElement.innerHTML = "0";
+            });
+            socket.emit('get-auction', "")
+            this.auctionStage = false
         }
     }
 }

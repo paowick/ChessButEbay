@@ -1,7 +1,7 @@
 import { move, win } from './socket.js';
 import { io } from "https://cdn.socket.io/4.3.2/socket.io.esm.min.js";
 import { join } from './socket.js';
-import { waitingForPlayer, askPlayer, updateJoinPop } from './script.js';
+import { waitingForPlayer, askPlayer, updateJoinPop} from './script.js';
 import { king } from './king.js';
 import { pawn } from './pawn.js';
 import { queen } from './queen.js';
@@ -26,6 +26,18 @@ var mineList = []
 var minelimt = 3
 export let coin = 0
 export let log = []
+
+export let timer = null
+export let countdownTime = 0
+export function setCountTime(time) {
+    countdownTime = time
+}
+export function setTimer(data){
+    timer = data
+}
+export function clearTimer(){
+    clearInterval(timer)
+}
 
 export const returnRate = {
     2: 50,
@@ -96,7 +108,6 @@ export async function run() {
         const info = arg.boardRedis
         log = info.log
         logInit(log)
-
         invtBlack.invtSetUpViewer(info.invtB, "B")
         invtWhite.invtSetUpViewer(info.invtW, "W")
         if (arg.starttime != null) {
@@ -125,6 +136,7 @@ export async function run() {
         auctionobj.auctionSetUp(info)
         chessBoardSetUp(info)
         uiSetUpControll(info, arg, currentGame)
+        auctionobj.aucTimeSet(info.auctionend)
     })
 }
 

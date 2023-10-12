@@ -1,7 +1,7 @@
-import { board, moveClient_Server } from "./board.js";
+import { board, clearTimer, moveClient_Server } from "./board.js";
 import { socket } from "./board.js";
 import { changeMyTurn } from "./board.js";
-import { mineSetUp, winPop } from "./script.js";
+import {mineSetUp, winPop } from "./script.js";
 import { king } from './king.js';
 import { pawn } from './pawn.js';
 import { queen } from './queen.js';
@@ -23,7 +23,7 @@ const user = JSON.parse(localStorage.getItem('user'))
 
 document.querySelector("#test").addEventListener("click", () => {
     if (auctionobj.auctionStage) {
-        socket.emit('test-auction', "test")
+        socket.emit('get-auction', "test")
         auctionobj.setAuctionStage(false)
     }
 })
@@ -47,6 +47,7 @@ import('./board.js').then(({ socket }) => {
         logPush(arg.notation)
         mineobj.mineListCount()
         castle_server(arg.kingSource, arg.kingDestination, arg.turn)
+        auctionobj.setAuctionStage(true)
     })
 
     socket.on('drop_server', async (arg) => {
@@ -105,6 +106,7 @@ import('./board.js').then(({ socket }) => {
         auctionobj.auctionSetUp(arg.room)
         currentBidUpdate(arg.room)
         coinUpdate_Server(arg.room)
+        clearTimer()
     })
 
     socket.on('join_server', async (arg) => {
@@ -127,6 +129,9 @@ import('./board.js').then(({ socket }) => {
         }
         mainTimeInit(info.starttime)
         startGame(info, arg, currentGame)
+        
+        auctionobj.aucTimeSet(info.auctionend)
+        auctionobj.setAuctionStage(true)
     })
 
 
@@ -216,6 +221,7 @@ export function move(source, destination, promoted, checked, notation) {
     }
     if (destination != source) {
         socket.emit("move", stringify(data))
+        auctionobj.setAuctionStage(true)
     }
 }
 

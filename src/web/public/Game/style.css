@@ -360,6 +360,10 @@ main {
     background-color: #fff;
 }
 
+.time-action {
+    font-size: 50px;
+}
+
 .log-box {
     width: 299px;
     height: 205px;

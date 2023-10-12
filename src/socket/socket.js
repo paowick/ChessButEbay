@@ -85,9 +85,11 @@ io.sockets.on("connection", async (socket) => {
             if (boardRedis.playerB != null && boardRedis.playerW != null) {
                 boardRedis.turn = 'W'
                 boardRedis.gameStart = true
+                boardRedis.auctionend = Date.now() + boardRedis.auctiontime*1000
                 let piece1 = getRandomChessPiece(boardRedis.turnCount)
                 let piece2 = getRandomChessPiece(boardRedis.turnCount)
                 boardRedis.starttime = now()
+                boardRedis.auctionStage = true
                 boardRedis.auctionslot1 = piece1
                 boardRedis.auctionslot2 = piece2
                 redisClient.set(socket.request._query.code, stringify(boardRedis), {
@@ -107,12 +109,13 @@ io.sockets.on("connection", async (socket) => {
             turnCount: 0,
             roomname: data.req.roomName,
             auctiontime: data.req.aucTime,
+            auctionend:null,
             confcoins: parseInt(data.req.coins),
             auctionslot1: null,
             auctionslot2: null,
             currentBid: 0,
             currentBidder: null,
-            auctionStage: true,
+            auctionStage: false,
             turn: null,
             code: data.room,
             playerB: null,
@@ -159,10 +162,11 @@ io.sockets.on("connection", async (socket) => {
             turnCount: 0,
             roomname: room.roomname,
             auctiontime: room.auctime,
+            auctionend:null,
             confcoins: room.confcoins,
             auctionslot1: null,
             auctionslot2: null,
-            auctionStage: true,
+            auctionStage: false,
             currentBid: 0,
             currentBidder: null,
             turn: null,
@@ -409,7 +413,7 @@ io.sockets.on("connection", async (socket) => {
         invtUpdate(socket, arg)
     })
 
-    socket.on("test-auction", async (arg) => {
+    socket.on("get-auction", async (arg) => {
         getAuction(socket)
 
     })
