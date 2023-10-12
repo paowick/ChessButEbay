@@ -146,8 +146,8 @@ import('./board.js').then(({ socket }) => {
         mainTimeInit(info.starttime)
         startGame(info, arg, currentGame)
         
-        auctionobj.aucTimeSet(info.auctionend)
         auctionobj.setAuctionStage(true)
+        auctionobj.aucTimeSet(info.auctionend)
     })
 
 
@@ -160,6 +160,10 @@ import('./board.js').then(({ socket }) => {
         const info = await JSON.parse(arg)
         currentBidUpdate(info)
         coinUpdate_Server(info)
+        clearTimer()
+        auctionobj.setAuctionStage(true)
+        auctionobj.aucTimeSet(info.auctionend)
+
     })
 
     socket.on('invtViewerUpdate', async (arg) => {

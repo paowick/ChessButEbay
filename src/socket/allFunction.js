@@ -62,6 +62,7 @@ export async function bid(arg, code, socket) {
     if (room.currentBid < arg.amout) {
         room.currentBid = arg.amout;
         room.currentBidder = arg.id;
+        room.auctionend = Date.now() + room.auctiontime * 1000
         redisClient.set(code, stringify(room), {
             NX: false
         });
