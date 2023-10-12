@@ -19,7 +19,7 @@ main {
     font-weight: 650;
     padding: 25px;
     /* backdrop-filter: blur(10px); */
-    background-color: rgba(23, 23, 23, 0.5);
+    background-color: #404040;
     border-radius: 50px;
     display: flex;
     width: 700px;
@@ -61,7 +61,7 @@ button:hover {
     margin: 30px;
     width: 1000px;
     border-radius: 50px;
-    background-color: rgba(23, 23, 23, 0.5);
+    background-color: #404040;
     padding: 15px;
     display: flex;
     flex-direction: column;
