@@ -21,12 +21,6 @@ import { mainTimeInit } from "./script.js";
 import { logPush } from "./board.js";
 const user = JSON.parse(localStorage.getItem('user'))
 
-document.querySelector("#test").addEventListener("click", () => {
-    if (auctionobj.auctionStage) {
-        socket.emit('get-auction', "test")
-        auctionobj.setAuctionStage(false)
-    }
-})
 
 
 import('./board.js').then(({ socket }) => {

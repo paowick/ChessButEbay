@@ -1,7 +1,7 @@
 import { move, win } from './socket.js';
 import { io } from "https://cdn.socket.io/4.3.2/socket.io.esm.min.js";
 import { join } from './socket.js';
-import { waitingForPlayer, askPlayer, updateJoinPop} from './script.js';
+import { waitingForPlayer, askPlayer, updateJoinPop } from './script.js';
 import { king } from './king.js';
 import { pawn } from './pawn.js';
 import { queen } from './queen.js';
@@ -32,10 +32,10 @@ export let countdownTime = 0
 export function setCountTime(time) {
     countdownTime = time
 }
-export function setTimer(data){
+export function setTimer(data) {
     timer = data
 }
-export function clearTimer(){
+export function clearTimer() {
     clearInterval(timer)
 }
 
@@ -110,9 +110,7 @@ export async function run() {
         logInit(log)
         invtBlack.invtSetUpViewer(info.invtB, "B")
         invtWhite.invtSetUpViewer(info.invtW, "W")
-        if (arg.starttime != null) {
-            mainTimeInit(info.starttime)
-        }
+        mainTimeInit(info.starttime)
         let newMine = info.mine.filter(function (item) {
             return item !== null
         });
@@ -625,9 +623,9 @@ export async function moveClient(source, destination, promoted) {
     const newpos = tranSlateTopos(destination)
     logConv(source, destination, promoted)
     const piece = board[oldpos[0]][oldpos[1]];
-    if(board[newpos[0]][newpos[1]] != null && board[newpos[0]][newpos[1]].name == "king"){
+    if (board[newpos[0]][newpos[1]] != null && board[newpos[0]][newpos[1]].name == "king") {
         console.log("win");
-        win(currentGame.role,`${notation}++`)
+        win(currentGame.role, `${notation}++`)
         return
     }
     piece.unset()

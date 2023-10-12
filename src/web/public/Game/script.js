@@ -38,22 +38,34 @@ export function logInit(log) {
 }
 
 export function mainTimeInit(time) {
+        if(time == null){return}
+        const dateString = time
+        const targetTime = new Date(dateString);
+        const currentTime = new Date();
+        const timeDifference = currentTime - targetTime;
 
-    // setInterval(() => {
-    //     const dateString = time
-    //     const targetTime = new Date(dateString);
-    //     const currentTime = new Date();
-    //     const timeDifference = currentTime - targetTime;
+        // Convert time difference to seconds
+        const secondsDifference = Math.floor(timeDifference / 1000);
+        const formattedTimeDifference = formatTime(secondsDifference);
 
-    //     // Convert time difference to seconds
-    //     const secondsDifference = Math.floor(timeDifference / 1000);
-    //     const formattedTimeDifference = formatTime(secondsDifference);
+        document.querySelectorAll("#time").forEach(ele =>{
+            ele.innerHTML = `${formattedTimeDifference}`
+        })
+    setInterval(() => {
+        const dateString = time
+        const targetTime = new Date(dateString);
+        const currentTime = new Date();
+        const timeDifference = currentTime - targetTime;
 
-    //     document.querySelectorAll("#time").forEach(ele =>{
-    //         ele.innerHTML = `${formattedTimeDifference}`
-    //     })
+        // Convert time difference to seconds
+        const secondsDifference = Math.floor(timeDifference / 1000);
+        const formattedTimeDifference = formatTime(secondsDifference);
 
-    // }, 1000);
+        document.querySelectorAll("#time").forEach(ele =>{
+            ele.innerHTML = `${formattedTimeDifference}`
+        })
+
+    }, 10000);
 
 }
 
