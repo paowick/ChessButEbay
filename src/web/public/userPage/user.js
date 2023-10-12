@@ -164,10 +164,7 @@ document.getElementById('up-but').addEventListener('change', function () {
         reader.readAsDataURL(this.files[0]);
     }
 });
-document.querySelector('#editclose').addEventListener('click', () => {
-    const popup = document.querySelector(".edit-pop")
-    popup.style.display = 'none'
-})
+
 document.querySelector("#Edit").addEventListener("click", () => {
     const popup = document.querySelector(".edit-pop")
     const user = JSON.parse(localStorage.getItem('user'))
@@ -176,6 +173,8 @@ document.querySelector("#Edit").addEventListener("click", () => {
     const popupPw = document.querySelector(".changePassword-pop")
     popup.style.display = 'flex'
     popupPw.style.display = 'none'
+    const nota = document.querySelector(".notation-pop")
+    nota.style.display = 'none'
     profile.src = `/userimg/getimg?id=${user.id}`
     form.reset()
     const name = document.getElementById("name-pop")
@@ -187,15 +186,13 @@ document.querySelector("#Edit").addEventListener("click", () => {
     Fname.value = `${user.fname}`
     Lname.value = `${user.lname}`
 })
-document.querySelector("#changepassclose").addEventListener('click', () => {
-    const popupPw = document.querySelector(".changePassword-pop")
-    popupPw.style.display = 'none'
-})
 document.querySelector("#ChangePassword").addEventListener('click', () => {
     const popupPw = document.querySelector(".changePassword-pop")
     const popup = document.querySelector(".edit-pop")
     popup.style.display = 'none'
     popupPw.style.display = 'flex'
+    const nota = document.querySelector(".notation-pop")
+    nota.style.display = 'none'
 
 })
 document.querySelector("#save").addEventListener("click", () => {
