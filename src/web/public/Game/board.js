@@ -135,6 +135,9 @@ export async function run() {
         chessBoardSetUp(info)
         uiSetUpControll(info, arg, currentGame)
         auctionobj.aucTimeSet(info.auctionend)
+        if(currentGame.role == info.turn){
+            changeMyTurn(true)
+        }
     })
 }
 
