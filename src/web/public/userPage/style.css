@@ -92,18 +92,19 @@ button:hover {
     padding: 0px 10px;
     gap: 10px;
 }
-.history-con>div>h1[result='']{
+
+.history-con>div>h1[result=''] {
     width: 20%;
 }
 
 
-.history-con>div>h1{
+.history-con>div>h1 {
     width: 55%;
     color: #000000;
     padding: 10px 0px;
 }
 
-.history-con>div>button{
+.history-con>div>button {
     width: 15%;
 }
 
@@ -169,9 +170,6 @@ button:hover {
     border-radius: 100%;
 }
 
-.editclose {
-    transform: translateX(275px);
-}
 
 
 h3 {
@@ -289,10 +287,11 @@ h3 {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 50px;
+    width: 80px;
     font-size: 45px;
     font-weight: 600;
-    border-radius: 0% 25px 0% 0%/ 0% 25px 0% 0%;
+    transform: translate(10px, 10px);
+
 }
 
 .close-con {
@@ -304,5 +303,5 @@ h3 {
 }
 
 .close:hover {
-    background-color: red;
+    cursor: pointer;
 }
