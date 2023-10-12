@@ -75,6 +75,8 @@ async function logsInit() {
     });
 }
 
+
+
 function result(data) {
     const user = JSON.parse(localStorage.getItem('user'))
     let result 
@@ -116,7 +118,13 @@ function secondsToMinutes(seconds) {
 }
 
 
-
+document.querySelectorAll('#close').forEach(button =>{
+    button.addEventListener("click",e =>{
+        document.querySelector("#notation-pop").style.display = "none"
+        document.querySelector("#changePassword-pop").style.display = "none"
+        document.querySelector("#edit-pop").style.display = "none"
+    })
+})
 
 document.querySelector("#changePw").addEventListener("click", () => {
     const oldPw = document.getElementById("oldPw-pop")
