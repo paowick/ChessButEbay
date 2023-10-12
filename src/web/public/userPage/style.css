@@ -302,8 +302,8 @@ h3 {
 
 .notation-pop {
     display: flex;
-    justify-content: space-evenly;
     flex-direction: column;
+    justify-content: end;
     align-items: center;
     border: 1px solid black;
     margin: 0 auto;
@@ -314,9 +314,18 @@ h3 {
     width: 0px;
     height: 500px;
     background-color: #404040;
+    transition: 0.2s width ease-out;
     border-radius: 25px;
 }
 
 .notation-pop[show=""] {
     width: 500px;
+}
+
+.notation-con {
+    width: 90%;
+    height: 85%;
+    margin-bottom: 10px;
+    background: var(--bg, #404040);
+    box-shadow: 2px 5px 10px 0px #050505 inset;
 }
