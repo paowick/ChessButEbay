@@ -48,7 +48,9 @@ export class inventory {
         const invtWdoc = document.querySelector("#invt-W")
         this.invtList = []
         list.forEach(ele => {
-            this.invtPushViewer(this.pieceToObjViewer(ele.name, ele.team))
+            if(ele != null){
+                this.invtPushViewer(this.pieceToObjViewer(ele.name, ele.team))
+            }
         })
         if (team == 'W') {invtWdoc.innerHTML = ''}
         if (team == 'B') {invtBdoc.innerHTML = ''}

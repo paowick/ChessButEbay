@@ -162,7 +162,7 @@ io.sockets.on("connection", async (socket) => {
             starttime: null,
             turnCount: 0,
             roomname: room.roomname,
-            auctiontime: room.auctime,
+            auctiontime: room.auctiontime,
             auctionend: null,
             confcoins: room.confcoins,
             auctionslot1: null,
@@ -361,7 +361,6 @@ io.sockets.on("connection", async (socket) => {
         room.auctionStage = true
         room.auctionend = Date.now() + room.auctiontime * 1000
         let log = room.log
-        console.log(data.notation);
         if (data.turn == "W") {
             log.push({
                 W: data.notation,

@@ -119,13 +119,17 @@ export async function run() {
         })
         if (arg.role == "W") {
             info.invtW.forEach(element => {
-                invtobj.invtPush(invtobj.pieceToObj(element.name))
+                if(element != null){
+                    invtobj.invtPush(invtobj.pieceToObj(element.name))
+                }
             })
             invtobj.invtSetUp()
             mineSetUp()
         } else if (arg.role == "B") {
             info.invtB.forEach(element => {
-                invtobj.invtPush(invtobj.pieceToObj(element.name))
+                if(element != null){
+                    invtobj.invtPush(invtobj.pieceToObj(element.name))
+                }
             })
             invtobj.invtSetUp()
             mineSetUp()
