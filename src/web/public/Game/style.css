@@ -360,6 +360,12 @@ main {
     background-color: #fff;
 }
 
+.round {
+    font-size: 20px;
+    text-align: center;
+    line-height: 40px;
+}
+
 .time-action {
     font-size: 50px;
     text-align: center;
@@ -410,6 +416,7 @@ main {
     overflow-y: auto;
     border: 10px solid #252525;
     flex-wrap: wrap;
+    align-content: center
 }
 
 .mine-box>div {

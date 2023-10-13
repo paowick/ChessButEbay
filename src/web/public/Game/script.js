@@ -18,6 +18,8 @@ function formatTime(minutes) {
 
 export function logInit(log) {
     const logbox = document.querySelector("#log-box")
+    const round = document.querySelector('#round')
+    round.innerHTML = `PlayCount ${log.length}`
     logbox.innerHTML = ''
     log.forEach((e, index) => {
         const logtext = document.createElement("div")
