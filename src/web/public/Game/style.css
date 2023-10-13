@@ -409,6 +409,7 @@ main {
     background-color: #252525;
     overflow-y: auto;
     border: 10px solid #252525;
+    flex-wrap: wrap;
 }
 
 .mine-box>div {
