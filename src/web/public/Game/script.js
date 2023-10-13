@@ -127,6 +127,7 @@ export function askPlayer(source, destination) {
 
 
 export function currentBidUpdate(info) {
+    console.log(info);
     auctionobj.setCurrentBid(info.currentBid)
     auctionobj.setCurrentBidder(info.currentBidder)
     const user = JSON.parse(localStorage.getItem('user'))
