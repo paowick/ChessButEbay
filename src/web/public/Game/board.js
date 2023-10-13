@@ -27,6 +27,18 @@ var minelimt = 3
 export let coin = 0
 export let log = []
 
+export let timer = null
+export let countdownTime = 0
+export function setCountTime(time) {
+    countdownTime = time
+}
+export function setTimer(data) {
+    timer = data
+}
+export function clearTimer() {
+    clearInterval(timer)
+}
+
 export const returnRate = {
     2: 50,
     4: 120,
@@ -96,12 +108,9 @@ export async function run() {
         const info = arg.boardRedis
         log = info.log
         logInit(log)
-
         invtBlack.invtSetUpViewer(info.invtB, "B")
         invtWhite.invtSetUpViewer(info.invtW, "W")
-        if (arg.starttime != null) {
-            mainTimeInit(info.starttime)
-        }
+        mainTimeInit(info.starttime)
         let newMine = info.mine.filter(function (item) {
             return item !== null
         });
@@ -125,6 +134,10 @@ export async function run() {
         auctionobj.auctionSetUp(info)
         chessBoardSetUp(info)
         uiSetUpControll(info, arg, currentGame)
+        auctionobj.aucTimeSet(info.auctionend)
+        if(currentGame.role == info.turn){
+            changeMyTurn(true)
+        }
     })
 }
 
@@ -613,9 +626,9 @@ export async function moveClient(source, destination, promoted) {
     const newpos = tranSlateTopos(destination)
     logConv(source, destination, promoted)
     const piece = board[oldpos[0]][oldpos[1]];
-    if(board[newpos[0]][newpos[1]] != null && board[newpos[0]][newpos[1]].name == "king"){
+    if (board[newpos[0]][newpos[1]] != null && board[newpos[0]][newpos[1]].name == "king") {
         console.log("win");
-        win(currentGame.role,`${notation}++`)
+        win(currentGame.role, `${notation}++`)
         return
     }
     piece.unset()

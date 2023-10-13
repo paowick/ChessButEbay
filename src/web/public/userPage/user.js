@@ -1,6 +1,6 @@
 getSession()
 profileMain()
-function profileMain() {
+async function profileMain() {
     const profile = document.getElementById('profile-pic')
     const user = JSON.parse(localStorage.getItem('user'))
     profile.src = `/userimg/getimg?id=${user.id}`
@@ -25,7 +25,189 @@ function profileMain() {
     email.appendChild(h1_email)
     score.appendChild(h1_score)
     flname.appendChild(h1_flname)
+    logsInit()
+
 }
+try {
+    let logtemp = null
+} catch (error) {
+    console.log(error);
+}
+
+document.querySelectorAll('input[type="radio"]').forEach(input => {
+    input.addEventListener('click', e => {
+        const value = e.target.value
+        let temp
+        if (value == "new") {
+            temp = logtemp.sort((a, b) => new Date(b.StartDate) - new Date(a.StartDate))
+        }
+        if (value == "old") {
+            temp = logtemp.sort((a, b) => new Date(a.StartDate) - new Date(b.StartDate))
+        }
+        if (value == "long") {
+            logtemp.forEach(item => {
+                const startDate = new Date(item.StartDate);
+                const endDate = new Date(item.EndDate);
+                item.duration = endDate - startDate;
+            });
+            temp = logtemp.sort((a, b) => b.duration - a.duration);
+        }
+        if (value == "fast"){
+            logtemp.forEach(item => {
+                const startDate = new Date(item.StartDate);
+                const endDate = new Date(item.EndDate);
+                item.duration = endDate - startDate;
+            });
+            temp = logtemp.sort((a, b) => a.duration - b.duration);
+        }
+        if(value == "most"){
+            temp = logtemp.sort((a, b) => b.plycount - a.plycount);
+        }
+        if(value == "least"){
+            temp = logtemp.sort((a, b) => a.plycount - b.plycount);
+
+        }
+        logsupdate(temp)
+    })
+})
+
+function logsupdate(logs) {
+    const user = JSON.parse(localStorage.getItem('user'))
+    const logsCon = document.querySelector("#history-con")
+    logsCon.innerHTML = ''
+    logs.forEach(element => {
+        const box = document.createElement('div')
+        const img = document.createElement('img')
+        const h1 = document.createElement('h3')
+        const h12 = document.createElement('h3')
+        const button = document.createElement('button')
+        const plycount = document.createElement('h3')
+
+        if (user.id == element.WhiteID) {
+            img.src = `../assets/component/svg/whiteIcon.svg`
+        }
+        if (user.id == element.BlackID) {
+            img.src = `../assets/component/svg/blackIcon.svg`
+        }
+
+
+        button.innerHTML = "View"
+        button.setAttribute('value', element.NotationID)
+        button.setAttribute('id', 'logView')
+        h1.innerHTML = `${result(element)}`
+        h1.setAttribute('result', '')
+        h12.innerHTML = `${secondsToMinutes(calculateTimeDifference(element.StartDate, element.EndDate))}`
+        plycount.innerHTML = `playcount ${element.plycount}`
+        box.appendChild(img)
+        box.appendChild(h1)
+        box.appendChild(h12)
+        box.appendChild(plycount)
+        box.appendChild(button)
+        logsCon.appendChild(box)
+
+
+
+    });
+    document.querySelectorAll("#logView").forEach(button => {
+        button.addEventListener("click", async (e) => {
+            document.querySelector("#notation-pop").style.visibility = "visible"
+            document.querySelector("#notation-pop").setAttribute("show", "")
+            document.querySelector("#changePassword-pop").style.display = "none"
+            document.querySelector("#edit-pop").style.display = "none"
+            console.log(e.target.value);
+            if (e.target.value == logStage) { return }
+            logStage = e.target.value
+            const dataJson = await fetch(`/getnotation?id=${e.target.value}`)
+            const data = await dataJson.json()
+            natation(data);
+        })
+    });
+
+}
+
+async function logsInit() {
+    let logStage = null
+
+    const logsJson = await fetch('/getlogs')
+    const logs = await logsJson.json()
+    logtemp = logs
+    logsupdate(logs)
+}
+
+function natation(log) {
+    const logbox = document.querySelector("#notation-con")
+    logbox.innerHTML = ''
+    log.forEach((e, index) => {
+        const logtext = document.createElement("div")
+        const indexShow = document.createElement("div")
+        const W = document.createElement("div")
+        const B = document.createElement("div")
+        indexShow.innerHTML = index + 1
+        W.innerHTML = e.W
+        B.innerHTML = e.B
+        logtext.appendChild(indexShow)
+        logtext.appendChild(W)
+        logtext.appendChild(B)
+        logbox.appendChild(logtext)
+        if (index % 2 == 0) {
+            logtext.setAttribute("highlight", "")
+        }
+    })
+}
+
+
+function result(data) {
+    const user = JSON.parse(localStorage.getItem('user'))
+    let result
+    if (data.WinID == user.id) {
+        result = 'Win'
+    } else {
+        result = "Lose"
+    }
+    return result
+}
+function calculateTimeDifference(startDateStr, endDateStr) {
+    const startDate = new Date(startDateStr);
+    const endDate = new Date(endDateStr);
+
+    if (isNaN(startDate) || isNaN(endDate)) {
+        return "Invalid date format";
+    }
+
+    const timeDifference = endDate - startDate; // This will give the time difference in milliseconds
+
+    // You can convert the time difference to seconds, minutes, or any other format you need.
+    const secondsDifference = timeDifference / 1000;
+
+    return secondsDifference;
+}
+
+function secondsToMinutes(seconds) {
+    if (typeof seconds !== 'number' || seconds < 0) {
+        return "Invalid input. Please provide a non-negative number of seconds.";
+    }
+
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+
+    const minuteString = minutes === 1 ? "min" : "min";
+    const formattedTime = `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')} ${minuteString}`;
+
+    return formattedTime;
+}
+
+
+
+
+document.querySelectorAll('#close').forEach(button => {
+    button.addEventListener("click", e => {
+        document.querySelector("#notation-pop").style.visibility = "hidden"
+        document.querySelector("#notation-pop").removeAttribute("show")
+        document.querySelector("#changePassword-pop").style.display = "none"
+        document.querySelector("#edit-pop").style.display = "none"
+    })
+})
+
 
 document.querySelector("#changePw").addEventListener("click", () => {
     const oldPw = document.getElementById("oldPw-pop")
@@ -73,10 +255,7 @@ document.getElementById('up-but').addEventListener('change', function () {
         reader.readAsDataURL(this.files[0]);
     }
 });
-document.querySelector('#editclose').addEventListener('click', () => {
-    const popup = document.querySelector(".edit-pop")
-    popup.style.display = 'none'
-})
+
 document.querySelector("#Edit").addEventListener("click", () => {
     const popup = document.querySelector(".edit-pop")
     const user = JSON.parse(localStorage.getItem('user'))
@@ -85,6 +264,9 @@ document.querySelector("#Edit").addEventListener("click", () => {
     const popupPw = document.querySelector(".changePassword-pop")
     popup.style.display = 'flex'
     popupPw.style.display = 'none'
+
+    document.querySelector("#notation-pop").style.visibility = "hidden"
+    document.querySelector("#notation-pop").removeAttribute("show")
     profile.src = `/userimg/getimg?id=${user.id}`
     form.reset()
     const name = document.getElementById("name-pop")
@@ -96,15 +278,14 @@ document.querySelector("#Edit").addEventListener("click", () => {
     Fname.value = `${user.fname}`
     Lname.value = `${user.lname}`
 })
-document.querySelector("#changepassclose").addEventListener('click', () => {
-    const popupPw = document.querySelector(".changePassword-pop")
-    popupPw.style.display = 'none'
-})
 document.querySelector("#ChangePassword").addEventListener('click', () => {
     const popupPw = document.querySelector(".changePassword-pop")
     const popup = document.querySelector(".edit-pop")
     popup.style.display = 'none'
     popupPw.style.display = 'flex'
+
+    document.querySelector("#notation-pop").style.visibility = "hidden"
+    document.querySelector("#notation-pop").removeAttribute("show")
 
 })
 document.querySelector("#save").addEventListener("click", () => {
@@ -131,7 +312,7 @@ async function upload() {
     const img = await fetch(`/userimg/chageimg?id=${user.id}`, options);
 
     const data = {
-        id:user.id,
+        id: user.id,
         Username: document.getElementById('name-pop').value,
         Fname: document.getElementById('Fname-pop').value,
         Lname: document.getElementById('Lname-pop').value

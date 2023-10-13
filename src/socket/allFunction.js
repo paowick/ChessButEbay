@@ -41,7 +41,8 @@ export async function getAuction(socket) {
         newPiece: slotTemp,
         room: room
     };
-    io.sockets.to(socket.request._query.code).emit(`get-piece_auction_server`, data);
+    console.log(socket.request._query);
+    socket.broadcast.to(socket.request._query.code).emit(`get-piece_auction_server`, data);
     redisClient.set(socket.request._query.code, stringify(room), {
         NX: false
     });
@@ -61,6 +62,7 @@ export async function bid(arg, code, socket) {
     if (room.currentBid < arg.amout) {
         room.currentBid = arg.amout;
         room.currentBidder = arg.id;
+        room.auctionend = Date.now() + room.auctiontime * 1000
         redisClient.set(code, stringify(room), {
             NX: false
         });

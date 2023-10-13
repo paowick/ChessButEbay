@@ -157,6 +157,31 @@ export async function logsUpdate(info) {
         if (conn) conn.destroy();
     }
 }
+
+export async function getLogs(id){
+    let conn;
+    try {
+        conn = await pool.getConnection();
+        const rows = await conn.query("SELECT * FROM Logs WHERE Logs.WhiteID = ? OR Logs.BlackID = ?",[id,id]);
+        return rows
+    }
+    finally {
+        if (conn) conn.destroy();
+    }
+}
+
+export async function getNotation(id){
+    let conn;
+    try {
+        conn = await pool.getConnection();
+        const rows = await conn.query("SELECT * FROM Notation WHERE Notation.NotationID = ?",[id]);
+        return rows
+    }
+    finally {
+        if (conn) conn.destroy();
+    }
+}
+
 function timeConv(inputDateString) {
     const [datePart, timePart] = inputDateString.split(' ');
 

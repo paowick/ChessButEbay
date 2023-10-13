@@ -20,13 +20,47 @@
 </div>
 <div class="user-game-info">
     <h1>Game History</h1>
-    <div class="history-con"></div>
+    <form action="">
+        <div>
+            <h3>sort by Date</h3>
+            <label for="newest">newest</label>
+            <input type="radio" name="a" id="newest" value="new">
+            <label for="oldest">oldest</label>
+            <input type="radio" name="a" id="oldest" value="old">
+        </div>
+        <div>
+            <h3>sort by Duration</h3>
+            <label for="longest">longest</label>
+            <input type="radio" name="a" id="longest" value="long">
+            <label for="fastest">fastest</label>
+            <input type="radio" name="a" id="fastest" value="fast">
+        </div>
+        <div>
+            <h3>sort by PlayCount</h3>
+            <label for="mostest">mostest</label>
+            <input type="radio" name="a" id="mostest" value="most" >
+            <label for="least">least</label>
+            <input type="radio" name="a" id="least" value="least">
+        </div>
+    </form>
+
+
+    <div class="history-con" id="history-con">
+    </div>
 </div>
 
 
 <div class="edit-pop" id="edit-pop" style="display: none;">
-    <div class="editclose" id="editclose">
-        <span class="close">&times;</span>
+    <div class="close" id="close">
+        <svg xmlns="http://www.w3.org/2000/svg" width="52" height="52" viewBox="0 0 52 52" fill="none">
+            <circle cx="26" cy="26" r="26" fill="#D9D9D9" />
+            <line x1="13.576" y1="13.4191" x2="39.0809" y2="38.924" stroke="#FF0000" stroke-width="8" />
+            <line x1="13.576" y1="13.4191" x2="39.0809" y2="38.924" stroke="black" stroke-opacity="0.2"
+                stroke-width="8" />
+            <line x1="39.0076" y1="13.8284" x2="13.8283" y2="39.0078" stroke="#FF0000" stroke-width="8" />
+            <line x1="39.0076" y1="13.8284" x2="13.8283" y2="39.0078" stroke="black" stroke-opacity="0.2"
+                stroke-width="8" />
+        </svg>
     </div>
     <form id="edit-form" method="post" enctype="multipart/form-data">
         <div class="profile-pop" id="profile-pop">
@@ -57,9 +91,18 @@
 
 
 <div class="changePassword-pop" id="changePassword-pop" style="display: none;">
-    <div class="close-con" id="changepassclose">
-        <span class="close">&times;</span>
+    <div class="close" id="close">
+        <svg xmlns="http://www.w3.org/2000/svg" width="52" height="52" viewBox="0 0 52 52" fill="none">
+            <circle cx="26" cy="26" r="26" fill="#D9D9D9" />
+            <line x1="13.576" y1="13.4191" x2="39.0809" y2="38.924" stroke="#FF0000" stroke-width="8" />
+            <line x1="13.576" y1="13.4191" x2="39.0809" y2="38.924" stroke="black" stroke-opacity="0.2"
+                stroke-width="8" />
+            <line x1="39.0076" y1="13.8284" x2="13.8283" y2="39.0078" stroke="#FF0000" stroke-width="8" />
+            <line x1="39.0076" y1="13.8284" x2="13.8283" y2="39.0078" stroke="black" stroke-opacity="0.2"
+                stroke-width="8" />
+        </svg>
     </div>
+
     <div class="h3-con">
         <h3>Old Password: </h3>
         <input id="oldPw-pop" type="password">
@@ -78,4 +121,22 @@
     <div class="err" id="err"></div>
 
 
+</div>
+
+<div class="notation-pop" id="notation-pop" style="visibility: hidden;">
+    <div class="close-con" id="close">
+        <div class="close" id="close">
+            <svg xmlns="http://www.w3.org/2000/svg" width="52" height="52" viewBox="0 0 52 52" fill="none">
+                <circle cx="26" cy="26" r="26" fill="#D9D9D9" />
+                <line x1="13.576" y1="13.4191" x2="39.0809" y2="38.924" stroke="#FF0000" stroke-width="8" />
+                <line x1="13.576" y1="13.4191" x2="39.0809" y2="38.924" stroke="black" stroke-opacity="0.2"
+                    stroke-width="8" />
+                <line x1="39.0076" y1="13.8284" x2="13.8283" y2="39.0078" stroke="#FF0000" stroke-width="8" />
+                <line x1="39.0076" y1="13.8284" x2="13.8283" y2="39.0078" stroke="black" stroke-opacity="0.2"
+                    stroke-width="8" />
+            </svg>
+        </div>
+
+    </div>
+    <div class="notation-con" id="notation-con"></div>
 </div>

@@ -16,6 +16,7 @@ import { stringify } from './allFunction.js';
 
 
 import cookieParser from 'cookie-parser';
+import { toUSVString } from 'util';
 
 export const redisClient = new redis.createClient({
     socket: {
@@ -85,9 +86,11 @@ io.sockets.on("connection", async (socket) => {
             if (boardRedis.playerB != null && boardRedis.playerW != null) {
                 boardRedis.turn = 'W'
                 boardRedis.gameStart = true
+                boardRedis.auctionend = Date.now() + boardRedis.auctiontime * 1000
                 let piece1 = getRandomChessPiece(boardRedis.turnCount)
                 let piece2 = getRandomChessPiece(boardRedis.turnCount)
                 boardRedis.starttime = now()
+                boardRedis.auctionStage = true
                 boardRedis.auctionslot1 = piece1
                 boardRedis.auctionslot2 = piece2
                 redisClient.set(socket.request._query.code, stringify(boardRedis), {
@@ -107,22 +110,23 @@ io.sockets.on("connection", async (socket) => {
             turnCount: 0,
             roomname: data.req.roomName,
             auctiontime: data.req.aucTime,
+            auctionend: null,
             confcoins: parseInt(data.req.coins),
             auctionslot1: null,
             auctionslot2: null,
             currentBid: 0,
             currentBidder: null,
-            auctionStage: true,
+            auctionStage: false,
             turn: null,
             code: data.room,
             playerB: null,
             playerBName: null,
-            playerBSessionId:null,
+            playerBSessionId: null,
             invtB: [],
             coinB: parseInt(data.req.coins),
             playerW: null,
             playerWName: null,
-            playerWSessionId:null,
+            playerWSessionId: null,
             invtW: [],
             coinW: parseInt(data.req.coins),
             mine: [],
@@ -159,22 +163,23 @@ io.sockets.on("connection", async (socket) => {
             turnCount: 0,
             roomname: room.roomname,
             auctiontime: room.auctime,
+            auctionend: null,
             confcoins: room.confcoins,
             auctionslot1: null,
             auctionslot2: null,
-            auctionStage: true,
+            auctionStage: false,
             currentBid: 0,
             currentBidder: null,
             turn: null,
             code: room.code,
             playerB: null,
             playerBName: null,
-            playerBSessionId:null,
+            playerBSessionId: null,
             invtB: [],
             coinB: room.confcoins,
             playerW: null,
             playerWName: null,
-            playerWSessionId:null,
+            playerWSessionId: null,
             invtW: [],
             coinW: room.confcoins,
             mine: [],
@@ -230,13 +235,13 @@ io.sockets.on("connection", async (socket) => {
             BlackId: room.playerW,
             log: room.log
         }
-        
+
         const userJSONwin = await redisauth.get(`myapp:${winnerSessionId}`)
         const userwin = await JSON.parse(userJSONwin)
         const userJSONlose = await redisauth.get(`myapp:${loserSessionId}`)
         const userlose = await JSON.parse(userJSONlose)
-        userwin.user.score = await userwin.user.score+20
-        userlose.user.score = await userlose.user.score-20
+        userwin.user.score = await userwin.user.score + 20
+        userlose.user.score = await userlose.user.score - 20
         await redisauth.set(`myapp:${winnerSessionId}`, stringify(userwin))
         await redisauth.set(`myapp:${loserSessionId}`, stringify(userlose))
         const res = await fetch("http://api:8080/api/logs", {
@@ -259,6 +264,7 @@ io.sockets.on("connection", async (socket) => {
         room.mine = await data.mine
         room.turnCount = await room.turnCount + 1
         room.auctionStage = true
+        room.auctionend = Date.now() + room.auctiontime * 1000
         let log = room.log
         if (data.turn == "W") {
             log.push({
@@ -286,9 +292,11 @@ io.sockets.on("connection", async (socket) => {
             turn: turn,
             kingSource: data.kingSource,
             kingDestination: data.kingDestination,
-            notation: data.notation
+            notation: data.notation,
+            auctionend:room.auctionend
         }
         socket.broadcast.to(socket.request._query.code).emit(`castle_server`, castle)
+        io.sockets.to(socket.id).emit('castle_return',room.auctionend)
     })
 
     socket.on("move", async (arg) => {
@@ -302,6 +310,7 @@ io.sockets.on("connection", async (socket) => {
         room.mine = await data.mine
         room.turnCount = await room.turnCount + 1
         room.auctionStage = true
+        room.auctionend = Date.now() + room.auctiontime * 1000
         let log = room.log
         if (data.turn == "W") {
             log.push({
@@ -332,9 +341,11 @@ io.sockets.on("connection", async (socket) => {
             checked: data.checked,
             source: data.source,
             destination: data.destination,
-            notation: data.notation
+            notation: data.notation,
+            auctionend:room.auctionend
         }
         socket.broadcast.to(socket.request._query.code).emit(`move_server`, move)
+        io.sockets.to(socket.id).emit('move_return',room.auctionend)
     })
 
     socket.on("drop", async (arg) => {
@@ -348,6 +359,7 @@ io.sockets.on("connection", async (socket) => {
         room.mine = await data.mine
         room.turnCount = await room.turnCount + 1
         room.auctionStage = true
+        room.auctionend = Date.now() + room.auctiontime * 1000
         let log = room.log
         console.log(data.notation);
         if (data.turn == "W") {
@@ -374,9 +386,11 @@ io.sockets.on("connection", async (socket) => {
             mine: data.mine,
             piece: data.piece,
             turn: turn,
-            notation: data.notation
+            notation: data.notation,
+            auctionend:room.auctionend
         }
         socket.broadcast.to(socket.request._query.code).emit(`drop_server`, drop)
+        io.sockets.to(socket.id).emit('drop_return',room.auctionend)
     })
 
     socket.on("drop_mine", (arg) => {
@@ -409,7 +423,7 @@ io.sockets.on("connection", async (socket) => {
         invtUpdate(socket, arg)
     })
 
-    socket.on("test-auction", async (arg) => {
+    socket.on("get-auction", async (arg) => {
         getAuction(socket)
 
     })

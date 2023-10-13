@@ -1,4 +1,4 @@
-import { auctionobj, coin, moveClient, uiSetUpControll } from "./board.js";
+import { auctionobj, coin, moveClient, socket, uiSetUpControll } from "./board.js";
 import { board } from "./board.js";
 import { tranSlateToId } from "./board.js";
 import { drop } from "./board.js";
@@ -38,22 +38,34 @@ export function logInit(log) {
 }
 
 export function mainTimeInit(time) {
+        if(time == null){return}
+        const dateString = time
+        const targetTime = new Date(dateString);
+        const currentTime = new Date();
+        const timeDifference = currentTime - targetTime;
 
-    // setInterval(() => {
-    //     const dateString = time
-    //     const targetTime = new Date(dateString);
-    //     const currentTime = new Date();
-    //     const timeDifference = currentTime - targetTime;
+        // Convert time difference to seconds
+        const secondsDifference = Math.floor(timeDifference / 1000);
+        const formattedTimeDifference = formatTime(secondsDifference);
 
-    //     // Convert time difference to seconds
-    //     const secondsDifference = Math.floor(timeDifference / 1000);
-    //     const formattedTimeDifference = formatTime(secondsDifference);
+        document.querySelectorAll("#time").forEach(ele =>{
+            ele.innerHTML = `${formattedTimeDifference}`
+        })
+    setInterval(() => {
+        const dateString = time
+        const targetTime = new Date(dateString);
+        const currentTime = new Date();
+        const timeDifference = currentTime - targetTime;
 
-    //     document.querySelectorAll("#time").forEach(ele =>{
-    //         ele.innerHTML = `${formattedTimeDifference}`
-    //     })
+        // Convert time difference to seconds
+        const secondsDifference = Math.floor(timeDifference / 1000);
+        const formattedTimeDifference = formatTime(secondsDifference);
 
-    // }, 1000);
+        document.querySelectorAll("#time").forEach(ele =>{
+            ele.innerHTML = `${formattedTimeDifference}`
+        })
+
+    }, 10000);
 
 }
 
@@ -193,7 +205,7 @@ export function winPop(arg) {
         document.querySelector('#win-round').innerHTML = `Play Count : ${arg.round}`
         document.querySelector('#win-score').innerHTML = "Score  -20"
     }
-    if(currentGame.role == "viewer"){
+    if (currentGame.role == "viewer") {
         document.querySelector('#win-pop-text').innerHTML = `The Winner is ${arg.winnerName}`
         document.querySelector('#win-time').innerHTML = `Time : ${formattedTimeDifference}`
         document.querySelector('#win-round').innerHTML = `Play Count : ${arg.round}`
