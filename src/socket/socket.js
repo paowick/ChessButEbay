@@ -162,7 +162,7 @@ io.sockets.on("connection", async (socket) => {
             starttime: null,
             turnCount: 0,
             roomname: room.roomname,
-            auctiontime: room.auctime,
+            auctiontime: room.auctiontime,
             auctionend: null,
             confcoins: room.confcoins,
             auctionslot1: null,
