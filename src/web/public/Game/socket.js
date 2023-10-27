@@ -143,6 +143,7 @@ import('./board.js').then(({ socket }) => {
         
         auctionobj.setAuctionStage(true)
         auctionobj.aucTimeSet(info.auctionend)
+        location.reload()
     })
 
 
