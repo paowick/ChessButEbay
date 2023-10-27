@@ -17,6 +17,7 @@ CREATE TABLE `chessbutebay`.`User` (
 COMMIT;
 
 CREATE TABLE `chessbutebay`.`Logs` (
+  `Logs_Id` INT UNSIGNED NOT NULL AUTO_INCREMENT, 
   `StartDate` DATETIME NOT NULL ,
   `EndDate` DATETIME NOT nULL,
   `plycount` INT NOT NULL ,
@@ -25,6 +26,7 @@ CREATE TABLE `chessbutebay`.`Logs` (
   `WhiteID` INT UNSIGNED NOT NULL ,
   `BlackID` INT UNSIGNED NOT NULL ,
   `NotationID` INT UNSIGNED NOT NULL
+  PRIMARY KEY (`Logs_Id`)
 ) ENGINE = InnoDB;
 COMMIT;
 
