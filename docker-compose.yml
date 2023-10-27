@@ -4,9 +4,7 @@ services:
 # ===============================   Reverse Proxy   =============================
   nginx:
     container_name: nginx
-    image: nginx
-    volumes:
-      - ./nginx_init/nginx.conf:/etc/nginx/nginx.conf
+    build: nginx_init
     ports:
       - "80:80"
       - "443:443"
@@ -119,13 +117,13 @@ services:
       
   db:
     container_name: db
-    image: mariadb
+    build: db_init
     restart: unless-stopped
     environment:
       MARIADB_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     volumes:
       - ./data/mysql:/var/lib/mysql
-      - ./db_init/init.sql:/docker-entrypoint-initdb.d/init.sql
+      # - ./db_init/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - dbNetwork
 
