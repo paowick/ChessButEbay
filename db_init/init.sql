@@ -41,22 +41,5 @@ ALTER TABLE Logs ADD CONSTRAINT `notationid` FOREIGN KEY (NotationID) REFERENCES
 
 
 
--- INSERT INTO `User` (`Email`, `Password`, `Name`, `Fname`, `Lname`, `Score`, `Ban_Status`, `Admin`) 
---   VALUES ('korn2k9@gmail.com', 'qwe123', 'paowick', NULL, NULL, 111, FALSE, TRUE);
 INSERT INTO `User` (`Email`, `Password`, `Name`, `Fname`, `Lname`, `Score`, `Ban_Status`, `Admin`) 
   VALUES ('admin1@gmail.com', 'qwe123', 'admin1', NULL, NULL, 111, FALSE, TRUE);
--- INSERT INTO `User` (`Email`, `Password`, `Name`, `Fname`, `Lname`, `Score`, `Ban_Status`, `Admin`) 
---   VALUES ('user1@gmail.com', 'qwe123', 'user1', NULL, NULL, 111, FALSE, FALSE);
--- INSERT INTO `User` (`Email`, `Password`, `Name`, `Fname`, `Lname`, `Score`, `Ban_Status`, `Admin`) 
---   VALUES ('user2@gmail.com', 'qwe123', 'user2', NULL, NULL, 111, TRUE, FALSE);
-
--- INSERT INTO `User` (`Email`, `Password`, `Name`, `Fname`, `Lname`, `Score`, `Ban_Status`, `Admin`) 
---   VALUES ('reinger.mitchel@example.net', '97881200', 'Faustino Wolff', 'Alyson', 'Schumm', 0, FALSE, FALSE);
--- INSERT INTO `User` (`Email`, `Password`, `Name`, `Fname`, `Lname`, `Score`, `Ban_Status`, `Admin`) 
---   VALUES ('farrell.vinnie@example.com', '9798', 'Doug Casper', 'Webster', 'Renner', 890486877, FALSE, FALSE);
--- INSERT INTO `User` (`Email`, `Password`, `Name`, `Fname`, `Lname`, `Score`, `Ban_Status`, `Admin`) 
---   VALUES ('kristopher39@example.net', '6042', 'Tatyana Marvin', 'Kole', 'Nikolaus', 47188528, TRUE, FALSE);
--- INSERT INTO `User` (`Email`, `Password`, `Name`, `Fname`, `Lname`, `Score`, `Ban_Status`, `Admin`) 
---   VALUES ('hhand@example.net', '180700519', 'Ryleigh Raynor', 'Aimee', 'Oberbrunner', 26775, TRUE, FALSE);
--- INSERT INTO `User` (`Email`, `Password`, `Name`, `Fname`, `Lname`, `Score`, `Ban_Status`, `Admin`) 
---   VALUES ('jaskolski.elta@example.net', '2', 'Ike Emard', 'Hilario', 'Watsica', 8, FALSE, FALSE);
