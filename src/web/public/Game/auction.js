@@ -95,6 +95,7 @@ export class auction {
                 countdownElement.innerHTML = "0";
             });
             if(currentGame.role == "viewer"){return}
+            if(currentGame.role == "B"){return}
             socket.emit('get-auction', "")
             this.auctionStage = false
         }

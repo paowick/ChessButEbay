@@ -106,6 +106,7 @@ import('./board.js').then(({ socket }) => {
     })
 
     socket.on('get-piece_auction_server', async (arg) => {
+        console.log(arg);
         const user = JSON.parse(localStorage.getItem('user'))
         if (user.id == arg.id) {
             invtobj.invtPush(invtobj.pieceToObj(arg.newPiece))
@@ -142,6 +143,7 @@ import('./board.js').then(({ socket }) => {
         
         auctionobj.setAuctionStage(true)
         auctionobj.aucTimeSet(info.auctionend)
+        location.reload()
     })
 
 

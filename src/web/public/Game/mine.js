@@ -90,6 +90,7 @@ export class mine {
 
 
     drop_mine_server(element) {
+        console.log(element);
         if (element.name == 'king') {
             const obj = new king("king", element.pos, element.team, true, board, element.timeInMine)
             obj.currentTimeInMine = element.currentTimeInMine

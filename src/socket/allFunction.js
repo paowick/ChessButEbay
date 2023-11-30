@@ -15,7 +15,7 @@ export async function invtUpdate(socket, arg) {
         NX: false
     });
     invtViewerUpdate(socket, room);
-}export async function invtViewerUpdate(socket, room) {
+} export async function invtViewerUpdate(socket, room) {
     const data = {
         playerB: room.playerB,
         playerW: room.playerW,
@@ -27,6 +27,7 @@ export async function invtUpdate(socket, arg) {
     io.sockets.to(socket.request._query.code).emit(`invtViewerUpdate`, data);
 }
 export async function getAuction(socket) {
+
     const roomJSON = await redisClient.get(socket.request._query.code);
     const room = await JSON.parse(roomJSON);
     const slotTemp = room.auctionslot1;
@@ -42,7 +43,7 @@ export async function getAuction(socket) {
         room: room
     };
     console.log(socket.request._query);
-    socket.broadcast.to(socket.request._query.code).emit(`get-piece_auction_server`, data);
+    io.sockets.to(socket.request._query.code).emit(`get-piece_auction_server`, data);
     redisClient.set(socket.request._query.code, stringify(room), {
         NX: false
     });
@@ -174,23 +175,23 @@ export async function storedata(arg, socket) {
     return room;
 }
 function extractSessionId(cookieString) {
-  // Split the input string by '=' and ';'
-  const parts = cookieString.split(/=|;/);
-  // Find the part that starts with 's%3A'
-  const sessionIdPart = parts.find(part => part.startsWith('s%3A'));
-  
-  if (sessionIdPart) {
-      // Remove 's%3A' prefix and decode the part
-      let sessionId = decodeURIComponent(sessionIdPart.substring(4));
+    // Split the input string by '=' and ';'
+    const parts = cookieString.split(/=|;/);
+    // Find the part that starts with 's%3A'
+    const sessionIdPart = parts.find(part => part.startsWith('s%3A'));
 
-    // Remove everything after the '.' character, if present
-    sessionId = sessionId.split('.')[0];
+    if (sessionIdPart) {
+        // Remove 's%3A' prefix and decode the part
+        let sessionId = decodeURIComponent(sessionIdPart.substring(4));
 
-    return sessionId;
-  }
+        // Remove everything after the '.' character, if present
+        sessionId = sessionId.split('.')[0];
 
-  // Return null if the session ID is not found
-  return null;
+        return sessionId;
+    }
+
+    // Return null if the session ID is not found
+    return null;
 }
 
 export function now() {

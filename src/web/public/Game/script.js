@@ -18,6 +18,8 @@ function formatTime(minutes) {
 
 export function logInit(log) {
     const logbox = document.querySelector("#log-box")
+    const round = document.querySelector('#round')
+    round.innerHTML = `PlayCount ${log.length}`
     logbox.innerHTML = ''
     log.forEach((e, index) => {
         const logtext = document.createElement("div")
@@ -127,6 +129,7 @@ export function askPlayer(source, destination) {
 
 
 export function currentBidUpdate(info) {
+    console.log(info);
     auctionobj.setCurrentBid(info.currentBid)
     auctionobj.setCurrentBidder(info.currentBidder)
     const user = JSON.parse(localStorage.getItem('user'))

@@ -20,13 +20,13 @@ async function profileMain() {
     h1_flname.innerText = `name: ${user.fname}  ${user.lname}`
     h1_email.innerText = `Email: ${user.email}`
     h1_score.innerText = `Score: ${user.score}`
-
+    
     name.appendChild(h1_name)
     email.appendChild(h1_email)
     score.appendChild(h1_score)
     flname.appendChild(h1_flname)
     logsInit()
-
+    
 }
 try {
     let logtemp = null
@@ -114,9 +114,6 @@ function logsupdate(logs) {
             document.querySelector("#notation-pop").setAttribute("show", "")
             document.querySelector("#changePassword-pop").style.display = "none"
             document.querySelector("#edit-pop").style.display = "none"
-            console.log(e.target.value);
-            if (e.target.value == logStage) { return }
-            logStage = e.target.value
             const dataJson = await fetch(`/getnotation?id=${e.target.value}`)
             const data = await dataJson.json()
             natation(data);
@@ -126,7 +123,6 @@ function logsupdate(logs) {
 }
 
 async function logsInit() {
-    let logStage = null
 
     const logsJson = await fetch('/getlogs')
     const logs = await logsJson.json()
