@@ -24,7 +24,7 @@
     "jsonwebtoken": "^9.0.0",
     "nodemon": "^2.0.20",
     "redis": "^4.6.7",
-    "socket.io": "^4.6.1",
-    "socket.io-client": "^4.7.1"
+    "socket.io": "^4.8.0",
+    "socket.io-client": "^4.8.0"
   }
 }
