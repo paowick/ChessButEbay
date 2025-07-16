@@ -27,6 +27,6 @@
     "express-session": "^1.17.3",
     "nodemon": "^2.0.20",
     "redis": "^4.6.7",
-    "socket.io": "^4.5.4"
+    "socket.io": "^4.8.0"
   }
 }
